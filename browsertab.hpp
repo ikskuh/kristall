@@ -6,6 +6,7 @@
 
 #include "geminiclient.hpp"
 #include "geminiwebpage.hpp"
+#include "documentoutlinemodel.hpp"
 
 namespace Ui {
 class BrowserTab;
@@ -61,6 +62,8 @@ private slots:
 
     void on_navigationRequest(QUrl const & url, bool & allow);
 
+    void on_fav_button_clicked();
+
 private:
     void setErrorMessage(QString const & msg);
 
@@ -68,9 +71,9 @@ private:
 
     void updateUI();
 
-    QByteArray translateGeminiToHtml(QByteArray const & input);
+    static QByteArray translateGeminiToHtml(QByteArray const & input, DocumentOutlineModel & outline);
 
-private:
+public:
     Ui::BrowserTab *ui;
     MainWindow * mainWindow;
     QUrl current_location;
@@ -81,6 +84,10 @@ private:
     QVector<QUrl> navigation_history;
 
     GeminiWebPage page;
+
+    bool successfully_loaded = false;
+
+    DocumentOutlineModel outline;
 };
 
 #endif // BROWSERTAB_HPP

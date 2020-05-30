@@ -1,6 +1,9 @@
 #include "geminiwebpage.hpp"
+#include "browsertab.hpp"
 
-GeminiWebPage::GeminiWebPage(QObject *parent) : QWebEnginePage(parent)
+GeminiWebPage::GeminiWebPage(MainWindow * container) :
+    QWebEnginePage(),
+    main_window(container)
 {
 
 }
@@ -31,4 +34,11 @@ bool GeminiWebPage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::Nav
     case QWebEnginePage::NavigationTypeRedirect:
         return false;
     }
+}
+
+QWebEnginePage *GeminiWebPage::createWindow(QWebEnginePage::WebWindowType type)
+{
+    auto tab = main_window->addEmptyTab(true);
+
+    return &tab->page;
 }

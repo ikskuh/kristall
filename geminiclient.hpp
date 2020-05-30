@@ -69,6 +69,8 @@ private slots:
 
     void socketDisconnected();
 
+    void sslErrors(const QList<QSslError> &errors);
+
 private:
     bool is_receiving_body;
 

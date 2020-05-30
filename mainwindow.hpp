@@ -4,9 +4,13 @@
 #include <QMainWindow>
 #include <QLabel>
 
+#include "favouritecollection.hpp"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+
+class BrowserTab;
 
 class MainWindow : public QMainWindow
 {
@@ -17,14 +21,25 @@ public:
     ~MainWindow();
 
 
-    void addEmptyTab();
-    void addNewTab(QUrl const & url);
+    BrowserTab * addEmptyTab(bool focus_new);
+    BrowserTab * addNewTab(bool focus_new, QUrl const & url);
 
     void setUrlPreview(QUrl const & url);
+
+public:
+    FavouriteCollection favourites;
+
+private slots:
+    void on_browser_tabs_currentChanged(int index);
+
+    void on_favourites_view_doubleClicked(const QModelIndex &index);
+
+    void on_browser_tabs_tabCloseRequested(int index);
 
 private:
     Ui::MainWindow *ui;
 
     QLabel * url_status;
+
 };
 #endif // MAINWINDOW_HPP

@@ -17,6 +17,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     browsertab.cpp \
+    documentoutlinemodel.cpp \
+    favouritecollection.cpp \
     geminiclient.cpp \
     geminiwebpage.cpp \
     main.cpp \
@@ -24,6 +26,8 @@ SOURCES += \
 
 HEADERS += \
     browsertab.hpp \
+    documentoutlinemodel.hpp \
+    favouritecollection.hpp \
     geminiclient.hpp \
     geminiwebpage.hpp \
     mainwindow.hpp

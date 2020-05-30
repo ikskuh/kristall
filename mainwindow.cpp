@@ -12,36 +12,77 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     this->statusBar()->addWidget(this->url_status);
+
+    this->favourites.load("./favourites.db");
+
+    ui->favourites_view->setModel(&favourites);
 }
 
 MainWindow::~MainWindow()
 {
+    this->favourites.save("./favourites.db");
     delete ui;
 }
 
-void MainWindow::addEmptyTab()
+BrowserTab * MainWindow::addEmptyTab(bool focus_new)
 {
-    auto tab = std::make_unique<BrowserTab>(this);
+    BrowserTab * tab = new BrowserTab(this);
 
+    int index = this->ui->browser_tabs->addTab(tab, "Page");
 
+    if(focus_new) {
+        this->ui->browser_tabs->setCurrentIndex(index);
+    }
 
-    this->ui->browser_tabs->addTab(tab.release(), "Page");
+    return tab;
 }
 
-void MainWindow::addNewTab(QUrl const & url)
+BrowserTab * MainWindow::addNewTab(bool focus_new, QUrl const & url)
 {
-    auto tab = std::make_unique<BrowserTab>(this);
-
+    auto tab = addEmptyTab(focus_new);
     tab->navigateTo(url);
-
-    this->ui->browser_tabs->addTab(tab.release(), "Page");
+    return tab;
 }
 
 void MainWindow::setUrlPreview(const QUrl &url)
 {
-    if(url.isValid())
-        this->url_status->setText(url.toString());
-    else
+    if(url.isValid()) {
+        auto str = url.toString();
+        if(str.length() > 300) {
+            str = str.mid(0, 300) + "...";
+        }
+        this->url_status->setText(str);
+    }
+    else {
         this->url_status->setText("");
+    }
 }
 
+
+void MainWindow::on_browser_tabs_currentChanged(int index)
+{
+    if(index >= 0) {
+        BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->widget(index));
+
+        if(tab != nullptr) {
+            this->ui->outline_view->setModel(&tab->outline);
+            this->ui->outline_view->expandAll();
+        } else {
+            this->ui->outline_view->setModel(nullptr);
+        }
+    } else {
+        this->ui->outline_view->setModel(nullptr);
+    }
+}
+
+void MainWindow::on_favourites_view_doubleClicked(const QModelIndex &index)
+{
+    if(auto url = this->favourites.get(index); url.isValid()) {
+        this->addNewTab(true, url);
+    }
+}
+
+void MainWindow::on_browser_tabs_tabCloseRequested(int index)
+{
+    delete this->ui->browser_tabs->widget(index);
+}

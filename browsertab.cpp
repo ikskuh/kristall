@@ -10,7 +10,9 @@
 BrowserTab::BrowserTab(MainWindow * mainWindow) :
     QWidget(nullptr),
     ui(new Ui::BrowserTab),
-    mainWindow(mainWindow)
+    mainWindow(mainWindow),
+    page(mainWindow),
+    outline()
 {
     ui->setupUi(this);
 
@@ -28,6 +30,8 @@ BrowserTab::BrowserTab(MainWindow * mainWindow) :
     connect(&page, &GeminiWebPage::navigationRequest, this, &BrowserTab::on_navigationRequest);
 
     ui->content->setPage(&page);
+
+    this->updateUI();
 }
 
 BrowserTab::~BrowserTab()
@@ -50,8 +54,11 @@ void BrowserTab::navigateTo(const QUrl &url)
     }
 
     this->redirection_count = 0;
+    this->successfully_loaded = false;
 
     gemini_client.startRequest(url);
+
+    this->updateUI();
 }
 
 void BrowserTab::on_menu_button_clicked()
@@ -97,10 +104,12 @@ void BrowserTab::on_refresh_button_clicked()
 void BrowserTab::on_gemini_complete(const QByteArray &data, const QString &mime)
 {
     if(mime.startsWith("text/gemini")) {
-        this->page.setHtml(translateGeminiToHtml(data), this->current_location);
+        this->page.setHtml(translateGeminiToHtml(data, this->outline), this->current_location);
     } else {
         this->page.setContent(data, mime);
     }
+    this->successfully_loaded = true;
+    this->updateUI();
 }
 
 void BrowserTab::on_protocolViolation(const QString &reason)
@@ -187,11 +196,13 @@ void BrowserTab::on_permanentFailure(PermanentFailure reason, const QString &inf
 void BrowserTab::on_transientCertificateRequested(const QString &reason)
 {
     QMessageBox::warning(this, "Kristall", "Transient certificate requirested:\n" + reason);
+    this->updateUI();
 }
 
 void BrowserTab::on_authorisedCertificateRequested(const QString &reason)
 {
     QMessageBox::warning(this, "Kristall", "Authorized certificate requirested:\n" + reason);
+    this->updateUI();
 }
 
 void BrowserTab::on_certificateRejected(CertificateRejection reason, const QString &info)
@@ -231,7 +242,9 @@ void BrowserTab::on_navigationRequest(const QUrl &url, bool &allow)
 
 void BrowserTab::setErrorMessage(const QString &msg)
 {
-    this->page.setContent(QString("An error happened:\n%0").arg(msg).toUtf8(), "text/plain charset=utf-8");
+    // this->page.setContent(QString("An error happened:\n%0").arg(msg).toUtf8(), "text/plain charset=utf-8");
+    QMessageBox::warning(this, "Kristall", msg);
+    this->updateUI();
 }
 
 void BrowserTab::pushToHistory(const QUrl &url)
@@ -240,13 +253,30 @@ void BrowserTab::pushToHistory(const QUrl &url)
     this->updateUI();
 }
 
+void BrowserTab::on_fav_button_clicked()
+{
+    if(this->ui->fav_button->isChecked()) {
+        this->mainWindow->favourites.add(this->current_location);
+    } else {
+        this->mainWindow->favourites.remove(this->current_location);
+    }
+
+    this->updateUI();
+}
+
+
 void BrowserTab::updateUI()
 {
     this->ui->back_button->setEnabled(this->navigation_history.size() > 0);
     this->ui->forward_button->setEnabled(false);
+
+    this->ui->refresh_button->setEnabled(this->successfully_loaded);
+
+    this->ui->fav_button->setEnabled(this->successfully_loaded);
+    this->ui->fav_button->setChecked(this->mainWindow->favourites.contains(this->current_location));
 }
 
-QByteArray BrowserTab::translateGeminiToHtml(const QByteArray &input)
+QByteArray BrowserTab::translateGeminiToHtml(const QByteArray &input, DocumentOutlineModel & outline)
 {
     QByteArray result;
     result.append(QString(R"html(<!doctype html>
@@ -259,6 +289,8 @@ QByteArray BrowserTab::translateGeminiToHtml(const QByteArray &input)
 
     bool verbatim = false;
     bool listing = false;
+
+    outline.beginBuild();
 
     QList<QByteArray> lines = input.split('\n');
     for(auto const & line : lines)
@@ -275,6 +307,7 @@ QByteArray BrowserTab::translateGeminiToHtml(const QByteArray &input)
             }
             else {
                 result.append(line);
+                result.append("\n");
             }
         } else {
             if(line.startsWith("*")) {
@@ -296,16 +329,19 @@ QByteArray BrowserTab::translateGeminiToHtml(const QByteArray &input)
 
             if(line.startsWith("###")) {
                 result.append("<h3>");
+                outline.appendH3(line.mid(3).trimmed());
                 result.append(line.mid(3).trimmed());
                 result.append("</h3>");
             }
             else if(line.startsWith("##")) {
                 result.append("<h2>");
+                outline.appendH2(line.mid(2).trimmed());
                 result.append(line.mid(2).trimmed());
                 result.append("</h2>");
             }
             else if(line.startsWith("#")) {
                 result.append("<h1>");
+                outline.appendH1(line.mid(1).trimmed());
                 result.append(line.mid(1).trimmed());
                 result.append("</h1>");
             }
@@ -348,6 +384,8 @@ QByteArray BrowserTab::translateGeminiToHtml(const QByteArray &input)
             }
         }
     }
+
+    outline.endBuild();
 
     result.append(QString(R"html(
     </body>

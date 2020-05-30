@@ -74,12 +74,23 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QTreeView" name="treeView"/>
+      <widget class="QTreeView" name="outline_view">
+       <property name="autoExpandDelay">
+        <number>0</number>
+       </property>
+       <attribute name="headerVisible">
+        <bool>false</bool>
+       </attribute>
+      </widget>
      </item>
     </layout>
    </widget>
   </widget>
   <widget class="QDockWidget" name="bookmarks_window">
+   <property name="windowIcon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/heart.svg</normaloff>:/icons/heart.svg</iconset>
+   </property>
    <property name="windowTitle">
     <string>Bookmarks</string>
    </property>
@@ -101,7 +112,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QTreeView" name="treeView_2"/>
+      <widget class="QListView" name="favourites_view"/>
      </item>
     </layout>
    </widget>
@@ -128,7 +139,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QListView" name="listView"/>
+      <widget class="QListView" name="history_view"/>
      </item>
     </layout>
    </widget>
@@ -155,12 +166,18 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QTreeView" name="treeView_3"/>
+      <widget class="QTreeView" name="clientcert_view">
+       <property name="headerHidden">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

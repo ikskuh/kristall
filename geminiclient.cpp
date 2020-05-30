@@ -7,6 +7,7 @@ GeminiClient::GeminiClient(QObject *parent) : QObject(parent)
     connect(&socket, &QSslSocket::encrypted, this, &GeminiClient::socketEncrypted);
     connect(&socket, &QSslSocket::readyRead, this, &GeminiClient::socketReadyRead);
     connect(&socket, &QSslSocket::disconnected, this, &GeminiClient::socketDisconnected);
+    connect(&socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors), this, &GeminiClient::sslErrors);
 }
 
 bool GeminiClient::startRequest(const QUrl &url)
@@ -217,4 +218,13 @@ void GeminiClient::socketDisconnected()
         body.append(socket.readAll());
         emit requestComplete(body, mime_type);
     }
+}
+
+void GeminiClient::sslErrors(const QList<QSslError> &errors)
+{
+    for(auto const & error : errors) {
+        qDebug() << error.errorString() ;
+    }
+
+    socket.ignoreSslErrors(errors);
 }
