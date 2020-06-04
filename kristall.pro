@@ -1,6 +1,6 @@
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets webenginewidgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets network
 
 CONFIG += c++17
 
@@ -20,7 +20,6 @@ SOURCES += \
     documentoutlinemodel.cpp \
     favouritecollection.cpp \
     geminiclient.cpp \
-    geminiwebpage.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -29,7 +28,6 @@ HEADERS += \
     documentoutlinemodel.hpp \
     favouritecollection.hpp \
     geminiclient.hpp \
-    geminiwebpage.hpp \
     mainwindow.hpp
 
 FORMS += \

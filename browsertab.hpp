@@ -5,7 +5,6 @@
 #include <QUrl>
 
 #include "geminiclient.hpp"
-#include "geminiwebpage.hpp"
 #include "documentoutlinemodel.hpp"
 
 namespace Ui {
@@ -64,6 +63,14 @@ private slots:
 
     void on_fav_button_clicked();
 
+    void on_textBrowser_anchorClicked(const QUrl &arg1);
+
+    void on_textBrowser_backwardAvailable(bool arg1);
+
+    void on_textBrowser_forwardAvailable(bool arg1);
+
+    void on_textBrowser_highlighted(const QUrl &arg1);
+
 private:
     void setErrorMessage(QString const & msg);
 
@@ -82,8 +89,6 @@ public:
     int redirection_count = 0;
 
     QVector<QUrl> navigation_history;
-
-    GeminiWebPage page;
 
     bool successfully_loaded = false;
 

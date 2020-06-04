@@ -11,7 +11,6 @@ BrowserTab::BrowserTab(MainWindow * mainWindow) :
     QWidget(nullptr),
     ui(new Ui::BrowserTab),
     mainWindow(mainWindow),
-    page(mainWindow),
     outline()
 {
     ui->setupUi(this);
@@ -25,11 +24,6 @@ BrowserTab::BrowserTab(MainWindow * mainWindow) :
     connect(&gemini_client, &GeminiClient::transientCertificateRequested, this, &BrowserTab::on_transientCertificateRequested);
     connect(&gemini_client, &GeminiClient::authorisedCertificateRequested, this, &BrowserTab::on_authorisedCertificateRequested);
     connect(&gemini_client, &GeminiClient::certificateRejected, this, &BrowserTab::on_certificateRejected);
-
-    connect(&page, &QWebEnginePage::linkHovered, this, &BrowserTab::on_linkHovered);
-    connect(&page, &GeminiWebPage::navigationRequest, this, &BrowserTab::on_navigationRequest);
-
-    ui->content->setPage(&page);
 
     this->updateUI();
 }
@@ -103,10 +97,26 @@ void BrowserTab::on_refresh_button_clicked()
 
 void BrowserTab::on_gemini_complete(const QByteArray &data, const QString &mime)
 {
+    qDebug() << "Loaded" << data.length() << "bytes of type" << mime;
+
     if(mime.startsWith("text/gemini")) {
-        this->page.setHtml(translateGeminiToHtml(data, this->outline), this->current_location);
-    } else {
-        this->page.setContent(data, mime);
+        auto html = translateGeminiToHtml(data, this->outline);
+
+        this->ui->textBrowser->setHtml(html);
+    }
+    else if(mime.startsWith("text/html")) {
+        this->ui->textBrowser->setHtml(QString::fromUtf8(data));
+    }
+#if QT_CONFIG(textmarkdownreader)
+    else if(mime.startsWith("text/markdown")) {
+        this->ui->textBrowser->setMarkdown(QString::fromUtf8(data));
+    }
+#endif
+    else if(mime.startsWith("text/")) {
+        this->ui->textBrowser->setText(QString::fromUtf8(data));
+    }
+    else {
+        this->ui->textBrowser->setText(QString("Unsupported Mime: %1").arg(mime));
     }
     this->successfully_loaded = true;
     this->updateUI();
@@ -265,10 +275,44 @@ void BrowserTab::on_fav_button_clicked()
 }
 
 
+void BrowserTab::on_textBrowser_anchorClicked(const QUrl &url)
+{
+    qDebug() << url;
+
+    QUrl real_url = url;
+    if(real_url.isRelative())
+        real_url = this->current_location.resolved(url);
+
+    if(real_url.scheme() != "gemini") {
+        QMessageBox::warning(this, "Kristall", QString("Unsupported url: %1").arg(real_url.toString()));
+    }
+    else {
+        this->navigateTo(real_url);
+    }
+}
+
+void BrowserTab::on_textBrowser_backwardAvailable(bool arg1)
+{
+    this->ui->back_button->setEnabled(arg1);
+}
+
+void BrowserTab::on_textBrowser_forwardAvailable(bool arg1)
+{
+    this->ui->forward_button->setEnabled(arg1);
+}
+
+void BrowserTab::on_textBrowser_highlighted(const QUrl &url)
+{
+    QUrl real_url = url;
+    if(real_url.isRelative())
+        real_url = this->current_location.resolved(url);
+    this->mainWindow->setUrlPreview(real_url);
+}
+
 void BrowserTab::updateUI()
 {
-    this->ui->back_button->setEnabled(this->navigation_history.size() > 0);
-    this->ui->forward_button->setEnabled(false);
+    // this->ui->back_button->setEnabled(this->navigation_history.size() > 0);
+    // this->ui->forward_button->setEnabled(false);
 
     this->ui->refresh_button->setEnabled(this->successfully_loaded);
 
@@ -393,3 +437,4 @@ QByteArray BrowserTab::translateGeminiToHtml(const QByteArray &input, DocumentOu
 )html").toUtf8());
     return result;
 }
+
