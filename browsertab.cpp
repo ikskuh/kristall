@@ -6,6 +6,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QDockWidget>
 
 BrowserTab::BrowserTab(MainWindow * mainWindow) :
     QWidget(nullptr),
@@ -26,6 +27,30 @@ BrowserTab::BrowserTab(MainWindow * mainWindow) :
     connect(&gemini_client, &GeminiClient::certificateRejected, this, &BrowserTab::on_certificateRejected);
 
     this->updateUI();
+
+    this->ui->textBrowser->document()->setDocumentMargin(55.0);
+    this->ui->textBrowser->document()->setDefaultStyleSheet(
+        R"css(
+h1 {
+    color: red;
+}
+h2 {
+    color: green;
+}
+h3 {
+    color: blue;
+}
+span {
+    color: lime;
+}
+a {
+    color: magenta;
+}
+ul {
+    -qt-list-indent: 1;
+    type: square;
+}
+            )css");
 }
 
 BrowserTab::~BrowserTab()
@@ -58,7 +83,23 @@ void BrowserTab::navigateTo(const QUrl &url)
 void BrowserTab::on_menu_button_clicked()
 {
     QMenu menu;
-    connect(menu.addAction("Add Tab"), &QAction::triggered, mainWindow, &MainWindow::addEmptyTab);
+    connect(menu.addAction("Open Empty Tab"), &QAction::triggered, mainWindow, &MainWindow::addEmptyTab);
+
+    QMenu * view_menu = menu.addMenu("View");
+    {
+        QList<QDockWidget *> dockWidgets = mainWindow->findChildren<QDockWidget *>();
+
+        for(QDockWidget * dock : dockWidgets)
+        {
+            QAction * act = view_menu ->addAction(dock->windowTitle());
+            act->setCheckable(true);
+            act->setChecked(dock->isVisible());
+
+            connect(act, QOverload<bool>::of(&QAction::triggered), dock, &QDockWidget::setVisible);
+        }
+    }
+
+
     connect(menu.addAction("Quit"), &QAction::triggered, &QApplication::quit);
     menu.exec(QCursor::pos());
 }
@@ -99,6 +140,8 @@ void BrowserTab::on_gemini_complete(const QByteArray &data, const QString &mime)
 {
     qDebug() << "Loaded" << data.length() << "bytes of type" << mime;
 
+    bool enable_styles = false;
+
     if(mime.startsWith("text/gemini")) {
         auto html = translateGeminiToHtml(data, this->outline);
 
@@ -118,6 +161,7 @@ void BrowserTab::on_gemini_complete(const QByteArray &data, const QString &mime)
     else {
         this->ui->textBrowser->setText(QString("Unsupported Mime: %1").arg(mime));
     }
+
     this->successfully_loaded = true;
     this->updateUI();
 }
@@ -438,3 +482,10 @@ QByteArray BrowserTab::translateGeminiToHtml(const QByteArray &input, DocumentOu
     return result;
 }
 
+
+#include <QTextBlock>
+
+void BrowserTab::on_textEdit_textChanged()
+{
+    this->ui->textBrowser->document()->setDefaultStyleSheet(this->ui->textEdit->toPlainText());
+}

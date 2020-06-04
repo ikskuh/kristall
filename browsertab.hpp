@@ -71,6 +71,8 @@ private slots:
 
     void on_textBrowser_highlighted(const QUrl &arg1);
 
+    void on_textEdit_textChanged();
+
 private:
     void setErrorMessage(QString const & msg);
 
