@@ -8,6 +8,12 @@ GeminiClient::GeminiClient(QObject *parent) : QObject(parent)
     connect(&socket, &QSslSocket::readyRead, this, &GeminiClient::socketReadyRead);
     connect(&socket, &QSslSocket::disconnected, this, &GeminiClient::socketDisconnected);
     connect(&socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors), this, &GeminiClient::sslErrors);
+    connect(&socket, QOverload<QAbstractSocket::SocketError>::of(&QSslSocket::error), this, &GeminiClient::socketError);
+}
+
+GeminiClient::~GeminiClient()
+{
+    is_receiving_body = false;
 }
 
 bool GeminiClient::startRequest(const QUrl &url)
@@ -17,14 +23,17 @@ bool GeminiClient::startRequest(const QUrl &url)
 
     socket.connectToHostEncrypted(url.host(), url.port(1965));
 
-    buffer.resize(0);
-    body.resize(0);
+    buffer.clear();
+    body.clear();
     is_receiving_body = false;
 
     if(not socket.isOpen())
         return false;
 
+    socket.setReadBufferSize(1);
+
     target_url = url;
+    mime_type = "<invalid>";
 
     return true;
 }
@@ -36,7 +45,10 @@ bool GeminiClient::isInProgress() const
 
 bool GeminiClient::cancelRequest()
 {
-    socket.close();
+    this->is_receiving_body = false;
+    this->socket.close();
+    this->buffer.clear();
+    this->body.clear();
     return true;
 }
 
@@ -127,7 +139,7 @@ void GeminiClient::socketReadyRead()
 
                 case 2: // success
                     is_receiving_body = true;
-                    mime_type = QString(meta);
+                    mime_type = meta;
                     return;
 
                 case 3: { // redirect
@@ -223,8 +235,20 @@ void GeminiClient::socketDisconnected()
 void GeminiClient::sslErrors(const QList<QSslError> &errors)
 {
     for(auto const & error : errors) {
-        qDebug() << error.errorString() ;
+        qWarning() << error.errorString() ;
     }
 
     socket.ignoreSslErrors(errors);
+}
+
+void GeminiClient::socketError(QAbstractSocket::SocketError socketError)
+{
+    // When remote host closes TLS session, the client closes the socket.
+    // This is more sane then erroring out here as it's a perfectly legal
+    // state and we know the TLS connection has ended.
+    if(socketError == QAbstractSocket::RemoteHostClosedError) {
+        socket.close();
+    } else {
+        qWarning() << socketError << socket.errorString();
+    }
 }

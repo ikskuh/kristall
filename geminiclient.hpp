@@ -36,6 +36,8 @@ private:
 public:
     explicit GeminiClient(QObject *parent = nullptr);
 
+    ~GeminiClient() override;
+
     bool startRequest(QUrl const & url);
 
     bool isInProgress() const;
@@ -70,6 +72,9 @@ private slots:
     void socketDisconnected();
 
     void sslErrors(const QList<QSslError> &errors);
+
+    void socketError(QAbstractSocket::SocketError socketError);
+
 
 private:
     bool is_receiving_body;
