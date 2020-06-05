@@ -25,6 +25,8 @@ public:
 
     void navigateTo(QUrl const & url);
 
+    void navigateBack(QModelIndex history_index);
+
 private slots:
     void on_menu_button_clicked();
 

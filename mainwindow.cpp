@@ -94,3 +94,11 @@ void MainWindow::on_browser_tabs_tabCloseRequested(int index)
 {
     delete this->ui->browser_tabs->widget(index);
 }
+
+void MainWindow::on_history_view_doubleClicked(const QModelIndex &index)
+{
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if(tab != nullptr) {
+        tab->navigateBack(index);
+    }
+}

@@ -85,6 +85,11 @@ void BrowserTab::navigateTo(const QUrl &url)
     this->updateUI();
 }
 
+void BrowserTab::navigateBack(QModelIndex history_index)
+{
+    qDebug() << history_index;
+}
+
 void BrowserTab::on_menu_button_clicked()
 {
     QMenu menu;
@@ -166,7 +171,7 @@ void BrowserTab::on_gemini_complete(const QByteArray &data, const QString &mime)
     }
 #endif
     else if(mime.startsWith("text/")) {
-        this->ui->text_browser->setText(QString::fromUtf8(data));
+        this->ui->text_browser->setPlainText(QString::fromUtf8(data));
     }
     else if(mime.startsWith("image/")) {
 

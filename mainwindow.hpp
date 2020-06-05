@@ -36,6 +36,8 @@ private slots:
 
     void on_browser_tabs_tabCloseRequested(int index);
 
+    void on_history_view_doubleClicked(const QModelIndex &index);
+
 private:
     Ui::MainWindow *ui;
 
