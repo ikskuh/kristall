@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->ui->history_window->setVisible(false);
     this->ui->clientcert_window->setVisible(false);
-    this->ui->bookmarks_window->setVisible(false);
+    this->ui->bookmarks_window->setVisible(true);
 }
 
 MainWindow::~MainWindow()

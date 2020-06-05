@@ -10,6 +10,9 @@
 #include <QImage>
 #include <QPixmap>
 
+#include <QGraphicsPixmapItem>
+#include <QGraphicsTextItem>
+
 BrowserTab::BrowserTab(MainWindow * mainWindow) :
     QWidget(nullptr),
     ui(new Ui::BrowserTab),
@@ -170,8 +173,16 @@ void BrowserTab::on_gemini_complete(const QByteArray &data, const QString &mime)
         QImage img;
         if(img.loadFromData(data, nullptr))
         {
-            this->graphics_scene.addPixmap(QPixmap::fromImage(img));
+            auto * item = this->graphics_scene.addPixmap(QPixmap::fromImage(img));
         }
+        else
+        {
+            auto * item = this->graphics_scene.addText("Failed to load picture!");
+        }
+
+
+        this->ui->graphics_browser->fitInView(graphics_scene.sceneRect(), Qt::KeepAspectRatio);
+
     }
     else {
         this->ui->text_browser->setVisible(true);
