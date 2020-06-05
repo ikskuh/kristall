@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QUrl>
+#include <QGraphicsScene>
 
 #include "geminiclient.hpp"
 #include "documentoutlinemodel.hpp"
@@ -63,15 +64,13 @@ private slots:
 
     void on_fav_button_clicked();
 
-    void on_textBrowser_anchorClicked(const QUrl &arg1);
+    void on_text_browser_anchorClicked(const QUrl &arg1);
 
-    void on_textBrowser_backwardAvailable(bool arg1);
+    void on_text_browser_backwardAvailable(bool arg1);
 
-    void on_textBrowser_forwardAvailable(bool arg1);
+    void on_text_browser_forwardAvailable(bool arg1);
 
-    void on_textBrowser_highlighted(const QUrl &arg1);
-
-    void on_textEdit_textChanged();
+    void on_text_browser_highlighted(const QUrl &arg1);
 
 private:
     void setErrorMessage(QString const & msg);
@@ -95,6 +94,7 @@ public:
     bool successfully_loaded = false;
 
     DocumentOutlineModel outline;
+    QGraphicsScene graphics_scene;
 };
 
 #endif // BROWSERTAB_HPP

@@ -7,12 +7,15 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QDockWidget>
+#include <QImage>
+#include <QPixmap>
 
 BrowserTab::BrowserTab(MainWindow * mainWindow) :
     QWidget(nullptr),
     ui(new Ui::BrowserTab),
     mainWindow(mainWindow),
-    outline()
+    outline(),
+    graphics_scene()
 {
     ui->setupUi(this);
 
@@ -28,28 +31,27 @@ BrowserTab::BrowserTab(MainWindow * mainWindow) :
 
     this->updateUI();
 
-    this->ui->textBrowser->document()->setDocumentMargin(55.0);
-    this->ui->textBrowser->document()->setDefaultStyleSheet(
+    this->ui->graphics_browser->setScene(&graphics_scene);
+
+    this->ui->text_browser->document()->setDocumentMargin(55.0);
+    this->ui->text_browser->document()->setDefaultStyleSheet(
         R"css(
-h1 {
-    color: red;
-}
-h2 {
-    color: green;
-}
-h3 {
-    color: blue;
-}
-span {
-    color: lime;
-}
-a {
-    color: magenta;
-}
-ul {
-    -qt-list-indent: 1;
-    type: square;
-}
+            h1 {
+                color: red;
+            }
+            h2 {
+                color: green;
+            }
+            h3 {
+                color: gold;
+            }
+            a {
+                color: blue;
+            }
+            ul {
+                -qt-list-indent: 1;
+                type: square;
+            }
             )css");
 }
 
@@ -140,26 +142,40 @@ void BrowserTab::on_gemini_complete(const QByteArray &data, const QString &mime)
 {
     qDebug() << "Loaded" << data.length() << "bytes of type" << mime;
 
-    bool enable_styles = false;
+
+    this->graphics_scene.clear();
+    this->ui->text_browser->setText("");
+
+    this->ui->text_browser->setVisible(mime.startsWith("text/"));
+    this->ui->graphics_browser->setVisible(mime.startsWith("image/"));
 
     if(mime.startsWith("text/gemini")) {
         auto html = translateGeminiToHtml(data, this->outline);
 
-        this->ui->textBrowser->setHtml(html);
+        this->ui->text_browser->setHtml(html);
     }
     else if(mime.startsWith("text/html")) {
-        this->ui->textBrowser->setHtml(QString::fromUtf8(data));
+        this->ui->text_browser->setHtml(QString::fromUtf8(data));
     }
 #if QT_CONFIG(textmarkdownreader)
     else if(mime.startsWith("text/markdown")) {
-        this->ui->textBrowser->setMarkdown(QString::fromUtf8(data));
+        this->ui->text_browser->setMarkdown(QString::fromUtf8(data));
     }
 #endif
     else if(mime.startsWith("text/")) {
-        this->ui->textBrowser->setText(QString::fromUtf8(data));
+        this->ui->text_browser->setText(QString::fromUtf8(data));
+    }
+    else if(mime.startsWith("image/")) {
+
+        QImage img;
+        if(img.loadFromData(data, nullptr))
+        {
+            this->graphics_scene.addPixmap(QPixmap::fromImage(img));
+        }
     }
     else {
-        this->ui->textBrowser->setText(QString("Unsupported Mime: %1").arg(mime));
+        this->ui->text_browser->setVisible(true);
+        this->ui->text_browser->setText(QString("Unsupported Mime: %1").arg(mime));
     }
 
     this->successfully_loaded = true;
@@ -319,7 +335,7 @@ void BrowserTab::on_fav_button_clicked()
 }
 
 
-void BrowserTab::on_textBrowser_anchorClicked(const QUrl &url)
+void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
 {
     qDebug() << url;
 
@@ -335,17 +351,17 @@ void BrowserTab::on_textBrowser_anchorClicked(const QUrl &url)
     }
 }
 
-void BrowserTab::on_textBrowser_backwardAvailable(bool arg1)
+void BrowserTab::on_text_browser_backwardAvailable(bool arg1)
 {
     this->ui->back_button->setEnabled(arg1);
 }
 
-void BrowserTab::on_textBrowser_forwardAvailable(bool arg1)
+void BrowserTab::on_text_browser_forwardAvailable(bool arg1)
 {
     this->ui->forward_button->setEnabled(arg1);
 }
 
-void BrowserTab::on_textBrowser_highlighted(const QUrl &url)
+void BrowserTab::on_text_browser_highlighted(const QUrl &url)
 {
     QUrl real_url = url;
     if(real_url.isRelative())
@@ -483,9 +499,3 @@ QByteArray BrowserTab::translateGeminiToHtml(const QByteArray &input, DocumentOu
 }
 
 
-#include <QTextBlock>
-
-void BrowserTab::on_textEdit_textChanged()
-{
-    this->ui->textBrowser->document()->setDefaultStyleSheet(this->ui->textEdit->toPlainText());
-}
