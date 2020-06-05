@@ -180,7 +180,6 @@ void BrowserTab::on_gemini_complete(const QByteArray &data, const QString &mime)
             auto * item = this->graphics_scene.addText("Failed to load picture!");
         }
 
-
         this->ui->graphics_browser->fitInView(graphics_scene.sceneRect(), Qt::KeepAspectRatio);
 
     }
@@ -188,6 +187,8 @@ void BrowserTab::on_gemini_complete(const QByteArray &data, const QString &mime)
         this->ui->text_browser->setVisible(true);
         this->ui->text_browser->setText(QString("Unsupported Mime: %1").arg(mime));
     }
+
+    this->pushToHistory(this->current_location);
 
     this->successfully_loaded = true;
     this->updateUI();
@@ -330,7 +331,7 @@ void BrowserTab::setErrorMessage(const QString &msg)
 
 void BrowserTab::pushToHistory(const QUrl &url)
 {
-    this->navigation_history.append(url);
+    this->history.pushUrl(url);
     this->updateUI();
 }
 
@@ -382,8 +383,8 @@ void BrowserTab::on_text_browser_highlighted(const QUrl &url)
 
 void BrowserTab::updateUI()
 {
-    // this->ui->back_button->setEnabled(this->navigation_history.size() > 0);
-    // this->ui->forward_button->setEnabled(false);
+    this->ui->back_button->setEnabled(this->history.canGoBack());
+    this->ui->forward_button->setEnabled(this->history.canGoForward());
 
     this->ui->refresh_button->setEnabled(this->successfully_loaded);
 

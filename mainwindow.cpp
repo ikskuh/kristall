@@ -71,11 +71,15 @@ void MainWindow::on_browser_tabs_currentChanged(int index)
         if(tab != nullptr) {
             this->ui->outline_view->setModel(&tab->outline);
             this->ui->outline_view->expandAll();
+
+            this->ui->history_view->setModel(&tab->history);
         } else {
             this->ui->outline_view->setModel(nullptr);
+            this->ui->history_view->setModel(nullptr);
         }
     } else {
         this->ui->outline_view->setModel(nullptr);
+        this->ui->history_view->setModel(nullptr);
     }
 }
 

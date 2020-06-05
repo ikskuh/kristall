@@ -21,14 +21,16 @@ SOURCES += \
     favouritecollection.cpp \
     geminiclient.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    tabbrowsinghistory.cpp
 
 HEADERS += \
     browsertab.hpp \
     documentoutlinemodel.hpp \
     favouritecollection.hpp \
     geminiclient.hpp \
-    mainwindow.hpp
+    mainwindow.hpp \
+    tabbrowsinghistory.hpp
 
 FORMS += \
     browsertab.ui \

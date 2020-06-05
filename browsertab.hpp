@@ -7,6 +7,7 @@
 
 #include "geminiclient.hpp"
 #include "documentoutlinemodel.hpp"
+#include "tabbrowsinghistory.hpp"
 
 namespace Ui {
 class BrowserTab;
@@ -89,12 +90,11 @@ public:
     GeminiClient gemini_client;
     int redirection_count = 0;
 
-    QVector<QUrl> navigation_history;
-
     bool successfully_loaded = false;
 
     DocumentOutlineModel outline;
     QGraphicsScene graphics_scene;
+    TabBrowsingHistory history;
 };
 
 #endif // BROWSERTAB_HPP
