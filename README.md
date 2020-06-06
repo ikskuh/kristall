@@ -99,3 +99,6 @@ Just use QtCreator to build `./src/kristall.pro`. Default settings should be fin
    - [ ] For favourites
    - [ ] For documents
   - [ ] Image Zoom and Pan
+  - [ ] Light/Dark theme for Qt widgets
+  - [ ] HTML CSS
+  - [ ] Save/load/share theme preset
