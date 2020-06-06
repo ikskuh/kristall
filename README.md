@@ -1,7 +1,7 @@
 # Kristall
 A high-quality visual cross-platform gemini browser.
 
-![Preview Image](https://mq32.de/public/affb08915c7e5d5d37dc702134f5af18e4dc8cd1.png)
+![Preview Image](https://mq32.de/public/336ac416892fd9064593631e7be9f7d8e266196b.png)
 
 ## Features
 - Document rendering
