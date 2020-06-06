@@ -8,7 +8,7 @@ A high-quality visual cross-platform gemini browser.
   - `text/gemini`
   - `text/html` (reduced feature set)
   - `text/markdown`
-  - `text/*` 
+  - `text/*`
   - `image/*`
 - [Outline generation](https://mq32.de/public/a50ef327f4150d870393b1989c5b41db495b56f7.png) ([Video](https://mq32.de/public/kristall-02.mp4))
 - Favourite Sites
@@ -67,5 +67,6 @@ Notes for OpenBSD:
 - [ ] Add favicon support
   - [ ] Add auto-generated "favicons"
   - [ ] Check if the site follows this guideline: `#<ICON> Title` where `<ICON>` is a unicode emoji
+  - [ ] Opt-In: Regularly check for `domain/favicon.txt`
   - [ ] Opt-In: Regularly check for `domain/favicon.ico`
 

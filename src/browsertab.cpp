@@ -38,7 +38,7 @@ BrowserTab::BrowserTab(MainWindow * mainWindow) :
     this->updateUI();
 
     this->ui->graphics_browser->setVisible(false);
-    this->ui->text_browser->setVisible(false);
+    this->ui->text_browser->setVisible(true);
 
     this->ui->graphics_browser->setScene(&graphics_scene);
 }
@@ -50,6 +50,7 @@ BrowserTab::~BrowserTab()
 
 void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
 {
+    // TODO: Implement about:// scheme!
     if(url.scheme() != "gemini") {
         QMessageBox::warning(this, "Kristall", "Unsupported uri scheme: " + url.scheme());
         return;
@@ -67,7 +68,6 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
     this->push_to_history_after_load = (mode == PushAfterSuccess);
 
     gemini_client.startRequest(url);
-
 
     switch(mode)
     {
