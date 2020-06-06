@@ -21,39 +21,39 @@ void DocumentOutlineModel::beginBuild()
     beginResetModel();
     root = Node {
         nullptr,
-        "<ROOT>",
+        "<ROOT>", "",
         0, 0,
         QList<Node> { },
     };
 }
 
-void DocumentOutlineModel::appendH1(const QString &title)
+void DocumentOutlineModel::appendH1(const QString &title, QString const & anchor)
 {
     root.children.append(Node {
         &root,
-        title,
+        title, anchor,
         1, 0,
         QList<Node> { },
     });
 }
 
-void DocumentOutlineModel::appendH2(const QString &title)
+void DocumentOutlineModel::appendH2(const QString &title, QString const & anchor)
 {
     auto & parent = ensureLevel1();
     parent.children.append(Node {
         &parent,
-        title,
+        title, anchor,
         2, parent.children.size() - 1,
         QList<Node> { },
     });
 }
 
-void DocumentOutlineModel::appendH3(const QString &title)
+void DocumentOutlineModel::appendH3(const QString &title, QString const & anchor)
 {
     auto & parent = ensureLevel2();
     parent.children.append(Node {
         &parent,
-        title,
+        title, anchor,
         3, parent.children.size() - 1,
         QList<Node> { },
     });
@@ -77,6 +77,26 @@ void DocumentOutlineModel::endBuild()
         }
     }
     endResetModel();
+}
+
+QString DocumentOutlineModel::getTitle(const QModelIndex &index) const
+{
+    if(not index.isValid())
+        return "";
+
+    Node const  *childItem = static_cast<Node const *>(index.internalPointer());
+
+    return childItem->title;
+}
+
+QString DocumentOutlineModel::getAnchor(const QModelIndex &index) const
+{
+    if(not index.isValid())
+        return "";
+
+    Node const  *childItem = static_cast<Node const *>(index.internalPointer());
+
+    return childItem->anchor;
 }
 
 QModelIndex DocumentOutlineModel::index(int row, int column, const QModelIndex &parent) const
@@ -155,7 +175,7 @@ DocumentOutlineModel::Node & DocumentOutlineModel::ensureLevel1()
     if(root.children.size() == 0) {
         root.children.append(Node {
             &root,
-            "<missing layer>",
+            "<missing layer>", "",
             1, 0,
             QList<Node> { },
         });
@@ -170,7 +190,7 @@ DocumentOutlineModel::Node & DocumentOutlineModel::ensureLevel2()
     if(parent.children.size() == 0) {
         root.children.append(Node {
             &parent,
-            "<missing layer>",
+            "<missing layer>", "",
             2, 0,
             QList<Node> { },
         });

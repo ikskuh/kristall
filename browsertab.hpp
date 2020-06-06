@@ -39,6 +39,8 @@ public:
 
     void navOneForward();
 
+    void scrollToAnchor(QString const & anchor);
+
 signals:
     void titleChanged(QString const & title);
     void locationChanged(QUrl const & url);

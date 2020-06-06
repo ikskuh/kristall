@@ -183,3 +183,15 @@ void MainWindow::on_nav_forward()
         tab->navOneForward();
     }
 }
+
+void MainWindow::on_outline_view_clicked(const QModelIndex &index)
+{
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if(tab != nullptr) {
+
+        auto anchor = tab->outline.getAnchor(index);
+        if(not anchor.isEmpty()) {
+            tab->scrollToAnchor(anchor);
+        }
+    }
+}

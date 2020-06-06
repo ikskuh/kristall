@@ -17,7 +17,7 @@ A high-quality visual cross-platform gemini browser.
 - [Special link highlighting for different targets](https://mq32.de/public/92f3ec7a64833d01f1ed001d15c8db4158e5d3c2.png)
 - Color Themes
   - Custom color theme
-  - Automatic light/dark theme based on the host name
+  - [Automatic light/dark theme based on the host name](https://mq32.de/public/kristall-01.mp4)
 - Navigation history
 - Crossplatform supports
   - Linux
@@ -68,5 +68,4 @@ Notes for OpenBSD:
   - [ ] Add auto-generated "favicons"
   - [ ] Check if the site follows this guideline: `#<ICON> Title` where `<ICON>` is a unicode emoji
   - [ ] Opt-In: Regularly check for `domain/favicon.ico`
-- [ ] Theming
-  - [ ] Fix default theme when not found.
+

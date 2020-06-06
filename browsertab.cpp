@@ -104,6 +104,12 @@ void BrowserTab::navOneForward()
     navigateBack(history.oneForward(current_history_index));
 }
 
+void BrowserTab::scrollToAnchor(QString const & anchor)
+{
+    qDebug() << "scroll to anchor" << anchor;
+    this->ui->text_browser->scrollToAnchor(anchor);
+}
+
 void BrowserTab::on_menu_button_clicked()
 {
     QMenu menu;

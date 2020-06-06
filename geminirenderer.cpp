@@ -235,6 +235,12 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(const QByteArray &input, 
 
     outline.beginBuild();
 
+    int anchor_id = 0;
+
+    auto unique_anchor_name = [&]() -> QString {
+        return QString("auto-title-%1").arg(++anchor_id);
+    };
+
     QList<QByteArray> lines = input.split('\n');
     for (auto const &line : lines)
     {
@@ -283,22 +289,37 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(const QByteArray &input, 
             {
                 auto heading = trim_whitespace(line.mid(3));
 
-                cursor.insertText(heading + "\n", standard_h3);
-                outline.appendH3(heading);
+                auto id = unique_anchor_name();
+                auto fmt = standard_h3;
+                fmt.setAnchor(true);
+                fmt.setAnchorNames(QStringList { id });
+
+                cursor.insertText(heading + "\n", fmt);
+                outline.appendH3(heading, id);
             }
             else if (line.startsWith("##"))
             {
                 auto heading = trim_whitespace(line.mid(2));
 
-                cursor.insertText(heading + "\n", standard_h2);
-                outline.appendH2(heading);
+                auto id = unique_anchor_name();
+                auto fmt = standard_h2;
+                fmt.setAnchor(true);
+                fmt.setAnchorNames(QStringList { id });
+
+                cursor.insertText(heading + "\n", fmt);
+                outline.appendH2(heading, id);
             }
             else if (line.startsWith("#"))
             {
                 auto heading = trim_whitespace(line.mid(1));
 
-                cursor.insertText(heading + "\n", standard_h1);
-                outline.appendH1(heading);
+                auto id = unique_anchor_name();
+                auto fmt = standard_h1;
+                fmt.setAnchor(true);
+                fmt.setAnchorNames(QStringList { id });
+
+                cursor.insertText(heading + "\n", fmt);
+                outline.appendH1(heading, id);
             }
             else if (line.startsWith("=>"))
             {

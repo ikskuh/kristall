@@ -15,13 +15,16 @@ public:
 
     void beginBuild();
 
-    void appendH1(QString const & title);
+    void appendH1(QString const & title, QString const & anchor);
 
-    void appendH2(QString const & title);
+    void appendH2(QString const & title, QString const & anchor);
 
-    void appendH3(QString const & title);
+    void appendH3(QString const & title, QString const & anchor);
 
     void endBuild();
+
+    QString getTitle(QModelIndex const & index) const;
+    QString getAnchor(QModelIndex const & index) const;
 
 public:
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
@@ -39,6 +42,7 @@ private:
     {
         Node * parent;
         QString title;
+        QString anchor;
         int depth = 0;
         int index = 0;
         QList<Node> children;

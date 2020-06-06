@@ -56,6 +56,8 @@ private slots:
 
     void on_nav_forward();
 
+    void on_outline_view_clicked(const QModelIndex &index);
+
 public:
     QSettings settings;
     GeminiStyle current_style;
