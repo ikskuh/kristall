@@ -20,8 +20,10 @@ SOURCES += \
     documentoutlinemodel.cpp \
     favouritecollection.cpp \
     geminiclient.cpp \
+    geminirenderer.cpp \
     main.cpp \
     mainwindow.cpp \
+    settingsdialog.cpp \
     tabbrowsinghistory.cpp
 
 HEADERS += \
@@ -29,12 +31,15 @@ HEADERS += \
     documentoutlinemodel.hpp \
     favouritecollection.hpp \
     geminiclient.hpp \
+    geminirenderer.hpp \
     mainwindow.hpp \
+    settingsdialog.hpp \
     tabbrowsinghistory.hpp
 
 FORMS += \
     browsertab.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    settingsdialog.ui
 
 TRANSLATIONS += \
     kristall_en_US.ts

@@ -9,11 +9,17 @@ A high-quality visual cross-platform gemini browser.
   - `text/html` (reduced feature set)
   - `text/markdown`
   - `text/*` 
-  - `image/*
+  - `image/*`
 - Outline generation
 - Favourite Sites
 - Tabbed interface
 - Survives [ConMans torture suite](gemini://gemini.conman.org/test/torture/)
+- [Special link highlighting for different targets](https://mq32.de/public/92f3ec7a64833d01f1ed001d15c8db4158e5d3c2.png)
+- Crossplatform supports
+  - Linux
+  - Windows
+  - FreeBSD
+  - NetBSD
 
 ## TODO
 - [ ] Survive full torture suite
@@ -23,3 +29,5 @@ A high-quality visual cross-platform gemini browser.
     - [ ] Correctly parse undefined params (0016)
 - [ ] Make document style customizable
 - [ ] Add history navigation
+  - [ ] "also, being able to click and load a url from the history pane"
+  - [ ] "Couldn't you just have  an array of URLs? And when they go forward, you slice the array up to the that point and add the new url to the end"

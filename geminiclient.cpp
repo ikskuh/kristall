@@ -30,8 +30,6 @@ bool GeminiClient::startRequest(const QUrl &url)
     if(not socket.isOpen())
         return false;
 
-    socket.setReadBufferSize(1);
-
     target_url = url;
     mime_type = "<invalid>";
 

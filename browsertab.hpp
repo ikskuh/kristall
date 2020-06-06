@@ -76,14 +76,14 @@ private slots:
 
     void on_forward_button_clicked();
 
+    void on_stop_button_clicked();
+
 private:
     void setErrorMessage(QString const & msg);
 
     void pushToHistory(QUrl const & url);
 
     void updateUI();
-
-    static std::unique_ptr<QTextDocument> translateGemini(QByteArray const & input, QUrl const & root_url, DocumentOutlineModel & outline);
 
 public:
     Ui::BrowserTab *ui;
