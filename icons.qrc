@@ -10,5 +10,6 @@
         <file>icons/format-font.svg</file>
         <file>icons/palette.svg</file>
         <file>icons/kristall.svg</file>
+        <file>icons/settings.svg</file>
     </qresource>
 </RCC>

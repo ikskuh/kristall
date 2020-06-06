@@ -130,17 +130,6 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QToolButton" name="menu_button">
-       <property name="text">
-        <string>...</string>
-       </property>
-       <property name="icon">
-        <iconset resource="icons.qrc">
-         <normaloff>:/icons/menu.svg</normaloff>:/icons/menu.svg</iconset>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>

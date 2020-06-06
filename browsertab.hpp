@@ -41,19 +41,18 @@ public:
 
     void scrollToAnchor(QString const & anchor);
 
+    void reloadPage();
+
 signals:
     void titleChanged(QString const & title);
     void locationChanged(QUrl const & url);
 
 private slots:
-    void on_menu_button_clicked();
-
     void on_url_bar_returnPressed();
 
     void on_refresh_button_clicked();
 
     void on_gemini_complete(QByteArray const & data, QString const & mime);
-
 
     void on_protocolViolation(QString const & reason);
 

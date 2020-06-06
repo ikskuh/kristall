@@ -10,7 +10,7 @@ A high-quality visual cross-platform gemini browser.
   - `text/markdown`
   - `text/*` 
   - `image/*`
-- [Outline generation](https://mq32.de/public/a50ef327f4150d870393b1989c5b41db495b56f7.png)
+- [Outline generation](https://mq32.de/public/a50ef327f4150d870393b1989c5b41db495b56f7.png) ([Video](https://mq32.de/public/kristall-02.mp4))
 - Favourite Sites
 - Tabbed interface
 - Survives [ConMans torture suite](gemini://gemini.conman.org/test/torture/)

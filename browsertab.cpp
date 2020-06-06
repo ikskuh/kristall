@@ -41,7 +41,6 @@ BrowserTab::BrowserTab(MainWindow * mainWindow) :
     this->ui->text_browser->setVisible(false);
 
     this->ui->graphics_browser->setScene(&graphics_scene);
-
 }
 
 BrowserTab::~BrowserTab()
@@ -110,40 +109,10 @@ void BrowserTab::scrollToAnchor(QString const & anchor)
     this->ui->text_browser->scrollToAnchor(anchor);
 }
 
-void BrowserTab::on_menu_button_clicked()
+void BrowserTab::reloadPage()
 {
-    QMenu menu;
-    connect(menu.addAction("Open Empty Tab"), &QAction::triggered, mainWindow, &MainWindow::addEmptyTab);
-
-    QMenu * view_menu = menu.addMenu("View");
-    {
-        QList<QDockWidget *> dockWidgets = mainWindow->findChildren<QDockWidget *>();
-
-        for(QDockWidget * dock : dockWidgets)
-        {
-            QAction * act = view_menu ->addAction(dock->windowTitle());
-            act->setCheckable(true);
-            act->setChecked(dock->isVisible());
-
-            connect(act, QOverload<bool>::of(&QAction::triggered), dock, &QDockWidget::setVisible);
-        }
-    }
-
-    connect(menu.addAction("Settings..."), &QAction::triggered, [this]() {
-        SettingsDialog dialog;
-
-        dialog.setGeminiStyle(mainWindow->current_style);
-
-        if(dialog.exec() == QDialog::Accepted) {
-            mainWindow->current_style = dialog.geminiStyle();
-
-            mainWindow->saveSettings();
-        }
-    });
-
-
-    connect(menu.addAction("Quit"), &QAction::triggered, &QApplication::quit);
-    menu.exec(QCursor::pos());
+    if(current_location.isValid())
+        this->navigateTo(this->current_location, DontPush);
 }
 
 void BrowserTab::on_url_bar_returnPressed()
@@ -159,8 +128,7 @@ void BrowserTab::on_url_bar_returnPressed()
 
 void BrowserTab::on_refresh_button_clicked()
 {
-    if(current_location.isValid())
-        this->navigateTo(this->current_location, DontPush);
+    reloadPage();
 }
 
 void BrowserTab::on_gemini_complete(const QByteArray &data, const QString &mime)

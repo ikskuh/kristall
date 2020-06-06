@@ -46,17 +46,25 @@ private slots:
 
     void on_tab_locationChanged(QUrl const & url);
 
-    void on_new_tab();
-
-    void on_refresh();
-
-    void on_close_tab();
-
-    void on_nav_back();
-
-    void on_nav_forward();
-
     void on_outline_view_clicked(const QModelIndex &index);
+
+    void on_actionSettings_triggered();
+
+    void on_actionNew_Tab_triggered();
+
+    void on_actionQuit_triggered();
+
+    void on_actionAbout_triggered();
+
+    void on_actionClose_Tab_triggered();
+
+    void on_actionForward_triggered();
+
+    void on_actionBackward_triggered();
+
+    void on_actionRefresh_triggered();
+
+    void on_actionAbout_Qt_triggered();
 
 public:
     QSettings settings;

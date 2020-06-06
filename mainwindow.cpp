@@ -1,7 +1,9 @@
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
 #include "browsertab.hpp"
+#include "settingsdialog.hpp"
 
+#include <QMessageBox>
 #include <memory>
 #include <QShortcut>
 #include <QKeySequence>
@@ -25,22 +27,39 @@ MainWindow::MainWindow(QWidget *parent) :
     this->ui->clientcert_window->setVisible(false);
     this->ui->bookmarks_window->setVisible(true);
 
-
-    auto add_shortcut = [this](QString const & sequence, void (MainWindow::*fun)())
+    for(QDockWidget * dock : findChildren<QDockWidget *>())
     {
-        auto * shortcut = new QShortcut(QKeySequence(sequence), this);
-        connect(shortcut, &QShortcut::activated, this, fun);
-    };
+        QAction * act = this->ui->menuView ->addAction(dock->windowTitle());
+        act->setCheckable(true);
+        act->setChecked(dock->isVisible());
+        act->setData(QVariant::fromValue(dock));
+        connect(act, QOverload<bool>::of(&QAction::triggered), dock, &QDockWidget::setVisible);
+    }
 
-    add_shortcut("Ctrl+T", &MainWindow::on_new_tab);
-    add_shortcut("Ctrl+W", &MainWindow::on_close_tab);
-    add_shortcut("F5", &MainWindow::on_refresh);
-    add_shortcut("Alt+Left", &MainWindow::on_nav_back);
-    add_shortcut("Alt+Right", &MainWindow::on_nav_forward);
+    connect(this->ui->menuView, &QMenu::aboutToShow, [this]() {
+        for(QAction * act : this->ui->menuView->actions())
+        {
+            auto * dock = qvariant_cast<QDockWidget*>(act->data());
+            act->setChecked(dock->isVisible());
+        }
+    });
+
+
+    {
+        settings.beginGroup("Window State");
+        if(settings.contains("geometry")) {
+            restoreGeometry(settings.value("geometry").toByteArray());
+        }
+        if(settings.contains("state")) {
+            restoreState(settings.value("state").toByteArray());
+        }
+        settings.endGroup();
+    }
 }
 
 MainWindow::~MainWindow()
 {
+
     this->saveSettings();
     delete ui;
 }
@@ -85,6 +104,15 @@ void MainWindow::saveSettings()
 {
     this->favourites.save(settings);
     this->current_style.save(settings);
+
+    {
+        settings.beginGroup("Window State");
+
+        settings.setValue("geometry", saveGeometry());
+        settings.setValue("state", saveState());
+
+        settings.endGroup();
+    }
 }
 
 void MainWindow::on_browser_tabs_currentChanged(int index)
@@ -147,43 +175,6 @@ void MainWindow::on_tab_locationChanged(const QUrl &url)
     }
 }
 
-void MainWindow::on_new_tab()
-{
-    this->addEmptyTab(true);
-}
-
-void MainWindow::on_refresh()
-{
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
-    if(tab != nullptr) {
-        // tab->reloadPage();
-    }
-}
-
-void MainWindow::on_close_tab()
-{
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
-    if(tab != nullptr) {
-        delete tab;
-    }
-}
-
-void MainWindow::on_nav_back()
-{
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
-    if(tab != nullptr) {
-        tab->navOneBackback();
-    }
-}
-
-void MainWindow::on_nav_forward()
-{
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
-    if(tab != nullptr) {
-        tab->navOneForward();
-    }
-}
-
 void MainWindow::on_outline_view_clicked(const QModelIndex &index)
 {
     BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
@@ -194,4 +185,75 @@ void MainWindow::on_outline_view_clicked(const QModelIndex &index)
             tab->scrollToAnchor(anchor);
         }
     }
+}
+
+void MainWindow::on_actionSettings_triggered()
+{
+    SettingsDialog dialog;
+
+    dialog.setGeminiStyle(this->current_style);
+
+    if(dialog.exec() == QDialog::Accepted) {
+        this->current_style = dialog.geminiStyle();
+        this->saveSettings();
+    }
+}
+
+void MainWindow::on_actionNew_Tab_triggered()
+{
+    this->addEmptyTab(true);
+}
+
+void MainWindow::on_actionQuit_triggered()
+{
+    QApplication::quit();
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+    QMessageBox::about(this,
+                       "Kristall",
+R"about(Kristall, an OpenSource Gemini browser.
+Made by Felix "xq" Queißner
+
+This is free software. You can get the source code at
+https://github.com/MasterQ32/Kristall)about"
+    );
+}
+
+void MainWindow::on_actionClose_Tab_triggered()
+{
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if(tab != nullptr) {
+        delete tab;
+    }
+}
+
+void MainWindow::on_actionForward_triggered()
+{
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if(tab != nullptr) {
+        tab->navOneForward();
+    }
+}
+
+void MainWindow::on_actionBackward_triggered()
+{
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if(tab != nullptr) {
+        tab->navOneBackback();
+    }
+}
+
+void MainWindow::on_actionRefresh_triggered()
+{
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if(tab != nullptr) {
+        tab->reloadPage();
+    }
+}
+
+void MainWindow::on_actionAbout_Qt_triggered()
+{
+    QMessageBox::aboutQt(this, "Kristall");
 }
