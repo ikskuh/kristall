@@ -39,15 +39,7 @@ void DocumentOutlineModel::appendH1(const QString &title)
 
 void DocumentOutlineModel::appendH2(const QString &title)
 {
-    if(root.children.size() == 0) {
-        root.children.append(Node {
-            &root,
-            "<missing layer>",
-            1, 0,
-            QList<Node> { },
-        });
-    }
-    auto & parent = root.children.last();
+    auto & parent = ensureLevel1();
     parent.children.append(Node {
         &parent,
         title,
@@ -58,7 +50,13 @@ void DocumentOutlineModel::appendH2(const QString &title)
 
 void DocumentOutlineModel::appendH3(const QString &title)
 {
-
+    auto & parent = ensureLevel2();
+    parent.children.append(Node {
+        &parent,
+        title,
+        3, parent.children.size() - 1,
+        QList<Node> { },
+    });
 }
 
 void DocumentOutlineModel::endBuild()
@@ -150,4 +148,33 @@ QVariant DocumentOutlineModel::data(const QModelIndex &index, int role) const
     Node const *item = static_cast<Node const*>(index.internalPointer());
 
     return item->title;
+}
+
+DocumentOutlineModel::Node & DocumentOutlineModel::ensureLevel1()
+{
+    if(root.children.size() == 0) {
+        root.children.append(Node {
+            &root,
+            "<missing layer>",
+            1, 0,
+            QList<Node> { },
+        });
+    }
+    return root.children.last();
+}
+
+DocumentOutlineModel::Node & DocumentOutlineModel::ensureLevel2()
+{
+    auto & parent = ensureLevel1();
+
+    if(parent.children.size() == 0) {
+        root.children.append(Node {
+            &parent,
+            "<missing layer>",
+            2, 0,
+            QList<Node> { },
+        });
+    }
+
+    return parent.children.last();
 }

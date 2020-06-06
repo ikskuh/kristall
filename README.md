@@ -10,7 +10,7 @@ A high-quality visual cross-platform gemini browser.
   - `text/markdown`
   - `text/*` 
   - `image/*`
-- [Outline generation](https://mq32.de/public/d3cdeb38c55ce8100a631bbf761e7bc17b6806bb.png)
+- [Outline generation](https://mq32.de/public/a50ef327f4150d870393b1989c5b41db495b56f7.png)
 - Favourite Sites
 - Tabbed interface
 - Survives [ConMans torture suite](gemini://gemini.conman.org/test/torture/)
@@ -30,7 +30,7 @@ A high-quality visual cross-platform gemini browser.
 
 ### Generates Outlines
 
-![Outline Generation](https://mq32.de/public/d3cdeb38c55ce8100a631bbf761e7bc17b6806bb.png)
+![Outline Generation](https://mq32.de/public/a50ef327f4150d870393b1989c5b41db495b56f7.png)
 
 ### Fully Customizable Site Theme
 

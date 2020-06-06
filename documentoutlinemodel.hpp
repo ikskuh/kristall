@@ -45,6 +45,9 @@ private:
     };
 
     Node root;
+
+    Node & ensureLevel1();
+    Node & ensureLevel2();
 };
 
 #endif // DOCUMENTOUTLINEMODEL_HPP
