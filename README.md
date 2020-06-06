@@ -50,12 +50,16 @@ A high-quality visual cross-platform gemini browser.
 
 ### Build
 
-The usual Qt5 build process:
+## *nix
+
+There's a small `Makefile` provided that does all necessary steps and creates a build directory, then copies the build artifact from the build directory. Just do `make` in the root directory, it should work.
+
+Or you can use the usual Qt5 build process:
 
 ```sh
 mkdir build
 cd build
-qmake ../kristall.pro
+qmake ../src/kristall.pro
 make
 ```
 
@@ -63,12 +67,20 @@ Notes for OpenBSD:
 - It seems like Qt wants `libzstd.so.3.1` instead of `libzstd.so.3.2`. Just symlink that file into the build directory
 - Use `make` and not `gmake` to build the project.
 
+## Windows
+
+Just use QtCreator to build `./src/kristall.pro`. Default settings should be fine.
+
 ## TODO
 - [ ] Survive full torture suite
   - [ ] Correctly parse mime parameters
     - [ ] Correctly parse charset (0013, 0014)
     - [ ] Correctly parse other params (0015)
     - [ ] Correctly parse undefined params (0016)
+- [ ] TLS Handling
+   - [ ] Allow user to ignore TLS errors
+   - [ ] Enable TOFU for HTTPS/Gemini
+   - [ ] Enable Client Certificate Management
 - [ ] Recognize home directories with /~home and such and add "substyles"
 - [ ] Add favicon support
   - [ ] Add auto-generated "favicons"
@@ -81,3 +93,9 @@ Notes for OpenBSD:
     - [ ] finger://ping@cosmic.voyage
   - [ ] Gopher
     - [ ] gopher://gopher.black
+- [ ] Improve UX
+  - [ ] Rightclick with "open in new tab" and "open in this tab"
+   - [ ] For history
+   - [ ] For favourites
+   - [ ] For documents
+  - [ ] Image Zoom and Pan
