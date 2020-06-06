@@ -3,6 +3,8 @@
 #include "browsertab.hpp"
 
 #include <memory>
+#include <QShortcut>
+#include <QKeySequence>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,9 +21,20 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->favourites_view->setModel(&favourites);
 
-    this->ui->history_window->setVisible(false);
+    // this->ui->history_window->setVisible(false);
     this->ui->clientcert_window->setVisible(false);
     this->ui->bookmarks_window->setVisible(true);
+
+
+    auto add_shortcut = [this](QString const & sequence, void (MainWindow::*fun)())
+    {
+        auto * shortcut = new QShortcut(QKeySequence(sequence), this);
+        connect(shortcut, &QShortcut::activated, this, fun);
+    };
+
+    add_shortcut("Ctrl+T", &MainWindow::on_new_tab);
+    add_shortcut("Ctrl+W", &MainWindow::on_close_tab);
+    add_shortcut("F5", &MainWindow::on_refresh);
 }
 
 MainWindow::~MainWindow()
@@ -49,7 +62,7 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new)
 BrowserTab * MainWindow::addNewTab(bool focus_new, QUrl const & url)
 {
     auto tab = addEmptyTab(focus_new);
-    tab->navigateTo(url);
+    tab->navigateTo(url, BrowserTab::PushImmediate);
     return tab;
 }
 
@@ -125,5 +138,26 @@ void MainWindow::on_tab_locationChanged(const QUrl &url)
         int index = this->ui->browser_tabs->indexOf(tab);
         assert(index >= 0);
         this->ui->browser_tabs->setTabToolTip(index, url.toString());
+    }
+}
+
+void MainWindow::on_new_tab()
+{
+    this->addEmptyTab(true);
+}
+
+void MainWindow::on_refresh()
+{
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if(tab != nullptr) {
+        // tab->reloadPage();
+    }
+}
+
+void MainWindow::on_close_tab()
+{
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if(tab != nullptr) {
+        delete tab;
     }
 }

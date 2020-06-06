@@ -49,7 +49,7 @@ BrowserTab::~BrowserTab()
     delete ui;
 }
 
-void BrowserTab::navigateTo(const QUrl &url)
+void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
 {
     if(url.scheme() != "gemini") {
         QMessageBox::warning(this, "Kristall", "Unsupported uri scheme: " + url.scheme());
@@ -65,15 +65,33 @@ void BrowserTab::navigateTo(const QUrl &url)
 
     this->redirection_count = 0;
     this->successfully_loaded = false;
+    this->push_to_history_after_load = (mode == PushAfterSuccess);
 
     gemini_client.startRequest(url);
+
+
+    switch(mode)
+    {
+    case DontPush:
+    case PushAfterSuccess:
+        break;
+
+    case PushImmediate:
+        pushToHistory(url);
+        break;
+    }
 
     this->updateUI();
 }
 
 void BrowserTab::navigateBack(QModelIndex history_index)
 {
-    qDebug() << history_index;
+    auto url = history.get(history_index);
+
+    if(url.isValid()) {
+        current_history_index = history_index;
+        navigateTo(url, DontPush);
+    }
 }
 
 void BrowserTab::on_menu_button_clicked()
@@ -112,13 +130,13 @@ void BrowserTab::on_menu_button_clicked()
 
 void BrowserTab::on_url_bar_returnPressed()
 {
-    this->navigateTo(this->ui->url_bar->text());
+    this->navigateTo(this->ui->url_bar->text(), PushImmediate);
 }
 
 void BrowserTab::on_refresh_button_clicked()
 {
     if(current_location.isValid())
-        this->navigateTo(this->current_location);
+        this->navigateTo(this->current_location, DontPush);
 }
 
 void BrowserTab::on_gemini_complete(const QByteArray &data, const QString &mime)
@@ -149,7 +167,7 @@ void BrowserTab::on_gemini_complete(const QByteArray &data, const QString &mime)
         document = std::make_unique<QTextDocument>();
         document->setHtml(QString::fromUtf8(data));
     }
-#if QT_CONFIG(textmarkdownreader)
+#if defined(QT_FEATURE_textmarkdownreader)
     else if(mime.startsWith("text/markdown")) {
         document = std::make_unique<QTextDocument>();
         document->setMarkdown(QString::fromUtf8(data));
@@ -186,14 +204,18 @@ void BrowserTab::on_gemini_complete(const QByteArray &data, const QString &mime)
     this->ui->text_browser->setDocument(document.get());
     this->current_document = std::move(document);
 
-    this->pushToHistory(this->current_location);
-
     emit this->locationChanged(this->current_location);
 
     QString title = this->current_location.toString();
     emit this->titleChanged(title);
 
     this->successfully_loaded = true;
+
+    if(this->push_to_history_after_load) {
+        this->pushToHistory(this->current_location);
+        this->push_to_history_after_load = false;
+    }
+
     this->updateUI();
 }
 
@@ -216,7 +238,7 @@ void BrowserTab::on_inputRequired(const QString &query)
 
     QUrl new_location = current_location;
     new_location.setQuery(dialog.textValue());
-    this->navigateTo(new_location);
+    this->navigateTo(new_location, DontPush);
 }
 
 void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
@@ -314,17 +336,6 @@ void BrowserTab::on_linkHovered(const QString &url)
     this->mainWindow->setUrlPreview(QUrl(url));
 }
 
-void BrowserTab::on_navigationRequest(const QUrl &url, bool &allow)
-{
-    if(url.scheme() != "gemini") {
-        QMessageBox::warning(this, "Kristall", QString("Unsupported url: %1").arg(url.toString()));
-    }
-    else {
-        this->navigateTo(url);
-        allow = false;
-    }
-}
-
 void BrowserTab::setErrorMessage(const QString &msg)
 {
     // this->page.setContent(QString("An error happened:\n%0").arg(msg).toUtf8(), "text/plain charset=utf-8");
@@ -334,7 +345,8 @@ void BrowserTab::setErrorMessage(const QString &msg)
 
 void BrowserTab::pushToHistory(const QUrl &url)
 {
-    this->history.pushUrl(url);
+    qDebug() << "push to history" << this->current_history_index << url;
+    this->current_history_index = this->history.pushUrl(this->current_history_index, url);
     this->updateUI();
 }
 
@@ -362,18 +374,8 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
         QMessageBox::warning(this, "Kristall", QString("Unsupported url: %1").arg(real_url.toString()));
     }
     else {
-        this->navigateTo(real_url);
+        this->navigateTo(real_url, PushAfterSuccess);
     }
-}
-
-void BrowserTab::on_text_browser_backwardAvailable(bool arg1)
-{
-    this->ui->back_button->setEnabled(arg1);
-}
-
-void BrowserTab::on_text_browser_forwardAvailable(bool arg1)
-{
-    this->ui->forward_button->setEnabled(arg1);
 }
 
 void BrowserTab::on_text_browser_highlighted(const QUrl &url)
@@ -392,18 +394,18 @@ void BrowserTab::on_stop_button_clicked()
 
 void BrowserTab::on_back_button_clicked()
 {
-
+    navigateBack(current_history_index.sibling(-1, 0));
 }
 
 void BrowserTab::on_forward_button_clicked()
 {
-
+    navigateBack(current_history_index.sibling(1, 0));
 }
 
 void BrowserTab::updateUI()
 {
-    this->ui->back_button->setEnabled(this->history.canGoBack());
-    this->ui->forward_button->setEnabled(this->history.canGoForward());
+    this->ui->back_button->setEnabled(current_history_index.sibling(-1, 0).isValid());
+    this->ui->forward_button->setEnabled(current_history_index.sibling(1, 0).isValid());
 
     this->ui->refresh_button->setVisible(this->successfully_loaded);
     this->ui->stop_button->setVisible(not this->successfully_loaded);

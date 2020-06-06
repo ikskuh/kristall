@@ -16,7 +16,9 @@ public:
 
     bool canGoForward() const;
 
-    void pushUrl(QUrl const & url);
+    QModelIndex pushUrl(QModelIndex const & position, QUrl const & url);
+
+    QUrl get(QModelIndex const & index) const;
 
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

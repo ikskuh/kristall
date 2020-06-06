@@ -15,13 +15,30 @@ bool TabBrowsingHistory::canGoForward() const
     return false;
 }
 
-void TabBrowsingHistory::pushUrl(const QUrl &url)
+QModelIndex TabBrowsingHistory::pushUrl(QModelIndex const & position, const QUrl &url)
 {
     this->beginInsertRows(QModelIndex{}, this->history.length(),this->history.length() + 1);
+
+    if(position.isValid()) {
+        this->history.resize(position.row() + 1);
+    }
 
     this->history.push_back(url);
 
     this->endInsertRows();
+
+    return this->createIndex(this->history.size() - 1, 0);
+}
+
+QUrl TabBrowsingHistory::get(const QModelIndex &index) const
+{
+    if(not index.isValid())
+        return QUrl { };
+
+    if(index.row() >= history.size())
+        return QUrl { };
+    else
+        return history.at(index.row());
 }
 
 int TabBrowsingHistory::rowCount(const QModelIndex &parent) const

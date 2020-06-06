@@ -20,12 +20,18 @@ class MainWindow;
 class BrowserTab : public QWidget
 {
     Q_OBJECT
+public:
+    enum PushToHistory {
+        DontPush,
+        PushImmediate,
+        PushAfterSuccess,
+    };
 
 public:
     explicit BrowserTab(MainWindow * mainWindow);
     ~BrowserTab();
 
-    void navigateTo(QUrl const & url);
+    void navigateTo(QUrl const & url, PushToHistory mode);
 
     void navigateBack(QModelIndex history_index);
 
@@ -61,15 +67,9 @@ private slots:
 
     void on_linkHovered(const QString &url);
 
-    void on_navigationRequest(QUrl const & url, bool & allow);
-
     void on_fav_button_clicked();
 
     void on_text_browser_anchorClicked(const QUrl &arg1);
-
-    void on_text_browser_backwardAvailable(bool arg1);
-
-    void on_text_browser_forwardAvailable(bool arg1);
 
     void on_text_browser_highlighted(const QUrl &arg1);
 
@@ -87,6 +87,7 @@ private:
     void updateUI();
 
 public:
+
     Ui::BrowserTab *ui;
     MainWindow * mainWindow;
     QUrl current_location;
@@ -94,11 +95,13 @@ public:
     GeminiClient gemini_client;
     int redirection_count = 0;
 
+    bool push_to_history_after_load = false;
     bool successfully_loaded = false;
 
     DocumentOutlineModel outline;
     QGraphicsScene graphics_scene;
     TabBrowsingHistory history;
+    QModelIndex current_history_index;
 
     std::unique_ptr<QTextDocument> current_document;
 };

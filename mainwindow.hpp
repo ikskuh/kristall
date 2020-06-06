@@ -44,6 +44,12 @@ private slots:
 
     void on_tab_locationChanged(QUrl const & url);
 
+    void on_new_tab();
+
+    void on_refresh();
+
+    void on_close_tab();
+
 public:
     QSettings settings;
     GeminiStyle current_style;
