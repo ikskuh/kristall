@@ -8,6 +8,7 @@
 
 #include "favouritecollection.hpp"
 #include "geminirenderer.hpp"
+#include "protocolsetup.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -69,6 +70,7 @@ private slots:
 public:
     QSettings settings;
     GeminiStyle current_style;
+    ProtocolSetup protocols;
 
 private:
     Ui::MainWindow *ui;

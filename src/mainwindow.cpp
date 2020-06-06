@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->favourites.load(settings);
     this->current_style.load(settings);
+    this->protocols.load(settings);
 
     ui->favourites_view->setModel(&favourites);
 
@@ -48,7 +49,6 @@ MainWindow::MainWindow(QWidget *parent) :
             act->setChecked(dock->isVisible());
         }
     });
-
 
     {
         settings.beginGroup("Window State");
@@ -113,6 +113,7 @@ void MainWindow::saveSettings()
 {
     this->favourites.save(settings);
     this->current_style.save(settings);
+    this->protocols.save(settings);
 
     {
         settings.beginGroup("Window State");
@@ -122,6 +123,8 @@ void MainWindow::saveSettings()
 
         settings.endGroup();
     }
+
+    settings.sync();
 }
 
 void MainWindow::on_browser_tabs_currentChanged(int index)
@@ -201,8 +204,8 @@ void MainWindow::on_actionSettings_triggered()
     SettingsDialog dialog;
 
     dialog.setGeminiStyle(this->current_style);
-
     dialog.setStartPage(this->settings.value("start_page").toString());
+    dialog.setProtocols(this->protocols);
 
     if(dialog.exec() != QDialog::Accepted)
         return;
@@ -211,6 +214,7 @@ void MainWindow::on_actionSettings_triggered()
         this->settings.setValue("start_page", url.toString());
     }
 
+    this->protocols = dialog.protocols();
     this->current_style = dialog.geminiStyle();
     this->saveSettings();
 }

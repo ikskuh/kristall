@@ -5,11 +5,13 @@
 #include <QUrl>
 #include <QGraphicsScene>
 #include <QTextDocument>
+#include <QNetworkAccessManager>
 
 #include "geminiclient.hpp"
 #include "documentoutlinemodel.hpp"
 #include "tabbrowsinghistory.hpp"
 #include "geminirenderer.hpp"
+#include "webclient.hpp"
 
 namespace Ui {
 class BrowserTab;
@@ -52,7 +54,9 @@ private slots:
 
     void on_refresh_button_clicked();
 
-    void on_gemini_complete(QByteArray const & data, QString const & mime);
+    void on_requestComplete(QByteArray const & data, QString const & mime);
+
+    void on_requestFailed(QString const & reason);
 
     void on_protocolViolation(QString const & reason);
 
@@ -98,6 +102,7 @@ public:
     QUrl current_location;
 
     GeminiClient gemini_client;
+    WebClient web_client;
     int redirection_count = 0;
 
     bool push_to_history_after_load = false;

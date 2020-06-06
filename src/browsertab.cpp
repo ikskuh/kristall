@@ -25,7 +25,10 @@ BrowserTab::BrowserTab(MainWindow * mainWindow) :
 {
     ui->setupUi(this);
 
-    connect(&gemini_client, &GeminiClient::requestComplete, this, &BrowserTab::on_gemini_complete);
+    connect(&web_client, &WebClient::requestComplete, this, &BrowserTab::on_requestComplete);
+    connect(&web_client, &WebClient::requestFailed, this, &BrowserTab::on_requestFailed);
+
+    connect(&gemini_client, &GeminiClient::requestComplete, this, &BrowserTab::on_requestComplete);
     connect(&gemini_client, &GeminiClient::protocolViolation, this, &BrowserTab::on_protocolViolation);
     connect(&gemini_client, &GeminiClient::inputRequired, this, &BrowserTab::on_inputRequired);
     connect(&gemini_client, &GeminiClient::redirected, this, &BrowserTab::on_redirected);
@@ -50,8 +53,8 @@ BrowserTab::~BrowserTab()
 
 void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
 {
-    // TODO: Implement about:// scheme!
-    if(url.scheme() != "gemini" and url.scheme() != "about") {
+    if(not mainWindow->protocols.isSchemeSupported(url.scheme()))
+    {
         QMessageBox::warning(this, "Kristall", "Unsupported uri scheme: " + url.scheme());
         return;
     }
@@ -60,16 +63,26 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
     this->ui->url_bar->setText(url.toString());
 
     if(not gemini_client.cancelRequest()) {
-        QMessageBox::warning(this, "Kristall", "Unsupported uri scheme: " + url.scheme());
+        QMessageBox::warning(this, "Kristall", "Failed to cancel running gemini request!");
         return;
     }
 
+    if(not web_client.cancelRequest()) {
+        QMessageBox::warning(this, "Kristall", "Failed to cancel running web request!");
+        return;
+    }
+
+    this->redirection_count = 0;
+    this->successfully_loaded = false;
+    this->push_to_history_after_load = (mode == PushAfterSuccess);
+
     if(url.scheme() == "gemini")
     {
-        this->redirection_count = 0;
-        this->successfully_loaded = false;
-        this->push_to_history_after_load = (mode == PushAfterSuccess);
         gemini_client.startRequest(url);
+    }
+    else if(url.scheme() == "http" or url.scheme() == "https")
+    {
+        web_client.startRequest(url);
     }
     else if(url.scheme() == "about")
     {
@@ -80,7 +93,7 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
             mode = PushImmediate;
         if(url.path() == "blank")
         {
-            this->on_gemini_complete("", "text/gemini");
+            this->on_requestComplete("", "text/gemini");
         }
         else if(url.path() == "favourites")
         {
@@ -94,7 +107,7 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
                 document.append("=> " + fav.toString().toUtf8() + "\n");
             }
 
-            this->on_gemini_complete(document, "text/gemini");
+            this->on_requestComplete(document, "text/gemini");
         }
         else
         {
@@ -165,7 +178,12 @@ void BrowserTab::on_refresh_button_clicked()
     reloadPage();
 }
 
-void BrowserTab::on_gemini_complete(const QByteArray &data, const QString &mime)
+void BrowserTab::on_requestFailed(const QString &reason)
+{
+    this->setErrorMessage(QString("Request failed:\n%1").arg(reason));
+}
+
+void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
 {
     qDebug() << "Loaded" << data.length() << "bytes of type" << mime;
 
@@ -394,7 +412,7 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
     if(real_url.isRelative())
         real_url = this->current_location.resolved(url);
 
-    if(real_url.scheme() != "gemini") {
+    if(not mainWindow->protocols.isSchemeSupported(real_url.scheme())) {
         QMessageBox::warning(this, "Kristall", QString("Unsupported url: %1").arg(real_url.toString()));
     }
     else {

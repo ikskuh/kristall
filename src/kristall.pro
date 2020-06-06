@@ -23,8 +23,10 @@ SOURCES += \
     geminirenderer.cpp \
     main.cpp \
     mainwindow.cpp \
+    protocolsetup.cpp \
     settingsdialog.cpp \
-    tabbrowsinghistory.cpp
+    tabbrowsinghistory.cpp \
+    webclient.cpp
 
 HEADERS += \
     browsertab.hpp \
@@ -33,8 +35,10 @@ HEADERS += \
     geminiclient.hpp \
     geminirenderer.hpp \
     mainwindow.hpp \
+    protocolsetup.hpp \
     settingsdialog.hpp \
-    tabbrowsinghistory.hpp
+    tabbrowsinghistory.hpp \
+    webclient.hpp
 
 FORMS += \
     browsertab.ui \

@@ -12,13 +12,19 @@ A high-quality visual cross-platform gemini browser.
   - `image/*`
 - [Outline generation](https://mq32.de/public/a50ef327f4150d870393b1989c5b41db495b56f7.png) ([Video](https://mq32.de/public/kristall-02.mp4))
 - Favourite Sites
+- Navigation history
 - Tabbed interface
 - Survives [ConMans torture suite](gemini://gemini.conman.org/test/torture/)
 - [Special link highlighting for different targets](https://mq32.de/public/92f3ec7a64833d01f1ed001d15c8db4158e5d3c2.png)
 - Color Themes
   - Custom color theme
   - [Automatic light/dark theme based on the host name](https://mq32.de/public/kristall-01.mp4)
-- Navigation history
+- Multi-protocol support
+  - [x] [Gemini](https://gemini.circumlunar.space/)
+  - [x] HTTP
+  - [x] HTTPS
+  - [ ] [Finger](https://tools.ietf.org/html/rfc1288) (planned)
+  - [ ] [Gopher](https://tools.ietf.org/html/rfc1436) (planned)
 - Crossplatform supports
   - Linux
   - Windows
@@ -69,4 +75,9 @@ Notes for OpenBSD:
   - [ ] Check if the site follows this guideline: `#<ICON> Title` where `<ICON>` is a unicode emoji
   - [ ] Opt-In: Regularly check for `domain/favicon.txt`
   - [ ] Opt-In: Regularly check for `domain/favicon.ico`
-
+- [ ] Implement more protocols
+  - [ ] Finger
+    - [ ] finger://tomasino@cosmic.voyage
+    - [ ] finger://ping@cosmic.voyage
+  - [ ] Gopher
+    - [ ] gopher://gopher.black

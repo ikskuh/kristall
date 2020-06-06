@@ -4,6 +4,7 @@
 #include <QDialog>
 
 #include "geminirenderer.hpp"
+#include "protocolsetup.hpp"
 
 namespace Ui {
 class SettingsDialog;
@@ -24,8 +25,10 @@ public:
     }
 
     QUrl startPage() const;
-
     void setStartPage(QUrl const & url);
+
+    ProtocolSetup protocols() const;
+    void setProtocols(ProtocolSetup const & proto);
 
 private slots:
     void on_std_change_font_clicked();

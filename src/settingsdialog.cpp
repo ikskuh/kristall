@@ -99,6 +99,24 @@ void SettingsDialog::setStartPage(const QUrl &url)
     this->ui->start_page->setText(url.toString());
 }
 
+ProtocolSetup SettingsDialog::protocols() const
+{
+    ProtocolSetup protocols;
+#define M(X) \
+    protocols.X   = this->ui->enable_##X->isChecked();
+    PROTOCOLS(M)
+#undef M
+    return protocols;
+}
+
+void SettingsDialog::setProtocols(ProtocolSetup const & protocols)
+{
+#define M(X) \
+    this->ui->enable_##X->setChecked(protocols.X);
+    PROTOCOLS(M)
+#undef M
+}
+
 void SettingsDialog::reloadStylePreview()
 {
     auto const document = R"gemini(# H1 Header
@@ -253,7 +271,7 @@ void SettingsDialog::on_auto_theme_currentIndexChanged(int index)
     }
 }
 
-void SettingsDialog::on_preview_url_textChanged(const QString &arg1)
+void SettingsDialog::on_preview_url_textChanged(const QString &)
 {
     this->reloadStylePreview();
 }
