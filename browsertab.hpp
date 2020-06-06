@@ -9,6 +9,7 @@
 #include "geminiclient.hpp"
 #include "documentoutlinemodel.hpp"
 #include "tabbrowsinghistory.hpp"
+#include "geminirenderer.hpp"
 
 namespace Ui {
 class BrowserTab;
@@ -100,6 +101,8 @@ public:
     TabBrowsingHistory history;
 
     std::unique_ptr<QTextDocument> current_document;
+
+    GeminiStyle current_style;
 };
 
 #endif // BROWSERTAB_HPP

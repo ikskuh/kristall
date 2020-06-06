@@ -98,7 +98,11 @@ void BrowserTab::on_menu_button_clicked()
     connect(menu.addAction("Settings..."), &QAction::triggered, [this]() {
         SettingsDialog dialog;
 
-        dialog.exec();
+        dialog.setGeminiStyle(current_style);
+
+        if(dialog.exec() == QDialog::Accepted) {
+            this->current_style = dialog.geminiStyle();
+        }
     });
 
 
@@ -128,13 +132,18 @@ void BrowserTab::on_gemini_complete(const QByteArray &data, const QString &mime)
     this->ui->text_browser->setVisible(mime.startsWith("text/"));
     this->ui->graphics_browser->setVisible(mime.startsWith("image/"));
 
+    ui->text_browser->setStyleSheet("");
+
     std::unique_ptr<QTextDocument> document;
 
     this->outline.clear();
 
     if(mime.startsWith("text/gemini")) {
 
-        document = GeminiRenderer{}.render(data, this->current_location, this->outline);
+        auto doc= GeminiRenderer{ current_style }.render(data, this->current_location, this->outline);
+        this->ui->text_browser->setStyleSheet(QString("QTextBrowser { background-color: %1; }").arg(doc->background_color.name()));
+
+        document  = std::move(doc);
     }
     else if(mime.startsWith("text/html")) {
         document = std::make_unique<QTextDocument>();

@@ -1,7 +1,10 @@
 #include "geminirenderer.hpp"
 
 #include <QTextList>
+#include <QCryptographicHash>
 #include <QTextBlock>
+#include <QDebug>
+#include <cmath>
 
 static QByteArray trim_whitespace(QByteArray items)
 {
@@ -17,6 +20,7 @@ static QByteArray trim_whitespace(QByteArray items)
 }
 
 GeminiStyle::GeminiStyle() :
+    theme(Fixed),
     standard_font(),
     h1_font(),
     h2_font(),
@@ -24,6 +28,7 @@ GeminiStyle::GeminiStyle() :
     preformatted_font(),
     background_color(0xFF, 0xFF, 0xFF),
     standard_color(0x00, 0x00, 0x00),
+    preformatted_color(0x00, 0x00, 0x00),
     h1_color(0xFF, 0x00, 0x00),
     h2_color(0x00, 0x80, 0x00),
     h3_color(0x80, 0xFF, 0x00),
@@ -31,7 +36,8 @@ GeminiStyle::GeminiStyle() :
     external_link_color(0x00, 0x00, 0xFF),
     cross_scheme_link_color(0x80, 0x00, 0xFF),
     internal_link_prefix("→ "),
-    external_link_prefix("⇒ ")
+    external_link_prefix("⇒ "),
+    margin(55.0)
 {
     preformatted_font.setFamily("monospace");
     preformatted_font.setPointSizeF(10.0);
@@ -52,47 +58,109 @@ GeminiStyle::GeminiStyle() :
     h3_font.setPointSizeF(12.0);
 }
 
+GeminiStyle GeminiStyle::derive(const QUrl &url) const
+{
+    if(this->theme == Fixed)
+        return *this;
+
+    QByteArray hash = QCryptographicHash::hash(url.host().toUtf8(), QCryptographicHash::Md5);
+
+    std::array<uint8_t, 16> items;
+    assert(items.size() == hash.size());
+    memcpy(items.data(), hash.data(), items.size());
+
+    float hue = (items[0] + items[1]) / 510.0;
+    float saturation = items[2] / 255.0;
+
+    double tmp;
+    GeminiStyle themed = *this;
+    switch(this->theme)
+    {
+    case AutoDarkTheme: {
+        themed.background_color = QColor::fromHslF(hue, saturation, 0.25f);
+        themed.standard_color = QColor { 0xFF, 0xFF, 0xFF };
+
+        themed.h1_color = QColor::fromHslF(std::modf(hue + 0.5, &tmp), 1.0 - saturation, 0.75);
+        themed.h2_color = QColor::fromHslF(std::modf(hue + 0.5, &tmp), 1.0 - saturation, 0.75);
+        themed.h3_color = QColor::fromHslF(std::modf(hue + 0.5, &tmp), 1.0 - saturation, 0.75);
+
+        themed.external_link_color = QColor::fromHslF(std::modf(hue + 0.25, &tmp), 1.0, 0.75);
+        themed.internal_link_color = themed.external_link_color.lighter(110);
+        themed.cross_scheme_link_color = themed.external_link_color.darker(110);
+
+        break;
+    }
+
+    case AutoLightTheme: {
+        themed.background_color = QColor::fromHslF(hue, items[2] / 255.0, 0.85);
+        themed.standard_color = QColor { 0x00, 0x00, 0x00 };
+
+        themed.h1_color = QColor::fromHslF(std::modf(hue + 0.5, &tmp), 1.0 - saturation, 0.25);
+        themed.h2_color = QColor::fromHslF(std::modf(hue + 0.5, &tmp), 1.0 - saturation, 0.25);
+        themed.h3_color = QColor::fromHslF(std::modf(hue + 0.5, &tmp), 1.0 - saturation, 0.25);
+
+        themed.external_link_color = QColor::fromHslF(std::modf(hue + 0.25, &tmp), 1.0, 0.25);
+        themed.internal_link_color = themed.external_link_color.darker(110);
+        themed.cross_scheme_link_color = themed.external_link_color.lighter(110);
+
+        break;
+    }
+
+    case Fixed:
+        assert(false);
+    }
+
+    // Same for all themes
+    themed.preformatted_color = themed.standard_color;
+
+    return themed;
+}
+
 GeminiRenderer::GeminiRenderer(GeminiStyle const & _style) :
     style(_style)
 {
 
 }
 
-std::unique_ptr<QTextDocument> GeminiRenderer::render(const QByteArray &input, QUrl const & root_url, DocumentOutlineModel &outline)
+std::unique_ptr<GeminiDocument> GeminiRenderer::render(const QByteArray &input, QUrl const & root_url, DocumentOutlineModel &outline)
 {
+    auto themed_style = style.derive(root_url);
 
     QTextCharFormat preformatted;
-    preformatted.setFont(style.preformatted_font);
+    preformatted.setFont(themed_style.preformatted_font);
+    preformatted.setForeground(themed_style.preformatted_color);
 
     QTextCharFormat standard;
-    standard.setFont(style.standard_font);
+    standard.setFont(themed_style.standard_font);
+    standard.setForeground(themed_style.standard_color);
 
     QTextCharFormat standard_link;
-    standard_link.setFont(style.standard_font);
-    standard_link.setForeground(QBrush(style.internal_link_color));
+    standard_link.setFont(themed_style.standard_font);
+    standard_link.setForeground(QBrush(themed_style.internal_link_color));
 
     QTextCharFormat external_link;
-    external_link.setFont(style.standard_font);
-    external_link.setForeground(QBrush(style.external_link_color));
+    external_link.setFont(themed_style.standard_font);
+    external_link.setForeground(QBrush(themed_style.external_link_color));
 
     QTextCharFormat cross_protocol_link;
-    cross_protocol_link.setFont(style.standard_font);
-    cross_protocol_link.setForeground(QBrush(style.cross_scheme_link_color));
+    cross_protocol_link.setFont(themed_style.standard_font);
+    cross_protocol_link.setForeground(QBrush(themed_style.cross_scheme_link_color));
 
     QTextCharFormat standard_h1;
-    standard_h1.setFont(style.h1_font);
-    standard_h1.setForeground(QBrush(style.h1_color));
+    standard_h1.setFont(themed_style.h1_font);
+    standard_h1.setForeground(QBrush(themed_style.h1_color));
 
     QTextCharFormat standard_h2;
-    standard_h2.setFont(style.h2_font);
-    standard_h2.setForeground(QBrush(style.h2_color));
+    standard_h2.setFont(themed_style.h2_font);
+    standard_h2.setForeground(QBrush(themed_style.h2_color));
 
     QTextCharFormat standard_h3;
-    standard_h3.setFont(style.h3_font);
-    standard_h3.setForeground(QBrush(style.h3_color));
+    standard_h3.setFont(themed_style.h3_font);
+    standard_h3.setForeground(QBrush(themed_style.h3_color));
 
-    std::unique_ptr<QTextDocument> result = std::make_unique<QTextDocument>();
-    result->setDocumentMargin(55.0);
+    std::unique_ptr<GeminiDocument> result = std::make_unique<GeminiDocument>();
+    result->setDocumentMargin(themed_style.margin);
+    result->background_color = themed_style.background_color;
 
     QTextCursor cursor { result.get() };
 
@@ -181,7 +249,13 @@ std::unique_ptr<QTextDocument> GeminiRenderer::render(const QByteArray &input, Q
                 // qDebug() << link << title;
 
                 auto fmt = standard_link;
-                if(not local_url.isRelative()) {
+
+                QString prefix;
+                if(absolute_url.host() == root_url.host()) {
+                    prefix = themed_style.internal_link_prefix;
+                    fmt = standard_link;
+                } else {
+                    prefix = themed_style.external_link_prefix;
                     fmt = external_link;
                 }
 
@@ -189,13 +263,6 @@ std::unique_ptr<QTextDocument> GeminiRenderer::render(const QByteArray &input, Q
                 if(absolute_url.scheme() != root_url.scheme()) {
                     suffix = " [" + absolute_url.scheme().toUpper() + "]";
                     fmt = cross_protocol_link;
-                }
-
-                QString prefix = "";
-                if(local_url.isRelative() or absolute_url.host() == root_url.host()) {
-                    prefix = style.internal_link_prefix;
-                } else {
-                    prefix = style.external_link_prefix;
                 }
 
                 fmt.setAnchor(true);
@@ -213,4 +280,16 @@ std::unique_ptr<QTextDocument> GeminiRenderer::render(const QByteArray &input, Q
 
     outline.endBuild();
     return result;
+}
+
+GeminiDocument::GeminiDocument(QObject * parent) :
+    QTextDocument(parent),
+    background_color(0x00, 0x00, 0x00)
+{
+
+}
+
+GeminiDocument::~GeminiDocument()
+{
+
 }

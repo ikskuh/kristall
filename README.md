@@ -15,6 +15,9 @@ A high-quality visual cross-platform gemini browser.
 - Tabbed interface
 - Survives [ConMans torture suite](gemini://gemini.conman.org/test/torture/)
 - [Special link highlighting for different targets](https://mq32.de/public/92f3ec7a64833d01f1ed001d15c8db4158e5d3c2.png)
+- Color Themes
+  - Custom color theme
+  - Automatic light/dark theme based on the host name
 - Crossplatform supports
   - Linux
   - Windows
