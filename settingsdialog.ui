@@ -34,10 +34,10 @@
            <item>
             <widget class="QLabel" name="bg_preview">
              <property name="text">
-              <string>&amp;nbsp;</string>
+              <string>  </string>
              </property>
              <property name="textFormat">
-              <enum>Qt::MarkdownText</enum>
+              <enum>Qt::PlainText</enum>
              </property>
             </widget>
            </item>
@@ -339,7 +339,7 @@
               <string>This is a local reference</string>
              </property>
              <property name="textFormat">
-              <enum>Qt::MarkdownText</enum>
+              <enum>Qt::PlainText</enum>
              </property>
             </widget>
            </item>
@@ -364,7 +364,7 @@
               <string>This is a foreign reference</string>
              </property>
              <property name="textFormat">
-              <enum>Qt::MarkdownText</enum>
+              <enum>Qt::PlainText</enum>
              </property>
             </widget>
            </item>
@@ -389,7 +389,7 @@
               <string>This reference is cross-scheme</string>
              </property>
              <property name="textFormat">
-              <enum>Qt::MarkdownText</enum>
+              <enum>Qt::PlainText</enum>
              </property>
             </widget>
            </item>
