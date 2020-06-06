@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Kristall Browser</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="icons.qrc">
+    <normaloff>:/icons/kristall.svg</normaloff>:/icons/kristall.svg</iconset>
+  </property>
   <property name="tabShape">
    <enum>QTabWidget::Rounded</enum>
   </property>

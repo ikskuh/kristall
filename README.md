@@ -10,7 +10,7 @@ A high-quality visual cross-platform gemini browser.
   - `text/markdown`
   - `text/*` 
   - `image/*`
-- Outline generation
+- [Outline generation](https://mq32.de/public/d3cdeb38c55ce8100a631bbf761e7bc17b6806bb.png)
 - Favourite Sites
 - Tabbed interface
 - Survives [ConMans torture suite](gemini://gemini.conman.org/test/torture/)
@@ -24,6 +24,38 @@ A high-quality visual cross-platform gemini browser.
   - Windows
   - FreeBSD
   - NetBSD
+  - OpenBSD
+
+## Screenshots
+
+### Generates Outlines
+
+![Outline Generation](https://mq32.de/public/d3cdeb38c55ce8100a631bbf761e7bc17b6806bb.png)
+
+### Fully Customizable Site Theme
+
+![Site Theme](https://mq32.de/public/7123e22a58969448c27b24df8510f4d56921bf23.png)
+
+## Build Instructions
+
+### Requirements
+
+- Latest Qt5 version with `widgets` and `network` modules
+
+### Build
+
+The usual Qt5 build process:
+
+```sh
+mkdir build
+cd build
+qmake ../kristall.pro
+make
+```
+
+Notes for OpenBSD:
+- It seems like Qt wants `libzstd.so.3.1` instead of `libzstd.so.3.2`. Just symlink that file into the build directory
+- Use `make` and not `gmake` to build the project.
 
 ## TODO
 - [ ] Survive full torture suite

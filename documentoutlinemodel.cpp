@@ -22,8 +22,8 @@ void DocumentOutlineModel::beginBuild()
     root = Node {
         nullptr,
         "<ROOT>",
-        0,
-        QVector<Node> { },
+        0, 0,
+        QList<Node> { },
     };
 }
 
@@ -32,8 +32,8 @@ void DocumentOutlineModel::appendH1(const QString &title)
     root.children.append(Node {
         &root,
         title,
-        1,
-        QVector<Node> { },
+        1, 0,
+        QList<Node> { },
     });
 }
 
@@ -43,16 +43,16 @@ void DocumentOutlineModel::appendH2(const QString &title)
         root.children.append(Node {
             &root,
             "<missing layer>",
-            1,
-            QVector<Node> { },
+            1, 0,
+            QList<Node> { },
         });
     }
     auto & parent = root.children.last();
     parent.children.append(Node {
         &parent,
         title,
-        2,
-        QVector<Node> { },
+        2, parent.children.size() - 1,
+        QList<Node> { },
     });
 }
 
@@ -63,6 +63,21 @@ void DocumentOutlineModel::appendH3(const QString &title)
 
 void DocumentOutlineModel::endBuild()
 {
+    for(auto const & h1 : this->root.children)
+    {
+        assert(h1.depth == 1);
+        assert(h1.parent == &this->root);
+        for(auto const & h2 : h1.children)
+        {
+            assert(h2.depth == 2);
+            assert(h2.parent == &h1);
+            for(auto const & h3 : h2.children)
+            {
+                assert(h3.depth == 3);
+                assert(h3.parent == &h2);
+            }
+        }
+    }
     endResetModel();
 }
 
@@ -97,7 +112,7 @@ QModelIndex DocumentOutlineModel::parent(const QModelIndex &child) const
         return QModelIndex();
 
     return createIndex(
-        parent - parent->parent->children.data(),
+        parent->index,
         0,
         reinterpret_cast<quintptr>(parent));
 }

@@ -2,6 +2,7 @@
 #define DOCUMENTOUTLINEMODEL_HPP
 
 #include <QAbstractItemModel>
+#include <QList>
 
 class DocumentOutlineModel :
     public QAbstractItemModel
@@ -39,7 +40,8 @@ private:
         Node * parent;
         QString title;
         int depth = 0;
-        QVector<Node> children;
+        int index = 0;
+        QList<Node> children;
     };
 
     Node root;

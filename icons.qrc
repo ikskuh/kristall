@@ -9,5 +9,6 @@
         <file>icons/close.svg</file>
         <file>icons/format-font.svg</file>
         <file>icons/palette.svg</file>
+        <file>icons/kristall.svg</file>
     </qresource>
 </RCC>

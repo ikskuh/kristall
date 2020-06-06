@@ -130,6 +130,8 @@ void BrowserTab::on_menu_button_clicked()
 
         if(dialog.exec() == QDialog::Accepted) {
             mainWindow->current_style = dialog.geminiStyle();
+
+            mainWindow->saveSettings();
         }
     });
 
@@ -361,7 +363,6 @@ void BrowserTab::setErrorMessage(const QString &msg)
 
 void BrowserTab::pushToHistory(const QUrl &url)
 {
-    qDebug() << "push to history" << this->current_history_index << url;
     this->current_history_index = this->history.pushUrl(this->current_history_index, url);
     this->updateUI();
 }

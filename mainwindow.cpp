@@ -41,8 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    this->favourites.save(settings);
-    this->current_style.save(settings);
+    this->saveSettings();
     delete ui;
 }
 
@@ -82,6 +81,11 @@ void MainWindow::setUrlPreview(const QUrl &url)
     }
 }
 
+void MainWindow::saveSettings()
+{
+    this->favourites.save(settings);
+    this->current_style.save(settings);
+}
 
 void MainWindow::on_browser_tabs_currentChanged(int index)
 {

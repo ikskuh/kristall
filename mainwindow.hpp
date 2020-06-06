@@ -28,6 +28,8 @@ public:
 
     void setUrlPreview(QUrl const & url);
 
+    void saveSettings();
+
 public:
     FavouriteCollection favourites;
 
