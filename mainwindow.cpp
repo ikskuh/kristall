@@ -35,6 +35,8 @@ MainWindow::MainWindow(QWidget *parent) :
     add_shortcut("Ctrl+T", &MainWindow::on_new_tab);
     add_shortcut("Ctrl+W", &MainWindow::on_close_tab);
     add_shortcut("F5", &MainWindow::on_refresh);
+    add_shortcut("Alt+Left", &MainWindow::on_nav_back);
+    add_shortcut("Alt+Right", &MainWindow::on_nav_forward);
 }
 
 MainWindow::~MainWindow()
@@ -159,5 +161,21 @@ void MainWindow::on_close_tab()
     BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
     if(tab != nullptr) {
         delete tab;
+    }
+}
+
+void MainWindow::on_nav_back()
+{
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if(tab != nullptr) {
+        tab->navOneBackback();
+    }
+}
+
+void MainWindow::on_nav_forward()
+{
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if(tab != nullptr) {
+        tab->navOneForward();
     }
 }

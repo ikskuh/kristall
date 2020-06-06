@@ -94,6 +94,16 @@ void BrowserTab::navigateBack(QModelIndex history_index)
     }
 }
 
+void BrowserTab::navOneBackback()
+{
+    navigateBack(history.oneBackward(current_history_index));
+}
+
+void BrowserTab::navOneForward()
+{
+    navigateBack(history.oneForward(current_history_index));
+}
+
 void BrowserTab::on_menu_button_clicked()
 {
     QMenu menu;
@@ -130,7 +140,13 @@ void BrowserTab::on_menu_button_clicked()
 
 void BrowserTab::on_url_bar_returnPressed()
 {
-    this->navigateTo(this->ui->url_bar->text(), PushImmediate);
+    QUrl url { this->ui->url_bar->text() };
+
+    if(url.scheme().isEmpty()) {
+        url = QUrl { "gemini://" + this->ui->url_bar->text() };
+    }
+
+    this->navigateTo(url, PushImmediate);
 }
 
 void BrowserTab::on_refresh_button_clicked()
@@ -391,21 +407,20 @@ void BrowserTab::on_stop_button_clicked()
     gemini_client.cancelRequest();
 }
 
-
 void BrowserTab::on_back_button_clicked()
 {
-    navigateBack(current_history_index.sibling(-1, 0));
+    navOneBackback();
 }
 
 void BrowserTab::on_forward_button_clicked()
 {
-    navigateBack(current_history_index.sibling(1, 0));
+    navOneForward();
 }
 
 void BrowserTab::updateUI()
 {
-    this->ui->back_button->setEnabled(current_history_index.sibling(-1, 0).isValid());
-    this->ui->forward_button->setEnabled(current_history_index.sibling(1, 0).isValid());
+    this->ui->back_button->setEnabled(history.oneBackward(current_history_index).isValid());
+    this->ui->forward_button->setEnabled(history.oneForward(current_history_index).isValid());
 
     this->ui->refresh_button->setVisible(this->successfully_loaded);
     this->ui->stop_button->setVisible(not this->successfully_loaded);

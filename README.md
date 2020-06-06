@@ -18,6 +18,7 @@ A high-quality visual cross-platform gemini browser.
 - Color Themes
   - Custom color theme
   - Automatic light/dark theme based on the host name
+- Navigation history
 - Crossplatform supports
   - Linux
   - Windows
@@ -30,11 +31,10 @@ A high-quality visual cross-platform gemini browser.
     - [ ] Correctly parse charset (0013, 0014)
     - [ ] Correctly parse other params (0015)
     - [ ] Correctly parse undefined params (0016)
-- [ ] Add history navigation
-  - [ ] "also, being able to click and load a url from the history pane"
-  - [ ] "Couldn't you just have  an array of URLs? And when they go forward, you slice the array up to the that point and add the new url to the end"
 - [ ] Recognize home directories with /~home and such and add "substyles"
 - [ ] Add favicon support
   - [ ] Add auto-generated "favicons"
   - [ ] Check if the site follows this guideline: `#<ICON> Title` where `<ICON>` is a unicode emoji
   - [ ] Opt-In: Regularly check for `domain/favicon.ico`
+- [ ] Theming
+  - [ ] Fix default theme when not found.

@@ -27,15 +27,15 @@ GeminiStyle::GeminiStyle() : theme(Fixed),
                              h2_font(),
                              h3_font(),
                              preformatted_font(),
-                             background_color(0xFF, 0xFF, 0xFF),
+                             background_color("#edefff"),
                              standard_color(0x00, 0x00, 0x00),
                              preformatted_color(0x00, 0x00, 0x00),
-                             h1_color(0xFF, 0x00, 0x00),
-                             h2_color(0x00, 0x80, 0x00),
-                             h3_color(0x80, 0xFF, 0x00),
-                             internal_link_color(0x00, 0x80, 0x0FF),
-                             external_link_color(0x00, 0x00, 0xFF),
-                             cross_scheme_link_color(0x80, 0x00, 0xFF),
+                             h1_color("#022f90"),
+                             h2_color("#022f90"),
+                             h3_color("#022f90"),
+                             internal_link_color("#0e8fff"),
+                             external_link_color("#0e8fff"),
+                             cross_scheme_link_color("#0960a7"),
                              internal_link_prefix("→ "),
                              external_link_prefix("⇒ "),
                              margin(55.0)
@@ -93,27 +93,30 @@ bool GeminiStyle::load(QSettings &settings)
 {
     settings.beginGroup("Theme");
 
-    standard_font.fromString(settings.value("standard_font").toString());
-    h1_font.fromString(settings.value("h1_font").toString());
-    h2_font.fromString(settings.value("h2_font").toString());
-    h3_font.fromString(settings.value("h3_font").toString());
-    preformatted_font.fromString(settings.value("preformatted_font").toString());
+    if(settings.contains("standard_color"))
+    {
+        standard_font.fromString(settings.value("standard_font").toString());
+        h1_font.fromString(settings.value("h1_font").toString());
+        h2_font.fromString(settings.value("h2_font").toString());
+        h3_font.fromString(settings.value("h3_font").toString());
+        preformatted_font.fromString(settings.value("preformatted_font").toString());
 
-    background_color = QColor(settings.value("background_color").toString());
-    standard_color = QColor(settings.value("standard_color").toString());
-    preformatted_color = QColor(settings.value("preformatted_color").toString());
-    h1_color = QColor(settings.value("h1_color").toString());
-    h2_color = QColor(settings.value("h2_color").toString());
-    h3_color = QColor(settings.value("h3_color").toString());
-    internal_link_color = QColor(settings.value("internal_link_color").toString());
-    external_link_color = QColor(settings.value("external_link_color").toString());
-    cross_scheme_link_color = QColor(settings.value("cross_scheme_link_color").toString());
+        background_color = QColor(settings.value("background_color").toString());
+        standard_color = QColor(settings.value("standard_color").toString());
+        preformatted_color = QColor(settings.value("preformatted_color").toString());
+        h1_color = QColor(settings.value("h1_color").toString());
+        h2_color = QColor(settings.value("h2_color").toString());
+        h3_color = QColor(settings.value("h3_color").toString());
+        internal_link_color = QColor(settings.value("internal_link_color").toString());
+        external_link_color = QColor(settings.value("external_link_color").toString());
+        cross_scheme_link_color = QColor(settings.value("cross_scheme_link_color").toString());
 
-    internal_link_prefix = settings.value("internal_link_prefix").toString();
-    external_link_prefix = settings.value("external_link_prefix").toString();
+        internal_link_prefix = settings.value("internal_link_prefix").toString();
+        external_link_prefix = settings.value("external_link_prefix").toString();
 
-    margin = settings.value("margins").toDouble();
-    theme = Theme(settings.value("theme").toInt());
+        margin = settings.value("margins").toDouble();
+        theme = Theme(settings.value("theme").toInt());
+    }
 
     settings.endGroup();
     return true;

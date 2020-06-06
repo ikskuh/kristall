@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>480</height>
+    <height>520</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,7 +34,7 @@
            <item>
             <widget class="QLabel" name="bg_preview">
              <property name="text">
-              <string>  </string>
+              <string/>
              </property>
              <property name="textFormat">
               <enum>Qt::PlainText</enum>
@@ -415,6 +415,26 @@
          </item>
          <item row="11" column="1">
           <widget class="QComboBox" name="auto_theme"/>
+         </item>
+         <item row="12" column="0">
+          <widget class="QLabel" name="label_13">
+           <property name="text">
+            <string>Page Margin</string>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="1">
+          <widget class="QDoubleSpinBox" name="page_margin">
+           <property name="suffix">
+            <string> px</string>
+           </property>
+           <property name="decimals">
+            <number>0</number>
+           </property>
+           <property name="maximum">
+            <double>350.000000000000000</double>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>

@@ -50,6 +50,10 @@ private slots:
 
     void on_close_tab();
 
+    void on_nav_back();
+
+    void on_nav_forward();
+
 public:
     QSettings settings;
     GeminiStyle current_style;

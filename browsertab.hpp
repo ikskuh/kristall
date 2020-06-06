@@ -35,6 +35,10 @@ public:
 
     void navigateBack(QModelIndex history_index);
 
+    void navOneBackback();
+
+    void navOneForward();
+
 signals:
     void titleChanged(QString const & title);
     void locationChanged(QUrl const & url);

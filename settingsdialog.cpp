@@ -54,6 +54,8 @@ void SettingsDialog::setGeminiStyle(const GeminiStyle &style)
 
     this->ui->auto_theme->setCurrentIndex(this->current_style.theme);
 
+    this->ui->page_margin->setValue(this->current_style.margin);
+
     auto setFontAndColor = [this](QLabel * label, QFont font, QColor color)
     {
         label->setText(formatFont(font));
@@ -243,5 +245,11 @@ void SettingsDialog::on_auto_theme_currentIndexChanged(int index)
 
 void SettingsDialog::on_preview_url_textChanged(const QString &arg1)
 {
+    this->reloadStylePreview();
+}
+
+void SettingsDialog::on_page_margin_valueChanged(double value)
+{
+    this->current_style.margin = value;
     this->reloadStylePreview();
 }

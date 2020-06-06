@@ -41,6 +41,24 @@ QUrl TabBrowsingHistory::get(const QModelIndex &index) const
         return history.at(index.row());
 }
 
+QModelIndex TabBrowsingHistory::oneForward(QModelIndex index) const
+{
+    if(not index.isValid())
+        return QModelIndex{};
+    if(index.row() >= history.size() - 1)
+        return QModelIndex{};
+    return createIndex(index.row() + 1, index.column());
+}
+
+QModelIndex TabBrowsingHistory::oneBackward(QModelIndex index) const
+{
+    if(not index.isValid())
+        return QModelIndex{};
+    if(index.row() == 0)
+        return QModelIndex{};
+    return createIndex(index.row() - 1, index.column());
+}
+
 int TabBrowsingHistory::rowCount(const QModelIndex &parent) const
 {
     return history.size();

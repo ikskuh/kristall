@@ -60,6 +60,8 @@ private slots:
 
     void on_preview_url_textChanged(const QString &arg1);
 
+    void on_page_margin_valueChanged(double arg1);
+
 private:
     void reloadStylePreview();
 
