@@ -14,6 +14,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     url_status(new QLabel())
 {
+    if(not this->settings.contains("start_page")) {
+        this->settings.setValue("start_page", "about:favourites");
+    }
+
     ui->setupUi(this);
 
     this->statusBar()->addWidget(this->url_status);
@@ -23,9 +27,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->favourites_view->setModel(&favourites);
 
-    // this->ui->history_window->setVisible(false);
+    this->ui->outline_window->setVisible(false);
+    this->ui->history_window->setVisible(false);
     this->ui->clientcert_window->setVisible(false);
-    this->ui->bookmarks_window->setVisible(true);
+    this->ui->bookmarks_window->setVisible(false);
 
     for(QDockWidget * dock : findChildren<QDockWidget *>())
     {
@@ -64,7 +69,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-BrowserTab * MainWindow::addEmptyTab(bool focus_new)
+BrowserTab * MainWindow::addEmptyTab(bool focus_new, bool load_default)
 {
     BrowserTab * tab = new BrowserTab(this);
 
@@ -76,12 +81,16 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new)
         this->ui->browser_tabs->setCurrentIndex(index);
     }
 
+    if(load_default) {
+        tab->navigateTo(QUrl(this->settings.value("start_page").toString()), BrowserTab::DontPush);
+    }
+
     return tab;
 }
 
 BrowserTab * MainWindow::addNewTab(bool focus_new, QUrl const & url)
 {
-    auto tab = addEmptyTab(focus_new);
+    auto tab = addEmptyTab(focus_new, false);
     tab->navigateTo(url, BrowserTab::PushImmediate);
     return tab;
 }
@@ -193,15 +202,22 @@ void MainWindow::on_actionSettings_triggered()
 
     dialog.setGeminiStyle(this->current_style);
 
-    if(dialog.exec() == QDialog::Accepted) {
-        this->current_style = dialog.geminiStyle();
-        this->saveSettings();
+    dialog.setStartPage(this->settings.value("start_page").toString());
+
+    if(dialog.exec() != QDialog::Accepted)
+        return;
+
+    if(auto url = dialog.startPage(); url.isValid()) {
+        this->settings.setValue("start_page", url.toString());
     }
+
+    this->current_style = dialog.geminiStyle();
+    this->saveSettings();
 }
 
 void MainWindow::on_actionNew_Tab_triggered()
 {
-    this->addEmptyTab(true);
+    this->addEmptyTab(true, true);
 }
 
 void MainWindow::on_actionQuit_triggered()

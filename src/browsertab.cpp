@@ -51,10 +51,11 @@ BrowserTab::~BrowserTab()
 void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
 {
     // TODO: Implement about:// scheme!
-    if(url.scheme() != "gemini") {
+    if(url.scheme() != "gemini" and url.scheme() != "about") {
         QMessageBox::warning(this, "Kristall", "Unsupported uri scheme: " + url.scheme());
         return;
     }
+
     this->current_location = url;
     this->ui->url_bar->setText(url.toString());
 
@@ -63,11 +64,44 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
         return;
     }
 
-    this->redirection_count = 0;
-    this->successfully_loaded = false;
-    this->push_to_history_after_load = (mode == PushAfterSuccess);
+    if(url.scheme() == "gemini")
+    {
+        this->redirection_count = 0;
+        this->successfully_loaded = false;
+        this->push_to_history_after_load = (mode == PushAfterSuccess);
+        gemini_client.startRequest(url);
+    }
+    else if(url.scheme() == "about")
+    {
+        this->redirection_count = 0;
+        this->push_to_history_after_load = false;
 
-    gemini_client.startRequest(url);
+        if(mode == PushAfterSuccess)
+            mode = PushImmediate;
+        if(url.path() == "blank")
+        {
+            this->on_gemini_complete("", "text/gemini");
+        }
+        else if(url.path() == "favourites")
+        {
+            QByteArray document;
+
+            document.append("# Favourites\n");
+            document.append("\n");
+
+            for(auto const & fav : this->mainWindow->favourites.getAll())
+            {
+                document.append("=> " + fav.toString().toUtf8() + "\n");
+            }
+
+            this->on_gemini_complete(document, "text/gemini");
+        }
+        else
+        {
+            QMessageBox::warning(this, "Kristall", "Unknown location: " + url.path());
+        }
+    }
+
 
     switch(mode)
     {
@@ -134,7 +168,6 @@ void BrowserTab::on_refresh_button_clicked()
 void BrowserTab::on_gemini_complete(const QByteArray &data, const QString &mime)
 {
     qDebug() << "Loaded" << data.length() << "bytes of type" << mime;
-
 
     this->graphics_scene.clear();
     this->ui->text_browser->setText("");

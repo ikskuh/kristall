@@ -89,6 +89,16 @@ void SettingsDialog::setGeminiStyle(const GeminiStyle &style)
     this->reloadStylePreview();
 }
 
+QUrl SettingsDialog::startPage() const
+{
+    return QUrl(this->ui->start_page->text());
+}
+
+void SettingsDialog::setStartPage(const QUrl &url)
+{
+    this->ui->start_page->setText(url.toString());
+}
+
 void SettingsDialog::reloadStylePreview()
 {
     auto const document = R"gemini(# H1 Header

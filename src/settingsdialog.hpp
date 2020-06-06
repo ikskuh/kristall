@@ -23,6 +23,10 @@ public:
         return current_style;
     }
 
+    QUrl startPage() const;
+
+    void setStartPage(QUrl const & url);
+
 private slots:
     void on_std_change_font_clicked();
 

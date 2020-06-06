@@ -23,7 +23,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    BrowserTab * addEmptyTab(bool focus_new);
+    BrowserTab * addEmptyTab(bool focus_new, bool load_default);
     BrowserTab * addNewTab(bool focus_new, QUrl const & url);
 
     void setUrlPreview(QUrl const & url);

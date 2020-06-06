@@ -27,6 +27,10 @@ public:
     bool load(QString const & fileName);
     bool load(QSettings & settings);
 
+    QVector<QUrl> getAll() const {
+        return this->items;
+    }
+
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
