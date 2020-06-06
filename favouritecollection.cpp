@@ -75,6 +75,18 @@ bool FavouriteCollection::save(const QString &fileName) const
     return true;
 }
 
+bool FavouriteCollection::save(QSettings &settings) const
+{
+    settings.beginWriteArray("favourites", items.size());
+    for(int i = 0; i < items.size(); i++)
+    {
+        settings.setArrayIndex(i);
+        settings.setValue("url", items[i].toString());
+    }
+    settings.endArray();
+    return true;
+}
+
 bool FavouriteCollection::load(const QString &fileName)
 {
     QFile file(fileName);
@@ -92,6 +104,19 @@ bool FavouriteCollection::load(const QString &fileName)
     }
     endResetModel();
 
+    return true;
+}
+
+bool FavouriteCollection::load(QSettings & settings)
+{
+    int len = settings.beginReadArray("favourites");
+    items.resize(len);
+    for(int i = 0; i < items.size(); i++)
+    {
+        settings.setArrayIndex(i);
+        items[i] = settings.value("url").toString();
+    }
+    settings.endArray();
     return true;
 }
 

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QAbstractListModel>
 #include <QUrl>
+#include <QSettings>
 
 
 class FavouriteCollection : public QAbstractListModel
@@ -21,8 +22,10 @@ public:
     QUrl get(QModelIndex const & index) const ;
 
     bool save(QString const & fileName) const;
+    bool save(QSettings & settings) const;
 
     bool load(QString const & fileName);
+    bool load(QSettings & settings);
 
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

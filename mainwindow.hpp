@@ -3,8 +3,11 @@
 
 #include <QMainWindow>
 #include <QLabel>
+#include <QSettings>
+
 
 #include "favouritecollection.hpp"
+#include "geminirenderer.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -41,10 +44,13 @@ private slots:
 
     void on_tab_locationChanged(QUrl const & url);
 
+public:
+    QSettings settings;
+    GeminiStyle current_style;
+
 private:
     Ui::MainWindow *ui;
 
     QLabel * url_status;
-
 };
 #endif // MAINWINDOW_HPP

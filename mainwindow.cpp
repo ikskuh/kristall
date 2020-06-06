@@ -4,16 +4,18 @@
 
 #include <memory>
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow),
-      url_status(new QLabel())
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    settings("xqTechnologies", "Kristall"),
+    ui(new Ui::MainWindow),
+    url_status(new QLabel())
 {
     ui->setupUi(this);
 
     this->statusBar()->addWidget(this->url_status);
 
-    this->favourites.load("./favourites.db");
+    this->favourites.load(settings);
+    this->current_style.load(settings);
 
     ui->favourites_view->setModel(&favourites);
 
@@ -24,7 +26,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    this->favourites.save("./favourites.db");
+    this->favourites.save(settings);
+    this->current_style.save(settings);
     delete ui;
 }
 

@@ -3,6 +3,7 @@
 
 #include <QTextDocument>
 #include <QColor>
+#include <QSettings>
 
 #include "documentoutlinemodel.hpp"
 
@@ -39,6 +40,9 @@ struct GeminiStyle
     QString external_link_prefix;
 
     double margin;
+
+    bool save(QSettings & settings) const;
+    bool load(QSettings & settings);
 
     //! Create a new style with auto-generated colors for the given
     //! url. The colors are based on the host name

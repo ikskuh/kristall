@@ -101,8 +101,6 @@ public:
     TabBrowsingHistory history;
 
     std::unique_ptr<QTextDocument> current_document;
-
-    GeminiStyle current_style;
 };
 
 #endif // BROWSERTAB_HPP

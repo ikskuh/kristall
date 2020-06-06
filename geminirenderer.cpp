@@ -9,35 +9,36 @@
 static QByteArray trim_whitespace(QByteArray items)
 {
     int start = 0;
-    while(start < items.size() and isspace(items.at(start))) {
+    while (start < items.size() and isspace(items.at(start)))
+    {
         start += 1;
     }
     int end = items.size() - 1;
-    while(end > 0 and isspace(items.at(end))) {
+    while (end > 0 and isspace(items.at(end)))
+    {
         end -= 1;
     }
     return items.mid(start, end - start + 1);
 }
 
-GeminiStyle::GeminiStyle() :
-    theme(Fixed),
-    standard_font(),
-    h1_font(),
-    h2_font(),
-    h3_font(),
-    preformatted_font(),
-    background_color(0xFF, 0xFF, 0xFF),
-    standard_color(0x00, 0x00, 0x00),
-    preformatted_color(0x00, 0x00, 0x00),
-    h1_color(0xFF, 0x00, 0x00),
-    h2_color(0x00, 0x80, 0x00),
-    h3_color(0x80, 0xFF, 0x00),
-    internal_link_color(0x00, 0x80, 0x0FF),
-    external_link_color(0x00, 0x00, 0xFF),
-    cross_scheme_link_color(0x80, 0x00, 0xFF),
-    internal_link_prefix("→ "),
-    external_link_prefix("⇒ "),
-    margin(55.0)
+GeminiStyle::GeminiStyle() : theme(Fixed),
+                             standard_font(),
+                             h1_font(),
+                             h2_font(),
+                             h3_font(),
+                             preformatted_font(),
+                             background_color(0xFF, 0xFF, 0xFF),
+                             standard_color(0x00, 0x00, 0x00),
+                             preformatted_color(0x00, 0x00, 0x00),
+                             h1_color(0xFF, 0x00, 0x00),
+                             h2_color(0x00, 0x80, 0x00),
+                             h3_color(0x80, 0xFF, 0x00),
+                             internal_link_color(0x00, 0x80, 0x0FF),
+                             external_link_color(0x00, 0x00, 0xFF),
+                             cross_scheme_link_color(0x80, 0x00, 0xFF),
+                             internal_link_prefix("→ "),
+                             external_link_prefix("⇒ "),
+                             margin(55.0)
 {
     preformatted_font.setFamily("monospace");
     preformatted_font.setPointSizeF(10.0);
@@ -58,9 +59,69 @@ GeminiStyle::GeminiStyle() :
     h3_font.setPointSizeF(12.0);
 }
 
+bool GeminiStyle::save(QSettings &settings) const
+{
+    settings.beginGroup("Theme");
+
+    settings.setValue("standard_font", standard_font.toString());
+    settings.setValue("h1_font", h1_font.toString());
+    settings.setValue("h2_font", h2_font.toString());
+    settings.setValue("h3_font", h3_font.toString());
+    settings.setValue("preformatted_font", preformatted_font.toString());
+
+    settings.setValue("background_color", background_color.name());
+    settings.setValue("standard_color", standard_color.name());
+    settings.setValue("preformatted_color", preformatted_color.name());
+    settings.setValue("h1_color", h1_color.name());
+    settings.setValue("h2_color", h2_color.name());
+    settings.setValue("h3_color", h3_color.name());
+    settings.setValue("internal_link_color", internal_link_color.name());
+    settings.setValue("external_link_color", external_link_color.name());
+    settings.setValue("cross_scheme_link_color", cross_scheme_link_color.name());
+
+    settings.setValue("internal_link_prefix", internal_link_prefix);
+    settings.setValue("external_link_prefix", external_link_prefix);
+
+    settings.setValue("margins", margin);
+    settings.setValue("theme", int(theme));
+
+    settings.endGroup();
+    return true;
+}
+
+bool GeminiStyle::load(QSettings &settings)
+{
+    settings.beginGroup("Theme");
+
+    standard_font.fromString(settings.value("standard_font").toString());
+    h1_font.fromString(settings.value("h1_font").toString());
+    h2_font.fromString(settings.value("h2_font").toString());
+    h3_font.fromString(settings.value("h3_font").toString());
+    preformatted_font.fromString(settings.value("preformatted_font").toString());
+
+    background_color = QColor(settings.value("background_color").toString());
+    standard_color = QColor(settings.value("standard_color").toString());
+    preformatted_color = QColor(settings.value("preformatted_color").toString());
+    h1_color = QColor(settings.value("h1_color").toString());
+    h2_color = QColor(settings.value("h2_color").toString());
+    h3_color = QColor(settings.value("h3_color").toString());
+    internal_link_color = QColor(settings.value("internal_link_color").toString());
+    external_link_color = QColor(settings.value("external_link_color").toString());
+    cross_scheme_link_color = QColor(settings.value("cross_scheme_link_color").toString());
+
+    internal_link_prefix = settings.value("internal_link_prefix").toString();
+    external_link_prefix = settings.value("external_link_prefix").toString();
+
+    margin = settings.value("margins").toDouble();
+    theme = Theme(settings.value("theme").toInt());
+
+    settings.endGroup();
+    return true;
+}
+
 GeminiStyle GeminiStyle::derive(const QUrl &url) const
 {
-    if(this->theme == Fixed)
+    if (this->theme == Fixed)
         return *this;
 
     QByteArray hash = QCryptographicHash::hash(url.host().toUtf8(), QCryptographicHash::Md5);
@@ -74,11 +135,12 @@ GeminiStyle GeminiStyle::derive(const QUrl &url) const
 
     double tmp;
     GeminiStyle themed = *this;
-    switch(this->theme)
+    switch (this->theme)
     {
-    case AutoDarkTheme: {
+    case AutoDarkTheme:
+    {
         themed.background_color = QColor::fromHslF(hue, saturation, 0.25f);
-        themed.standard_color = QColor { 0xFF, 0xFF, 0xFF };
+        themed.standard_color = QColor{0xFF, 0xFF, 0xFF};
 
         themed.h1_color = QColor::fromHslF(std::modf(hue + 0.5, &tmp), 1.0 - saturation, 0.75);
         themed.h2_color = QColor::fromHslF(std::modf(hue + 0.5, &tmp), 1.0 - saturation, 0.75);
@@ -91,9 +153,10 @@ GeminiStyle GeminiStyle::derive(const QUrl &url) const
         break;
     }
 
-    case AutoLightTheme: {
+    case AutoLightTheme:
+    {
         themed.background_color = QColor::fromHslF(hue, items[2] / 255.0, 0.85);
-        themed.standard_color = QColor { 0x00, 0x00, 0x00 };
+        themed.standard_color = QColor{0x00, 0x00, 0x00};
 
         themed.h1_color = QColor::fromHslF(std::modf(hue + 0.5, &tmp), 1.0 - saturation, 0.25);
         themed.h2_color = QColor::fromHslF(std::modf(hue + 0.5, &tmp), 1.0 - saturation, 0.25);
@@ -116,13 +179,11 @@ GeminiStyle GeminiStyle::derive(const QUrl &url) const
     return themed;
 }
 
-GeminiRenderer::GeminiRenderer(GeminiStyle const & _style) :
-    style(_style)
+GeminiRenderer::GeminiRenderer(GeminiStyle const &_style) : style(_style)
 {
-
 }
 
-std::unique_ptr<GeminiDocument> GeminiRenderer::render(const QByteArray &input, QUrl const & root_url, DocumentOutlineModel &outline)
+std::unique_ptr<GeminiDocument> GeminiRenderer::render(const QByteArray &input, QUrl const &root_url, DocumentOutlineModel &outline)
 {
     auto themed_style = style.derive(root_url);
 
@@ -162,32 +223,41 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(const QByteArray &input, 
     result->setDocumentMargin(themed_style.margin);
     result->background_color = themed_style.background_color;
 
-    QTextCursor cursor { result.get() };
+    QTextCursor cursor{result.get()};
 
     QTextBlockFormat non_list_format = cursor.blockFormat();
 
     bool verbatim = false;
-    QTextList * current_list = nullptr;
+    QTextList *current_list = nullptr;
 
     outline.beginBuild();
 
     QList<QByteArray> lines = input.split('\n');
-    for(auto const & line : lines)
+    for (auto const &line : lines)
     {
-        if(verbatim) {
-            if(line.startsWith("```")) {
+        if (verbatim)
+        {
+            if (line.startsWith("```"))
+            {
                 verbatim = false;
             }
-            else {
+            else
+            {
                 cursor.setCharFormat(preformatted);
                 cursor.insertText(line + "\n");
             }
-        } else {
-            if(line.startsWith("*")) {
-                if(current_list == nullptr) {
+        }
+        else
+        {
+            if (line.startsWith("*"))
+            {
+                if (current_list == nullptr)
+                {
                     cursor.deletePreviousChar();
                     current_list = cursor.insertList(QTextListFormat::ListDisc);
-                } else {
+                }
+                else
+                {
                     cursor.insertBlock();
                 }
 
@@ -195,50 +265,62 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(const QByteArray &input, 
 
                 cursor.insertText(item, standard);
                 continue;
-            } else {
-                if(current_list != nullptr) {
+            }
+            else
+            {
+                if (current_list != nullptr)
+                {
                     cursor.insertBlock();
                     cursor.setBlockFormat(non_list_format);
                 }
                 current_list = nullptr;
             }
 
-            if(line.startsWith("###")) {
+            if (line.startsWith("###"))
+            {
                 auto heading = trim_whitespace(line.mid(3));
 
                 cursor.insertText(heading + "\n", standard_h3);
                 outline.appendH3(heading);
             }
-            else if(line.startsWith("##")) {
+            else if (line.startsWith("##"))
+            {
                 auto heading = trim_whitespace(line.mid(2));
 
                 cursor.insertText(heading + "\n", standard_h2);
                 outline.appendH2(heading);
             }
-            else if(line.startsWith("#")) {
+            else if (line.startsWith("#"))
+            {
                 auto heading = trim_whitespace(line.mid(1));
 
                 cursor.insertText(heading + "\n", standard_h1);
                 outline.appendH1(heading);
             }
-            else if(line.startsWith("=>")) {
+            else if (line.startsWith("=>"))
+            {
                 auto const part = line.mid(2).trimmed();
 
                 QByteArray link, title;
 
                 int index = -1;
-                for(int i = 0; i < part.size(); i++) {
-                    if(isspace(part[i])) {
+                for (int i = 0; i < part.size(); i++)
+                {
+                    if (isspace(part[i]))
+                    {
                         index = i;
                         break;
                     }
                 }
 
-                if(index > 0) {
-                    link  = trim_whitespace(part.mid(0, index));
+                if (index > 0)
+                {
+                    link = trim_whitespace(part.mid(0, index));
                     title = trim_whitespace(part.mid(index + 1));
-                } else {
-                    link  = trim_whitespace(part);
+                }
+                else
+                {
+                    link = trim_whitespace(part);
                     title = trim_whitespace(part);
                 }
 
@@ -251,16 +333,20 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(const QByteArray &input, 
                 auto fmt = standard_link;
 
                 QString prefix;
-                if(absolute_url.host() == root_url.host()) {
+                if (absolute_url.host() == root_url.host())
+                {
                     prefix = themed_style.internal_link_prefix;
                     fmt = standard_link;
-                } else {
+                }
+                else
+                {
                     prefix = themed_style.external_link_prefix;
                     fmt = external_link;
                 }
 
                 QString suffix = "";
-                if(absolute_url.scheme() != root_url.scheme()) {
+                if (absolute_url.scheme() != root_url.scheme())
+                {
                     suffix = " [" + absolute_url.scheme().toUpper() + "]";
                     fmt = cross_protocol_link;
                 }
@@ -269,10 +355,12 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(const QByteArray &input, 
                 fmt.setAnchorHref(absolute_url.toString());
                 cursor.insertText(prefix + title + suffix + "\n", fmt);
             }
-            else if(line.startsWith("```")) {
+            else if (line.startsWith("```"))
+            {
                 verbatim = true;
             }
-            else {
+            else
+            {
                 cursor.insertText(line + "\n", standard);
             }
         }
@@ -282,14 +370,11 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(const QByteArray &input, 
     return result;
 }
 
-GeminiDocument::GeminiDocument(QObject * parent) :
-    QTextDocument(parent),
-    background_color(0x00, 0x00, 0x00)
+GeminiDocument::GeminiDocument(QObject *parent) : QTextDocument(parent),
+                                                  background_color(0x00, 0x00, 0x00)
 {
-
 }
 
 GeminiDocument::~GeminiDocument()
 {
-
 }
