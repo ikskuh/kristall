@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QUrl>
 #include <QGraphicsScene>
+#include <QTextDocument>
 
 #include "geminiclient.hpp"
 #include "documentoutlinemodel.hpp"
@@ -27,18 +28,14 @@ public:
 
     void navigateBack(QModelIndex history_index);
 
+signals:
+    void titleChanged(QString const & title);
+    void locationChanged(QUrl const & url);
+
 private slots:
     void on_menu_button_clicked();
 
     void on_url_bar_returnPressed();
-
-    void on_content_titleChanged(const QString &title);
-
-    void on_content_loadStarted();
-
-    void on_content_loadFinished(bool arg1);
-
-    void on_content_urlChanged(const QUrl &arg1);
 
     void on_refresh_button_clicked();
 
@@ -75,6 +72,10 @@ private slots:
 
     void on_text_browser_highlighted(const QUrl &arg1);
 
+    void on_back_button_clicked();
+
+    void on_forward_button_clicked();
+
 private:
     void setErrorMessage(QString const & msg);
 
@@ -82,7 +83,7 @@ private:
 
     void updateUI();
 
-    static QByteArray translateGeminiToHtml(QByteArray const & input, DocumentOutlineModel & outline);
+    static std::unique_ptr<QTextDocument> translateGemini(QByteArray const & input, QUrl const & root_url, DocumentOutlineModel & outline);
 
 public:
     Ui::BrowserTab *ui;
@@ -97,6 +98,8 @@ public:
     DocumentOutlineModel outline;
     QGraphicsScene graphics_scene;
     TabBrowsingHistory history;
+
+    std::unique_ptr<QTextDocument> current_document;
 };
 
 #endif // BROWSERTAB_HPP

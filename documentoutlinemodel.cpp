@@ -9,6 +9,13 @@ DocumentOutlineModel::DocumentOutlineModel() :
 
 }
 
+void DocumentOutlineModel::clear()
+{
+    beginBuild();
+    endBuild();
+
+}
+
 void DocumentOutlineModel::beginBuild()
 {
     beginResetModel();
@@ -17,7 +24,7 @@ void DocumentOutlineModel::beginBuild()
         "<ROOT>",
         0,
         QVector<Node> { },
-};
+    };
 }
 
 void DocumentOutlineModel::appendH1(const QString &title)

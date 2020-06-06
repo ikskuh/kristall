@@ -9,6 +9,8 @@
 #include <QDockWidget>
 #include <QImage>
 #include <QPixmap>
+#include <QTextList>
+#include <QTextBlock>
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
@@ -34,28 +36,11 @@ BrowserTab::BrowserTab(MainWindow * mainWindow) :
 
     this->updateUI();
 
+    this->ui->graphics_browser->setVisible(false);
+    this->ui->text_browser->setVisible(false);
+
     this->ui->graphics_browser->setScene(&graphics_scene);
 
-    this->ui->text_browser->document()->setDocumentMargin(55.0);
-    this->ui->text_browser->document()->setDefaultStyleSheet(
-        R"css(
-            h1 {
-                color: red;
-            }
-            h2 {
-                color: green;
-            }
-            h3 {
-                color: gold;
-            }
-            a {
-                color: blue;
-            }
-            ul {
-                -qt-list-indent: 1;
-                type: square;
-            }
-            )css");
 }
 
 BrowserTab::~BrowserTab()
@@ -119,27 +104,6 @@ void BrowserTab::on_url_bar_returnPressed()
     this->navigateTo(this->ui->url_bar->text());
 }
 
-void BrowserTab::on_content_titleChanged(const QString &title)
-{
-    this->setWindowTitle(title);
-}
-
-void BrowserTab::on_content_loadStarted()
-{
-    this->ui->refresh_button->setEnabled(false);
-}
-
-void BrowserTab::on_content_loadFinished(bool ok)
-{
-    this->ui->refresh_button->setEnabled(true);
-}
-
-void BrowserTab::on_content_urlChanged(const QUrl &url)
-{
-    // qDebug() << "url changed to" << url;
-    // this->ui->url_bar->setText(url.toString());
-}
-
 void BrowserTab::on_refresh_button_clicked()
 {
     if(current_location.isValid())
@@ -157,32 +121,42 @@ void BrowserTab::on_gemini_complete(const QByteArray &data, const QString &mime)
     this->ui->text_browser->setVisible(mime.startsWith("text/"));
     this->ui->graphics_browser->setVisible(mime.startsWith("image/"));
 
-    if(mime.startsWith("text/gemini")) {
-        auto html = translateGeminiToHtml(data, this->outline);
+    std::unique_ptr<QTextDocument> document;
 
-        this->ui->text_browser->setHtml(html);
+    this->outline.clear();
+
+    if(mime.startsWith("text/gemini")) {
+
+        document = translateGemini(data, this->current_location, this->outline);
     }
     else if(mime.startsWith("text/html")) {
-        this->ui->text_browser->setHtml(QString::fromUtf8(data));
+        document = std::make_unique<QTextDocument>();
+        document->setHtml(QString::fromUtf8(data));
     }
 #if QT_CONFIG(textmarkdownreader)
     else if(mime.startsWith("text/markdown")) {
-        this->ui->text_browser->setMarkdown(QString::fromUtf8(data));
+        document = std::make_unique<QTextDocument>();
+        document->setMarkdown(QString::fromUtf8(data));
     }
 #endif
     else if(mime.startsWith("text/")) {
-        this->ui->text_browser->setPlainText(QString::fromUtf8(data));
+        QFont monospace;
+        monospace.setFamily("monospace");
+
+        document = std::make_unique<QTextDocument>();
+        document->setDefaultFont(monospace);
+        document->setPlainText(QString::fromUtf8(data));
     }
     else if(mime.startsWith("image/")) {
 
         QImage img;
         if(img.loadFromData(data, nullptr))
         {
-            auto * item = this->graphics_scene.addPixmap(QPixmap::fromImage(img));
+            this->graphics_scene.addPixmap(QPixmap::fromImage(img));
         }
         else
         {
-            auto * item = this->graphics_scene.addText("Failed to load picture!");
+            this->graphics_scene.addText("Failed to load picture!");
         }
 
         this->ui->graphics_browser->fitInView(graphics_scene.sceneRect(), Qt::KeepAspectRatio);
@@ -193,7 +167,15 @@ void BrowserTab::on_gemini_complete(const QByteArray &data, const QString &mime)
         this->ui->text_browser->setText(QString("Unsupported Mime: %1").arg(mime));
     }
 
+    this->ui->text_browser->setDocument(document.get());
+    this->current_document = std::move(document);
+
     this->pushToHistory(this->current_location);
+
+    emit this->locationChanged(this->current_location);
+
+    QString title = this->current_location.toString();
+    emit this->titleChanged(title);
 
     this->successfully_loaded = true;
     this->updateUI();
@@ -386,30 +368,105 @@ void BrowserTab::on_text_browser_highlighted(const QUrl &url)
     this->mainWindow->setUrlPreview(real_url);
 }
 
+void BrowserTab::on_back_button_clicked()
+{
+
+}
+
+void BrowserTab::on_forward_button_clicked()
+{
+
+}
+
 void BrowserTab::updateUI()
 {
     this->ui->back_button->setEnabled(this->history.canGoBack());
     this->ui->forward_button->setEnabled(this->history.canGoForward());
 
-    this->ui->refresh_button->setEnabled(this->successfully_loaded);
+    this->ui->refresh_button->setVisible(not this->gemini_client.isInProgress());
+    this->ui->stop_button->setVisible(this->gemini_client.isInProgress());
 
     this->ui->fav_button->setEnabled(this->successfully_loaded);
     this->ui->fav_button->setChecked(this->mainWindow->favourites.contains(this->current_location));
 }
 
-QByteArray BrowserTab::translateGeminiToHtml(const QByteArray &input, DocumentOutlineModel & outline)
+QByteArray trim_whitespace(QByteArray items)
 {
-    QByteArray result;
-    result.append(QString(R"html(<!doctype html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-    </head>
-    <body>
-)html").toUtf8());
+    int start = 0;
+    while(start < items.size() and isspace(items.at(start))) {
+        start += 1;
+    }
+    int end = items.size() - 1;
+    while(end > 0 and isspace(items.at(end))) {
+        end -= 1;
+    }
+    return items.mid(start, end - start + 1);
+}
+
+std::unique_ptr<QTextDocument> BrowserTab::translateGemini(const QByteArray &input, QUrl const & root_url, DocumentOutlineModel &outline)
+{
+    QFont preformatted_font;
+    preformatted_font.setFamily("monospace");
+    preformatted_font.setPointSizeF(10.0);
+
+    QFont standard_font;
+    standard_font.setFamily("sans");
+    standard_font.setPointSizeF(10.0);
+
+    QFont h1_font;
+    h1_font.setFamily("sans");
+    h1_font.setBold(true);
+    h1_font.setPointSizeF(20.0);
+
+    QFont h2_font;
+    h2_font.setFamily("sans");
+    h2_font.setBold(true);
+    h2_font.setPointSizeF(15.0);
+
+    QFont h3_font;
+    h3_font.setFamily("sans");
+    h3_font.setBold(true);
+    h3_font.setPointSizeF(12.0);
+
+    QTextCharFormat preformatted;
+    preformatted.setFont(preformatted_font);
+
+    QTextCharFormat standard;
+    standard.setFont(standard_font);
+
+    QTextCharFormat standard_link;
+    standard_link.setFont(standard_font);
+    standard_link.setForeground(QBrush(QColor(0,128,255)));
+
+    QTextCharFormat external_link;
+    external_link.setFont(standard_font);
+    external_link.setForeground(QBrush(QColor(0,0,255)));
+
+    QTextCharFormat cross_protocol_link;
+    cross_protocol_link.setFont(standard_font);
+    cross_protocol_link.setForeground(QBrush(QColor(128,0,255)));
+
+    QTextCharFormat standard_h1;
+    standard_h1.setFont(h1_font);
+    standard_h1.setForeground(QBrush(QColor(255,0,0)));
+
+    QTextCharFormat standard_h2;
+    standard_h2.setFont(h2_font);
+    standard_h2.setForeground(QBrush(QColor(0,128,0)));
+
+    QTextCharFormat standard_h3;
+    standard_h3.setFont(h3_font);
+    standard_h3.setForeground(QBrush(QColor(32,255,0)));
+
+    std::unique_ptr<QTextDocument> result = std::make_unique<QTextDocument>();
+    result->setDocumentMargin(55.0);
+
+    QTextCursor cursor { result.get() };
+
+    QTextBlockFormat non_list_format = cursor.blockFormat();
 
     bool verbatim = false;
-    bool listing = false;
+    QTextList * current_list = nullptr;
 
     outline.beginBuild();
 
@@ -417,54 +474,53 @@ QByteArray BrowserTab::translateGeminiToHtml(const QByteArray &input, DocumentOu
     for(auto const & line : lines)
     {
         if(verbatim) {
-            if(listing) {
-                result.append("</ul>\n");
-            }
-            listing = false;
-
             if(line.startsWith("```")) {
                 verbatim = false;
-                result.append("</pre><br>\n");
             }
             else {
-                result.append(line);
-                result.append("\n");
+                cursor.setCharFormat(preformatted);
+                cursor.insertText(line + "\n");
             }
         } else {
             if(line.startsWith("*")) {
-                if(not listing) {
-                    result.append("<ul>\n");
+                if(current_list == nullptr) {
+                    cursor.deletePreviousChar();
+                    current_list = cursor.insertList(QTextListFormat::ListDisc);
+                } else {
+                    cursor.insertBlock();
                 }
-                listing = true;
 
-                result.append("<li>");
-                result.append(line.mid(1).trimmed());
-                result.append("</li>");
+                QString item = trim_whitespace(line.mid(1));
+
+                cursor.insertText(item, standard);
                 continue;
             } else {
-                if(listing) {
-                    result.append("</ul>\n");
+                if(current_list != nullptr) {
+                    cursor.insertBlock();
+                    cursor.setBlockFormat(non_list_format);
                 }
-                listing = false;
+                current_list = nullptr;
             }
 
             if(line.startsWith("###")) {
-                result.append("<h3>");
-                outline.appendH3(line.mid(3).trimmed());
-                result.append(line.mid(3).trimmed());
-                result.append("</h3>");
+                auto heading = trim_whitespace(line.mid(3));
+
+                cursor.insertText(heading, standard_h3);
+                cursor.insertBlock();
+                outline.appendH3(heading);
             }
             else if(line.startsWith("##")) {
-                result.append("<h2>");
-                outline.appendH2(line.mid(2).trimmed());
-                result.append(line.mid(2).trimmed());
-                result.append("</h2>");
+                auto heading = trim_whitespace(line.mid(2));
+
+                cursor.insertText(heading, standard_h2);
+                cursor.insertBlock();
+                outline.appendH2(heading);
             }
             else if(line.startsWith("#")) {
-                result.append("<h1>");
-                outline.appendH1(line.mid(1).trimmed());
-                result.append(line.mid(1).trimmed());
-                result.append("</h1>");
+                auto heading = trim_whitespace(line.mid(1));
+
+                cursor.insertText(heading, standard_h1);
+                outline.appendH1(heading);
             }
             else if(line.startsWith("=>")) {
                 auto const part = line.mid(2).trimmed();
@@ -480,39 +536,48 @@ QByteArray BrowserTab::translateGeminiToHtml(const QByteArray &input, DocumentOu
                 }
 
                 if(index > 0) {
-                    link = part.mid(0, index);
-                    title = part.mid(index + 1);
+                    link  = trim_whitespace(part.mid(0, index));
+                    title = trim_whitespace(part.mid(index + 1));
                 } else {
-                    link = part;
-                    title = part;
+                    link  = trim_whitespace(part);
+                    title = trim_whitespace(part);
                 }
+
+                auto local_url = QUrl(link);
+
+                auto absolute_url = root_url.resolved(QUrl(link));
 
                 // qDebug() << link << title;
 
-                result.append("<a href=\"");
-                result.append(link);
-                result.append("\">");
-                result.append(title);
-                result.append("</a><br>\n");
+                auto fmt = standard_link;
+                if(not local_url.isRelative()) {
+                    fmt = external_link;
+                }
+
+                QString suffix = "";
+                if(absolute_url.scheme() != root_url.scheme()) {
+                    suffix = " [" + absolute_url.scheme().toUpper() + "]";
+                    fmt = cross_protocol_link;
+                }
+
+                fmt.setAnchor(true);
+                fmt.setAnchorHref(absolute_url.toString());
+
+                if(local_url.isRelative()) {
+                    cursor.insertText("→ " + title + suffix + "\n", fmt);
+                } else {
+                    cursor.insertText("⇒ " + title + suffix  + "\n", fmt);
+                }
             }
             else if(line.startsWith("```")) {
                 verbatim = true;
-                result.append("<pre>");
             }
             else {
-                result.append(line);
-                result.append("<br>\n");
+                cursor.insertText(line + "\n", standard);
             }
         }
     }
 
     outline.endBuild();
-
-    result.append(QString(R"html(
-    </body>
-</html>
-)html").toUtf8());
     return result;
 }
-
-

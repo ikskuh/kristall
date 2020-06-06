@@ -72,6 +72,20 @@
       </widget>
      </item>
      <item>
+      <widget class="QToolButton" name="stop_button">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="icons.qrc">
+         <normaloff>:/icons/close.svg</normaloff>:/icons/close.svg</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QToolButton" name="refresh_button">
        <property name="enabled">
         <bool>false</bool>

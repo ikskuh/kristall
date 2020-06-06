@@ -10,6 +10,8 @@ class DocumentOutlineModel :
 public:
     DocumentOutlineModel();
 
+    void clear();
+
     void beginBuild();
 
     void appendH1(QString const & title);

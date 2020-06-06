@@ -32,6 +32,8 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new)
 {
     BrowserTab * tab = new BrowserTab(this);
 
+    connect(tab, &BrowserTab::titleChanged, this, &MainWindow::on_tab_titleChanged);
+
     int index = this->ui->browser_tabs->addTab(tab, "Page");
 
     if(focus_new) {
@@ -100,5 +102,25 @@ void MainWindow::on_history_view_doubleClicked(const QModelIndex &index)
     BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
     if(tab != nullptr) {
         tab->navigateBack(index);
+    }
+}
+
+void MainWindow::on_tab_titleChanged(const QString &title)
+{
+   auto * tab = qobject_cast<BrowserTab*>(sender());
+   if(tab != nullptr) {
+       int index = this->ui->browser_tabs->indexOf(tab);
+       assert(index >= 0);
+       this->ui->browser_tabs->setTabText(index, title);
+   }
+}
+
+void MainWindow::on_tab_locationChanged(const QUrl &url)
+{
+    auto * tab = qobject_cast<BrowserTab*>(sender());
+    if(tab != nullptr) {
+        int index = this->ui->browser_tabs->indexOf(tab);
+        assert(index >= 0);
+        this->ui->browser_tabs->setTabToolTip(index, url.toString());
     }
 }

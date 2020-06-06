@@ -20,7 +20,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-
     BrowserTab * addEmptyTab(bool focus_new);
     BrowserTab * addNewTab(bool focus_new, QUrl const & url);
 
@@ -37,6 +36,10 @@ private slots:
     void on_browser_tabs_tabCloseRequested(int index);
 
     void on_history_view_doubleClicked(const QModelIndex &index);
+
+    void on_tab_titleChanged(QString const & title);
+
+    void on_tab_locationChanged(QUrl const & url);
 
 private:
     Ui::MainWindow *ui;
