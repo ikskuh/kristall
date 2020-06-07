@@ -11,5 +11,11 @@
         <file>icons/palette.svg</file>
         <file>icons/kristall.svg</file>
         <file>icons/settings.svg</file>
+        <file>icons/content-save-move.svg</file>
+        <file>icons/content-save.svg</file>
+        <file>icons/home.svg</file>
+        <file>icons/plus.svg</file>
+        <file>icons/content-save-import.svg</file>
+        <file>icons/folder-open.svg</file>
     </qresource>
 </RCC>

@@ -17,8 +17,9 @@ A high-quality visual cross-platform gemini browser.
 - Survives [ConMans torture suite](gemini://gemini.conman.org/test/torture/)
 - [Special link highlighting for different targets](https://mq32.de/public/92f3ec7a64833d01f1ed001d15c8db4158e5d3c2.png)
 - Color Themes
-  - Custom color theme
+  - Custom document color theme
   - [Automatic light/dark theme based on the host name](https://mq32.de/public/kristall-01.mp4)
+  - Dark/Light UI theme
 - Multi-protocol support
   - [x] [Gemini](https://gemini.circumlunar.space/)
   - [x] HTTP
@@ -92,18 +93,23 @@ Just use QtCreator to build `./src/kristall.pro`. Default settings should be fin
     - [ ] finger://tomasino@cosmic.voyage
     - [ ] finger://ping@cosmic.voyage
   - [ ] Gopher
-    - [ ] gopher://gopher.black
+    - [x] gopher://gopher.black
+    - [ ] Improve gophermap rendering with icons for media types
 - [ ] Improve UX
   - [ ] Rightclick with "open in new tab" and "open in this tab"
    - [ ] For history
    - [ ] For favourites
    - [ ] For documents
   - [ ] Image Zoom and Pan
-  - [x] Light/Dark theme for Qt widgets
-  - [x] HTML CSS
   - [ ] Save/load/share theme preset
   - [ ] Improve Unicode/Emoji support
-  
+    - Seems to need multiple font families per font?
+  - [ ] Add option for some markdownish features
+    - [ ] `*bold*`
+    - [ ] `_underline_`
+  - [ ] Allow users to download files they loaded
+- [ ] Add download manager
+
 ## Bugs
   
 > <styan> xq: When using torsocks(1) on kristall QNetworkInterface complains loudly about not being permitted to create an IPv6 socket..

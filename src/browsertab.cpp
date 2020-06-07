@@ -3,6 +3,7 @@
 #include "mainwindow.hpp"
 #include "geminirenderer.hpp"
 #include "settingsdialog.hpp"
+#include "gophermaprenderer.hpp"
 
 #include <QTabWidget>
 #include <QMenu>
@@ -38,6 +39,10 @@ BrowserTab::BrowserTab(MainWindow * mainWindow) :
     connect(&gemini_client, &GeminiClient::authorisedCertificateRequested, this, &BrowserTab::on_authorisedCertificateRequested);
     connect(&gemini_client, &GeminiClient::certificateRejected, this, &BrowserTab::on_certificateRejected);
 
+    connect(&gopher_client, &GopherClient::requestComplete, this, &BrowserTab::on_requestComplete);
+    connect(&gopher_client, &GopherClient::requestFailed, this, &BrowserTab::on_requestFailed);
+
+
     this->updateUI();
 
     this->ui->graphics_browser->setVisible(false);
@@ -72,6 +77,11 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
         return;
     }
 
+    if(not gopher_client.cancelRequest()) {
+        QMessageBox::warning(this, "Kristall", "Failed to cancel running gopher request!");
+        return;
+    }
+
     this->redirection_count = 0;
     this->successfully_loaded = false;
     this->push_to_history_after_load = (mode == PushAfterSuccess);
@@ -83,6 +93,10 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
     else if(url.scheme() == "http" or url.scheme() == "https")
     {
         web_client.startRequest(url);
+    }
+    else if(url.scheme() == "gopher")
+    {
+        gopher_client.startRequest(url);
     }
     else if(url.scheme() == "about")
     {
@@ -204,14 +218,17 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
     this->ui->text_browser->setStyleSheet(QString("QTextBrowser { background-color: %1; }").arg(doc_style.background_color.name()));
 
     if(mime.startsWith("text/gemini")) {
-
-        auto doc= GeminiRenderer::render(
+        document = GeminiRenderer::render(
             data,
             this->current_location,
             doc_style,
             this->outline);
-
-        document  = std::move(doc);
+    }
+    else if(mime.startsWith("text/gophermap")) {
+        document = GophermapRenderer::render(
+            data,
+            this->current_location,
+            doc_style);
     }
     else if(mime.startsWith("text/html")) {
         document = std::make_unique<QTextDocument>();
@@ -442,6 +459,8 @@ void BrowserTab::on_text_browser_highlighted(const QUrl &url)
 void BrowserTab::on_stop_button_clicked()
 {
     gemini_client.cancelRequest();
+    web_client.cancelRequest();
+    gopher_client.cancelRequest();
 }
 
 void BrowserTab::on_back_button_clicked()

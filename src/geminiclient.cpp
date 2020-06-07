@@ -18,6 +18,9 @@ GeminiClient::~GeminiClient()
 
 bool GeminiClient::startRequest(const QUrl &url)
 {
+    if(url.scheme() != "gemini")
+        return false;
+
     if(socket.isOpen())
         return false;
 

@@ -3,6 +3,8 @@
 #include <QFontDialog>
 #include <QColorDialog>
 #include <QStyle>
+#include <QSettings>
+#include <QInputDialog>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -11,20 +13,35 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    static_assert(GeminiStyle::Fixed == 0);
-    static_assert(GeminiStyle::AutoDarkTheme == 1);
-    static_assert(GeminiStyle::AutoLightTheme == 2);
+    static_assert(DocumentStyle::Fixed == 0);
+    static_assert(DocumentStyle::AutoDarkTheme == 1);
+    static_assert(DocumentStyle::AutoLightTheme == 2);
 
     this->ui->auto_theme->clear();
-    this->ui->auto_theme->addItem("Disabled", QVariant::fromValue<int>(GeminiStyle::Fixed));
-    this->ui->auto_theme->addItem("Dark Theme", QVariant::fromValue<int>(GeminiStyle::AutoDarkTheme));
-    this->ui->auto_theme->addItem("Light Theme", QVariant::fromValue<int>(GeminiStyle::AutoLightTheme));
+    this->ui->auto_theme->addItem("Disabled", QVariant::fromValue<int>(DocumentStyle::Fixed));
+    this->ui->auto_theme->addItem("Dark Theme", QVariant::fromValue<int>(DocumentStyle::AutoDarkTheme));
+    this->ui->auto_theme->addItem("Light Theme", QVariant::fromValue<int>(DocumentStyle::AutoLightTheme));
 
     this->ui->ui_theme->clear();
     this->ui->ui_theme->addItem("Light", QVariant::fromValue<QString>("light"));
     this->ui->ui_theme->addItem("Dark", QVariant::fromValue<QString>("dark"));
 
-    setGeminiStyle(GeminiStyle { });
+    setGeminiStyle(DocumentStyle { });
+
+//    QSettings settings;
+//    settings.beginGroup("Themes");
+//    int items = settings.beginReadArray("Themes");
+
+//    this->ui->presets->clear();
+//    for(int i = 0; i < items; i++)
+//    {
+//        settings.setArrayIndex(i);
+//        this->ui->presets->addItem(settings.value("name").toString(), QVariant::fromValue(i));
+//    }
+
+//    settings.endArray();
+
+    this->on_presets_currentIndexChanged(-1);
 }
 
 SettingsDialog::~SettingsDialog()
@@ -50,7 +67,7 @@ static QString formatFont(QFont const & font)
         .arg(style);
 }
 
-void SettingsDialog::setGeminiStyle(const GeminiStyle &style)
+void SettingsDialog::setGeminiStyle(DocumentStyle const &style)
 {
     static const QString COLOR_STYLE("border: 1px solid black; padding: 4px; background-color : %1; color : %2;");
 
@@ -289,7 +306,7 @@ void SettingsDialog::on_link_foreign_prefix_textChanged(const QString &text)
 void SettingsDialog::on_auto_theme_currentIndexChanged(int index)
 {
     if(index >= 0) {
-        current_style.theme = GeminiStyle::Theme(index);
+        current_style.theme = DocumentStyle::Theme(index);
         reloadStylePreview();
     }
 }
@@ -303,4 +320,29 @@ void SettingsDialog::on_page_margin_valueChanged(double value)
 {
     this->current_style.margin = value;
     this->reloadStylePreview();
+}
+
+void SettingsDialog::on_presets_currentIndexChanged(int index)
+{
+    this->ui->preset_load->setEnabled(index >= 0);
+    this->ui->preset_save->setEnabled(index >= 0);
+    this->ui->preset_export->setEnabled(index >= 0);
+}
+
+void SettingsDialog::on_preset_new_clicked()
+{
+    QInputDialog dlg { this };
+    dlg.setInputMode(QInputDialog::TextInput);
+    dlg.setOkButtonText("Save");
+    dlg.setCancelButtonText("Cancel");
+    dlg.setLabelText("Enter the name of your new preset:");
+
+    if(dlg.exec() != QInputDialog::Accepted)
+        return;
+
+    QString name = dlg.textValue();
+
+
+
+
 }

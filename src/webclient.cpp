@@ -17,6 +17,9 @@ WebClient::~WebClient()
 
 bool WebClient::startRequest(const QUrl &url)
 {
+    if(url.scheme() != "http" and url.scheme() != "https")
+        return false;
+
     if(this->current_reply != nullptr)
         return true;
 

@@ -21,9 +21,13 @@ QMAKE_CXXFLAGS += -Wno-unused-parameter
 SOURCES += \
     browsertab.cpp \
     documentoutlinemodel.cpp \
+    documentstyle.cpp \
     favouritecollection.cpp \
     geminiclient.cpp \
     geminirenderer.cpp \
+    gopherclient.cpp \
+    gophermaprenderer.cpp \
+    ioutil.cpp \
     main.cpp \
     mainwindow.cpp \
     protocolsetup.cpp \
@@ -34,9 +38,13 @@ SOURCES += \
 HEADERS += \
     browsertab.hpp \
     documentoutlinemodel.hpp \
+    documentstyle.hpp \
     favouritecollection.hpp \
     geminiclient.hpp \
     geminirenderer.hpp \
+    gopherclient.hpp \
+    gophermaprenderer.hpp \
+    ioutil.hpp \
     mainwindow.hpp \
     protocolsetup.hpp \
     settingsdialog.hpp \

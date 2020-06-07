@@ -12,6 +12,7 @@
 #include "tabbrowsinghistory.hpp"
 #include "geminirenderer.hpp"
 #include "webclient.hpp"
+#include "gopherclient.hpp"
 
 namespace Ui {
 class BrowserTab;
@@ -103,6 +104,7 @@ public:
 
     GeminiClient gemini_client;
     WebClient web_client;
+    GopherClient gopher_client;
     int redirection_count = 0;
 
     bool push_to_history_after_load = false;

@@ -73,7 +73,7 @@ private:
 public:
     QApplication * application;
     QSettings settings;
-    GeminiStyle current_style;
+    DocumentStyle current_style;
     ProtocolSetup protocols;
 
 private:

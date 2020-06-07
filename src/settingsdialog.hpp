@@ -5,6 +5,7 @@
 
 #include "geminirenderer.hpp"
 #include "protocolsetup.hpp"
+#include "documentstyle.hpp"
 
 namespace Ui {
 class SettingsDialog;
@@ -18,9 +19,9 @@ public:
     explicit SettingsDialog(QWidget *parent = nullptr);
     ~SettingsDialog();
 
-    void setGeminiStyle(GeminiStyle const & style);
+    void setGeminiStyle(DocumentStyle const & style);
 
-    GeminiStyle geminiStyle() const {
+    DocumentStyle geminiStyle() const {
         return current_style;
     }
 
@@ -72,6 +73,10 @@ private slots:
 
     void on_page_margin_valueChanged(double arg1);
 
+    void on_presets_currentIndexChanged(int index);
+
+    void on_preset_new_clicked();
+
 private:
     void reloadStylePreview();
 
@@ -82,7 +87,7 @@ private:
 private:
     Ui::SettingsDialog *ui;
 
-    GeminiStyle current_style;
+    DocumentStyle current_style;
     std::unique_ptr<QTextDocument> preview_document;
 };
 
