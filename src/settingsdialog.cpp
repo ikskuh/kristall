@@ -20,6 +20,10 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     this->ui->auto_theme->addItem("Dark Theme", QVariant::fromValue<int>(GeminiStyle::AutoDarkTheme));
     this->ui->auto_theme->addItem("Light Theme", QVariant::fromValue<int>(GeminiStyle::AutoLightTheme));
 
+    this->ui->ui_theme->clear();
+    this->ui->ui_theme->addItem("Light", QVariant::fromValue<QString>("light"));
+    this->ui->ui_theme->addItem("Dark", QVariant::fromValue<QString>("dark"));
+
     setGeminiStyle(GeminiStyle { });
 }
 
@@ -114,7 +118,23 @@ void SettingsDialog::setProtocols(ProtocolSetup const & protocols)
 #define M(X) \
     this->ui->enable_##X->setChecked(protocols.X);
     PROTOCOLS(M)
-#undef M
+        #undef M
+}
+
+QString SettingsDialog::uiTheme() const
+{
+    return this->ui->ui_theme->currentData().toString();
+}
+
+void SettingsDialog::setUiTheme(const QString &theme)
+{
+    if(theme == "light")
+        this->ui->ui_theme->setCurrentIndex(0);
+    else if(theme == "dark")
+        this->ui->ui_theme->setCurrentIndex(1);
+    else
+        this->ui->ui_theme->setCurrentIndex(0);
+
 }
 
 void SettingsDialog::reloadStylePreview()
@@ -144,10 +164,13 @@ Plain text document here.
     if(host.length() == 0)
         host = "preview";
 
+    QUrl url { QUrl(QString("about://%1/foobar").arg(host)) };
+
     DocumentOutlineModel outline;
-    auto doc = GeminiRenderer { current_style }.render(
+    auto doc = GeminiRenderer::render(
         document,
-        QUrl(QString("about://%1/foobar").arg(host)),
+        url,
+        current_style.derive(url),
         outline
     );
 

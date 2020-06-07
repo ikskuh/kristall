@@ -47,6 +47,10 @@ struct GeminiStyle
     //! Create a new style with auto-generated colors for the given
     //! url. The colors are based on the host name
     GeminiStyle derive(QUrl const & url) const;
+
+    //! Converts this style into a CSS document for
+    //! non-gemini rendered files.
+    QString toStyleSheet() const;
 };
 
 class GeminiDocument :
@@ -60,15 +64,19 @@ public:
     QColor background_color;
 };
 
-class GeminiRenderer
+struct GeminiRenderer
 {
-    GeminiStyle style;
-public:
-    GeminiRenderer(GeminiStyle const & style = GeminiStyle{});
+    GeminiRenderer() = delete;
 
-    std::unique_ptr<GeminiDocument> render(
+    //! Renders the given byte sequence into a GeminiDocument.
+    //! @param input    The utf8 encoded input string
+    //! @param root_url The url that is used to resolve relative links
+    //! @param style    The style which is used to render the document
+    //! @param outline  The extracted outline from the document
+    static std::unique_ptr<GeminiDocument> render(
         QByteArray const & input,
         QUrl const & root_url,
+        GeminiStyle const & style,
         DocumentOutlineModel & outline
     );
 };

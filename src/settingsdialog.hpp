@@ -30,6 +30,9 @@ public:
     ProtocolSetup protocols() const;
     void setProtocols(ProtocolSetup const & proto);
 
+    QString uiTheme() const;
+    void setUiTheme(QString const & theme);
+
 private slots:
     void on_std_change_font_clicked();
 

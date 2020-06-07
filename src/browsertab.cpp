@@ -199,29 +199,40 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
 
     this->outline.clear();
 
+    auto doc_style = mainWindow->current_style.derive(this->current_location);
+
+    this->ui->text_browser->setStyleSheet(QString("QTextBrowser { background-color: %1; }").arg(doc_style.background_color.name()));
+
     if(mime.startsWith("text/gemini")) {
 
-        auto doc= GeminiRenderer{ mainWindow->current_style }.render(data, this->current_location, this->outline);
-        this->ui->text_browser->setStyleSheet(QString("QTextBrowser { background-color: %1; }").arg(doc->background_color.name()));
+        auto doc= GeminiRenderer::render(
+            data,
+            this->current_location,
+            doc_style,
+            this->outline);
 
         document  = std::move(doc);
     }
     else if(mime.startsWith("text/html")) {
         document = std::make_unique<QTextDocument>();
+
+        document->setDefaultFont(doc_style.standard_font);
+        document->setDefaultStyleSheet(doc_style.toStyleSheet());
         document->setHtml(QString::fromUtf8(data));
     }
 #if defined(QT_FEATURE_textmarkdownreader)
     else if(mime.startsWith("text/markdown")) {
         document = std::make_unique<QTextDocument>();
+        document->setDefaultFont(doc_style.standard_font);
+        document->setDefaultStyleSheet(doc_style.toStyleSheet());
+
         document->setMarkdown(QString::fromUtf8(data));
     }
 #endif
     else if(mime.startsWith("text/")) {
-        QFont monospace;
-        monospace.setFamily("monospace");
-
         document = std::make_unique<QTextDocument>();
-        document->setDefaultFont(monospace);
+        document->setDefaultFont(doc_style.standard_font);
+        document->setDefaultStyleSheet(doc_style.toStyleSheet());
         document->setPlainText(QString::fromUtf8(data));
     }
     else if(mime.startsWith("image/")) {

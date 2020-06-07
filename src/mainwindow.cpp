@@ -7,9 +7,12 @@
 #include <memory>
 #include <QShortcut>
 #include <QKeySequence>
+#include <QFile>
+#include <QTextStream>
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     QMainWindow(parent),
+    application(app),
     settings("xqTechnologies", "Kristall"),
     ui(new Ui::MainWindow),
     url_status(new QLabel())
@@ -60,6 +63,8 @@ MainWindow::MainWindow(QWidget *parent) :
         }
         settings.endGroup();
     }
+
+    reloadTheme();
 }
 
 MainWindow::~MainWindow()
@@ -206,6 +211,7 @@ void MainWindow::on_actionSettings_triggered()
     dialog.setGeminiStyle(this->current_style);
     dialog.setStartPage(this->settings.value("start_page").toString());
     dialog.setProtocols(this->protocols);
+    dialog.setUiTheme(this->settings.value("theme").toString());
 
     if(dialog.exec() != QDialog::Accepted)
         return;
@@ -214,9 +220,13 @@ void MainWindow::on_actionSettings_triggered()
         this->settings.setValue("start_page", url.toString());
     }
 
+    this->settings.setValue("theme", dialog.uiTheme());
+
     this->protocols = dialog.protocols();
     this->current_style = dialog.geminiStyle();
     this->saveSettings();
+
+    this->reloadTheme();
 }
 
 void MainWindow::on_actionNew_Tab_triggered()
@@ -276,4 +286,26 @@ void MainWindow::on_actionRefresh_triggered()
 void MainWindow::on_actionAbout_Qt_triggered()
 {
     QMessageBox::aboutQt(this, "Kristall");
+}
+
+void MainWindow::reloadTheme()
+{
+    QString theme = settings.value("theme").toString();
+    if(theme.isEmpty())
+        theme = "light";
+
+    if(theme == "light")
+    {
+        QFile file(":/light.qss");
+        file.open(QFile::ReadOnly | QFile::Text);
+        QTextStream stream(&file);
+        application->setStyleSheet(stream.readAll());
+    }
+    else if(theme == "dark")
+    {
+        QFile file(":/dark.qss");
+        file.open(QFile::ReadOnly | QFile::Text);
+        QTextStream stream(&file);
+        application->setStyleSheet(stream.readAll());
+    }
 }

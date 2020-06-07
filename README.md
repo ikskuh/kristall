@@ -99,6 +99,12 @@ Just use QtCreator to build `./src/kristall.pro`. Default settings should be fin
    - [ ] For favourites
    - [ ] For documents
   - [ ] Image Zoom and Pan
-  - [ ] Light/Dark theme for Qt widgets
-  - [ ] HTML CSS
+  - [x] Light/Dark theme for Qt widgets
+  - [x] HTML CSS
   - [ ] Save/load/share theme preset
+  - [ ] Improve Unicode/Emoji support
+  
+## Bugs
+  
+> <styan> xq: When using torsocks(1) on kristall QNetworkInterface complains loudly about not being permitted to create an IPv6 socket..
+

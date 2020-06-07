@@ -21,7 +21,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QApplication * app, QWidget *parent = nullptr);
     ~MainWindow();
 
     BrowserTab * addEmptyTab(bool focus_new, bool load_default);
@@ -67,7 +67,11 @@ private slots:
 
     void on_actionAbout_Qt_triggered();
 
+private:
+    void reloadTheme();
+
 public:
+    QApplication * application;
     QSettings settings;
     GeminiStyle current_style;
     ProtocolSetup protocols;

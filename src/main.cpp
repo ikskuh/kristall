@@ -6,12 +6,11 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow w;
+    QApplication app(argc, argv);
 
-    // w.addNewTab(true, QUrl("gemini://gemini.circumlunar.space/"));
+    MainWindow w(&app);
     w.addEmptyTab(true, true);
-
     w.show();
-    return a.exec();
+
+    return app.exec();
 }

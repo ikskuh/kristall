@@ -151,6 +151,7 @@ int DocumentOutlineModel::rowCount(const QModelIndex &parent) const
 
 int DocumentOutlineModel::columnCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent)
     return 1;
 }
 
@@ -188,7 +189,7 @@ DocumentOutlineModel::Node & DocumentOutlineModel::ensureLevel2()
     auto & parent = ensureLevel1();
 
     if(parent.children.size() == 0) {
-        root.children.append(Node {
+        parent.children.append(Node {
             &parent,
             "<missing layer>", "",
             2, 0,
