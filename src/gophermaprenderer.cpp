@@ -152,6 +152,7 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
                 qDebug() << line << dst_url;
             }
 
+            cursor.insertText("[" + icon + "] ", standard);
 
             QTextCharFormat fmt = standard_link;
             fmt.setAnchor(true);

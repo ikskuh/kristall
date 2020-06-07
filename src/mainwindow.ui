@@ -193,6 +193,8 @@
      <string>File</string>
     </property>
     <addaction name="actionNew_Tab"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave_as"/>
     <addaction name="actionClose_Tab"/>
     <addaction name="separator"/>
     <addaction name="actionSettings"/>
@@ -219,6 +221,8 @@
     <addaction name="actionForward"/>
     <addaction name="separator"/>
     <addaction name="actionRefresh"/>
+    <addaction name="separator"/>
+    <addaction name="actionAdd_to_favourites"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuNavigation"/>
@@ -299,6 +303,34 @@
   <action name="actionAbout_Qt">
    <property name="text">
     <string>About Qt...</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionSave_as">
+   <property name="text">
+    <string>Save as...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionAdd_to_favourites">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/heart.svg</normaloff>:/icons/heart.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Add to favourites</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
    </property>
   </action>
  </widget>

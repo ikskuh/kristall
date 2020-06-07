@@ -25,7 +25,7 @@ A high-quality visual cross-platform gemini browser.
   - [x] HTTP
   - [x] HTTPS
   - [ ] [Finger](https://tools.ietf.org/html/rfc1288) (planned)
-  - [ ] [Gopher](https://tools.ietf.org/html/rfc1436) (planned)
+  - [x] [Gopher](https://tools.ietf.org/html/rfc1436) (WIP)
 - Crossplatform supports
   - Linux
   - Windows
@@ -95,11 +95,13 @@ Just use QtCreator to build `./src/kristall.pro`. Default settings should be fin
   - [ ] Gopher
     - [x] gopher://gopher.black
     - [ ] Improve gophermap rendering with icons for media types
+    - [ ] Support more media types (include uudecode and hexbin decoder)
 - [ ] Improve UX
   - [ ] Rightclick with "open in new tab" and "open in this tab"
    - [ ] For history
    - [ ] For favourites
    - [ ] For documents
+  - [ ] Add *Navigation*→*Home* to navigate to the start page
   - [ ] Image Zoom and Pan
   - [ ] Save/load/share theme preset
   - [ ] Improve Unicode/Emoji support
@@ -107,8 +109,11 @@ Just use QtCreator to build `./src/kristall.pro`. Default settings should be fin
   - [ ] Add option for some markdownish features
     - [ ] `*bold*`
     - [ ] `_underline_`
-  - [ ] Allow users to download files they loaded
+  - [ ] Implement Ctrl+D/*Add to favourites* menu item
+  - [ ] Implement Ctrl+S/*Save as...* menu item
 - [ ] Add download manager
+  - [ ] Allow users to save files to desktop
+  - [ ] Add display for "non-recognized files"
 
 ## Bugs
   

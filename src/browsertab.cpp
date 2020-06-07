@@ -197,15 +197,29 @@ void BrowserTab::on_requestFailed(const QString &reason)
     this->setErrorMessage(QString("Request failed:\n%1").arg(reason));
 }
 
+QString size_human(int size)
+{
+    float num = size;
+    QStringList list;
+    list << "KB" << "MB" << "GB" << "TB";
+
+    QStringListIterator i(list);
+    QString unit("bytes");
+
+    while(num >= 1024.0 && i.hasNext())
+     {
+        unit = i.next();
+        num /= 1024.0;
+    }
+    return QString().setNum(num,'f',2)+" "+unit;
+}
+
 void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
 {
     qDebug() << "Loaded" << data.length() << "bytes of type" << mime;
 
     this->graphics_scene.clear();
     this->ui->text_browser->setText("");
-
-    this->ui->text_browser->setVisible(mime.startsWith("text/"));
-    this->ui->graphics_browser->setVisible(mime.startsWith("image/"));
 
     ui->text_browser->setStyleSheet("");
 
@@ -268,9 +282,26 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
 
     }
     else {
-        this->ui->text_browser->setVisible(true);
-        this->ui->text_browser->setText(QString("Unsupported Mime: %1").arg(mime));
+        document = std::make_unique<QTextDocument>();
+        document->setDefaultFont(doc_style.standard_font);
+        document->setDefaultStyleSheet(doc_style.toStyleSheet());
+
+        document->setMarkdown(QString(R"md(You accessed an unsupported media type!
+
+Use the *File* menu to save the file to your local disk or navigate somewhere else. I cannot display this for you. ☹
+
+Info:
+```
+MIME Type: %1
+File Size: %2
+```
+)md").arg(mime).arg(size_human(data.size())));
     }
+
+
+    this->ui->text_browser->setVisible(document != nullptr);
+    this->ui->graphics_browser->setVisible(document == nullptr);
+
 
     this->ui->text_browser->setDocument(document.get());
     this->current_document = std::move(document);
