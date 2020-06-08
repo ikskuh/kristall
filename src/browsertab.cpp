@@ -292,6 +292,13 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
             this->current_location,
             doc_style);
     }
+    else if(not plaintext_only and mime.startsWith("text/finger")) {
+        document = std::make_unique<QTextDocument>();
+
+        document->setDefaultFont(doc_style.preformatted_font);
+        document->setDefaultStyleSheet(doc_style.toStyleSheet());
+        document->setPlainText(QString::fromUtf8(data));
+    }
     else if(not plaintext_only and mime.startsWith("text/html")) {
         document = std::make_unique<QTextDocument>();
 

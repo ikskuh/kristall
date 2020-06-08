@@ -58,7 +58,7 @@ void FingerClient::on_finished()
 {
     if(not was_cancelled)
     {
-        emit this->requestComplete(this->body, "text/plain");
+        emit this->requestComplete(this->body, "text/finger");
         was_cancelled = true;
     }
     body.clear();

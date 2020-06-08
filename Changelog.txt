@@ -1,7 +1,5 @@
 Kristall Changelog
-==
-
-
+==================
 
 == 0.2
 - Implement Ctrl+D/*Add to favourites* menu item
