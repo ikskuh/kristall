@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include "browsertab.hpp"
 #include "settingsdialog.hpp"
-
+#include <cassert>
 #include <QMessageBox>
 #include <memory>
 #include <QShortcut>

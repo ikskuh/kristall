@@ -1,5 +1,5 @@
 #include "geminiclient.hpp"
-
+#include <cassert>
 #include <QDebug>
 
 GeminiClient::GeminiClient(QObject *parent) : QObject(parent)

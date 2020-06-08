@@ -4,7 +4,7 @@
 #include "geminirenderer.hpp"
 #include "settingsdialog.hpp"
 #include "gophermaprenderer.hpp"
-
+#include <cassert>
 #include <QTabWidget>
 #include <QMenu>
 #include <QMessageBox>

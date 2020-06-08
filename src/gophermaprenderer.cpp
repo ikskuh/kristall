@@ -1,5 +1,5 @@
 #include "gophermaprenderer.hpp"
-
+#include <cassert>
 #include <QTextList>
 #include <QTextBlock>
 #include <QList>

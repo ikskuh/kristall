@@ -1,5 +1,5 @@
 #include "documentstyle.hpp"
-
+#include <cassert>
 #include <QDebug>
 #include <QString>
 #include <QStringList>

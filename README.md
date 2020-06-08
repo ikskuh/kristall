@@ -125,6 +125,12 @@ Just use QtCreator to build `./src/kristall.pro`. Default settings should be fin
   
 > <styan> xq: When using torsocks(1) on kristall QNetworkInterface complains loudly about not being permitted to create an IPv6 socket..
 
-- Include <memory> in browsertab.hpp
-- Build "document not found message" without markdown
-- DocumentOutlineModel needs to include <cassert>
+> Build on MacOS outputs kristall.app, not kristall
+> Same for windows probably with kristall.exe
+> <IceMichael> ah, ist unter mac ein kristall.app
+
+MAC needs different default font
+
+https://usercontent.irccloud-cdn.com/file/OrkuXDfQ/image.png
+
+<IceMichael> Andale Mono, falls du das für mac irgendwie voreinstellen willst (aber kA, ob die überall diese ist)

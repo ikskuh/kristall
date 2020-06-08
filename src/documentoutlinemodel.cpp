@@ -1,5 +1,5 @@
 #include "documentoutlinemodel.hpp"
-
+#include <cassert>
 #include <QModelIndex>
 
 DocumentOutlineModel::DocumentOutlineModel() :
