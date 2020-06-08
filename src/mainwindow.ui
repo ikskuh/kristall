@@ -217,6 +217,7 @@
     <property name="title">
      <string>Navigation</string>
     </property>
+    <addaction name="actionGo_to_home"/>
     <addaction name="actionBackward"/>
     <addaction name="actionForward"/>
     <addaction name="separator"/>
@@ -305,12 +306,11 @@
     <string>About Qt...</string>
    </property>
   </action>
-  <action name="actionSave">
-   <property name="text">
-    <string>Save</string>
-   </property>
-  </action>
   <action name="actionSave_as">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/content-save.svg</normaloff>icons/content-save.svg</iconset>
+   </property>
    <property name="text">
     <string>Save as...</string>
    </property>
@@ -331,6 +331,15 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionGo_to_home">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/home.svg</normaloff>icons/home.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Go to home</string>
    </property>
   </action>
  </widget>

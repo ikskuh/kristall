@@ -27,6 +27,8 @@ private slots:
 
     void on_media_positionChanged(qint64 pos);
 
+    void on_media_playbackChanged(QMediaPlayer::State);
+
 private:
     Ui::MediaPlayer *ui;
     QBuffer media_stream;

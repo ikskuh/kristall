@@ -37,6 +37,7 @@ bool ProtocolSetup::isSchemeSupported(QString const & _scheme) const
 
     // built-in schemes:
     if(scheme == "about") return true;
+    if(scheme == "file")  return true;
 
     return false;
 }

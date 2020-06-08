@@ -111,11 +111,7 @@ Just use QtCreator to build `./src/kristall.pro`. Default settings should be fin
   - [ ] Add option for some markdownish features
     - [ ] `*bold*`
     - [ ] `_underline_`
-  - [ ] Implement Ctrl+D/*Add to favourites* menu item
-  - [ ] Implement Ctrl+S/*Save as...* menu item
-- [ ] Add download manager
-  - [ ] Allow users to save files to desktop
-  - [ ] Add display for "non-recognized files"
+  - [ ] Option: "Display text/* as plain text"
 
 ## Bugs
   

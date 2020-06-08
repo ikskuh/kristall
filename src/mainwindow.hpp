@@ -67,6 +67,12 @@ private slots:
 
     void on_actionAbout_Qt_triggered();
 
+    void on_actionSave_as_triggered();
+
+    void on_actionGo_to_home_triggered();
+
+    void on_actionAdd_to_favourites_triggered();
+
 private:
     void reloadTheme();
 

@@ -4,6 +4,7 @@
 #include <QMediaContent>
 #include <QToolButton>
 #include <QTime>
+#include <QIcon>
 
 MediaPlayer::MediaPlayer(QWidget *parent) :
     QWidget(parent),
@@ -19,8 +20,9 @@ MediaPlayer::MediaPlayer(QWidget *parent) :
     connect(&this->player, &QMediaPlayer::positionChanged, this->ui->media_progress, &QSlider::setValue);
 
     connect(&this->player, &QMediaPlayer::audioAvailableChanged, this->ui->mute_button, &QToolButton::setEnabled);
-    connect(&this->player, &QMediaPlayer::videoAvailableChanged, this->ui->video_out, &QVideoWidget::setVisible);
+    // connect(&this->player, &QMediaPlayer::videoAvailableChanged, this->ui->video_out, &QVideoWidget::setVisible);
 
+    connect(&this->player, &QMediaPlayer::stateChanged, this, &MediaPlayer::on_media_playbackChanged);
     connect(&this->player, &QMediaPlayer::mediaStatusChanged, [](QMediaPlayer::MediaStatus status) {
         qDebug() << "media status changed" << status;
     });
@@ -69,4 +71,11 @@ void MediaPlayer::on_media_positionChanged(qint64 pos)
     auto time = QTime::fromMSecsSinceStartOfDay(pos);
 
     this->ui->media_position->setText(time.toString());
+}
+
+void MediaPlayer::on_media_playbackChanged(QMediaPlayer::State status)
+{
+    this->ui->playpause_button->setIcon(QIcon(
+        (status == QMediaPlayer::PlayingState) ? ":/icons/pause.svg" : ":/icons/play.svg"
+    ));
 }

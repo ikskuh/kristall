@@ -12,6 +12,9 @@
 #include <QDockWidget>
 #include <QImage>
 #include <QPixmap>
+#include <QFile>
+#include <QMimeDatabase>
+#include <QMimeType>
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
@@ -41,7 +44,6 @@ BrowserTab::BrowserTab(MainWindow * mainWindow) :
 
     connect(&gopher_client, &GopherClient::requestComplete, this, &BrowserTab::on_requestComplete);
     connect(&gopher_client, &GopherClient::requestFailed, this, &BrowserTab::on_requestFailed);
-
 
     this->updateUI();
 
@@ -98,6 +100,23 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
     else if(url.scheme() == "gopher")
     {
         gopher_client.startRequest(url);
+    }
+    else if(url.scheme() == "file")
+    {
+        QFile file { url.path() };
+
+        if(file.open(QFile::ReadOnly))
+        {
+            QMimeDatabase db;
+            auto mime = db.mimeTypeForUrl(url).name();
+            auto data = file.readAll();
+            qDebug() << "database:" << url << mime;
+            this->on_requestComplete(data, mime);
+        }
+        else
+        {
+
+        }
     }
     else if(url.scheme() == "about")
     {
@@ -177,6 +196,22 @@ void BrowserTab::reloadPage()
         this->navigateTo(this->current_location, DontPush);
 }
 
+void BrowserTab::toggleIsFavourite()
+{
+    toggleIsFavourite(not this->ui->fav_button->isChecked());
+}
+
+void BrowserTab::toggleIsFavourite(bool isFavourite)
+{
+    if(isFavourite) {
+        this->mainWindow->favourites.add(this->current_location);
+    } else {
+        this->mainWindow->favourites.remove(this->current_location);
+    }
+
+    this->updateUI();
+}
+
 void BrowserTab::on_url_bar_returnPressed()
 {
     QUrl url { this->ui->url_bar->text() };
@@ -218,6 +253,9 @@ QString size_human(int size)
 void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
 {
     qDebug() << "Loaded" << data.length() << "bytes of type" << mime;
+
+    this->current_mime = mime;
+    this->current_buffer = data;
 
     this->graphics_scene.clear();
     this->ui->text_browser->setText("");
@@ -462,13 +500,7 @@ void BrowserTab::pushToHistory(const QUrl &url)
 
 void BrowserTab::on_fav_button_clicked()
 {
-    if(this->ui->fav_button->isChecked()) {
-        this->mainWindow->favourites.add(this->current_location);
-    } else {
-        this->mainWindow->favourites.remove(this->current_location);
-    }
-
-    this->updateUI();
+    toggleIsFavourite(this->ui->fav_button->isChecked());
 }
 
 

@@ -46,6 +46,10 @@ public:
 
     void reloadPage();
 
+    void toggleIsFavourite();
+
+    void toggleIsFavourite(bool isFavourite);
+
 signals:
     void titleChanged(QString const & title);
     void locationChanged(QUrl const & url);
@@ -95,7 +99,6 @@ private:
     void pushToHistory(QUrl const & url);
 
     void updateUI();
-
 public:
 
     Ui::BrowserTab *ui;
@@ -116,6 +119,9 @@ public:
     QModelIndex current_history_index;
 
     std::unique_ptr<QTextDocument> current_document;
+
+    QByteArray current_buffer;
+    QString current_mime;
 };
 
 #endif // BROWSERTAB_HPP

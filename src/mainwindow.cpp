@@ -9,6 +9,7 @@
 #include <QKeySequence>
 #include <QFile>
 #include <QTextStream>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     QMainWindow(parent),
@@ -44,6 +45,13 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
         act->setData(QVariant::fromValue(dock));
         connect(act, QOverload<bool>::of(&QAction::triggered), dock, &QDockWidget::setVisible);
     }
+
+    connect(this->ui->menuNavigation, &QMenu::aboutToShow, [this]() {
+        BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+        if(tab != nullptr) {
+            ui->actionAdd_to_favourites->setChecked(this->favourites.contains(tab->current_location));
+        }
+    });
 
     connect(this->ui->menuView, &QMenu::aboutToShow, [this]() {
         for(QAction * act : this->ui->menuView->actions())
@@ -307,5 +315,32 @@ void MainWindow::reloadTheme()
         file.open(QFile::ReadOnly | QFile::Text);
         QTextStream stream(&file);
         application->setStyleSheet(stream.readAll());
+    }
+}
+
+void MainWindow::on_actionSave_as_triggered()
+{
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if(tab != nullptr) {
+        QFileDialog::saveFileContent(
+            tab->current_buffer,
+            tab->current_location.fileName()
+        );
+    }
+}
+
+void MainWindow::on_actionGo_to_home_triggered()
+{
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if(tab != nullptr) {
+        tab->navigateTo(QUrl(this->settings.value("start_page").toString()), BrowserTab::PushAfterSuccess);
+    }
+}
+
+void MainWindow::on_actionAdd_to_favourites_triggered()
+{
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if(tab != nullptr) {
+        tab->toggleIsFavourite();
     }
 }
