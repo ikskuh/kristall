@@ -12,6 +12,7 @@ Kristall Changelog
 - Added support for video/* and audio/* via QMediaPlayer
 - Added support for file:// scheme
 - Added status bar with loading time, file size and mime type
+- Added support for command line arguments
 
 == 0.1
 - Initial release

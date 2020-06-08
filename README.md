@@ -105,8 +105,6 @@ Just use QtCreator to build `./src/kristall.pro`. Default settings should be fin
     - [ ] Improve gophermap rendering with icons for media types
     - [ ] Support more media types (include uudecode and hexbin decoder)
 - [ ] Improve UX
-  - [ ] Add command line options to open URLs directly
-  - [ ] Add support for `file://` media type
   - [ ] Rightclick with "open in new tab" and "open in this tab"
    - [ ] For history
    - [ ] For favourites
@@ -120,7 +118,7 @@ Just use QtCreator to build `./src/kristall.pro`. Default settings should be fin
     - [ ] `*bold*`
     - [ ] `_underline_`
   - [ ] Option: "Display text/* as plain text"
-
+  - [ ] Option: Gopher Map with text marker instead of icons
 ## Bugs
   
 > <styan> xq: When using torsocks(1) on kristall QNetworkInterface complains loudly about not being permitted to create an IPv6 socket..
