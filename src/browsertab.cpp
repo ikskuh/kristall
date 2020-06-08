@@ -45,6 +45,7 @@ BrowserTab::BrowserTab(MainWindow * mainWindow) :
 
     this->updateUI();
 
+    this->ui->media_browser->setVisible(false);
     this->ui->graphics_browser->setVisible(false);
     this->ui->text_browser->setVisible(true);
 
@@ -223,6 +224,9 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
 
     ui->text_browser->setStyleSheet("");
 
+    enum DocumentType { Text, Image, Media };
+
+    DocumentType doc_type = Text;
     std::unique_ptr<QTextDocument> document;
 
     this->outline.clear();
@@ -267,6 +271,7 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
         document->setPlainText(QString::fromUtf8(data));
     }
     else if(mime.startsWith("image/")) {
+        doc_type = Image;
 
         QImage img;
         if(img.loadFromData(data, nullptr))
@@ -279,7 +284,10 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
         }
 
         this->ui->graphics_browser->fitInView(graphics_scene.sceneRect(), Qt::KeepAspectRatio);
-
+    }
+    else if(mime.startsWith("video/") or mime.startsWith("audio/")) {
+        doc_type = Media;
+        this->ui->media_browser->setMedia(data, this->current_location, mime);
     }
     else {
         document = std::make_unique<QTextDocument>();
@@ -298,10 +306,11 @@ File Size: %2
 )md").arg(mime).arg(size_human(data.size())));
     }
 
+    assert((document != nullptr) == (doc_type == Text));
 
-    this->ui->text_browser->setVisible(document != nullptr);
-    this->ui->graphics_browser->setVisible(document == nullptr);
-
+    this->ui->text_browser->setVisible(doc_type == Text);
+    this->ui->graphics_browser->setVisible(doc_type == Image);
+    this->ui->media_browser->setVisible(doc_type == Media);
 
     this->ui->text_browser->setDocument(document.get());
     this->current_document = std::move(document);

@@ -1,6 +1,6 @@
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets network
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets network multimedia multimediawidgets
 
 CONFIG += c++17
 
@@ -30,6 +30,7 @@ SOURCES += \
     ioutil.cpp \
     main.cpp \
     mainwindow.cpp \
+    mediaplayer.cpp \
     protocolsetup.cpp \
     settingsdialog.cpp \
     tabbrowsinghistory.cpp \
@@ -46,6 +47,7 @@ HEADERS += \
     gophermaprenderer.hpp \
     ioutil.hpp \
     mainwindow.hpp \
+    mediaplayer.hpp \
     protocolsetup.hpp \
     settingsdialog.hpp \
     tabbrowsinghistory.hpp \
@@ -54,6 +56,7 @@ HEADERS += \
 FORMS += \
     browsertab.ui \
     mainwindow.ui \
+    mediaplayer.ui \
     settingsdialog.ui
 
 TRANSLATIONS += \

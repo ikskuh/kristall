@@ -97,6 +97,8 @@ Just use QtCreator to build `./src/kristall.pro`. Default settings should be fin
     - [ ] Improve gophermap rendering with icons for media types
     - [ ] Support more media types (include uudecode and hexbin decoder)
 - [ ] Improve UX
+  - [ ] Add command line options to open URLs directly
+  - [ ] Add support for `file://` media type
   - [ ] Rightclick with "open in new tab" and "open in this tab"
    - [ ] For history
    - [ ] For favourites
