@@ -33,5 +33,6 @@
         <file>icons/gopher/sound.svg</file>
         <file>icons/gopher/telnet.svg</file>
         <file>icons/gopher/text.svg</file>
+        <file>icons/info.svg</file>
     </qresource>
 </RCC>

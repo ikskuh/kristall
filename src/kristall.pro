@@ -46,6 +46,7 @@ HEADERS += \
     gopherclient.hpp \
     gophermaprenderer.hpp \
     ioutil.hpp \
+    kristall.hpp \
     mainwindow.hpp \
     mediaplayer.hpp \
     protocolsetup.hpp \

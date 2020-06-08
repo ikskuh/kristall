@@ -77,6 +77,8 @@ private slots:
 
     void on_preset_new_clicked();
 
+    void on_SettingsDialog_accepted();
+
 private:
     void reloadStylePreview();
 

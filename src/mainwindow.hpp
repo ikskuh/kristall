@@ -80,7 +80,6 @@ private:
 
 public:
     QApplication * application;
-    QSettings settings;
     DocumentStyle current_style;
     ProtocolSetup protocols;
 

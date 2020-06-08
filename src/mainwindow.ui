@@ -231,6 +231,10 @@
    <addaction name="menuHelp"/>
   </widget>
   <action name="actionAbout">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/info.svg</normaloff>:/icons/info.svg</iconset>
+   </property>
    <property name="text">
     <string>About...</string>
    </property>
@@ -249,6 +253,10 @@
    </property>
   </action>
   <action name="actionClose_Tab">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/close.svg</normaloff>:/icons/close.svg</iconset>
+   </property>
    <property name="text">
     <string>Close Tab</string>
    </property>
@@ -308,8 +316,8 @@
   </action>
   <action name="actionSave_as">
    <property name="icon">
-    <iconset>
-     <normaloff>icons/content-save.svg</normaloff>icons/content-save.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/content-save.svg</normaloff>:/icons/content-save.svg</iconset>
    </property>
    <property name="text">
     <string>Save as...</string>
@@ -335,8 +343,8 @@
   </action>
   <action name="actionGo_to_home">
    <property name="icon">
-    <iconset>
-     <normaloff>icons/home.svg</normaloff>icons/home.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/home.svg</normaloff>:/icons/home.svg</iconset>
    </property>
    <property name="text">
     <string>Go to home</string>

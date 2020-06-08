@@ -6,6 +6,8 @@
 #include <QSettings>
 #include <QInputDialog>
 
+#include "kristall.hpp"
+
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SettingsDialog),
@@ -28,7 +30,24 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
     setGeminiStyle(DocumentStyle { });
 
-//    QSettings settings;
+    if(global_settings.value("gophermap_display").toString() == "text") {
+        this->ui->gophermap_text->setChecked(true);
+    } else {
+        this->ui->gophermap_icon->setChecked(true);
+    }
+
+    if(global_settings.value("text_display").toString() == "plain") {
+        this->ui->fancypants_off->setChecked(true);
+    } else {
+        this->ui->fancypants_on->setChecked(true);
+    }
+
+    if(global_settings.value("text_decoration").toBool()) {
+        this->ui->texthl_on->setChecked(true);
+    } else {
+        this->ui->texthl_off->setChecked(true);
+    }
+
 //    settings.beginGroup("Themes");
 //    int items = settings.beginReadArray("Themes");
 
@@ -345,4 +364,11 @@ void SettingsDialog::on_preset_new_clicked()
 
 
 
+}
+
+void SettingsDialog::on_SettingsDialog_accepted()
+{
+    global_settings.setValue("gophermap_display", this->ui->gophermap_text->isChecked() ? "text" : "rendered");
+    global_settings.setValue("text_display", this->ui->fancypants_off->isChecked() ? "plain" : "fancy");
+    global_settings.setValue("text_decoration", this->ui->texthl_on->isChecked());
 }

@@ -24,6 +24,16 @@
        <string>Generic</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_15">
+         <property name="text">
+          <string>UI Theme</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="ui_theme"/>
+       </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_14">
          <property name="text">
@@ -88,30 +98,109 @@
            </property>
           </widget>
          </item>
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
         </layout>
        </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_15">
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_19">
          <property name="text">
-          <string>UI Theme</string>
+          <string>Text Rendering</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="ui_theme"/>
+       <item row="3" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QRadioButton" name="fancypants_on">
+           <property name="text">
+            <string>Fancy</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">textRenderingBtnGroup</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="fancypants_off">
+           <property name="text">
+            <string>Always plain text</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">textRenderingBtnGroup</string>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_18">
+         <property name="text">
+          <string>Enable text highlights</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QRadioButton" name="texthl_on">
+           <property name="text">
+            <string>On</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">textHighlightsBtnGroup</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="texthl_off">
+           <property name="text">
+            <string>Off</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">textHighlightsBtnGroup</string>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_20">
+         <property name="text">
+          <string>Gopher Map</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QRadioButton" name="gophermap_icon">
+           <property name="text">
+            <string>Use icons</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">gophermapBtnGroup</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="gophermap_text">
+           <property name="text">
+            <string>Use text only</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">gophermapBtnGroup</string>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -692,4 +781,9 @@
    </hints>
   </connection>
  </connections>
+ <buttongroups>
+  <buttongroup name="textRenderingBtnGroup"/>
+  <buttongroup name="textHighlightsBtnGroup"/>
+  <buttongroup name="gophermapBtnGroup"/>
+ </buttongroups>
 </ui>

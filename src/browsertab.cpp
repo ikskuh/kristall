@@ -5,6 +5,7 @@
 #include "settingsdialog.hpp"
 #include "gophermaprenderer.hpp"
 #include "ioutil.hpp"
+#include "kristall.hpp"
 
 #include <cassert>
 #include <QTabWidget>
@@ -260,20 +261,22 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
 
     this->ui->text_browser->setStyleSheet(QString("QTextBrowser { background-color: %1; }").arg(doc_style.background_color.name()));
 
-    if(mime.startsWith("text/gemini")) {
+    bool plaintext_only = (global_settings.value("text_display").toString() == "plain");
+
+    if(not plaintext_only and mime.startsWith("text/gemini")) {
         document = GeminiRenderer::render(
             data,
             this->current_location,
             doc_style,
             this->outline);
     }
-    else if(mime.startsWith("text/gophermap")) {
+    else if(not plaintext_only and mime.startsWith("text/gophermap")) {
         document = GophermapRenderer::render(
             data,
             this->current_location,
             doc_style);
     }
-    else if(mime.startsWith("text/html")) {
+    else if(not plaintext_only and mime.startsWith("text/html")) {
         document = std::make_unique<QTextDocument>();
 
         document->setDefaultFont(doc_style.standard_font);
@@ -281,7 +284,7 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
         document->setHtml(QString::fromUtf8(data));
     }
 #if defined(QT_FEATURE_textmarkdownreader)
-    else if(mime.startsWith("text/markdown")) {
+    else if(not plaintext_only and mime.startsWith("text/markdown")) {
         document = std::make_unique<QTextDocument>();
         document->setDefaultFont(doc_style.standard_font);
         document->setDefaultStyleSheet(doc_style.toStyleSheet());

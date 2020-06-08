@@ -4,6 +4,9 @@
 #include <QTextBlock>
 #include <QList>
 #include <QStringList>
+#include <QDebug>
+
+#include "kristall.hpp"
 
 static QByteArray trim_whitespace(QByteArray items)
 {
@@ -64,9 +67,10 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
     std::unique_ptr<GeminiDocument> result = std::make_unique<GeminiDocument>();
     result->setDocumentMargin(themed_style.margin);
     result->background_color = themed_style.background_color;
-
-
     result->setDefaultTextOption(no_wrap);
+
+
+    bool emit_fancy_text = global_settings.value("text_decoration").toBool();
 
     QTextCursor cursor{result.get()};
 
@@ -228,6 +232,10 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
             }
             else
             {
+                if(emit_fancy_text)
+                {
+                    qDebug() << "implement fancy text emission!";
+                }
                 cursor.insertText(line + "\n", standard);
             }
         }

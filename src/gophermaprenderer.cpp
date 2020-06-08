@@ -9,6 +9,8 @@
 #include <QDebug>
 #include <QImage>
 
+#include "kristall.hpp"
+
 //Canonical Types
 //0   Text File
 //1   Gopher submenu or link to another gopher server
@@ -43,21 +45,26 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
     external_link.setFont(themed_style.standard_font);
     external_link.setForeground(QBrush(themed_style.external_link_color));
 
+    bool emit_text_only = (global_settings.value("gophermap_display").toString() == "text");
+
     std::unique_ptr<QTextDocument> result = std::make_unique<QTextDocument>();
     result->setDocumentMargin(themed_style.margin);
 
-    result->addResource(QTextDocument::ImageResource, QUrl("gopher/binary"), QVariant::fromValue(QImage(":/icons/gopher/binary.svg")));
-    result->addResource(QTextDocument::ImageResource, QUrl("gopher/directory"), QVariant::fromValue(QImage(":/icons/gopher/directory.svg")));
-    result->addResource(QTextDocument::ImageResource, QUrl("gopher/dns"), QVariant::fromValue(QImage(":/icons/gopher/dns.svg")));
-    result->addResource(QTextDocument::ImageResource, QUrl("gopher/error"), QVariant::fromValue(QImage(":/icons/gopher/error.svg")));
-    result->addResource(QTextDocument::ImageResource, QUrl("gopher/gif"), QVariant::fromValue(QImage(":/icons/gopher/gif.svg")));
-    result->addResource(QTextDocument::ImageResource, QUrl("gopher/html"), QVariant::fromValue(QImage(":/icons/gopher/html.svg")));
-    result->addResource(QTextDocument::ImageResource, QUrl("gopher/image"), QVariant::fromValue(QImage(":/icons/gopher/image.svg")));
-    result->addResource(QTextDocument::ImageResource, QUrl("gopher/mirror"), QVariant::fromValue(QImage(":/icons/gopher/mirror.svg")));
-    result->addResource(QTextDocument::ImageResource, QUrl("gopher/search"), QVariant::fromValue(QImage(":/icons/gopher/search.svg")));
-    result->addResource(QTextDocument::ImageResource, QUrl("gopher/sound"), QVariant::fromValue(QImage(":/icons/gopher/sound.svg")));
-    result->addResource(QTextDocument::ImageResource, QUrl("gopher/telnet"), QVariant::fromValue(QImage(":/icons/gopher/telnet.svg")));
-    result->addResource(QTextDocument::ImageResource, QUrl("gopher/text"), QVariant::fromValue(QImage(":/icons/gopher/text.svg")));
+    if(not emit_text_only)
+    {
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/binary"), QVariant::fromValue(QImage(":/icons/gopher/binary.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/directory"), QVariant::fromValue(QImage(":/icons/gopher/directory.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/dns"), QVariant::fromValue(QImage(":/icons/gopher/dns.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/error"), QVariant::fromValue(QImage(":/icons/gopher/error.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/gif"), QVariant::fromValue(QImage(":/icons/gopher/gif.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/html"), QVariant::fromValue(QImage(":/icons/gopher/html.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/image"), QVariant::fromValue(QImage(":/icons/gopher/image.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/mirror"), QVariant::fromValue(QImage(":/icons/gopher/mirror.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/search"), QVariant::fromValue(QImage(":/icons/gopher/search.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/sound"), QVariant::fromValue(QImage(":/icons/gopher/sound.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/telnet"), QVariant::fromValue(QImage(":/icons/gopher/telnet.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/text"), QVariant::fromValue(QImage(":/icons/gopher/text.svg")));
+    }
 
     QTextCursor cursor{result.get()};
 
@@ -169,16 +176,19 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
                 qDebug() << line << dst_url;
             }
 
-            QTextImageFormat icon_fmt;
-            icon_fmt.setName(QString("gopher/%1").arg(icon));
-            icon_fmt.setVerticalAlignment(QTextImageFormat::AlignTop);
+            if(emit_text_only)
+            {
+                cursor.insertText("[" + icon + "] ", standard);
+            }
+            else
+            {
+                QTextImageFormat icon_fmt;
+                icon_fmt.setName(QString("gopher/%1").arg(icon));
+                icon_fmt.setVerticalAlignment(QTextImageFormat::AlignTop);
 
-            cursor.insertImage(icon_fmt);
-
-            // cursor.insertImage(QImage(QString(":/icons/gopher/%1.svg").arg(icon)));
-
-            cursor.insertText(" ");
-            // cursor.insertText("[" + icon + "] ", standard);
+                cursor.insertImage(icon_fmt);
+                cursor.insertText(" ");
+            }
 
             QTextCharFormat fmt = standard_link;
             fmt.setAnchor(true);

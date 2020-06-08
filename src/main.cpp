@@ -6,12 +6,18 @@
 #include <QCommandLineParser>
 #include <QDebug>
 
+QSettings global_settings { "xqTechnologies", "Kristall" };
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
     QCommandLineParser cli_parser;
     cli_parser.parse(app.arguments());
+
+    if(not global_settings.contains("start_page")) {
+        global_settings.setValue("start_page", "about:favourites");
+    }
 
     MainWindow w(&app);
 

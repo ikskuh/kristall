@@ -11,20 +11,17 @@
 #include <QTextStream>
 #include <QFileDialog>
 #include "ioutil.hpp"
+#include "kristall.hpp"
 
 MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     QMainWindow(parent),
     application(app),
-    settings("xqTechnologies", "Kristall"),
     ui(new Ui::MainWindow),
     url_status(new QLabel(this)),
     file_size(new QLabel(this)),
     file_mime(new QLabel(this)),
     load_time(new QLabel(this))
 {
-    if(not this->settings.contains("start_page")) {
-        this->settings.setValue("start_page", "about:favourites");
-    }
 
     ui->setupUi(this);
 
@@ -33,9 +30,9 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     this->statusBar()->addPermanentWidget(this->file_size);
     this->statusBar()->addPermanentWidget(this->load_time);
 
-    this->favourites.load(settings);
-    this->current_style.load(settings);
-    this->protocols.load(settings);
+    this->favourites.load(global_settings);
+    this->current_style.load(global_settings);
+    this->protocols.load(global_settings);
 
     ui->favourites_view->setModel(&favourites);
 
@@ -69,14 +66,14 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     });
 
     {
-        settings.beginGroup("Window State");
-        if(settings.contains("geometry")) {
-            restoreGeometry(settings.value("geometry").toByteArray());
+        global_settings.beginGroup("Window State");
+        if(global_settings.contains("geometry")) {
+            restoreGeometry(global_settings.value("geometry").toByteArray());
         }
-        if(settings.contains("state")) {
-            restoreState(settings.value("state").toByteArray());
+        if(global_settings.contains("state")) {
+            restoreState(global_settings.value("state").toByteArray());
         }
-        settings.endGroup();
+        global_settings.endGroup();
     }
 
     reloadTheme();
@@ -103,7 +100,7 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new, bool load_default)
     }
 
     if(load_default) {
-        tab->navigateTo(QUrl(this->settings.value("start_page").toString()), BrowserTab::DontPush);
+        tab->navigateTo(QUrl(global_settings.value("start_page").toString()), BrowserTab::DontPush);
     }
 
     return tab;
@@ -132,20 +129,20 @@ void MainWindow::setUrlPreview(const QUrl &url)
 
 void MainWindow::saveSettings()
 {
-    this->favourites.save(settings);
-    this->current_style.save(settings);
-    this->protocols.save(settings);
+    this->favourites.save(global_settings);
+    this->current_style.save(global_settings);
+    this->protocols.save(global_settings);
 
     {
-        settings.beginGroup("Window State");
+        global_settings.beginGroup("Window State");
 
-        settings.setValue("geometry", saveGeometry());
-        settings.setValue("state", saveState());
+        global_settings.setValue("geometry", saveGeometry());
+        global_settings.setValue("state", saveState());
 
-        settings.endGroup();
+        global_settings.endGroup();
     }
 
-    settings.sync();
+    global_settings.sync();
 }
 
 void MainWindow::on_browser_tabs_currentChanged(int index)
@@ -225,18 +222,18 @@ void MainWindow::on_actionSettings_triggered()
     SettingsDialog dialog;
 
     dialog.setGeminiStyle(this->current_style);
-    dialog.setStartPage(this->settings.value("start_page").toString());
+    dialog.setStartPage(global_settings.value("start_page").toString());
     dialog.setProtocols(this->protocols);
-    dialog.setUiTheme(this->settings.value("theme").toString());
+    dialog.setUiTheme(global_settings.value("theme").toString());
 
     if(dialog.exec() != QDialog::Accepted)
         return;
 
     if(auto url = dialog.startPage(); url.isValid()) {
-        this->settings.setValue("start_page", url.toString());
+        global_settings.setValue("start_page", url.toString());
     }
 
-    this->settings.setValue("theme", dialog.uiTheme());
+    global_settings.setValue("theme", dialog.uiTheme());
 
     this->protocols = dialog.protocols();
     this->current_style = dialog.geminiStyle();
@@ -306,7 +303,7 @@ void MainWindow::on_actionAbout_Qt_triggered()
 
 void MainWindow::reloadTheme()
 {
-    QString theme = settings.value("theme").toString();
+    QString theme = global_settings.value("theme").toString();
     if(theme.isEmpty())
         theme = "light";
 
@@ -356,7 +353,7 @@ void MainWindow::on_actionGo_to_home_triggered()
 {
     BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
     if(tab != nullptr) {
-        tab->navigateTo(QUrl(this->settings.value("start_page").toString()), BrowserTab::PushAfterSuccess);
+        tab->navigateTo(QUrl(global_settings.value("start_page").toString()), BrowserTab::PushAfterSuccess);
     }
 }
 

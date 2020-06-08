@@ -109,7 +109,6 @@ Just use QtCreator to build `./src/kristall.pro`. Default settings should be fin
    - [ ] For history
    - [ ] For favourites
    - [ ] For documents
-  - [ ] Add *Navigation*→*Home* to navigate to the start page
   - [ ] Image Zoom and Pan
   - [ ] Save/load/share theme preset
   - [ ] Improve Unicode/Emoji support
@@ -119,6 +118,7 @@ Just use QtCreator to build `./src/kristall.pro`. Default settings should be fin
     - [ ] `_underline_`
   - [ ] Option: "Display text/* as plain text"
   - [ ] Option: Gopher Map with text marker instead of icons
+
 ## Bugs
   
 > <styan> xq: When using torsocks(1) on kristall QNetworkInterface complains loudly about not being permitted to create an IPv6 socket..
