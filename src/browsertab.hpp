@@ -9,12 +9,14 @@
 #include <QNetworkAccessManager>
 #include <QElapsedTimer>
 
-#include "geminiclient.hpp"
 #include "documentoutlinemodel.hpp"
 #include "tabbrowsinghistory.hpp"
 #include "geminirenderer.hpp"
+
+#include "geminiclient.hpp"
 #include "webclient.hpp"
 #include "gopherclient.hpp"
+#include "fingerclient.hpp"
 
 namespace Ui {
 class BrowserTab;
@@ -113,6 +115,7 @@ public:
     GeminiClient gemini_client;
     WebClient web_client;
     GopherClient gopher_client;
+    FingerClient finger_client;
     int redirection_count = 0;
 
     bool push_to_history_after_load = false;

@@ -51,6 +51,10 @@ BrowserTab::BrowserTab(MainWindow * mainWindow) :
     connect(&gopher_client, &GopherClient::requestFailed, this, &BrowserTab::on_requestFailed);
     connect(&gopher_client, &GopherClient::requestProgress, this, &BrowserTab::on_requestProgress);
 
+    connect(&finger_client, &FingerClient::requestComplete, this, &BrowserTab::on_requestComplete);
+    connect(&finger_client, &FingerClient::requestFailed, this, &BrowserTab::on_requestFailed);
+    connect(&finger_client, &FingerClient::requestProgress, this, &BrowserTab::on_requestProgress);
+
     this->updateUI();
 
     this->ui->media_browser->setVisible(false);
@@ -93,6 +97,11 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
         return;
     }
 
+    if(not finger_client.cancelRequest()) {
+        QMessageBox::warning(this, "Kristall", "Failed to cancel running finger request!");
+        return;
+    }
+
     this->redirection_count = 0;
     this->successfully_loaded = false;
     this->push_to_history_after_load = (mode == PushAfterSuccess);
@@ -108,6 +117,10 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
     else if(url.scheme() == "gopher")
     {
         gopher_client.startRequest(url);
+    }
+    else if(url.scheme() == "finger")
+    {
+        finger_client.startRequest(url);
     }
     else if(url.scheme() == "file")
     {
@@ -531,6 +544,7 @@ void BrowserTab::on_stop_button_clicked()
     gemini_client.cancelRequest();
     web_client.cancelRequest();
     gopher_client.cancelRequest();
+    finger_client.cancelRequest();
 }
 
 void BrowserTab::on_requestProgress(qint64 transferred)

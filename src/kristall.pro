@@ -23,6 +23,7 @@ SOURCES += \
     documentoutlinemodel.cpp \
     documentstyle.cpp \
     favouritecollection.cpp \
+    fingerclient.cpp \
     geminiclient.cpp \
     geminirenderer.cpp \
     gopherclient.cpp \
@@ -41,6 +42,7 @@ HEADERS += \
     documentoutlinemodel.hpp \
     documentstyle.hpp \
     favouritecollection.hpp \
+    fingerclient.hpp \
     geminiclient.hpp \
     geminirenderer.hpp \
     gopherclient.hpp \

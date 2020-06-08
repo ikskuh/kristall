@@ -17,6 +17,8 @@ Kristall Changelog
 - Added option to render gopher maps with icons *OR* text only
 - Fixed bug: Correct URL escaping for gemini requests.
 - Added progress display in status bar with loading time and already transferred bytes
+- Added support for finger:// protocol
+- Added experimental *highlighting* and _underlining_ for text/gemini
 
 == 0.1
 - Initial release

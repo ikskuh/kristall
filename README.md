@@ -24,7 +24,7 @@ A high-quality visual cross-platform gemini browser.
   - [x] [Gemini](https://gemini.circumlunar.space/)
   - [x] HTTP
   - [x] HTTPS
-  - [ ] [Finger](https://tools.ietf.org/html/rfc1288) (planned)
+  - [x] [Finger](https://tools.ietf.org/html/rfc1288) (planned)
   - [x] [Gopher](https://tools.ietf.org/html/rfc1436) (WIP)
 - Crossplatform supports
   - Linux
@@ -76,6 +76,14 @@ make
   - `make`
   - `g++`
 
+### Notes for Manjaro/Arch
+- Requires packages
+  - `qt5`
+  - `qt5-multimedia`
+
+### Notes on void linux
+- set env variable `QT_SELECT=5`
+
 ## Windows
 
 Just use QtCreator to build `./src/kristall.pro`. Default settings should be fine.
@@ -97,12 +105,7 @@ Just use QtCreator to build `./src/kristall.pro`. Default settings should be fin
   - [ ] Opt-In: Regularly check for `domain/favicon.txt`
   - [ ] Opt-In: Regularly check for `domain/favicon.ico`
 - [ ] Implement more protocols
-  - [ ] Finger
-    - [ ] finger://tomasino@cosmic.voyage
-    - [ ] finger://ping@cosmic.voyage
   - [ ] Gopher
-    - [x] gopher://gopher.black
-    - [ ] Improve gophermap rendering with icons for media types
     - [ ] Support more media types (include uudecode and hexbin decoder)
 - [ ] Improve UX
   - [ ] Rightclick with "open in new tab" and "open in this tab"
@@ -113,9 +116,6 @@ Just use QtCreator to build `./src/kristall.pro`. Default settings should be fin
   - [ ] Save/load/share theme preset
   - [ ] Improve Unicode/Emoji support
     - Seems to need multiple font families per font?
-  - [ ] Add option for some markdownish features
-    - [ ] `*bold*`
-    - [ ] `_underline_`
 
 ## Bugs
   
