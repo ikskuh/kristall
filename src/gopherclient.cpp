@@ -66,6 +66,7 @@ void GopherClient::on_connected()
 void GopherClient::on_readRead()
 {
     body.append(socket.readAll());
+    emit this->requestProgress(body.size());
 }
 
 void GopherClient::on_finished()

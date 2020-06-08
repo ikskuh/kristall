@@ -78,6 +78,7 @@ void GeminiClient::socketReadyRead()
     if(is_receiving_body)
     {
         body.append(response);
+        emit this->requestProgress(body.size());
     }
     else
     {

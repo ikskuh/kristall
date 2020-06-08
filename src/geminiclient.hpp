@@ -45,6 +45,8 @@ public:
     bool cancelRequest();
 
 signals:
+    void requestProgress(qint64 transferred);
+
     void requestComplete(QByteArray const & data, QString const & mime);
 
     void protocolViolation(QString const & reason);

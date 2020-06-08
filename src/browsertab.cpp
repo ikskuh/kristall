@@ -34,8 +34,10 @@ BrowserTab::BrowserTab(MainWindow * mainWindow) :
 
     connect(&web_client, &WebClient::requestComplete, this, &BrowserTab::on_requestComplete);
     connect(&web_client, &WebClient::requestFailed, this, &BrowserTab::on_requestFailed);
+    connect(&web_client, &WebClient::requestProgress, this, &BrowserTab::on_requestProgress);
 
     connect(&gemini_client, &GeminiClient::requestComplete, this, &BrowserTab::on_requestComplete);
+    connect(&gemini_client, &GeminiClient::requestProgress, this, &BrowserTab::on_requestProgress);
     connect(&gemini_client, &GeminiClient::protocolViolation, this, &BrowserTab::on_protocolViolation);
     connect(&gemini_client, &GeminiClient::inputRequired, this, &BrowserTab::on_inputRequired);
     connect(&gemini_client, &GeminiClient::redirected, this, &BrowserTab::on_redirected);
@@ -47,6 +49,7 @@ BrowserTab::BrowserTab(MainWindow * mainWindow) :
 
     connect(&gopher_client, &GopherClient::requestComplete, this, &BrowserTab::on_requestComplete);
     connect(&gopher_client, &GopherClient::requestFailed, this, &BrowserTab::on_requestFailed);
+    connect(&gopher_client, &GopherClient::requestProgress, this, &BrowserTab::on_requestProgress);
 
     this->updateUI();
 
@@ -528,6 +531,11 @@ void BrowserTab::on_stop_button_clicked()
     gemini_client.cancelRequest();
     web_client.cancelRequest();
     gopher_client.cancelRequest();
+}
+
+void BrowserTab::on_requestProgress(qint64 transferred)
+{
+    emit this->fileLoaded(transferred, "Loading...", timer.elapsed());
 }
 
 void BrowserTab::on_back_button_clicked()

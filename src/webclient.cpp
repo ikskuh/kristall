@@ -58,6 +58,7 @@ bool WebClient::cancelRequest()
 void WebClient::on_data()
 {
     this->body.append(this->current_reply->readAll());
+    emit this->requestProgress(this->body.size());
 }
 
 void WebClient::on_finished()

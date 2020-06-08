@@ -96,6 +96,8 @@ private slots:
 
     void on_stop_button_clicked();
 
+    void on_requestProgress(qint64 transferred);
+
 private:
     void setErrorMessage(QString const & msg);
 
