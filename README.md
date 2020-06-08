@@ -10,6 +10,12 @@ A high-quality visual cross-platform gemini browser.
   - `text/markdown`
   - `text/*`
   - `image/*`
+- Multi-protocol support
+  - [Gemini](https://gemini.circumlunar.space/)
+  - HTTP
+  - HTTPS
+  - [Finger](https://tools.ietf.org/html/rfc1288)
+  - [Gopher](https://tools.ietf.org/html/rfc1436) (WIP)
 - [Outline generation](https://mq32.de/public/a50ef327f4150d870393b1989c5b41db495b56f7.png) ([Video](https://mq32.de/public/kristall-02.mp4))
 - Favourite Sites
 - Navigation history
@@ -20,18 +26,13 @@ A high-quality visual cross-platform gemini browser.
   - Custom document color theme
   - [Automatic light/dark theme based on the host name](https://mq32.de/public/kristall-01.mp4)
   - Dark/Light UI theme
-- Multi-protocol support
-  - [x] [Gemini](https://gemini.circumlunar.space/)
-  - [x] HTTP
-  - [x] HTTPS
-  - [x] [Finger](https://tools.ietf.org/html/rfc1288) (planned)
-  - [x] [Gopher](https://tools.ietf.org/html/rfc1436) (WIP)
 - Crossplatform supports
   - Linux
   - Windows
   - FreeBSD
   - NetBSD
   - OpenBSD
+  - MacOS X
 
 ## Screenshots
 
@@ -107,6 +108,8 @@ Just use QtCreator to build `./src/kristall.pro`. Default settings should be fin
 - [ ] Implement more protocols
   - [ ] Gopher
     - [ ] Support more media types (include uudecode and hexbin decoder)
+  - [ ] FTP
+    - [ ] Search for FTP library or use self-written one?
 - [ ] Improve UX
   - [ ] Rightclick with "open in new tab" and "open in this tab"
    - [ ] For history
