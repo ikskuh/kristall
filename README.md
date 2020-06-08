@@ -10,6 +10,8 @@ A high-quality visual cross-platform gemini browser.
   - `text/markdown`
   - `text/*`
   - `image/*`
+  - `video/*`
+  - `audio/*`
 - Multi-protocol support
   - [Gemini](https://gemini.circumlunar.space/)
   - HTTP
