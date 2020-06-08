@@ -311,6 +311,7 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
 
         document->setDefaultFont(doc_style.preformatted_font);
         document->setDefaultStyleSheet(doc_style.toStyleSheet());
+        document->setDocumentMargin(doc_style.margin);
         document->setPlainText(QString::fromUtf8(data));
     }
     else if(not plaintext_only and mime.startsWith("text/html")) {
@@ -318,6 +319,7 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
 
         document->setDefaultFont(doc_style.standard_font);
         document->setDefaultStyleSheet(doc_style.toStyleSheet());
+        document->setDocumentMargin(doc_style.margin);
         document->setHtml(QString::fromUtf8(data));
     }
 #if defined(QT_FEATURE_textmarkdownreader)
@@ -325,7 +327,7 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
         document = std::make_unique<QTextDocument>();
         document->setDefaultFont(doc_style.standard_font);
         document->setDefaultStyleSheet(doc_style.toStyleSheet());
-
+        document->setDocumentMargin(doc_style.margin);
         document->setMarkdown(QString::fromUtf8(data));
     }
 #endif
@@ -333,6 +335,7 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
         document = std::make_unique<QTextDocument>();
         document->setDefaultFont(doc_style.standard_font);
         document->setDefaultStyleSheet(doc_style.toStyleSheet());
+        document->setDocumentMargin(doc_style.margin);
         document->setPlainText(QString::fromUtf8(data));
     }
     else if(mime.startsWith("image/")) {

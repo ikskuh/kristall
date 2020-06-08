@@ -109,7 +109,7 @@ ln -s Kristall.desktop ~/.local/share/applications/kristall.desktop
    - [ ] Enable TOFU for HTTPS/Gemini
    - [ ] Enable Client Certificate Management
 - [ ] Recognize home directories with /~home and such and add "substyles"
-- [ ] Add favicon support
+- [ ] [Add favicon support](gemini://mozz.us/files/rfc_gemini_favicon.gmi)
   - [ ] Add auto-generated "favicons"
   - [ ] Check if the site follows this guideline: `#<ICON> Title` where `<ICON>` is a unicode emoji
   - [ ] Opt-In: Regularly check for `domain/favicon.txt`
