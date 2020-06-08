@@ -73,7 +73,7 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
     this->timer.start();
 
     this->current_location = url;
-    this->ui->url_bar->setText(url.toString());
+    this->ui->url_bar->setText(url.toString(QUrl::FormattingOptions(QUrl::FullyEncoded)));
 
     if(not gemini_client.cancelRequest()) {
         QMessageBox::warning(this, "Kristall", "Failed to cancel running gemini request!");

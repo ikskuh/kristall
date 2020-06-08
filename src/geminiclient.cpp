@@ -55,7 +55,7 @@ bool GeminiClient::cancelRequest()
 
 void GeminiClient::socketEncrypted()
 {
-    QString request = target_url.toString() + "\r\n";
+    QString request = target_url.toString(QUrl::FormattingOptions(QUrl::FullyEncoded)) + "\r\n";
 
     QByteArray request_bytes = request.toUtf8();
 

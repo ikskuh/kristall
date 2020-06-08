@@ -234,9 +234,49 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
             {
                 if(emit_fancy_text)
                 {
-                    qDebug() << "implement fancy text emission!";
+                    bool rendering_bold = false;
+                    bool rendering_underlined = false;
+
+                    QTextCharFormat fmt = standard;
+
+                    for(int i = 0; i < line.length(); i += 1)
+                    {
+                        char c = line.at(i);
+                        if(c == ' ') {
+                            fmt = standard;
+                            cursor.insertText(" ");
+                            rendering_bold = false;
+                            rendering_underlined = false;
+                        }
+                        else if(c == '*') {
+                            if(rendering_bold)
+                                cursor.insertText("*", fmt);
+                            rendering_bold = not rendering_bold;
+                            auto f = fmt.font();
+                            f.setBold(rendering_bold);
+                            fmt.setFont(f);
+                            if(rendering_bold)
+                                cursor.insertText("*", fmt);
+                        }
+                        else if(c == '_') {
+                            if(rendering_underlined)
+                                cursor.insertText(" ", fmt);
+                            rendering_underlined = not rendering_underlined;
+                            auto f = fmt.font();
+                            fmt.setUnderlineStyle(rendering_underlined ? QTextCharFormat::SingleUnderline : QTextCharFormat::NoUnderline);
+                            if(rendering_underlined)
+                                cursor.insertText(" ", fmt);
+                        }
+                        else {
+                            cursor.insertText(QString::fromUtf8(&c, 1), fmt);
+                        }
+                    }
+
+                    cursor.insertText("\n", standard);
                 }
-                cursor.insertText(line + "\n", standard);
+                else {
+                    cursor.insertText(line + "\n", standard);
+                }
             }
         }
     }

@@ -116,8 +116,6 @@ Just use QtCreator to build `./src/kristall.pro`. Default settings should be fin
   - [ ] Add option for some markdownish features
     - [ ] `*bold*`
     - [ ] `_underline_`
-  - [ ] Option: "Display text/* as plain text"
-  - [ ] Option: Gopher Map with text marker instead of icons
 
 ## Bugs
   

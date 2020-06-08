@@ -146,7 +146,7 @@
          <item>
           <widget class="QRadioButton" name="texthl_on">
            <property name="text">
-            <string>On</string>
+            <string>On (Experimental)</string>
            </property>
            <attribute name="buttonGroup">
             <string notr="true">textHighlightsBtnGroup</string>
