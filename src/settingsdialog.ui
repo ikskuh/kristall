@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>850</width>
-    <height>540</height>
+    <height>650</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="generic">
       <attribute name="title">
@@ -591,24 +591,24 @@
            </item>
           </layout>
          </item>
-         <item row="11" column="0">
+         <item row="12" column="0">
           <widget class="QLabel" name="label_12">
            <property name="text">
             <string>Auto-Theme Generation</string>
            </property>
           </widget>
          </item>
-         <item row="11" column="1">
+         <item row="12" column="1">
           <widget class="QComboBox" name="auto_theme"/>
          </item>
-         <item row="12" column="0">
+         <item row="13" column="0">
           <widget class="QLabel" name="label_13">
            <property name="text">
             <string>Page Margin</string>
            </property>
           </widget>
          </item>
-         <item row="12" column="1">
+         <item row="13" column="1">
           <widget class="QDoubleSpinBox" name="page_margin">
            <property name="suffix">
             <string> px</string>
@@ -621,7 +621,7 @@
            </property>
           </widget>
          </item>
-         <item row="13" column="1">
+         <item row="14" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
             <widget class="QComboBox" name="presets"/>
@@ -701,12 +701,41 @@
            </item>
           </layout>
          </item>
-         <item row="13" column="0">
+         <item row="14" column="0">
           <widget class="QLabel" name="label_17">
            <property name="text">
             <string>Presets</string>
            </property>
           </widget>
+         </item>
+         <item row="11" column="0">
+          <widget class="QLabel" name="label_21">
+           <property name="text">
+            <string>Block Quote Background</string>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <item>
+            <widget class="QLabel" name="quote_preview">
+             <property name="text">
+              <string> </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="quote_change_color">
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset resource="icons.qrc">
+               <normaloff>:/icons/palette.svg</normaloff>:/icons/palette.svg</iconset>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>

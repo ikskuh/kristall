@@ -54,6 +54,8 @@ public:
 
     void toggleIsFavourite(bool isFavourite);
 
+    void focusUrlBar();
+
 signals:
     void titleChanged(QString const & title);
     void locationChanged(QUrl const & url);

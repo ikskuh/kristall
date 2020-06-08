@@ -75,6 +75,10 @@ private slots:
 
     void on_tab_fileLoaded(qint64 fileSize, QString const & mime, int msec);
 
+    void on_focus_inputbar();
+
+    void on_actionHelp_triggered();
+
 private:
     void reloadTheme();
 

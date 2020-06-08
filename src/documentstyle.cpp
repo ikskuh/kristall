@@ -125,6 +125,7 @@ DocumentStyle::DocumentStyle() : theme(Fixed),
                              h1_color("#022f90"),
                              h2_color("#022f90"),
                              h3_color("#022f90"),
+                             blockquote_color("#FFFFFF"),
                              internal_link_color("#0e8fff"),
                              external_link_color("#0e8fff"),
                              cross_scheme_link_color("#0960a7"),
@@ -164,6 +165,7 @@ bool DocumentStyle::save(QSettings &settings) const
     settings.setValue("background_color", background_color.name());
     settings.setValue("standard_color", standard_color.name());
     settings.setValue("preformatted_color", preformatted_color.name());
+    settings.setValue("blockquote_color", blockquote_color.name());
     settings.setValue("h1_color", h1_color.name());
     settings.setValue("h2_color", h2_color.name());
     settings.setValue("h3_color", h3_color.name());
@@ -196,6 +198,7 @@ bool DocumentStyle::load(QSettings &settings)
         background_color = QColor(settings.value("background_color").toString());
         standard_color = QColor(settings.value("standard_color").toString());
         preformatted_color = QColor(settings.value("preformatted_color").toString());
+        blockquote_color = QColor(settings.value("blockquote_color").toString());
         h1_color = QColor(settings.value("h1_color").toString());
         h2_color = QColor(settings.value("h2_color").toString());
         h3_color = QColor(settings.value("h3_color").toString());
@@ -245,6 +248,8 @@ DocumentStyle DocumentStyle::derive(const QUrl &url) const
         themed.internal_link_color = themed.external_link_color.lighter(110);
         themed.cross_scheme_link_color = themed.external_link_color.darker(110);
 
+        themed.blockquote_color = themed.background_color.lighter(130);
+
         break;
     }
 
@@ -260,6 +265,8 @@ DocumentStyle DocumentStyle::derive(const QUrl &url) const
         themed.external_link_color = QColor::fromHslF(std::modf(hue + 0.25, &tmp), 1.0, 0.25);
         themed.internal_link_color = themed.external_link_color.darker(110);
         themed.cross_scheme_link_color = themed.external_link_color.lighter(110);
+
+        themed.blockquote_color = themed.background_color.darker(120);
 
         break;
     }

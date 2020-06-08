@@ -108,6 +108,10 @@ void SettingsDialog::setGeminiStyle(DocumentStyle const &style)
         .arg(this->current_style.background_color.name())
         .arg("#FF00FF"));
 
+    ui->quote_preview->setStyleSheet(COLOR_STYLE
+        .arg(this->current_style.blockquote_color.name())
+        .arg("#FF00FF"));
+
     ui->link_local_preview->setStyleSheet(COLOR_STYLE
         .arg(this->current_style.background_color.name())
         .arg(this->current_style.internal_link_color.name()));
@@ -184,6 +188,8 @@ Plain text document here.
 => rela-link Same-Site Link
 => //foreign.host/ Foreign Site Link
 => https://foreign.host/ Cross-Protocol Link
+> Multi-lined
+> block quotes
 ```
   ▄▄▄       ██▀███  ▄▄▄█████▓
  ▒████▄    ▓██ ▒ ██▒▓  ██▒ ▓▒
@@ -308,6 +314,10 @@ void SettingsDialog::on_link_foreign_change_color_clicked()
 void SettingsDialog::on_link_cross_change_color_clicked()
 {
     updateColor(current_style.cross_scheme_link_color);
+}
+void SettingsDialog::on_quote_change_color_clicked()
+{
+    updateColor(current_style.blockquote_color);
 }
 
 void SettingsDialog::on_link_local_prefix_textChanged(const QString &text)

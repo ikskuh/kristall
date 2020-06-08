@@ -30,6 +30,7 @@ struct DocumentStyle
     QColor h1_color;
     QColor h2_color;
     QColor h3_color;
+    QColor blockquote_color;
 
     QColor internal_link_color;
     QColor external_link_color;

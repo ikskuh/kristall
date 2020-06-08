@@ -44,7 +44,7 @@ A high-quality visual cross-platform gemini browser.
 
 ![Site Theme](https://mq32.de/public/7123e22a58969448c27b24df8510f4d56921bf23.png)
 
-## Build Instructions
+## Build/Install Instructions
 
 ### Requirements
 
@@ -52,7 +52,7 @@ A high-quality visual cross-platform gemini browser.
 
 ### Build
 
-## *nix
+#### *nix
 
 There's a small `Makefile` provided that does all necessary steps and creates a build directory, then copies the build artifact from the build directory. Just do `make` in the root directory, it should work.
 
@@ -69,7 +69,7 @@ make
 - It seems like Qt wants `libzstd.so.3.1` instead of `libzstd.so.3.2`. Just symlink that file into the build directory
 - Use `make` and not `gmake` to build the project.
 
-### Notes for Ubuntu 20.04:
+##### Notes for Ubuntu 20.04:
 - Requires packages
   - `qt5-default`
   - `qt5-qmake`
@@ -77,17 +77,26 @@ make
   - `make`
   - `g++`
 
-### Notes for Manjaro/Arch
+##### Notes for Manjaro/Arch
 - Requires packages
   - `qt5`
   - `qt5-multimedia`
 
-### Notes on void linux
+##### Notes on void linux
 - set env variable `QT_SELECT=5`
 
-## Windows
+#### Windows
 
 Just use QtCreator to build `./src/kristall.pro`. Default settings should be fine.
+
+### Manual Installation
+
+#### Unix / XDG
+
+The provided desktop file can be installed into the local system
+```sh
+ln -s Kristall.desktop ~/.local/share/applications/kristall.desktop
+```
 
 ## TODO
 - [ ] Survive full torture suite

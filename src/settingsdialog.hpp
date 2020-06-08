@@ -79,6 +79,8 @@ private slots:
 
     void on_SettingsDialog_accepted();
 
+    void on_quote_change_color_clicked();
+
 private:
     void reloadStylePreview();
 

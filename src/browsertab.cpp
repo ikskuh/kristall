@@ -166,7 +166,15 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
         }
         else
         {
-            QMessageBox::warning(this, "Kristall", "Unknown location: " + url.path());
+            QFile file(QString(":/about/%1.gemini").arg(url.path()));
+            if(file.open(QFile::ReadOnly))
+            {
+                this->on_requestComplete(file.readAll(), "text/gemini");
+            }
+            else
+            {
+                QMessageBox::warning(this, "Kristall", "Unknown location: " + url.path());
+            }
         }
     }
 
@@ -231,6 +239,12 @@ void BrowserTab::toggleIsFavourite(bool isFavourite)
     }
 
     this->updateUI();
+}
+
+void BrowserTab::focusUrlBar()
+{
+    this->ui->url_bar->setFocus(Qt::ShortcutFocusReason);
+    this->ui->url_bar->selectAll();
 }
 
 void BrowserTab::on_url_bar_returnPressed()

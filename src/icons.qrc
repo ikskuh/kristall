@@ -34,5 +34,8 @@
         <file>icons/gopher/telnet.svg</file>
         <file>icons/gopher/text.svg</file>
         <file>icons/info.svg</file>
+        <file>about/help.gemini</file>
+        <file>about/easter-egg.gemini</file>
+        <file>icons/help-box.svg</file>
     </qresource>
 </RCC>

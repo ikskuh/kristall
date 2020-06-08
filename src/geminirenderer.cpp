@@ -29,9 +29,6 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
         DocumentStyle const & themed_style,
         DocumentOutlineModel &outline)
 {
-    QTextOption no_wrap;
-    no_wrap.setWrapMode(QTextOption::NoWrap);
-
     QTextCharFormat preformatted;
     preformatted.setFont(themed_style.preformatted_font);
     preformatted.setForeground(themed_style.preformatted_color);
@@ -67,17 +64,25 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
     std::unique_ptr<GeminiDocument> result = std::make_unique<GeminiDocument>();
     result->setDocumentMargin(themed_style.margin);
     result->background_color = themed_style.background_color;
-    result->setDefaultTextOption(no_wrap);
-
+    result->setIndentWidth(20);
 
     bool emit_fancy_text = global_settings.value("text_decoration").toBool();
 
     QTextCursor cursor{result.get()};
 
-    QTextBlockFormat non_list_format = cursor.blockFormat();
+    QTextBlockFormat standard_format = cursor.blockFormat();
+
+    QTextBlockFormat preformatted_format = standard_format;
+    preformatted_format.setNonBreakableLines(true);
+
+    QTextBlockFormat block_quote_format = standard_format;
+    block_quote_format.setIndent(1);
+    block_quote_format.setBackground(themed_style.blockquote_color);
+
 
     bool verbatim = false;
     QTextList *current_list = nullptr;
+    bool blockquote = false;
 
     outline.beginBuild();
 
@@ -94,18 +99,19 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
         {
             if (line.startsWith("```"))
             {
+                cursor.setBlockFormat(standard_format);
                 verbatim = false;
             }
             else
             {
-                cursor.block().layout()->setTextOption(no_wrap);
+                cursor.setBlockFormat(preformatted_format);
                 cursor.setCharFormat(preformatted);
                 cursor.insertText(line + "\n");
             }
         }
         else
         {
-            if (line.startsWith("*"))
+            if (line.startsWith("* "))
             {
                 if (current_list == nullptr)
                 {
@@ -127,9 +133,29 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 if (current_list != nullptr)
                 {
                     cursor.insertBlock();
-                    cursor.setBlockFormat(non_list_format);
+                    cursor.setBlockFormat(standard_format);
                 }
                 current_list = nullptr;
+            }
+
+            if(line.startsWith(">"))
+            {
+                if(not blockquote ) {
+                    // cursor.insertBlock();
+                }
+                blockquote  = true;
+
+                cursor.setBlockFormat(block_quote_format);
+                cursor.insertText(trim_whitespace(line.mid(1)) + "\n", standard);
+
+                continue;
+            }
+            else
+            {
+                if(blockquote) {
+                    cursor.setBlockFormat(standard_format);
+                }
+                blockquote  = false;
             }
 
             if (line.startsWith("###"))
@@ -234,6 +260,8 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
             {
                 if(emit_fancy_text)
                 {
+                    // TODO: Fix UTF-8 encoding here… Don't emit single characters but always spans!
+
                     bool rendering_bold = false;
                     bool rendering_underlined = false;
 

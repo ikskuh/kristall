@@ -17,6 +17,12 @@ Kristall Changelog
 - Added progress display in status bar with loading time and already transferred bytes
 - Added support for finger:// protocol
 - Added experimental *highlighting* and _underlining_ for text/gemini
+- Desktop file is provided for integrating with XDG
+- Fixed bug: Preformatted lines don't break anymore
+- text/gemini parsing updated
+- Added support for block quotes
+- Added help file
+- Added shortcut to focus URL bar
 
 == 0.1
 - Initial release

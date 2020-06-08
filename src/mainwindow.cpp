@@ -66,6 +66,11 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     });
 
     {
+        QShortcut * sc = new QShortcut(QKeySequence("Ctrl+L"), this);
+        connect(sc, &QShortcut::activated, this, &MainWindow::on_focus_inputbar);
+    }
+
+    {
         global_settings.beginGroup("Window State");
         if(global_settings.contains("geometry")) {
             restoreGeometry(global_settings.value("geometry").toByteArray());
@@ -377,4 +382,17 @@ void MainWindow::on_tab_fileLoaded(qint64 fileSize, const QString &mime, int mse
             this->load_time->setText(QString("%1 ms").arg(msec));
         }
     }
+}
+
+void MainWindow::on_focus_inputbar()
+{
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if(tab != nullptr) {
+        tab->focusUrlBar();
+    }
+}
+
+void MainWindow::on_actionHelp_triggered()
+{
+    this->addNewTab(true, QUrl("about:help"));
 }

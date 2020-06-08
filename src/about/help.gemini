@@ -1,0 +1,44 @@
+# Kristall Help
+
+This is the manual for the Kristall small-internet browser. It contains explanations on how to use the program, what each setting means and
+
+## The Mission
+
+Kristall tries to fill the hole of graphical browsers for alternative internet protocols with a high usability and feature richness.
+
+## Protocol support
+
+These protocols are currently supported via their respective URL schemes:
+=> https://gemini.circumlunar.space/ Gemini
+=> https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol HTTP/HTTPS
+=> https://en.wikipedia.org/wiki/Gopher_(protocol) Gopher
+=> https://en.wikipedia.org/wiki/Finger_protocol Finger
+
+### Built-in sites
+
+There is also the scheme about: which can be used to access internal sites for configuration, usability or help (this is one of them!):
+=> about:blank
+=> about:favourites
+=> about:help
+
+## Shortcuts
+
+- Ctrl+T ⇒ New tab
+- Ctrl+W ⇒ Close tab
+- Ctrl+D ⇒ Quick add/remove from favourites
+- Ctrl+L ⇒ Focus URL bar
+- Ctrl+S ⇒ Save current file
+- Ctrl+H ⇒ Go to home page
+- Alt+Left ⇒ Navigate one page back
+- Alt+Right ⇒ Navigate one page forward
+- F1 ⇒ View this document
+- F5 ⇒ Refresh current tab
+
+## Contact me
+
+I'm eager to hear from your experience! Did everything work? Is something especially cool or bad? Tell me what you think or what annoys you!
+
+Please note that everything here is still work-in-progress and may crash!
+
+Mail:   kristall@mq32.de
+GitHub: https://github.com/MasterQ32/kristall
