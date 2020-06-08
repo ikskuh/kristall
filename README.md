@@ -64,9 +64,17 @@ qmake ../src/kristall.pro
 make
 ```
 
-Notes for OpenBSD:
+### Notes for OpenBSD
 - It seems like Qt wants `libzstd.so.3.1` instead of `libzstd.so.3.2`. Just symlink that file into the build directory
 - Use `make` and not `gmake` to build the project.
+
+### Notes for Ubuntu 20.04:
+- Requires packages
+  - `qt5-default`
+  - `qt5-qmake`
+  - `qtmultimedia5-dev` 
+  - `make`
+  - `g++`
 
 ## Windows
 
@@ -117,3 +125,6 @@ Just use QtCreator to build `./src/kristall.pro`. Default settings should be fin
   
 > <styan> xq: When using torsocks(1) on kristall QNetworkInterface complains loudly about not being permitted to create an IPv6 socket..
 
+- Include <memory> in browsertab.hpp
+- Build "document not found message" without markdown
+- DocumentOutlineModel needs to include <cassert>

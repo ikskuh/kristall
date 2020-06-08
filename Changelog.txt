@@ -7,10 +7,10 @@ Kristall Changelog
 - Implement Ctrl+D/*Add to favourites* menu item
 - Implement Ctrl+S/*Save as...* menu item
 - Add display for "non-recognized files"
-- Added support for gopher and gophermaps
-- Added "go to home" menu icon
+- Added support for gopher:// and gophermaps
+- Added "go to home" menu icogin
 - Added support for video/* and audio/* via QMediaPlayer
-- 
+- Added support for file:// scheme
 
 == 0.1
 - Initial release
