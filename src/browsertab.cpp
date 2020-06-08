@@ -332,15 +332,13 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
         document->setDefaultFont(doc_style.standard_font);
         document->setDefaultStyleSheet(doc_style.toStyleSheet());
 
-        document->setMarkdown(QString(R"md(You accessed an unsupported media type!
+        document->setPlainText(QString(R"md(You accessed an unsupported media type!
 
 Use the *File* menu to save the file to your local disk or navigate somewhere else. I cannot display this for you. ☹
 
 Info:
-```
 MIME Type: %1
 File Size: %2
-```
 )md").arg(mime).arg(size_human(data.size())));
     }
 

@@ -1,6 +1,7 @@
 #ifndef BROWSERTAB_HPP
 #define BROWSERTAB_HPP
 
+#include <memory>
 #include <QWidget>
 #include <QUrl>
 #include <QGraphicsScene>

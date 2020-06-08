@@ -322,10 +322,15 @@ void MainWindow::on_actionSave_as_triggered()
 {
     BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
     if(tab != nullptr) {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
         QFileDialog::saveFileContent(
             tab->current_buffer,
             tab->current_location.fileName()
         );
+#else
+	// TODO: Implement without saveFileContent
+	QMessageBox::warning(this, "Kristall", "Not support in your Qt version.");
+#endif
     }
 }
 

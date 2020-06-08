@@ -3,6 +3,7 @@
 
 #include "documentstyle.hpp"
 
+#include <memory>
 #include <QTextDocument>
 
 struct GophermapRenderer

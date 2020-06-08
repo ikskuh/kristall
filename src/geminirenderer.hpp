@@ -1,6 +1,7 @@
 #ifndef GEMINIRENDERER_HPP
 #define GEMINIRENDERER_HPP
 
+#include <memory>
 #include <QTextDocument>
 #include <QColor>
 #include <QSettings>
