@@ -4,6 +4,8 @@
 #include "geminirenderer.hpp"
 #include "settingsdialog.hpp"
 #include "gophermaprenderer.hpp"
+#include "ioutil.hpp"
+
 #include <cassert>
 #include <QTabWidget>
 #include <QMenu>
@@ -66,6 +68,8 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
         QMessageBox::warning(this, "Kristall", "Unsupported uri scheme: " + url.scheme());
         return;
     }
+
+    this->timer.start();
 
     this->current_location = url;
     this->ui->url_bar->setText(url.toString());
@@ -233,23 +237,6 @@ void BrowserTab::on_requestFailed(const QString &reason)
     this->setErrorMessage(QString("Request failed:\n%1").arg(reason));
 }
 
-QString size_human(int size)
-{
-    float num = size;
-    QStringList list;
-    list << "KB" << "MB" << "GB" << "TB";
-
-    QStringListIterator i(list);
-    QString unit("bytes");
-
-    while(num >= 1024.0 && i.hasNext())
-     {
-        unit = i.next();
-        num /= 1024.0;
-    }
-    return QString().setNum(num,'f',2)+" "+unit;
-}
-
 void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
 {
     qDebug() << "Loaded" << data.length() << "bytes of type" << mime;
@@ -339,7 +326,7 @@ Use the *File* menu to save the file to your local disk or navigate somewhere el
 Info:
 MIME Type: %1
 File Size: %2
-)md").arg(mime).arg(size_human(data.size())));
+)md").arg(mime).arg(IoUtil::size_human(data.size())));
     }
 
     assert((document != nullptr) == (doc_type == Text));
@@ -355,6 +342,8 @@ File Size: %2
 
     QString title = this->current_location.toString();
     emit this->titleChanged(title);
+
+    emit this->fileLoaded(data.size(), mime, this->timer.elapsed());
 
     this->successfully_loaded = true;
 
@@ -520,10 +509,15 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
 
 void BrowserTab::on_text_browser_highlighted(const QUrl &url)
 {
-    QUrl real_url = url;
-    if(real_url.isRelative())
-        real_url = this->current_location.resolved(url);
-    this->mainWindow->setUrlPreview(real_url);
+    if(url.isValid()) {
+        QUrl real_url = url;
+        if(real_url.isRelative())
+            real_url = this->current_location.resolved(url);
+        this->mainWindow->setUrlPreview(real_url);
+    }
+    else {
+        this->mainWindow->setUrlPreview(QUrl { });
+    }
 }
 
 void BrowserTab::on_stop_button_clicked()

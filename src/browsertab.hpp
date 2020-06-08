@@ -7,6 +7,7 @@
 #include <QGraphicsScene>
 #include <QTextDocument>
 #include <QNetworkAccessManager>
+#include <QElapsedTimer>
 
 #include "geminiclient.hpp"
 #include "documentoutlinemodel.hpp"
@@ -54,6 +55,7 @@ public:
 signals:
     void titleChanged(QString const & title);
     void locationChanged(QUrl const & url);
+    void fileLoaded(qint64 fileSize, QString const & mime, int msec);
 
 private slots:
     void on_url_bar_returnPressed();
@@ -123,6 +125,7 @@ public:
 
     QByteArray current_buffer;
     QString current_mime;
+    QElapsedTimer timer;
 };
 
 #endif // BROWSERTAB_HPP

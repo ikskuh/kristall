@@ -10,13 +10,17 @@
 #include <QFile>
 #include <QTextStream>
 #include <QFileDialog>
+#include "ioutil.hpp"
 
 MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     QMainWindow(parent),
     application(app),
     settings("xqTechnologies", "Kristall"),
     ui(new Ui::MainWindow),
-    url_status(new QLabel())
+    url_status(new QLabel(this)),
+    file_size(new QLabel(this)),
+    file_mime(new QLabel(this)),
+    load_time(new QLabel(this))
 {
     if(not this->settings.contains("start_page")) {
         this->settings.setValue("start_page", "about:favourites");
@@ -25,6 +29,9 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     ui->setupUi(this);
 
     this->statusBar()->addWidget(this->url_status);
+    this->statusBar()->addPermanentWidget(this->file_mime);
+    this->statusBar()->addPermanentWidget(this->file_size);
+    this->statusBar()->addPermanentWidget(this->load_time);
 
     this->favourites.load(settings);
     this->current_style.load(settings);
@@ -87,6 +94,7 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new, bool load_default)
     BrowserTab * tab = new BrowserTab(this);
 
     connect(tab, &BrowserTab::titleChanged, this, &MainWindow::on_tab_titleChanged);
+    connect(tab, &BrowserTab::fileLoaded, this, &MainWindow::on_tab_fileLoaded);
 
     int index = this->ui->browser_tabs->addTab(tab, "Page");
 
@@ -322,15 +330,25 @@ void MainWindow::on_actionSave_as_triggered()
 {
     BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
     if(tab != nullptr) {
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
-        QFileDialog::saveFileContent(
-            tab->current_buffer,
-            tab->current_location.fileName()
-        );
-#else
-	// TODO: Implement without saveFileContent
-	QMessageBox::warning(this, "Kristall", "Not support in your Qt version.");
-#endif
+        QFileDialog dialog { this };
+        dialog.setAcceptMode(QFileDialog::AcceptSave);
+        dialog.selectFile(tab->current_location.fileName());
+
+        if(dialog.exec() !=QFileDialog::Accepted)
+            return;
+
+        QString fileName = dialog.selectedFiles().at(0);
+
+        QFile file { fileName };
+
+        if(file.open(QFile::WriteOnly))
+        {
+            IoUtil::writeAll(file, tab->current_buffer);
+        }
+        else
+        {
+            QMessageBox::warning(this, "Kristall", QString("Could not save file:\r\n%1").arg(file.errorString()));
+        }
     }
 }
 
@@ -347,5 +365,19 @@ void MainWindow::on_actionAdd_to_favourites_triggered()
     BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
     if(tab != nullptr) {
         tab->toggleIsFavourite();
+    }
+}
+
+void MainWindow::on_tab_fileLoaded(qint64 fileSize, const QString &mime, int msec)
+{
+    auto * tab = qobject_cast<BrowserTab*>(sender());
+    if(tab != nullptr) {
+        int index = this->ui->browser_tabs->indexOf(tab);
+        assert(index >= 0);
+        if(index == this->ui->browser_tabs->currentIndex()) {
+            this->file_size->setText(IoUtil::size_human(fileSize));
+            this->file_mime->setText(mime);
+            this->load_time->setText(QString("%1 ms").arg(msec));
+        }
     }
 }

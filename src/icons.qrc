@@ -21,5 +21,17 @@
         <file>icons/volume-off.svg</file>
         <file>icons/play.svg</file>
         <file>icons/pause.svg</file>
+        <file>icons/gopher/binary.svg</file>
+        <file>icons/gopher/directory.svg</file>
+        <file>icons/gopher/dns.svg</file>
+        <file>icons/gopher/error.svg</file>
+        <file>icons/gopher/gif.svg</file>
+        <file>icons/gopher/html.svg</file>
+        <file>icons/gopher/image.svg</file>
+        <file>icons/gopher/mirror.svg</file>
+        <file>icons/gopher/search.svg</file>
+        <file>icons/gopher/sound.svg</file>
+        <file>icons/gopher/telnet.svg</file>
+        <file>icons/gopher/text.svg</file>
     </qresource>
 </RCC>

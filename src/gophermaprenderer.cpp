@@ -7,6 +7,7 @@
 #include <QTextImageFormat>
 
 #include <QDebug>
+#include <QImage>
 
 //Canonical Types
 //0   Text File
@@ -31,11 +32,11 @@
 std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input, const QUrl &root_url, const DocumentStyle &themed_style)
 {
     QTextCharFormat standard;
-    standard.setFont(themed_style.standard_font);
-    standard.setForeground(themed_style.standard_color);
+    standard.setFont(themed_style.preformatted_font);
+    standard.setForeground(themed_style.preformatted_color);
 
     QTextCharFormat standard_link;
-    standard_link.setFont(themed_style.standard_font);
+    standard_link.setFont(themed_style.preformatted_font);
     standard_link.setForeground(QBrush(themed_style.internal_link_color));
 
     QTextCharFormat external_link;
@@ -45,21 +46,34 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
     std::unique_ptr<QTextDocument> result = std::make_unique<QTextDocument>();
     result->setDocumentMargin(themed_style.margin);
 
+    result->addResource(QTextDocument::ImageResource, QUrl("gopher/binary"), QVariant::fromValue(QImage(":/icons/gopher/binary.svg")));
+    result->addResource(QTextDocument::ImageResource, QUrl("gopher/directory"), QVariant::fromValue(QImage(":/icons/gopher/directory.svg")));
+    result->addResource(QTextDocument::ImageResource, QUrl("gopher/dns"), QVariant::fromValue(QImage(":/icons/gopher/dns.svg")));
+    result->addResource(QTextDocument::ImageResource, QUrl("gopher/error"), QVariant::fromValue(QImage(":/icons/gopher/error.svg")));
+    result->addResource(QTextDocument::ImageResource, QUrl("gopher/gif"), QVariant::fromValue(QImage(":/icons/gopher/gif.svg")));
+    result->addResource(QTextDocument::ImageResource, QUrl("gopher/html"), QVariant::fromValue(QImage(":/icons/gopher/html.svg")));
+    result->addResource(QTextDocument::ImageResource, QUrl("gopher/image"), QVariant::fromValue(QImage(":/icons/gopher/image.svg")));
+    result->addResource(QTextDocument::ImageResource, QUrl("gopher/mirror"), QVariant::fromValue(QImage(":/icons/gopher/mirror.svg")));
+    result->addResource(QTextDocument::ImageResource, QUrl("gopher/search"), QVariant::fromValue(QImage(":/icons/gopher/search.svg")));
+    result->addResource(QTextDocument::ImageResource, QUrl("gopher/sound"), QVariant::fromValue(QImage(":/icons/gopher/sound.svg")));
+    result->addResource(QTextDocument::ImageResource, QUrl("gopher/telnet"), QVariant::fromValue(QImage(":/icons/gopher/telnet.svg")));
+    result->addResource(QTextDocument::ImageResource, QUrl("gopher/text"), QVariant::fromValue(QImage(":/icons/gopher/text.svg")));
+
     QTextCursor cursor{result.get()};
 
     QTextBlockFormat non_list_format = cursor.blockFormat();
 
     QList<QByteArray> lines = input.split('\n');
-    for (auto const & line : lines)
+    for (auto const &line : lines)
     {
         if (line.length() < 2) // skip lines without
             continue;
 
-        if(line[line.size() - 1] != '\r')
+        if (line[line.size() - 1] != '\r')
             continue;
 
         auto items = line.mid(1, line.length() - 2).split('\t');
-        if(items.size() < 2) // invalid
+        if (items.size() < 2) // invalid
             continue;
 
         QString icon;
@@ -72,22 +86,22 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
             icon = "directory";
             break;
         case '2': // CCSO Nameserver
-            icon = "ns";
+            icon = "dns";
             break;
         case '3': // Error code returned by a Gopher server to indicate failure
             icon = "error";
             break;
         case '4': // BinHex-encoded file (primarily for Macintosh computers)
-            icon = "binhex";
+            icon = "binary";
             break;
         case '5': // DOS file
-            icon = "dos";
+            icon = "binary";
             break;
         case '6': // uuencoded file
-            icon = "uuencoded";
+            icon = "binary";
             break;
         case '7': // Gopher full-text search
-            icon = "full-text";
+            icon = "search";
             break;
         case '8': // Telnet
             icon = "telnet";
@@ -117,7 +131,7 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
         case 's': // Sound file
             icon = "sound";
             break;
-        default:  // unknown
+        default: // unknown
             continue;
         }
 
@@ -125,34 +139,46 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
 
         // 1Phlog	/phlog	octotherp.org	70	+
 
-        if(line.at(0) == 'i')
+        if (line.at(0) == 'i')
         {
             cursor.insertText(title + "\n", standard);
         }
         else
         {
             QString dst_url;
-            switch(items.size())
+            switch (items.size())
             {
-            case 0: assert(false);
-            case 1: assert(false);
+            case 0:
+                assert(false);
+            case 1:
+                assert(false);
             case 2:
                 dst_url = root_url.resolved(QUrl(items.at(1))).toString();
                 break;
             case 3:
-                dst_url = "gopher://" + items.at(2) + "/" + line.mid(0,1) + items.at(1);
+                dst_url = "gopher://" + items.at(2) + "/" + line.mid(0, 1) + items.at(1);
                 break;
             default:
-                dst_url = "gopher://" + items.at(2) + ":" + items.at(3) + "/" + line.mid(0,1) + items.at(1);
+                dst_url = "gopher://" + items.at(2) + ":" + items.at(3) + "/" + line.mid(0, 1) + items.at(1);
                 break;
             }
 
-            if(not QUrl(dst_url).isValid()) {
+            if (not QUrl(dst_url).isValid())
+            {
                 // invlaid URL generated
                 qDebug() << line << dst_url;
             }
 
-            cursor.insertText("[" + icon + "] ", standard);
+            QTextImageFormat icon_fmt;
+            icon_fmt.setName(QString("gopher/%1").arg(icon));
+            icon_fmt.setVerticalAlignment(QTextImageFormat::AlignTop);
+
+            cursor.insertImage(icon_fmt);
+
+            // cursor.insertImage(QImage(QString(":/icons/gopher/%1.svg").arg(icon)));
+
+            cursor.insertText(" ");
+            // cursor.insertText("[" + icon + "] ", standard);
 
             QTextCharFormat fmt = standard_link;
             fmt.setAnchor(true);

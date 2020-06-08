@@ -73,6 +73,8 @@ private slots:
 
     void on_actionAdd_to_favourites_triggered();
 
+    void on_tab_fileLoaded(qint64 fileSize, QString const & mime, int msec);
+
 private:
     void reloadTheme();
 
@@ -86,5 +88,8 @@ private:
     Ui::MainWindow *ui;
 
     QLabel * url_status;
+    QLabel * file_size;
+    QLabel * file_mime;
+    QLabel * load_time;
 };
 #endif // MAINWINDOW_HPP
