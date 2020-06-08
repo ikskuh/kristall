@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Kristall
+GenericName=Kristall
+Comment=Graphical gemini client
+Categories=Network;
+Icon=kristall
+Exec=kristall %u
+Terminal=false
+Type=Application
+MimeType=x-scheme-handler/gemini;x-scheme-handler/gopher;x-scheme-handler/finger;
