@@ -50,6 +50,12 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
         this->ui->texthl_off->setChecked(true);
     }
 
+    if(global_settings.value("use_os_scheme_handler").toBool()) {
+        this->ui->scheme_os_default->setChecked(true);
+    } else {
+        this->ui->scheme_error->setChecked(true);
+    }
+
     int items = global_settings.beginReadArray("Themes");
 
     this->predefined_styles.clear();
@@ -438,6 +444,7 @@ void SettingsDialog::on_SettingsDialog_accepted()
     global_settings.setValue("gophermap_display", this->ui->gophermap_text->isChecked() ? "text" : "rendered");
     global_settings.setValue("text_display", this->ui->fancypants_off->isChecked() ? "plain" : "fancy");
     global_settings.setValue("text_decoration", this->ui->texthl_on->isChecked());
+    global_settings.setValue("use_os_scheme_handler", this->ui->scheme_os_default->isChecked());
 
     global_settings.beginWriteArray("Themes", this->predefined_styles.size());
 

@@ -76,9 +76,9 @@ BrowserTab::~BrowserTab()
 
 void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
 {
-    if(not mainWindow->protocols.isSchemeSupported(url.scheme()))
+    if(mainWindow->protocols.isSchemeSupported(url.scheme()) != ProtocolSetup::Enabled)
     {
-        QMessageBox::warning(this, "Kristall", "Unsupported uri scheme: " + url.scheme());
+        QMessageBox::warning(this, "Kristall", "URI scheme not supported or disabled: " + url.scheme());
         return;
     }
 
@@ -529,6 +529,8 @@ void BrowserTab::on_fav_button_clicked()
     toggleIsFavourite(this->ui->fav_button->isChecked());
 }
 
+#include <QDesktopServices>
+
 
 void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
 {
@@ -538,11 +540,22 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
     if(real_url.isRelative())
         real_url = this->current_location.resolved(url);
 
-    if(not mainWindow->protocols.isSchemeSupported(real_url.scheme())) {
-        QMessageBox::warning(this, "Kristall", QString("Unsupported url: %1").arg(real_url.toString()));
-    }
-    else {
+    auto support = mainWindow->protocols.isSchemeSupported(real_url.scheme());
+
+    if(support == ProtocolSetup::Enabled) {
         this->navigateTo(real_url, PushAfterSuccess);
+    } else {
+        bool use_os_proxy = global_settings.value("use_os_scheme_handler").toBool();
+
+        if(use_os_proxy) {
+            if(not QDesktopServices::openUrl(url)) {
+                QMessageBox::warning(this, "Kristall", QString("Failed to start system URL handler for\r\n%1").arg(real_url.toString()));
+            }
+        } else if(support == ProtocolSetup::Disabled) {
+            QMessageBox::warning(this, "Kristall", QString("The requested url uses a scheme that has been disabled in the settings:\r\n%1").arg(real_url.toString()));
+        } else {
+            QMessageBox::warning(this, "Kristall", QString("The requested url cannot be processed by Kristall:\r\n%1").arg(real_url.toString()));
+        }
     }
 }
 

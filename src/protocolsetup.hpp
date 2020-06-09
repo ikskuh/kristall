@@ -22,7 +22,9 @@ struct ProtocolSetup
 
     void load(QSettings & settings);
 
-    bool isSchemeSupported(QString const & scheme) const;
+
+    enum ProtocolSupport { Disabled, Unsupported, Enabled };
+    ProtocolSupport isSchemeSupported(QString const & scheme) const;
 };
 
 #endif // PROTOCOLSETUP_HPP

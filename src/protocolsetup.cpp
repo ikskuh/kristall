@@ -27,17 +27,17 @@ void ProtocolSetup::load(QSettings &settings)
     settings.endGroup();
 }
 
-bool ProtocolSetup::isSchemeSupported(QString const & _scheme) const
+ProtocolSetup::ProtocolSupport ProtocolSetup::isSchemeSupported(QString const & _scheme) const
 {
     auto scheme = _scheme.toLower();
 
-#define MAC(X) if(scheme == #X) return this->X;
+#define MAC(X) if(scheme == #X) return this->X ? Enabled : Disabled;
     PROTOCOLS(MAC)
 #undef MAC
 
     // built-in schemes:
-    if(scheme == "about") return true;
-    if(scheme == "file")  return true;
+    if(scheme == "about") return Enabled;
+    if(scheme == "file")  return Enabled;
 
-    return false;
+    return Unsupported;
 }
