@@ -5,6 +5,7 @@
 #include <QStyle>
 #include <QSettings>
 #include <QInputDialog>
+#include <QMessageBox>
 
 #include "kristall.hpp"
 
@@ -48,19 +49,35 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
         this->ui->texthl_off->setChecked(true);
     }
 
-//    settings.beginGroup("Themes");
-//    int items = settings.beginReadArray("Themes");
+    int items = global_settings.beginReadArray("Themes");
 
-//    this->ui->presets->clear();
-//    for(int i = 0; i < items; i++)
-//    {
-//        settings.setArrayIndex(i);
-//        this->ui->presets->addItem(settings.value("name").toString(), QVariant::fromValue(i));
-//    }
+    this->predefined_styles.clear();
+    for(int i = 0; i < items; i++)
+    {
+        global_settings.setArrayIndex(i);
 
-//    settings.endArray();
+        QString name = global_settings.value("name").toString();
 
-    this->on_presets_currentIndexChanged(-1);
+        DocumentStyle style;
+        style.load(global_settings);
+
+        this->predefined_styles.insert(name, style);
+    }
+
+    global_settings.endArray();
+
+    this->ui->presets->clear();
+    for(auto const & style_name : this->predefined_styles.keys())
+    {
+        this->ui->presets->addItem(style_name);
+    }
+
+    if(items > 0) {
+        on_presets_currentIndexChanged(0);
+    } else {
+        this->on_presets_currentIndexChanged(-1);
+    }
+
 }
 
 SettingsDialog::~SettingsDialog()
@@ -368,17 +385,70 @@ void SettingsDialog::on_preset_new_clicked()
 
     if(dlg.exec() != QInputDialog::Accepted)
         return;
-
     QString name = dlg.textValue();
 
+    bool override = false;
+    if(this->predefined_styles.contains(name))
+    {
+        auto response = QMessageBox::question(this, "Kristall", QString("A style with the name '%1' already exists! Replace?").arg(name));
+        if(response != QMessageBox::Yes)
+            return;
+        override = true;
+    }
 
+    this->predefined_styles.insert(name, this->current_style);
 
-
+    if(not override)
+    {
+        this->ui->presets->addItem(name);
+    }
 }
+
+void SettingsDialog::on_preset_save_clicked()
+{
+    QString name = this->ui->presets->currentText();
+    if(name.isEmpty())
+        return;
+
+    auto response = QMessageBox::question(this, "Kristall", QString("Do you want to override the style '%1'?").arg(name));
+    if(response != QMessageBox::Yes)
+        return;
+
+    this->predefined_styles.insert(name, this->current_style);
+}
+
+
+void SettingsDialog::on_preset_load_clicked()
+{
+    QString name = this->ui->presets->currentText();
+    if(name.isEmpty())
+        return;
+
+    auto response = QMessageBox::question(this, "Kristall", QString("Do you want to load the style '%1'?\r\nThis will discard all currently set up values!").arg(name));
+    if(response != QMessageBox::Yes)
+        return;
+
+    this->setGeminiStyle(this->predefined_styles.value(name));
+}
+
 
 void SettingsDialog::on_SettingsDialog_accepted()
 {
     global_settings.setValue("gophermap_display", this->ui->gophermap_text->isChecked() ? "text" : "rendered");
     global_settings.setValue("text_display", this->ui->fancypants_off->isChecked() ? "plain" : "fancy");
     global_settings.setValue("text_decoration", this->ui->texthl_on->isChecked());
+
+    global_settings.beginWriteArray("Themes", this->predefined_styles.size());
+
+    int index = 0;
+    for(auto const & style_name : this->predefined_styles.keys())
+    {
+        global_settings.setArrayIndex(index);
+
+        global_settings.setValue("name", style_name);
+        this->predefined_styles.value(style_name).save(global_settings);
+
+        index += 1;
+    }
+    global_settings.endArray();
 }

@@ -81,6 +81,10 @@ private slots:
 
     void on_quote_change_color_clicked();
 
+    void on_preset_save_clicked();
+
+    void on_preset_load_clicked();
+
 private:
     void reloadStylePreview();
 
@@ -93,6 +97,8 @@ private:
 
     DocumentStyle current_style;
     std::unique_ptr<QTextDocument> preview_document;
+
+    QMap<QString, DocumentStyle> predefined_styles;
 };
 
 #endif // SETTINGSDIALOG_HPP

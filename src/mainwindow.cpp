@@ -31,8 +31,11 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     this->statusBar()->addPermanentWidget(this->load_time);
 
     this->favourites.load(global_settings);
-    this->current_style.load(global_settings);
     this->protocols.load(global_settings);
+
+    global_settings.beginGroup("Theme");
+    this->current_style.load(global_settings);
+    global_settings.endGroup();
 
     ui->favourites_view->setModel(&favourites);
 
@@ -135,8 +138,11 @@ void MainWindow::setUrlPreview(const QUrl &url)
 void MainWindow::saveSettings()
 {
     this->favourites.save(global_settings);
-    this->current_style.save(global_settings);
     this->protocols.save(global_settings);
+
+    global_settings.beginGroup("Theme");
+    this->current_style.save(global_settings);
+    global_settings.endGroup();
 
     {
         global_settings.beginGroup("Window State");

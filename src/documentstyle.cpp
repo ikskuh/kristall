@@ -154,8 +154,6 @@ DocumentStyle::DocumentStyle() : theme(Fixed),
 
 bool DocumentStyle::save(QSettings &settings) const
 {
-    settings.beginGroup("Theme");
-
     settings.setValue("standard_font", standard_font.toString());
     settings.setValue("h1_font", h1_font.toString());
     settings.setValue("h2_font", h2_font.toString());
@@ -178,15 +176,11 @@ bool DocumentStyle::save(QSettings &settings) const
 
     settings.setValue("margins", margin);
     settings.setValue("theme", int(theme));
-
-    settings.endGroup();
     return true;
 }
 
 bool DocumentStyle::load(QSettings &settings)
 {
-    settings.beginGroup("Theme");
-
     if(settings.contains("standard_color"))
     {
         standard_font.fromString(settings.value("standard_font").toString());
@@ -212,8 +206,6 @@ bool DocumentStyle::load(QSettings &settings)
         margin = settings.value("margins").toDouble();
         theme = Theme(settings.value("theme").toInt());
     }
-
-    settings.endGroup();
     return true;
 }
 
