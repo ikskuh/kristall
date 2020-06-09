@@ -100,38 +100,49 @@ The provided desktop file can be installed into the local system
 ln -s Kristall.desktop ~/.local/share/applications/kristall.desktop
 ```
 
-## TODO
+## TODO / Roadmap
+
+### 0.2 release
+- [ ] Add text/kristall-theme mime
+  - [ ] Will use a preview document instead of displaying the content
+  - [ ] Allow import of themes
+  - [ ] File extension is `.kthm`
+- [ ] Replace Qt markdown with standalone markdown renderer
+  - [ ] Enable markdown theming
+- [ ] Render text/plain and others with custom document creation for styles. Enable auto-link recognition
+- [ ] Implement more protocols
+  - [ ] Gopher
+    - [ ] Support more media types (include uudecode and hexbin decoder)
+- [ ] Image Zoom and Pan
+- [ ] Improve Unicode/Emoji support
+  - Seems to need multiple font families per font?
+- [ ] Rightclick with "open in new tab" and "open in this tab"
+  - [ ] For history
+  - [ ] For favourites
+  - [ ] For documents
+
+### 0.3 release
+- [ ] TLS Handling
+   - [ ] Allow user to ignore TLS errors
+   - [ ] Enable TOFU for HTTPS/Gemini
+   - [ ] Enable Client Certificate Management
+
+### Unspecced
 - [ ] Survive full torture suite
   - [ ] Correctly parse mime parameters
     - [ ] Correctly parse charset (0013, 0014)
     - [ ] Correctly parse other params (0015)
     - [ ] Correctly parse undefined params (0016)
-- [ ] TLS Handling
-   - [ ] Allow user to ignore TLS errors
-   - [ ] Enable TOFU for HTTPS/Gemini
-   - [ ] Enable Client Certificate Management
 - [ ] Recognize home directories with /~home and such and add "substyles"
 - [ ] [Add favicon support](gemini://mozz.us/files/rfc_gemini_favicon.gmi)
   - [ ] Add auto-generated "favicons"
   - [ ] Check if the site follows this guideline: `#<ICON> Title` where `<ICON>` is a unicode emoji
   - [ ] Opt-In: Regularly check for `domain/favicon.txt`
   - [ ] Opt-In: Regularly check for `domain/favicon.ico`
-- [ ] Implement more protocols
-  - [ ] Gopher
-    - [ ] Support more media types (include uudecode and hexbin decoder)
   - [ ] FTP
     - [ ] Search for FTP library or use self-written one?
 - [ ] Improve UX
-  - [ ] Rightclick with "open in new tab" and "open in this tab"
-   - [ ] For history
-   - [ ] For favourites
-   - [ ] For documents
-  - [ ] Image Zoom and Pan
-  - [ ] Improve Unicode/Emoji support
-    - Seems to need multiple font families per font?
-- [ ] Add text/kristall-theme mime
-  - [ ] Will use a preview document instead of displaying the content
-  - [ ] Allow import of themes
+
 ## Bugs
   
 > <styan> xq: When using torsocks(1) on kristall QNetworkInterface complains loudly about not being permitted to create an IPv6 socket..
@@ -145,3 +156,6 @@ MAC needs different default font
 https://usercontent.irccloud-cdn.com/file/OrkuXDfQ/image.png
 
 <IceMichael> Andale Mono, falls du das für mac irgendwie voreinstellen willst (aber kA, ob die überall diese ist)
+
+<tiwesdaeg> .txt and.md and I am guessing anything that is simple text
+<tiwesdaeg> the font color is not following the theme
