@@ -5,6 +5,7 @@
 #include <QStyle>
 #include <QSettings>
 #include <QInputDialog>
+#include <QFileDialog>
 #include <QMessageBox>
 
 #include "kristall.hpp"
@@ -451,4 +452,75 @@ void SettingsDialog::on_SettingsDialog_accepted()
         index += 1;
     }
     global_settings.endArray();
+}
+
+void SettingsDialog::on_preset_import_clicked()
+{
+    QFileDialog dialog { this };
+    dialog.setAcceptMode(QFileDialog::AcceptOpen);
+    dialog.selectNameFilter("Kristall Theme (*.kthm)");
+
+    if(dialog.exec() !=QFileDialog::Accepted)
+        return;
+
+    QString fileName = dialog.selectedFiles().at(0);
+
+    QSettings import_settings { fileName, QSettings::IniFormat };
+
+    QString name;
+
+    name = import_settings.value("name").toString();
+
+    while(name.isEmpty())
+    {
+        QInputDialog dlg { this };
+        dlg.setInputMode(QInputDialog::TextInput);
+        dlg.setOkButtonText("Save");
+        dlg.setCancelButtonText("Cancel");
+        dlg.setLabelText("Imported preset has no name.\r\nPlease enter a name for the preset:");
+        if(dlg.exec() != QDialog::Accepted)
+            return;
+        name = dlg.textValue();
+    }
+
+    bool override = false;
+    if(this->predefined_styles.contains(name))
+    {
+        auto response = QMessageBox::question(this, "Kristall", QString("Do you want to override the style '%1'?").arg(name));
+        if(response != QMessageBox::Yes)
+            return;
+        override = true;
+    }
+
+    DocumentStyle style;
+    style.load(import_settings);
+
+    this->predefined_styles.insert(name, style);
+
+    if(not override)
+    {
+        this->ui->presets->addItem(name);
+    }
+}
+
+void SettingsDialog::on_preset_export_clicked()
+{
+    QString name = this->ui->presets->currentText();
+    if(name.isEmpty())
+        return;
+
+    QFileDialog dialog { this };
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+    dialog.selectNameFilter("Kristall Theme (*.kthm)");
+    dialog.selectFile(QString("%1.kthm").arg(name));
+
+    if(dialog.exec() !=QFileDialog::Accepted)
+        return;
+
+    QString fileName = dialog.selectedFiles().at(0);
+
+    QSettings export_settings { fileName, QSettings::IniFormat };
+    export_settings.setValue("name", name);
+    this->predefined_styles.value(name).save(export_settings);
+    export_settings.sync();
 }

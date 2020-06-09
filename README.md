@@ -127,10 +127,11 @@ ln -s Kristall.desktop ~/.local/share/applications/kristall.desktop
    - [ ] For favourites
    - [ ] For documents
   - [ ] Image Zoom and Pan
-  - [ ] Save/load/share theme preset
   - [ ] Improve Unicode/Emoji support
     - Seems to need multiple font families per font?
-
+- [ ] Add text/kristall-theme mime
+  - [ ] Will use a preview document instead of displaying the content
+  - [ ] Allow import of themes
 ## Bugs
   
 > <styan> xq: When using torsocks(1) on kristall QNetworkInterface complains loudly about not being permitted to create an IPv6 socket..

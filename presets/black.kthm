@@ -1,0 +1,21 @@
+[General]
+background_color=#250108
+blockquote_color=#4f0507
+cross_scheme_link_color=#0a7dd4
+external_link_color=#0e8fff
+external_link_prefix="\x21d2 "
+h1_color=#d60003
+h1_font="Sans Serif,20,-1,5,50,0,0,0,0,0"
+h2_color=#d90032
+h2_font="Sans Serif,15,-1,5,50,0,0,0,0,0"
+h3_color=#ea5600
+h3_font="Sans Serif,12,-1,5,50,0,0,0,0,0"
+internal_link_color=#0e8fff
+internal_link_prefix="\x2192 "
+margins=55
+name=Black
+preformatted_color=#ffd0f7
+preformatted_font="Source Code Pro,10,-1,5,50,0,0,0,0,0,Regular"
+standard_color=#e7c0c1
+standard_font="Fira Sans,10,-1,5,50,0,0,0,0,0,Regular"
+theme=0

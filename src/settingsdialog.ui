@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="generic">
       <attribute name="title">
@@ -720,7 +720,7 @@
            <item>
             <widget class="QLabel" name="quote_preview">
              <property name="text">
-              <string> </string>
+              <string/>
              </property>
             </widget>
            </item>
@@ -811,8 +811,8 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="textRenderingBtnGroup"/>
   <buttongroup name="textHighlightsBtnGroup"/>
+  <buttongroup name="textRenderingBtnGroup"/>
   <buttongroup name="gophermapBtnGroup"/>
  </buttongroups>
 </ui>

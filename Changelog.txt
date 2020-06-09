@@ -23,6 +23,7 @@ Kristall Changelog
 - Added support for block quotes
 - Added help file
 - Added shortcut to focus URL bar
+- Added possibility to save/load/share theme presets. Make everything colorful!
 
 == 0.1
 - Initial release
