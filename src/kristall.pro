@@ -75,3 +75,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
   ../lib/BreezeStyleSheets/breeze.qrc \
   icons.qrc
+
+DISTFILES += \
+  gophertypes.txt

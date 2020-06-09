@@ -1,0 +1,21 @@
+
+Canonical Types
+0   Text File
+1   Gopher submenu or link to another gopher server
+2   CCSO Nameserver
+3   Error code returned by a Gopher server to indicate failure
+4   BinHex-encoded file (primarily for Macintosh computers)
+5   DOS file
+6   uuencoded file
+7   Gopher full-text search
+8   Telnet
+9   Binary file
++   Mirror or alternate server (for load balancing or in case of primary server downtime)
+g   GIF file
+I   Image file
+T   Telnet 3270
+Non-Canonical Types
+h   HTML file
+i   Informational message
+s   Sound file
+d   Document file

@@ -84,6 +84,9 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
         global_settings.endGroup();
     }
 
+    this->ui->favourites_view->setContextMenuPolicy(Qt::CustomContextMenu);
+    this->ui->history_view->setContextMenuPolicy(Qt::CustomContextMenu);
+
     reloadTheme();
 }
 
@@ -401,4 +404,50 @@ void MainWindow::on_focus_inputbar()
 void MainWindow::on_actionHelp_triggered()
 {
     this->addNewTab(true, QUrl("about:help"));
+}
+
+void MainWindow::on_history_view_customContextMenuRequested(const QPoint &pos)
+{
+    if(auto idx = this->ui->history_view->indexAt(pos); idx.isValid()) {
+        BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+        if(tab != nullptr) {
+            if(QUrl url = tab->history.get(idx); url.isValid()) {
+                QMenu menu;
+
+                connect(menu.addAction("Open here"), &QAction::triggered, [tab, idx]() {
+                    // We do the same thing as a double click here
+                    tab->navigateBack(idx);
+                });
+
+                connect(menu.addAction("Open in new tab"), &QAction::triggered, [this, url]() {
+                    addNewTab(true, url);
+                });
+
+                menu.exec(this->ui->history_view->mapToGlobal(pos));
+            }
+        }
+    }
+}
+
+void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint &pos)
+{
+    if(auto idx = this->ui->favourites_view->indexAt(pos); idx.isValid()) {
+        if(QUrl url = favourites.get(idx); url.isValid()) {
+            QMenu menu;
+
+            BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+            if(tab != nullptr) {
+                connect(menu.addAction("Open here"), &QAction::triggered, [tab, url]() {
+                    tab->navigateTo(url, BrowserTab::PushImmediate);
+                });
+            }
+
+            connect(menu.addAction("Open in new tab"), &QAction::triggered, [this, url]() {
+                addNewTab(true, url);
+            });
+
+            menu.exec(this->ui->favourites_view->mapToGlobal(pos));
+
+        }
+    }
 }

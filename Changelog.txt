@@ -24,6 +24,10 @@ Kristall Changelog
 - Added help file
 - Added shortcut to focus URL bar
 - Added possibility to save/load/share theme presets. Make everything colorful!
+- Added a lot of context menus
+  - Added possibility to open links into a new tab
+  - Added possibility to open history and favourite items into new tab or same tab
+
 
 == 0.1
 - Initial release

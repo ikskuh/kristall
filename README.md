@@ -107,21 +107,12 @@ ln -s Kristall.desktop ~/.local/share/applications/kristall.desktop
   - [ ] Will use a preview document instead of displaying the content
   - [ ] Allow import of themes
   - [ ] File extension is `.kthm`
-- [ ] Replace Qt markdown with standalone markdown renderer
-  - [ ] Enable markdown theming
-- [ ] Render text/plain and others with custom document creation for styles. Enable auto-link recognition
 - [ ] Implement more protocols
   - [ ] Gopher
     - [ ] Support more media types (include uudecode and hexbin decoder)
     - [ ] Read non-binary media only until `.`
 - [ ] Image Zoom and Pan
-- [ ] Improve Unicode/Emoji support
-  - Seems to need multiple font families per font?
-- [ ] Rightclick with "open in new tab" and "open in this tab"
-  - [ ] For history
-  - [ ] For favourites
-  - [ ] For documents
-
+  
 ### 0.3 release
 - [ ] TLS Handling
    - [ ] Allow user to ignore TLS errors
@@ -143,6 +134,11 @@ ln -s Kristall.desktop ~/.local/share/applications/kristall.desktop
   - [ ] FTP
     - [ ] Search for FTP library or use self-written one?
 - [ ] Improve UX
+  - [ ] Provide text search function
+- [ ] Replace Qt markdown with standalone markdown renderer
+  - [ ] Enable markdown theming
+- [ ] Improve Unicode/Emoji support
+  - Seems to need multiple font families per font?
 
 ## Bugs
   

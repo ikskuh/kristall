@@ -79,6 +79,10 @@ private slots:
 
     void on_actionHelp_triggered();
 
+    void on_history_view_customContextMenuRequested(const QPoint &pos);
+
+    void on_favourites_view_customContextMenuRequested(const QPoint &pos);
+
 private:
     void reloadTheme();
 

@@ -11,25 +11,6 @@
 
 #include "kristall.hpp"
 
-//Canonical Types
-//0   Text File
-//1   Gopher submenu or link to another gopher server
-//2   CCSO Nameserver
-//3   Error code returned by a Gopher server to indicate failure
-//4   BinHex-encoded file (primarily for Macintosh computers)
-//5   DOS file
-//6   uuencoded file
-//7   Gopher full-text search
-//8   Telnet
-//9   Binary file
-//+   Mirror or alternate server (for load balancing or in case of primary server downtime)
-//g   GIF file
-//I   Image file
-//T   Telnet 3270
-//Non-Canonical Types
-//h   HTML file
-//i   Informational message
-//s   Sound file
 
 std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input, const QUrl &root_url, const DocumentStyle &themed_style)
 {
@@ -84,6 +65,7 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
             continue;
 
         QString icon;
+        QString scheme = "gopher";
         switch (line.at(0))
         {
         case '0': // Text File
@@ -112,6 +94,7 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
             break;
         case '8': // Telnet
             icon = "telnet";
+            scheme = "telnet";
             break;
         case '9': // Binary file
             icon = "binary";
@@ -127,6 +110,7 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
             break;
         case 'T': // Telnet 3270
             icon = "telnet";
+            scheme = "telnet";
             break;
         //Non-Canonical Types
         case 'h': // HTML file
@@ -163,10 +147,10 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
                 dst_url = root_url.resolved(QUrl(items.at(1))).toString();
                 break;
             case 3:
-                dst_url = "gopher://" + items.at(2) + "/" + line.mid(0, 1) + items.at(1);
+                dst_url = scheme + "://" + items.at(2) + "/" + line.mid(0, 1) + items.at(1);
                 break;
             default:
-                dst_url = "gopher://" + items.at(2) + ":" + items.at(3) + "/" + line.mid(0, 1) + items.at(1);
+                dst_url = scheme + "://" + items.at(2) + ":" + items.at(3) + "/" + line.mid(0, 1) + items.at(1);
                 break;
             }
 

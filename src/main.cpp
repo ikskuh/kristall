@@ -1,4 +1,5 @@
 #include "mainwindow.hpp"
+#include "kristall.hpp"
 
 #include <QApplication>
 #include <QUrl>
@@ -7,10 +8,13 @@
 #include <QDebug>
 
 QSettings global_settings { "xqTechnologies", "Kristall" };
+QClipboard * global_clipboard;
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+
+    global_clipboard = app.clipboard();
 
     QCommandLineParser cli_parser;
     cli_parser.parse(app.arguments());

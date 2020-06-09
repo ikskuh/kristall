@@ -64,6 +64,8 @@ BrowserTab::BrowserTab(MainWindow * mainWindow) :
     this->ui->graphics_browser->setVisible(false);
     this->ui->text_browser->setVisible(true);
 
+    this->ui->text_browser->setContextMenuPolicy(Qt::CustomContextMenu);
+
     this->ui->graphics_browser->setScene(&graphics_scene);
 }
 
@@ -590,4 +592,38 @@ void BrowserTab::updateUI()
 
     this->ui->fav_button->setEnabled(this->successfully_loaded);
     this->ui->fav_button->setChecked(this->mainWindow->favourites.contains(this->current_location));
+}
+
+#include <QClipboard>
+
+void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint &pos)
+{
+    QMenu menu;
+
+    QString anchor = ui->text_browser->anchorAt(pos);
+    if(not anchor.isEmpty()) {
+        QUrl real_url { anchor };
+        if(real_url.isRelative())
+            real_url = this->current_location.resolved(real_url);
+
+        connect(menu.addAction("Follow link…"), &QAction::triggered, [this,real_url]() {
+            this->navigateTo(real_url, PushImmediate);
+        });
+
+        connect(menu.addAction("Open in new tab…"), &QAction::triggered, [this,real_url]() {
+            mainWindow->addNewTab(false, real_url);
+        });
+
+        connect(menu.addAction("Copy link"), &QAction::triggered, [this,real_url]() {
+            global_clipboard->setText(real_url.toString(QUrl::FullyEncoded));
+        });
+
+        menu.addSeparator();
+    }
+
+    connect(menu.addAction("Select all"), &QAction::triggered, [this]() {
+        this->ui->text_browser->selectAll();
+    });
+
+    menu.exec(ui->text_browser->mapToGlobal(pos));
 }

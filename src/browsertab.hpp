@@ -102,6 +102,8 @@ private slots:
 
     void on_requestProgress(qint64 transferred);
 
+    void on_text_browser_customContextMenuRequested(const QPoint &pos);
+
 private:
     void setErrorMessage(QString const & msg);
 
