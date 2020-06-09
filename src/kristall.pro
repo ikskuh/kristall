@@ -32,6 +32,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     mediaplayer.cpp \
+    plaintextrenderer.cpp \
     protocolsetup.cpp \
     settingsdialog.cpp \
     tabbrowsinghistory.cpp \
@@ -51,6 +52,7 @@ HEADERS += \
     kristall.hpp \
     mainwindow.hpp \
     mediaplayer.hpp \
+    plaintextrenderer.hpp \
     protocolsetup.hpp \
     settingsdialog.hpp \
     tabbrowsinghistory.hpp \

@@ -1,9 +1,12 @@
 #include "browsertab.hpp"
 #include "ui_browsertab.h"
 #include "mainwindow.hpp"
-#include "geminirenderer.hpp"
 #include "settingsdialog.hpp"
+
 #include "gophermaprenderer.hpp"
+#include "geminirenderer.hpp"
+#include "plaintextrenderer.hpp"
+
 #include "ioutil.hpp"
 #include "kristall.hpp"
 
@@ -307,12 +310,7 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
             doc_style);
     }
     else if(not plaintext_only and mime.startsWith("text/finger")) {
-        document = std::make_unique<QTextDocument>();
-
-        document->setDefaultFont(doc_style.preformatted_font);
-        document->setDefaultStyleSheet(doc_style.toStyleSheet());
-        document->setDocumentMargin(doc_style.margin);
-        document->setPlainText(QString::fromUtf8(data));
+        document = PlainTextRenderer::render(data, doc_style);
     }
     else if(not plaintext_only and mime.startsWith("text/html")) {
         document = std::make_unique<QTextDocument>();
@@ -332,11 +330,7 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
     }
 #endif
     else if(mime.startsWith("text/")) {
-        document = std::make_unique<QTextDocument>();
-        document->setDefaultFont(doc_style.standard_font);
-        document->setDefaultStyleSheet(doc_style.toStyleSheet());
-        document->setDocumentMargin(doc_style.margin);
-        document->setPlainText(QString::fromUtf8(data));
+        document = PlainTextRenderer::render(data, doc_style);
     }
     else if(mime.startsWith("image/")) {
         doc_type = Image;

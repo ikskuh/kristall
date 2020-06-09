@@ -113,6 +113,7 @@ ln -s Kristall.desktop ~/.local/share/applications/kristall.desktop
 - [ ] Implement more protocols
   - [ ] Gopher
     - [ ] Support more media types (include uudecode and hexbin decoder)
+    - [ ] Read non-binary media only until `.`
 - [ ] Image Zoom and Pan
 - [ ] Improve Unicode/Emoji support
   - Seems to need multiple font families per font?
