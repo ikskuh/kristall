@@ -27,7 +27,8 @@ Kristall Changelog
 - Added a lot of context menus
   - Added possibility to open links into a new tab
   - Added possibility to open history and favourite items into new tab or same tab
-
+- Added option to use your default OS protocol handler instead of displaying an error message.
+- 
 
 == 0.1
 - Initial release

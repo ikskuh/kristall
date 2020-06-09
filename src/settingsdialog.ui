@@ -212,9 +212,9 @@
        <item row="6" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
-          <widget class="QRadioButton" name="scheme_error">
+          <widget class="QRadioButton" name="scheme_os_default">
            <property name="text">
-            <string>Display error message</string>
+            <string>Use OS default handler</string>
            </property>
            <attribute name="buttonGroup">
             <string notr="true">buttonGroup</string>
@@ -222,9 +222,9 @@
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="scheme_os_default">
+          <widget class="QRadioButton" name="scheme_error">
            <property name="text">
-            <string>Use OS default handler</string>
+            <string>Display error message</string>
            </property>
            <attribute name="buttonGroup">
             <string notr="true">buttonGroup</string>
@@ -842,9 +842,9 @@
   </connection>
  </connections>
  <buttongroups>
+  <buttongroup name="buttonGroup"/>
   <buttongroup name="gophermapBtnGroup"/>
   <buttongroup name="textHighlightsBtnGroup"/>
   <buttongroup name="textRenderingBtnGroup"/>
-  <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>

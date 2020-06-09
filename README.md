@@ -103,14 +103,10 @@ ln -s Kristall.desktop ~/.local/share/applications/kristall.desktop
 ## TODO / Roadmap
 
 ### 0.2 release
-- [ ] Add text/kristall-theme mime
-  - [ ] Will use a preview document instead of displaying the content
-  - [ ] Allow import of themes
-  - [ ] File extension is `.kthm`
 - [ ] Implement more protocols
   - [ ] Gopher
     - [ ] Support more media types (include uudecode and hexbin decoder)
-    - [ ] Read non-binary media only until `.`
+    - [x] Read non-binary media only until `.`
 - [ ] Image Zoom and Pan
   
 ### 0.3 release
@@ -139,6 +135,10 @@ ln -s Kristall.desktop ~/.local/share/applications/kristall.desktop
   - [ ] Enable markdown theming
 - [ ] Improve Unicode/Emoji support
   - Seems to need multiple font families per font?
+- [ ] Add text/kristall-theme mime
+  - [ ] Will use a preview document instead of displaying the content
+  - [ ] Allow import of themes
+  - [ ] File extension is `.kthm`
 
 ## Bugs
   

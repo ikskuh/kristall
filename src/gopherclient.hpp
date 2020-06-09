@@ -37,6 +37,7 @@ private:
     QUrl requested_url;
     bool was_cancelled;
     QString mime;
+    bool is_processing_binary;
 };
 
 #endif // GOPHERCLIENT_HPP

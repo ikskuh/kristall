@@ -34,7 +34,7 @@ bool GopherClient::startRequest(const QUrl &url)
     else if(type == "h") mime = "text/html";
     else if(type == "s") mime = "audio/unknown";
 
-    qDebug() << url << "→" << mime;
+    is_processing_binary = (type == "5") or (type == "9") or (type == "I") or (type == "g");
 
     this->requested_url = url;
     this->was_cancelled = false;
@@ -66,6 +66,15 @@ void GopherClient::on_connected()
 void GopherClient::on_readRead()
 {
     body.append(socket.readAll());
+
+    if(not is_processing_binary) {
+        // Strip the "lone dot" from gopher data
+        if(int index = body.indexOf(".\r\n"); index >= 0) {
+            body.resize(index);
+            socket.close();
+        }
+    }
+
     emit this->requestProgress(body.size());
 }
 
@@ -74,7 +83,6 @@ void GopherClient::on_finished()
     if(not was_cancelled)
     {
         emit this->requestComplete(this->body, mime);
-
         was_cancelled = true;
     }
     body.clear();

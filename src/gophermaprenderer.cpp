@@ -51,6 +51,8 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
 
     QTextBlockFormat non_list_format = cursor.blockFormat();
 
+    char last_type = '1';
+
     QList<QByteArray> lines = input.split('\n');
     for (auto const &line : lines)
     {
@@ -66,7 +68,9 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
 
         QString icon;
         QString scheme = "gopher";
-        switch (line.at(0))
+
+        auto type = line.at(0);
+        switch (type)
         {
         case '0': // Text File
             icon = "text";
@@ -125,12 +129,17 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
         default: // unknown
             continue;
         }
+        if(type == '+') {
+            type = last_type;
+        } else {
+            last_type = type;
+        }
 
         QString title = items.at(0);
 
         // 1Phlog	/phlog	octotherp.org	70	+
 
-        if (line.at(0) == 'i')
+        if (type == 'i')
         {
             cursor.insertText(title + "\n", standard);
         }
@@ -147,10 +156,10 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
                 dst_url = root_url.resolved(QUrl(items.at(1))).toString();
                 break;
             case 3:
-                dst_url = scheme + "://" + items.at(2) + "/" + line.mid(0, 1) + items.at(1);
+                dst_url = scheme + "://" + items.at(2) + "/" + QString(type) + items.at(1);
                 break;
             default:
-                dst_url = scheme + "://" + items.at(2) + ":" + items.at(3) + "/" + line.mid(0, 1) + items.at(1);
+                dst_url = scheme + "://" + items.at(2) + ":" + items.at(3) + "/" + QString(type) + items.at(1);
                 break;
             }
 
