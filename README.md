@@ -102,11 +102,6 @@ ln -s Kristall.desktop ~/.local/share/applications/kristall.desktop
 
 ## TODO / Roadmap
 
-### 0.2 release
-- [ ] Implement more protocols
-  - [ ] Gopher
-    - [ ] Support more media types (include uudecode and hexbin decoder)
-  
 ### 0.3 release
 - [ ] TLS Handling
    - [ ] Allow user to ignore TLS errors
@@ -137,6 +132,9 @@ ln -s Kristall.desktop ~/.local/share/applications/kristall.desktop
   - [ ] Will use a preview document instead of displaying the content
   - [ ] Allow import of themes
   - [ ] File extension is `.kthm`
+- [ ] Implement more protocols
+  - [ ] Gopher
+    - [ ] Support more media types (include uudecode and hexbin decoder)
 
 ## Bugs
   
