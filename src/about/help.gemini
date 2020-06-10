@@ -6,6 +6,160 @@ This is the manual for the Kristall small-internet browser. It contains explanat
 
 Kristall tries to fill the hole of graphical browsers for alternative internet protocols with a high usability and feature richness.
 
+
+## The main interface
+
+The main interface of Kristall consists of three parts:
+
+* the navigation bar on top,
+* the content view in the center
+* and the status bar on the bottom
+
+### Navigation bar
+
+In the navigation bar, you have 4 buttons and your URL bar.
+
+The two buttons on the left give you the ability to navigate back and forth in your browsing history. The refresh button will reload the current page. The button with the small heart in it will add or remove this page to your favourites.
+
+You can enter any supported URL in the URL bar and Kristall will then load the page in the content view.
+
+## Content view
+
+The content view renders the requested document. For hypertext documents, you get a nicely rendered version of those documents, other text files are displayed in monospace. Audio and video files are played in a small built-in media player that allows you to play/pause the media, scroll around in the time line and mute/unmute audio. Images are rendered in an interactive view where you can drag the image around and zoom in/out with the mouse wheel.
+
+Documents that can't be rendered will be displayed with file size and mime type, so you can save them to disk and open the files with another program.
+
+## Status bar
+
+The status bar displays auxiliary information:
+On the left, you can see the link target when you hover a link. On the right, you can see the document size, time needed to load the document and the mime type of the content. This is especially important when Kristall is not able to render the document nicely.
+
+## Menus
+
+This chapter explains what each menu button does. I hope that most stuff isn't surprising 😉
+
+### File
+
+[New Tab] will open a new tab to surf.
+
+[Save as] allows you to save the currently displayed file to your disk.
+
+[Close Tab] will close the current tab. Does the same as clicking the small (×) button on the tab itself.
+
+[Settings] will open a dialog that helps you configure Kristall to your likings.
+
+[Quit] will close Kristall.
+
+### Navigation
+
+This menu contains means to navigate the internet.
+
+[Go to home] will navigate your current tab to your home page.
+
+[Backward] will navigate one page back in your history.
+
+[Foreward] will navigate one page foreward in your history.
+
+[Refresh] will reload the current page. This may be necessary for CGI scripts or other interactive content.
+
+[Add to favourites] will add or remove the current page to your list of favourites.
+
+### View
+
+This menu allows you to show/hide dockable dialogs.
+
+[Document Outline] toggles the document outline. Documents with text/gemini get an automatic outline generation that can be used to navigate larger documents quicker. This document is a good place to try that out!
+
+[Bookmarks] opens a dock containing a list of all your favourite sites. Open your bookmarks into a new tab by double-clicking the entries.
+
+[History] shows the surfing history of the current tab. Double-clicking an entry navigates back and forth in your history without disturbing the list.
+
+[Client Certificates] opens a yet-to-be-implemented dock for managing client certificates.
+
+### Help
+
+This menu contains some stuff that provides help or information about Kristall.
+
+[Help] displays this document.
+
+[About] shows a dialog with some information about Kristall.
+
+[About Qt] shows a dialog containing legal information about the Qt version used.
+
+## Settings
+
+Kristall offers a vast amount of settings. You can style the documents to your liking, changing fonts and colors. You can also fine-tune the behaviour of Kristall to match your likings.
+
+### Generic
+
+This tab contains an unsorted list of settings that allow you to tweak Kristalls behaviour.
+
+[UI Theme] controls whether the Qt interface is displayed in a dark or a light theme. You can adjust that to your system style or to your site rendering.
+
+[Start Page] is the URL to the page that will be loaded for new tabs. Default is "about:favourites".
+
+[Enabled Protocols] allows you to fine-tune which protocols are fetched by Kristall. By default, only Gemini is enabled, all other protocols are disabled. Disabled protocols are either not served with an error message or forwarded to your OS handler for that URL scheme.
+
+[Text Rendering] allows to control whether Kristall parses text input files or not. This is usually set to [Fancy] which renders text/html, text/gemini, text/markdown and text/gophermap to a nice, hyperlinked display. When set to [Always plain text], Kristall will display all text/* files as plaintext files instead. This may be inconvenient, but necessary for misparsed sites.
+
+[Enable text highlights] allows you to enable an experimental feature that allows *highlighting* and _underlining_ text in text/gemini documents. It will probably misrender, but you can try it out anyways.
+
+[Gopher Map] allows you to chose a modern iconized style for gopher maps or, if you are an old schooler, just use a textual description of the item types in the map.
+
+[Unknown Scheme] changes the behaviour how Kristall handles unknown/disabled URL schemes. [Use OS default handler] will invoke your OS default, [Display error message] will just pop up a message box and tell you that Kristall cannot handle this URL.
+
+### Style
+
+On this tab, you can tweak the document rendering in Kristall. On the left half you can see all possible colors and fonts you can tweak, on the right half of the window is a preview rendering with your currently selected style.
+Most items in the *Style* category have either a [Font], [Color] or both buttons. Click these to change the respective value.
+
+[Background Color] is the color that fills the empty space in a document.
+
+[Standard Font] allows you to change the font that is used for all non-preformatted and non-heading text. Chose the color and font family/size/style.
+
+[Preformatted Font] is the font and text color that is used for all <pre> tags in HTML or preformatted blocks in text/gemini. This should be a monospace font, otherwise ASCII art will break horribly. Note to MacOS X users: "Andale Mono" is a good font choice here.
+
+[H1 Font] allows you to change the font and color for primary headings in documents.
+
+[H2 Font] allows you to change the font and color for secondary headings in documents.
+
+[H3 Font] allows you to change the font and color for ternay headings in documents.
+
+[Local Link Color] is the color in which links that refer to the same host *and* protocol are rendered.
+
+[Foreign Link Color] is the color in which links that refer to another host, but the same protocol are rendered. This helps to recognize when you change the content provider with a link.
+
+[Cross-Scheme-Color] is used for all links that change protocol. For example: If you are currently visiting a gemini-served page and are referred to a page in gopher space, this color will be used. This gives you more control over your surfing experience.
+
+[Local Link Prefix] is a small string that is placed before a link to the same host.
+
+[Extern Link Prefix] is a small string that is placed before a link to a different host.
+
+[Block Quote Color] is the background color that allows you to highlight block quotes.
+
+[Auto-Theme Generation] is an experimental feature that can be set to [Disabled], [Light Theme] and [Dark Theme]. When not set to [Disabled], Kristall will ignore all your beautiful color settings and tries to create a color scheme based on the current pages host name. This allows different styles for each host visited and brings some recognizability in gemini and gopher space.
+
+[Page Margin] is the distance of the page content to the border. Higher values look cooler, but make your display area smaller.
+
+[Presets] is a cool feature to save, restore and share your color themes. The dropdown contains a list of all previously created colors schemes. With the [+] button you can create a scheme with a unique name. The floppy disk button will override the currently selected preset with all the settings displayed above. The folder button will restore a previously saved preset. The last two buttons allow you to import/export presets to disk and share them with your friends! Share all your beautiful color schemes with the world!
+
+The lone text with with the [host.name] text in it can be used to preview some auto-generated themes. It only refreshes the preview and seeds the auto generator with a new host name.
+
+## Shortcuts
+
+This list contains all built-in shortcuts:
+
+* Ctrl+T ⇒ New tab
+* Ctrl+W ⇒ Close tab
+* Ctrl+D ⇒ Quick add/remove from favourites
+* Ctrl+L ⇒ Focus URL bar
+* Ctrl+S ⇒ Save current file
+* Ctrl+H ⇒ Go to home page
+* Alt+Left ⇒ Navigate one page back
+* Alt+Right ⇒ Navigate one page forward
+* F1 ⇒ View this document
+* F5 ⇒ Refresh current tab
+
 ## Protocol support
 
 These protocols are currently supported via their respective URL schemes:
@@ -14,6 +168,25 @@ These protocols are currently supported via their respective URL schemes:
 => https://en.wikipedia.org/wiki/Gopher_(protocol) Gopher
 => https://en.wikipedia.org/wiki/Finger_protocol Finger
 
+### Gemini
+
+Kristall tries to implement the current feature set of the gemini specification. All response types of a gemini server are relayed to the user and the user choses when to do certain actions or not. Redirections are followed automatically.
+
+One thing that is not implemented yet is correct TLS handling:
+Kristall ignores all server certificates and happily accepts any connection. It also does not support client certificates yet. This is subject to change in the next release cycle, stay tuned!
+
+### Gopher
+
+Kristall provides access to gopherspace and supports most modern/common file types:
+* Gophermaps / Directories
+* Text
+* Sound / Audio / Music
+* Images / GIFs
+* HTML
+* Mirrors
+
+There is currently no support for automatic redirection on URL: resources or special/oldschool file types like DOS/HexBin/UUencoded data.
+
 ### Built-in sites
 
 There is also the scheme about: which can be used to access internal sites for configuration, usability or help (this is one of them!):
@@ -21,18 +194,18 @@ There is also the scheme about: which can be used to access internal sites for c
 => about:favourites
 => about:help
 
-## Shortcuts
+## Supported Media Types
 
-- Ctrl+T ⇒ New tab
-- Ctrl+W ⇒ Close tab
-- Ctrl+D ⇒ Quick add/remove from favourites
-- Ctrl+L ⇒ Focus URL bar
-- Ctrl+S ⇒ Save current file
-- Ctrl+H ⇒ Go to home page
-- Alt+Left ⇒ Navigate one page back
-- Alt+Right ⇒ Navigate one page forward
-- F1 ⇒ View this document
-- F5 ⇒ Refresh current tab
+* text/plain
+* text/gemini
+* text/html
+* text/markdown
+* text/gophermap
+* image/*
+* audio/* via Qt multimedia
+* video/* via Qt multimedia
+
+All unrecognized text files will be rendered as text/plain documents with a monospaced font.
 
 ## Contact me
 

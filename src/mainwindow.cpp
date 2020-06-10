@@ -447,7 +447,6 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint &pos
             });
 
             menu.exec(this->ui->favourites_view->mapToGlobal(pos));
-
         }
     }
 }

@@ -293,7 +293,7 @@
      <normaloff>:/icons/arrow-right.svg</normaloff>:/icons/arrow-right.svg</iconset>
    </property>
    <property name="text">
-    <string>Forward</string>
+    <string>Foreward</string>
    </property>
    <property name="shortcut">
     <string>Alt+Right</string>

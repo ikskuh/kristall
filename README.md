@@ -91,6 +91,10 @@ make
 
 Just use QtCreator to build `./src/kristall.pro`. Default settings should be fine.
 
+#### MacOS X
+
+Use the `Makefile` to build `build/kristall` instead of the default target. There is currently no auto-recognition of MacOS (where qmake will output a `kristall.app` file), so you have to be a bit more manual.
+
 ### Manual Installation
 
 #### Unix / XDG
@@ -140,15 +144,5 @@ ln -s Kristall.desktop ~/.local/share/applications/kristall.desktop
   
 > <styan> xq: When using torsocks(1) on kristall QNetworkInterface complains loudly about not being permitted to create an IPv6 socket..
 
-> Build on MacOS outputs kristall.app, not kristall
-> Same for windows probably with kristall.exe
-> <IceMichael> ah, ist unter mac ein kristall.app
-
-MAC needs different default font
-
+MAC needs different default font:
 https://usercontent.irccloud-cdn.com/file/OrkuXDfQ/image.png
-
-<IceMichael> Andale Mono, falls du das für mac irgendwie voreinstellen willst (aber kA, ob die überall diese ist)
-
-<tiwesdaeg> .txt and.md and I am guessing anything that is simple text
-<tiwesdaeg> the font color is not following the theme
