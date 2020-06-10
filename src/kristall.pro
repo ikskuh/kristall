@@ -18,7 +18,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 QMAKE_CFLAGS += -Wno-unused-parameter
 QMAKE_CXXFLAGS += -Wno-unused-parameter
 
+INCLUDEPATH += $$PWD/../lib/luis-l-gist/
+DEPENDPATH += $$PWD/../lib/luis-l-gist/
+
 SOURCES += \
+    ../lib/luis-l-gist/interactiveview.cpp \
     browsertab.cpp \
     documentoutlinemodel.cpp \
     documentstyle.cpp \
@@ -39,6 +43,7 @@ SOURCES += \
     webclient.cpp
 
 HEADERS += \
+    ../lib/luis-l-gist/interactiveview.hpp \
     browsertab.hpp \
     documentoutlinemodel.hpp \
     documentstyle.hpp \

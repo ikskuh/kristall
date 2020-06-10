@@ -21,6 +21,7 @@
 #include <QFile>
 #include <QMimeDatabase>
 #include <QMimeType>
+#include <QImageReader>
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
@@ -65,8 +66,6 @@ BrowserTab::BrowserTab(MainWindow * mainWindow) :
     this->ui->text_browser->setVisible(true);
 
     this->ui->text_browser->setContextMenuPolicy(Qt::CustomContextMenu);
-
-    this->ui->graphics_browser->setScene(&graphics_scene);
 }
 
 BrowserTab::~BrowserTab()
@@ -337,15 +336,33 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
     else if(mime.startsWith("image/")) {
         doc_type = Image;
 
+        QBuffer buffer;
+        buffer.setData(data);
+
+        QImageReader reader { &buffer };
+        reader.setAutoTransform(true);
+        reader.setAutoDetectImageFormat(true);
+
+
         QImage img;
-        if(img.loadFromData(data, nullptr))
+        if(reader.read(&img))
         {
-            this->graphics_scene.addPixmap(QPixmap::fromImage(img));
+            auto pixmap = QPixmap::fromImage(img);
+            this->graphics_scene.addPixmap(pixmap);
+            this->graphics_scene.setSceneRect(pixmap.rect());
         }
         else
         {
-            this->graphics_scene.addText("Failed to load picture!");
+            this->graphics_scene.addText(QString("Failed to load picture:\r\n%1").arg(reader.errorString()));
         }
+
+        this->ui->graphics_browser->setScene(&graphics_scene);
+
+        auto * invoker = new QObject();
+        connect(invoker, &QObject::destroyed, [this]() {
+            this->ui->graphics_browser->fitInView(graphics_scene.sceneRect(), Qt::KeepAspectRatio);
+        });
+        invoker->deleteLater();
 
         this->ui->graphics_browser->fitInView(graphics_scene.sceneRect(), Qt::KeepAspectRatio);
     }

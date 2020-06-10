@@ -137,8 +137,6 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
 
         QString title = items.at(0);
 
-        // 1Phlog	/phlog	octotherp.org	70	+
-
         if (type == 'i')
         {
             cursor.insertText(title + "\n", standard);

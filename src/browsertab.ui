@@ -164,7 +164,10 @@ p, li { white-space: pre-wrap; }
       </widget>
      </item>
      <item>
-      <widget class="QGraphicsView" name="graphics_browser">
+      <widget class="InteractiveView" name="graphics_browser">
+       <property name="interactive">
+        <bool>true</bool>
+       </property>
        <property name="dragMode">
         <enum>QGraphicsView::ScrollHandDrag</enum>
        </property>
@@ -189,6 +192,11 @@ p, li { white-space: pre-wrap; }
    <extends>QWidget</extends>
    <header>mediaplayer.hpp</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>InteractiveView</class>
+   <extends>QGraphicsView</extends>
+   <header location="global">interactiveview.hpp</header>
   </customwidget>
  </customwidgets>
  <resources>
