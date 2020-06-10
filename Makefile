@@ -1,12 +1,19 @@
+PREFIX ?= /usr/local
+BINDIR ?= $(PREFIX)/bin
+
 default: all
-all: build-dir kristall
+all: kristall
+
 kristall: build/kristall
 	cp build/kristall $@
-build/kristall: build-dir
-	cd build && qmake ../src/kristall.pro && $(MAKE)
-build-dir:
+
+build/kristall:
 	mkdir -p build
+	cd build && qmake ../src/kristall.pro && $(MAKE)
+
+install: kristall
+	install -m 755 ./kristall $(BINDIR)/kristall
+
 clean:
 	rm -rf build
 	rm -f kristall
-.PHONY: build-dir

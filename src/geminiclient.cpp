@@ -1,6 +1,7 @@
 #include "geminiclient.hpp"
 #include <cassert>
 #include <QDebug>
+#include <QSslConfiguration>
 
 GeminiClient::GeminiClient(QObject *parent) : QObject(parent)
 {
@@ -9,6 +10,14 @@ GeminiClient::GeminiClient(QObject *parent) : QObject(parent)
     connect(&socket, &QSslSocket::disconnected, this, &GeminiClient::socketDisconnected);
     connect(&socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors), this, &GeminiClient::sslErrors);
     connect(&socket, QOverload<QAbstractSocket::SocketError>::of(&QSslSocket::error), this, &GeminiClient::socketError);
+
+
+    QSslConfiguration ssl_config;
+    ssl_config.setProtocol(QSsl::TlsV1_2);
+    // ssl_config.setLocalCertificate(QSslCertificate::1
+
+    socket.setSslConfiguration(ssl_config);
+
 }
 
 GeminiClient::~GeminiClient()
@@ -51,6 +60,18 @@ bool GeminiClient::cancelRequest()
     this->buffer.clear();
     this->body.clear();
     return true;
+}
+
+void GeminiClient::enableClientCertificate(const CryptoIdentity &ident)
+{
+    this->socket.setLocalCertificate(ident.certificate);
+    this->socket.setPrivateKey(ident.private_key);
+}
+
+void GeminiClient::disableClientCertificate()
+{
+    this->socket.setLocalCertificate(QSslCertificate{});
+    this->socket.setPrivateKey(QSslKey { });
 }
 
 void GeminiClient::socketEncrypted()

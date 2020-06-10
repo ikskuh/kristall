@@ -51,6 +51,9 @@
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <property name="toolTip">
+        <string>Navigate back</string>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -64,6 +67,9 @@
       <widget class="QToolButton" name="forward_button">
        <property name="enabled">
         <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>Navigate forward</string>
        </property>
        <property name="text">
         <string>...</string>
@@ -79,6 +85,9 @@
        <property name="enabled">
         <bool>true</bool>
        </property>
+       <property name="toolTip">
+        <string>Stop loading</string>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -92,6 +101,9 @@
       <widget class="QToolButton" name="refresh_button">
        <property name="enabled">
         <bool>true</bool>
+       </property>
+       <property name="toolTip">
+        <string>Refresh current location</string>
        </property>
        <property name="text">
         <string/>
@@ -114,6 +126,9 @@
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <property name="toolTip">
+        <string>Add/remove from favourites</string>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -127,6 +142,24 @@
        </property>
        <property name="checked">
         <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="enable_client_cert_button">
+       <property name="toolTip">
+        <string>Enable/disable client certificate for this tab</string>
+       </property>
+       <property name="text">
+        <string>...</string>
+       </property>
+       <property name="icon">
+        <iconset resource="icons.qrc">
+         <normaloff>:/icons/shield-outline.svg</normaloff>
+         <normalon>:/icons/shield-lock.svg</normalon>:/icons/shield-outline.svg</iconset>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

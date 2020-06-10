@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>about/easter-egg.gemini</file>
+        <file>about/help.gemini</file>
+    </qresource>
+</RCC>

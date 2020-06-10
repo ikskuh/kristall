@@ -1,6 +1,9 @@
 Kristall Changelog
 ==================
 
+== 0.3
+- Adds support for transient client certificates
+
 == 0.2
 - Implement Ctrl+D/*Add to favourites* menu item
 - Implement Ctrl+S/*Save as...* menu item

@@ -367,7 +367,7 @@ void MainWindow::on_actionGo_to_home_triggered()
 {
     BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
     if(tab != nullptr) {
-        tab->navigateTo(QUrl(global_settings.value("start_page").toString()), BrowserTab::PushAfterSuccess);
+        tab->navigateTo(QUrl(global_settings.value("start_page").toString()), BrowserTab::PushImmediate);
     }
 }
 

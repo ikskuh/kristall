@@ -7,6 +7,8 @@
 #include "geminirenderer.hpp"
 #include "plaintextrenderer.hpp"
 
+#include "certificateselectiondialog.hpp"
+
 #include "ioutil.hpp"
 #include "kristall.hpp"
 
@@ -108,7 +110,6 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
 
     this->redirection_count = 0;
     this->successfully_loaded = false;
-    this->push_to_history_after_load = (mode == PushAfterSuccess);
 
     if(url.scheme() == "gemini")
     {
@@ -146,10 +147,6 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
     else if(url.scheme() == "about")
     {
         this->redirection_count = 0;
-        this->push_to_history_after_load = false;
-
-        if(mode == PushAfterSuccess)
-            mode = PushImmediate;
         if(url.path() == "blank")
         {
             this->on_requestComplete("", "text/gemini");
@@ -186,7 +183,6 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
     switch(mode)
     {
     case DontPush:
-    case PushAfterSuccess:
         break;
 
     case PushImmediate:
@@ -403,11 +399,6 @@ File Size: %2
 
     this->successfully_loaded = true;
 
-    if(this->push_to_history_after_load) {
-        this->pushToHistory(this->current_location);
-        this->push_to_history_after_load = false;
-    }
-
     this->updateUI();
 }
 
@@ -494,13 +485,21 @@ void BrowserTab::on_permanentFailure(PermanentFailure reason, const QString &inf
 
 void BrowserTab::on_transientCertificateRequested(const QString &reason)
 {
-    QMessageBox::warning(this, "Kristall", "Transient certificate requirested:\n" + reason);
+    if(not trySetClientCertificate(reason)) {
+        setErrorMessage(QString("The page requested a transient client certificate, but none was provided.\r\nOriginal query was: %1").arg(reason));
+    } else {
+        this->navigateTo(this->current_location, DontPush);
+    }
     this->updateUI();
 }
 
 void BrowserTab::on_authorisedCertificateRequested(const QString &reason)
 {
-    QMessageBox::warning(this, "Kristall", "Authorized certificate requirested:\n" + reason);
+    if(not trySetClientCertificate(reason)) {
+        setErrorMessage(QString("The page requested a authorized client certificate, but none was provided.\r\nOriginal query was: %1").arg(reason));
+    } else {
+        this->navigateTo(this->current_location, DontPush);
+    }
     this->updateUI();
 }
 
@@ -530,8 +529,11 @@ void BrowserTab::on_linkHovered(const QString &url)
 
 void BrowserTab::setErrorMessage(const QString &msg)
 {
-    // this->page.setContent(QString("An error happened:\n%0").arg(msg).toUtf8(), "text/plain charset=utf-8");
-    QMessageBox::warning(this, "Kristall", msg);
+    this->on_requestComplete(
+        QString("An error happened:\r\n%0").arg(msg).toUtf8(),
+        "text/plain charset=utf-8"
+    );
+
     this->updateUI();
 }
 
@@ -560,7 +562,7 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
     auto support = mainWindow->protocols.isSchemeSupported(real_url.scheme());
 
     if(support == ProtocolSetup::Enabled) {
-        this->navigateTo(real_url, PushAfterSuccess);
+        this->navigateTo(real_url, PushImmediate);
     } else {
         bool use_os_proxy = global_settings.value("use_os_scheme_handler").toBool();
 
@@ -624,6 +626,48 @@ void BrowserTab::updateUI()
     this->ui->fav_button->setChecked(this->mainWindow->favourites.contains(this->current_location));
 }
 
+bool BrowserTab::trySetClientCertificate(const QString &query)
+{
+    CertificateSelectionDialog dialog { this };
+
+    dialog.setServerQuery(query);
+
+    if(dialog.exec() != QDialog::Accepted) {
+        this->gemini_client.disableClientCertificate();
+        this->ui->enable_client_cert_button->setChecked(false);
+        return false;
+    }
+
+    this->current_identitiy = dialog.identity();
+
+    if(not current_identitiy.isValid()) {
+        QMessageBox::warning(this, "Kristall", "Failed to generate temporary crypto-identitiy");
+        this->gemini_client.disableClientCertificate();
+        this->ui->enable_client_cert_button->setChecked(false);
+        return false;
+    }
+
+    this->gemini_client.enableClientCertificate(this->current_identitiy);
+    this->ui->enable_client_cert_button->setChecked(true);
+
+    return true;
+}
+
+void BrowserTab::resetClientCertificate()
+{
+    if(this->current_identitiy.isValid() and not this->current_identitiy.is_persistent)
+    {
+        auto respo = QMessageBox::question(this, "Kristall", "You currently have a transient session active!\r\nIf you disable the session, you will not be able to restore it. Continue?");
+        if(respo != QMessageBox::Yes) {
+            this->ui->enable_client_cert_button->setChecked(true);
+            return;
+        }
+    }
+
+    this->gemini_client.disableClientCertificate();
+    this->ui->enable_client_cert_button->setChecked(false);
+}
+
 #include <QClipboard>
 
 void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint &pos)
@@ -656,4 +700,13 @@ void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint &pos)
     });
 
     menu.exec(ui->text_browser->mapToGlobal(pos));
+}
+
+void BrowserTab::on_enable_client_cert_button_clicked(bool checked)
+{
+    if(checked) {
+        trySetClientCertificate(QString{ });
+    } else {
+        resetClientCertificate();
+    }
 }

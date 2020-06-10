@@ -6,6 +6,8 @@
 #include <QSslSocket>
 #include <QUrl>
 
+#include "cryptoidentity.hpp"
+
 enum class TemporaryFailure {
     unspecified,
     server_unavailable,
@@ -43,6 +45,9 @@ public:
     bool isInProgress() const;
 
     bool cancelRequest();
+
+    void enableClientCertificate(CryptoIdentity const & ident);
+    void disableClientCertificate();
 
 signals:
     void requestProgress(qint64 transferred);

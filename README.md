@@ -35,6 +35,7 @@ A high-quality visual cross-platform gemini browser.
   - NetBSD
   - OpenBSD
   - MacOS X
+  - Haiku
 
 ## Screenshots
 
@@ -95,6 +96,14 @@ Just use QtCreator to build `./src/kristall.pro`. Default settings should be fin
 
 Use the `Makefile` to build `build/kristall` instead of the default target. There is currently no auto-recognition of MacOS (where qmake will output a `kristall.app` file), so you have to be a bit more manual.
 
+#### Haiku
+
+1. Install the following packages with `pkgman`:
+    - `qt5`
+    - `qt5_devel`
+    - `qt5_tools`
+2. Use `make` to build th executable
+
 ### Manual Installation
 
 #### Unix / XDG
@@ -104,6 +113,20 @@ The provided desktop file can be installed into the local system
 ln -s Kristall.desktop ~/.local/share/applications/kristall.desktop
 ```
 
+#### Haiku
+
+Link the `kristall` executable to your applications menu:
+
+```sh
+cd ~/config/settings/deskbar/menu/Applications/
+ln -s /path/to/kristall .
+```
+
+## Credits
+
+- Thanks to [James Tomasino](https://tomasino.org) for helping out with understanding gopher
+- Thanks to [Vane Vander](https://mayvaneday.art/) for providin the Haiku build instructions
+
 ## TODO / Roadmap
 
 ### 0.3 release
@@ -111,6 +134,19 @@ ln -s Kristall.desktop ~/.local/share/applications/kristall.desktop
    - [ ] Allow user to ignore TLS errors
    - [ ] Enable TOFU for HTTPS/Gemini
    - [ ] Enable Client Certificate Management
+    - [ ] Add option: "Transient certificates survive an application reboot and are stored on disk""
+    - [ ] Add storage location for identity/persistent 
+- [ ] Improve redirect handling
+  - [ ] Option how to handle redirects: "automatic, ask when cross-host, ask always"
+  - [ ] Option to set maximum number of redirects
+- [ ] UX improvements
+  - [ ] Auto-expanding outline
+  - [ ] Escape in the URL bar reverts to the current location
+  - [ ] auto-highlighting/following outline
+  - [ ] Improved favourites
+    - [ ] Allow custom favourite title (not the URL itself)
+    - [ ] Allow grouping favourites into a single-hierarchy folder structure
+- [ ] Changelog in the help menu
 
 ### Unspecced
 - [ ] Survive full torture suite
@@ -146,3 +182,11 @@ ln -s Kristall.desktop ~/.local/share/applications/kristall.desktop
 
 MAC needs different default font:
 https://usercontent.irccloud-cdn.com/file/OrkuXDfQ/image.png
+
+Audio doesn't stop when you load other media. This is a bit of shit.
+
+
+Status bar is broken:
+It doesn't seem to map to tabs, if you have multiple
+open, which was a bit confusing (and would also be a really cool
+addition for easy comparison of responses).

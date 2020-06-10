@@ -18,6 +18,8 @@
 #include "gopherclient.hpp"
 #include "fingerclient.hpp"
 
+#include "cryptoidentity.hpp"
+
 namespace Ui {
 class BrowserTab;
 }
@@ -31,7 +33,6 @@ public:
     enum PushToHistory {
         DontPush,
         PushImmediate,
-        PushAfterSuccess,
     };
 
 public:
@@ -104,12 +105,18 @@ private slots:
 
     void on_text_browser_customContextMenuRequested(const QPoint &pos);
 
+    void on_enable_client_cert_button_clicked(bool checked);
+
 private:
     void setErrorMessage(QString const & msg);
 
     void pushToHistory(QUrl const & url);
 
     void updateUI();
+
+    bool trySetClientCertificate(QString const & query);
+
+    void resetClientCertificate();
 public:
 
     Ui::BrowserTab *ui;
@@ -122,7 +129,6 @@ public:
     FingerClient finger_client;
     int redirection_count = 0;
 
-    bool push_to_history_after_load = false;
     bool successfully_loaded = false;
 
     DocumentOutlineModel outline;
@@ -135,6 +141,8 @@ public:
     QByteArray current_buffer;
     QString current_mime;
     QElapsedTimer timer;
+
+    CryptoIdentity current_identitiy;
 };
 
 #endif // BROWSERTAB_HPP
