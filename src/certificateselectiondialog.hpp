@@ -32,11 +32,17 @@ private slots:
 
     void on_use_temp_cert_48h_clicked();
 
+    void on_create_new_cert_clicked();
+
+    void on_use_selected_cert_clicked();
+
 private:
     //! Creates an anonymous identity with a randomly chosen name that
     //! will time out on `timeout`, then accepts the dialog.
     void acceptTemporaryWithTimeout(QDateTime timeout);
 
+
+    void on_currentChanged(const QModelIndex &current, const QModelIndex &previous);
 private:
     Ui::CertificateSelectionDialog *ui;
 

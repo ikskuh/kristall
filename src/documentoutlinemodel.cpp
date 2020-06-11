@@ -115,7 +115,6 @@ QModelIndex DocumentOutlineModel::index(int row, int column, const QModelIndex &
     if (childItem)
         return createIndex(row, column, reinterpret_cast<quintptr>(childItem));
     return QModelIndex();
-
 }
 
 QModelIndex DocumentOutlineModel::parent(const QModelIndex &child) const
@@ -137,7 +136,7 @@ QModelIndex DocumentOutlineModel::parent(const QModelIndex &child) const
 
 int DocumentOutlineModel::rowCount(const QModelIndex &parent) const
 {
-    Node const *parentItem;
+    Node const * parentItem;
     if (parent.column() > 0)
         return 0;
 

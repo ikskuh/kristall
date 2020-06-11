@@ -39,6 +39,9 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
 
     ui->favourites_view->setModel(&favourites);
 
+    ui->clientcert_view->setModel(&global_identities);
+    ui->clientcert_view->expandAll();
+
     this->ui->outline_window->setVisible(false);
     this->ui->history_window->setVisible(false);
     this->ui->clientcert_window->setVisible(false);
@@ -142,6 +145,10 @@ void MainWindow::saveSettings()
 {
     this->favourites.save(global_settings);
     this->protocols.save(global_settings);
+
+    global_settings.beginGroup("Client Identities");
+    global_identities.save(global_settings);
+    global_settings.endGroup();
 
     global_settings.beginGroup("Theme");
     this->current_style.save(global_settings);

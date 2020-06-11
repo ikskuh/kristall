@@ -35,7 +35,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QTreeView" name="treeView"/>
+    <widget class="QTreeView" name="certificates"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">

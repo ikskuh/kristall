@@ -37,10 +37,12 @@ SOURCES += \
     geminirenderer.cpp \
     gopherclient.cpp \
     gophermaprenderer.cpp \
+    identitycollection.cpp \
     ioutil.cpp \
     main.cpp \
     mainwindow.cpp \
     mediaplayer.cpp \
+    newidentitiydialog.cpp \
     plaintextrenderer.cpp \
     protocolsetup.cpp \
     settingsdialog.cpp \
@@ -61,10 +63,12 @@ HEADERS += \
     geminirenderer.hpp \
     gopherclient.hpp \
     gophermaprenderer.hpp \
+    identitycollection.hpp \
     ioutil.hpp \
     kristall.hpp \
     mainwindow.hpp \
     mediaplayer.hpp \
+    newidentitiydialog.hpp \
     plaintextrenderer.hpp \
     protocolsetup.hpp \
     settingsdialog.hpp \
@@ -76,6 +80,7 @@ FORMS += \
     certificateselectiondialog.ui \
     mainwindow.ui \
     mediaplayer.ui \
+    newidentitiydialog.ui \
     settingsdialog.ui
 
 TRANSLATIONS += \

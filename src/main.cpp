@@ -7,6 +7,7 @@
 #include <QCommandLineParser>
 #include <QDebug>
 
+IdentityCollection global_identities;
 QSettings global_settings { "xqTechnologies", "Kristall" };
 QClipboard * global_clipboard;
 
@@ -22,6 +23,10 @@ int main(int argc, char *argv[])
     if(not global_settings.contains("start_page")) {
         global_settings.setValue("start_page", "about:favourites");
     }
+
+    global_settings.beginGroup("Client Identities");
+    global_identities.load(global_settings);
+    global_settings.endGroup();
 
     MainWindow w(&app);
 

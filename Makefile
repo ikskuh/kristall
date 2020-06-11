@@ -1,5 +1,5 @@
 PREFIX ?= /usr/local
-BINDIR ?= $(PREFIX)/bin
+BINDIR ?= $(DESTDIR)$(PREFIX)/bin
 
 default: all
 all: kristall

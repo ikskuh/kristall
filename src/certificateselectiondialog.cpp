@@ -2,6 +2,12 @@
 #include "ui_certificateselectiondialog.h"
 
 #include "certificatehelper.hpp"
+#include "kristall.hpp"
+#include "newidentitiydialog.hpp"
+
+
+#include <QDebug>
+#include <QItemSelectionModel>
 
 CertificateSelectionDialog::CertificateSelectionDialog(QWidget *parent) :
     QDialog(parent),
@@ -9,6 +15,11 @@ CertificateSelectionDialog::CertificateSelectionDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     this->ui->server_request->setVisible(false);
+
+    this->ui->certificates->setModel(&global_identities);
+    this->ui->certificates->expandAll();
+
+    connect(this->ui->certificates->selectionModel(), &QItemSelectionModel::currentChanged, this, &CertificateSelectionDialog::on_currentChanged);
 }
 
 CertificateSelectionDialog::~CertificateSelectionDialog()
@@ -68,4 +79,39 @@ void CertificateSelectionDialog::acceptTemporaryWithTimeout(QDateTime timeout)
         timeout);
 
     this->accept();
+}
+
+void CertificateSelectionDialog::on_currentChanged(const QModelIndex &current, const QModelIndex &previous)
+{
+    auto id = global_identities.getIdentity(current);
+
+    this->ui->use_selected_cert->setEnabled(id.isValid());
+}
+
+void CertificateSelectionDialog::on_create_new_cert_clicked()
+{
+    NewIdentitiyDialog dialog { this };
+
+    if(dialog.exec() != QDialog::Accepted)
+        return;
+
+    auto id = dialog.createIdentity();
+    if(not id.isValid())
+        return;
+    id.is_persistent = true;
+
+    global_identities.addCertificate(
+        dialog.groupName(),
+        id);
+}
+
+void CertificateSelectionDialog::on_use_selected_cert_clicked()
+{
+    auto sel = this->ui->certificates->selectionModel()->currentIndex();
+    this->cryto_identity = global_identities.getIdentity(sel);
+    if(this->cryto_identity.isValid()) {
+        this->accept();
+    } else {
+        qDebug() << "Tried to use an invalid identity when the button should not be enabled. This is a bug!";
+    }
 }
