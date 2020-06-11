@@ -5,7 +5,7 @@
 #include "kristall.hpp"
 #include "newidentitiydialog.hpp"
 
-
+#include <random>
 #include <QDebug>
 #include <QItemSelectionModel>
 
@@ -63,15 +63,16 @@ void CertificateSelectionDialog::on_use_temp_cert_48h_clicked()
     acceptTemporaryWithTimeout(QDateTime::currentDateTime().addDays(2));
 }
 
-#include <QRandomGenerator>
-
 void CertificateSelectionDialog::acceptTemporaryWithTimeout(QDateTime timeout)
 {
-    QRandomGenerator rng;
+    std::default_random_engine rng;
+    rng.seed(QDateTime::currentDateTime().toMSecsSinceEpoch());
+
+    std::uniform_int_distribution<char> distr;
 
     char items[8];
     for(auto & c : items) {
-        c = rng.bounded(std::numeric_limits<char>::min(), std::numeric_limits<char>::max());
+        c = distr(rng);
     }
 
     this->cryto_identity = CertificateHelper::createNewIdentity(
