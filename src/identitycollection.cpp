@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <QDebug>
+#include <QIcon>
 
 IdentityCollection::IdentityCollection(QObject *parent)
     : QAbstractItemModel(parent)
@@ -152,14 +153,8 @@ QStringList IdentityCollection::groups() const
     return result;
 }
 
-//QVariant IdentityCollection::headerData(int section, Qt::Orientation orientation, int role) const
-//{
-//    return QVariant { };
-//}
-
 QModelIndex IdentityCollection::index(int row, int column, const QModelIndex &parent) const
 {
-    qDebug() << "index" << row << column << parent;
     if (not hasIndex(row, column, parent))
         return QModelIndex();
 
@@ -182,7 +177,6 @@ QModelIndex IdentityCollection::index(int row, int column, const QModelIndex &pa
 
 QModelIndex IdentityCollection::parent(const QModelIndex &index) const
 {
-    qDebug() << "parent" << index;
     if (!index.isValid())
         return QModelIndex();
 
@@ -207,37 +201,42 @@ int IdentityCollection::rowCount(const QModelIndex &parent) const
     else
         parentItem = static_cast<Node const *>(parent.internalPointer());
 
-    int rc = parentItem->children.size();
-    qDebug() << "row count for " << parent << rc;
-    return rc;
+    return parentItem->children.size();
 }
 
 int IdentityCollection::columnCount(const QModelIndex &parent) const
 {
-    qDebug() << "column count" << parent;
+    Q_UNUSED(parent)
     return 1;
 }
 
 QVariant IdentityCollection::data(const QModelIndex &index, int role) const
 {
-    qDebug() << "data" << index << role;
     if (!index.isValid())
         return QVariant();
 
-    if (index.column() != 0)
-        return QVariant();
-
-    if (role != Qt::DisplayRole)
-        return QVariant();
-
     Node const *item = static_cast<Node const*>(index.internalPointer());
-    switch(item->type) {
-    case Node::Root: return "root";
-    case Node::Group: return static_cast<GroupNode const *>(item)->title;
-    case Node::Identity: return static_cast<IdentityNode const *>(item)->identity.display_name;
-    default:
-        return "Unknown";
+    if (role == Qt::DisplayRole)
+    {
+        switch(item->type) {
+        case Node::Root: return "root";
+        case Node::Group: return static_cast<GroupNode const *>(item)->title;
+        case Node::Identity: return static_cast<IdentityNode const *>(item)->identity.display_name;
+        default:
+            return "Unknown";
+        }
     }
+    else if(role == Qt::DecorationRole) {
+
+        switch(item->type) {
+        case Node::Root: return QVariant { };
+        case Node::Group: return QIcon(":/icons/folder-open.svg");
+        case Node::Identity: return QIcon(":/icons/certificate.svg");
+        default: return QVariant { };
+        }
+    }
+
+    return QVariant();
 }
 
 void IdentityCollection::relayout()

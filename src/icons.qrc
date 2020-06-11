@@ -37,5 +37,6 @@
         <file>icons/help-box.svg</file>
         <file>icons/shield-outline.svg</file>
         <file>icons/shield-lock.svg</file>
+        <file>icons/certificate.svg</file>
     </qresource>
 </RCC>

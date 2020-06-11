@@ -36,6 +36,8 @@ private slots:
 
     void on_use_selected_cert_clicked();
 
+    void on_certificates_doubleClicked(const QModelIndex &index);
+
 private:
     //! Creates an anonymous identity with a randomly chosen name that
     //! will time out on `timeout`, then accepts the dialog.

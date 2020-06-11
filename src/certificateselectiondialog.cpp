@@ -115,3 +115,13 @@ void CertificateSelectionDialog::on_use_selected_cert_clicked()
         qDebug() << "Tried to use an invalid identity when the button should not be enabled. This is a bug!";
     }
 }
+
+void CertificateSelectionDialog::on_certificates_doubleClicked(const QModelIndex &index)
+{
+    this->cryto_identity = global_identities.getIdentity(index);
+    if(this->cryto_identity.isValid()) {
+        this->accept();
+    } else {
+        qDebug() << "Tried to use an invalid identity when the button should not be enabled. This is a bug!";
+    }
+}

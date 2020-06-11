@@ -83,6 +83,8 @@ private slots:
 
     void on_favourites_view_customContextMenuRequested(const QPoint &pos);
 
+    void on_actionChangelog_triggered();
+
 private:
     void reloadTheme();
 

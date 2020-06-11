@@ -206,6 +206,7 @@
      <string>Help</string>
     </property>
     <addaction name="actionHelp"/>
+    <addaction name="actionChangelog"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
     <addaction name="actionAbout_Qt"/>
@@ -365,6 +366,11 @@
    </property>
    <property name="shortcut">
     <string>F1</string>
+   </property>
+  </action>
+  <action name="actionChangelog">
+   <property name="text">
+    <string>Changelog</string>
    </property>
   </action>
  </widget>

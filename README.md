@@ -135,7 +135,9 @@ ln -s /path/to/kristall .
    - [ ] Enable TOFU for HTTPS/Gemini
    - [ ] Enable Client Certificate Management
     - [ ] Add option: "Transient certificates survive an application reboot and are stored on disk""
-    - [ ] Add storage location for identity/persistent 
+    - [ ] Add management for client certificates
+      - [ ] Rename/delete certificates
+      - [ ] Rename/delete/merge groups
 - [ ] Improve redirect handling
   - [ ] Option how to handle redirects: "automatic, ask when cross-host, ask always"
   - [ ] Option to set maximum number of redirects

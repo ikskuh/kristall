@@ -457,3 +457,8 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint &pos
         }
     }
 }
+
+void MainWindow::on_actionChangelog_triggered()
+{
+    this->addNewTab(true, QUrl("about:updates"));
+}
