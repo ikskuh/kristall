@@ -7,6 +7,7 @@
 #include <QCryptographicHash>
 #include <QDebug>
 
+#include <array>
 #include <cmath>
 
 static QString encodeCssFont (const QFont& refFont)
