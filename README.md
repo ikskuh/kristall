@@ -126,6 +126,8 @@ ln -s /path/to/kristall .
 
 - Thanks to [James Tomasino](https://tomasino.org) for helping out with understanding gopher
 - Thanks to [Vane Vander](https://mayvaneday.art/) for providin the Haiku build instructions
+- Thanks to James Tomasino, styan and tiwesdaeg for improving the `Makefile`
+- Thanks to [Alex Naskos](https://github.com/alexnask) for providing windows build instructions
 
 ## TODO / Roadmap
 
@@ -150,6 +152,8 @@ ln -s /path/to/kristall .
   - [ ] Improved favourites
     - [ ] Allow custom favourite title (not the URL itself)
     - [ ] Allow grouping favourites into a single-hierarchy folder structure
+  - [ ] Improve style import
+    - [ ] Direct preview instead of importing it as a preset. Allow user to save preset then manually
 - [ ] Changelog in the help menu
 
 ### Unspecced

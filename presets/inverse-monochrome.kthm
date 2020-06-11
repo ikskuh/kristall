@@ -1,0 +1,21 @@
+[General]
+background_color=#000000
+blockquote_color=#000000
+cross_scheme_link_color=#ffffff
+external_link_color=#ffffff
+external_link_prefix="=> "
+h1_color=#ffffff
+h1_font="sans,20,-1,5,75,0,0,0,0,0"
+h2_color=#ffffff
+h2_font="sans,15,-1,5,75,0,0,0,0,0"
+h3_color=#ffffff
+h3_font="sans,12,-1,5,75,0,0,0,0,0"
+internal_link_color=#ffffff
+internal_link_prefix="-> "
+margins=36
+name=Inverse Monochrome
+preformatted_color=#ffffff
+preformatted_font="monospace,10,-1,5,50,0,0,0,0,0"
+standard_color=#ffffff
+standard_font="sans,10,-1,5,50,0,0,0,0,0"
+theme=0
