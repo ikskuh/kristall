@@ -68,7 +68,7 @@ void CertificateSelectionDialog::acceptTemporaryWithTimeout(QDateTime timeout)
     std::default_random_engine rng;
     rng.seed(QDateTime::currentDateTime().toMSecsSinceEpoch());
 
-    std::uniform_int_distribution<char> distr;
+    std::uniform_int_distribution<int> distr(0, 255);
 
     char items[8];
     for(auto & c : items) {
