@@ -138,6 +138,8 @@ ln -s /path/to/kristall .
     - [ ] Add management for client certificates
       - [ ] Rename/delete certificates
       - [ ] Rename/delete/merge groups
+      - [ ] Import/export PEM certificates and keys
+    - [ ] Ask if the client certificate should be disabled when switching host and/or protocol
 - [ ] Improve redirect handling
   - [ ] Option how to handle redirects: "automatic, ask when cross-host, ask always"
   - [ ] Option to set maximum number of redirects
