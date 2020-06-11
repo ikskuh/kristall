@@ -90,7 +90,17 @@ make
 
 #### Windows
 
-Just use QtCreator to build `./src/kristall.pro`. Default settings should be fine.
+Compile OpenSSL with the following steps:  
+- Install [Perl](https://www.perl.org/get.html) (either ActiveState or Strawberry)
+- Install [NASM](https://www.nasm.us/)
+- Add both to your PATH
+- Clone [OpenSSL](https://github.com/openssl/openssl)
+- Open a Visual Studio Developer Command Prompt (or a command prompt that has ran vcvarsall.bat). You will need Administrator privileges for the install step
+- In the OpenSSL root directory, run `perl Configure VC-WIN32` if compiling for 32 bit, `perl Configure VC-WIN64A` for 64 bit
+- Run `nmake`
+- Run `nmake install` to install OpenSSL in `C:\Program Files\OpenSSL`
+
+Use QtCreator to build `./src/kristall.pro` with default settings.
 
 #### MacOS X
 
