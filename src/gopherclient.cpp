@@ -69,8 +69,8 @@ void GopherClient::on_readRead()
 
     if(not is_processing_binary) {
         // Strip the "lone dot" from gopher data
-        if(int index = body.indexOf(".\r\n"); index >= 0) {
-            body.resize(index);
+        if(int index = body.indexOf("\r\n.\r\n"); index >= 0) {
+            body.resize(index + 2);
             socket.close();
         }
     }

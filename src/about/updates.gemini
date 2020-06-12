@@ -4,6 +4,8 @@
 * Adds support for transient client certificates
 * Adds support for permanent client certificates
 * Added this changelog to the software itself
+* Fixed bug: Status bar label now does elide links that are too long instead of resizing the window.
+* Fixed bug: Gopher end-of-file marker is now better detected.
 
 ## 0.2
 * Implement Ctrl+D/*Add to favourites* menu item
