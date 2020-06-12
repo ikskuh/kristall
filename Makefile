@@ -15,7 +15,7 @@ sharedir=$(DESTDIR)$(PREFIX)/share
 kristall: build/kristall
 	cp build/kristall $@
 
-build/kristall:
+build/kristall: src/*
 	mkdir -p build
 	cd build && qmake ../src/kristall.pro && $(MAKE)
 
