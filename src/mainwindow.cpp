@@ -13,17 +13,19 @@
 #include "ioutil.hpp"
 #include "kristall.hpp"
 
+
 MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     QMainWindow(parent),
     application(app),
     ui(new Ui::MainWindow),
-    url_status(new QLabel(this)),
+    url_status(new ElideLabel(this)),
     file_size(new QLabel(this)),
     file_mime(new QLabel(this)),
     load_time(new QLabel(this))
 {
-
     ui->setupUi(this);
+
+    this->url_status->setElideMode(Qt::ElideMiddle);
 
     this->statusBar()->addWidget(this->url_status);
     this->statusBar()->addPermanentWidget(this->file_mime);

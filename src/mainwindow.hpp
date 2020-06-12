@@ -10,6 +10,8 @@
 #include "geminirenderer.hpp"
 #include "protocolsetup.hpp"
 
+#include "elidelabel.hpp"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -96,7 +98,7 @@ public:
 private:
     Ui::MainWindow *ui;
 
-    QLabel * url_status;
+    ElideLabel * url_status;
     QLabel * file_size;
     QLabel * file_mime;
     QLabel * load_time;

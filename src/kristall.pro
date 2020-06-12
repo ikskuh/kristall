@@ -41,6 +41,7 @@ SOURCES += \
     cryptoidentity.cpp \
     documentoutlinemodel.cpp \
     documentstyle.cpp \
+    elidelabel.cpp \
     favouritecollection.cpp \
     fingerclient.cpp \
     geminiclient.cpp \
@@ -67,6 +68,7 @@ HEADERS += \
     cryptoidentity.hpp \
     documentoutlinemodel.hpp \
     documentstyle.hpp \
+    elidelabel.hpp \
     favouritecollection.hpp \
     fingerclient.hpp \
     geminiclient.hpp \
