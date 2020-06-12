@@ -61,18 +61,32 @@ void DocumentOutlineModel::appendH3(const QString &title, QString const & anchor
 
 void DocumentOutlineModel::endBuild()
 {
-    for(auto const & h1 : this->root.children)
+    int root_index = 0;
+    for(auto & h1 : this->root.children)
     {
         assert(h1.depth == 1);
         assert(h1.parent == &this->root);
-        for(auto const & h2 : h1.children)
+
+        h1.index = root_index;
+        root_index += 1;
+
+        int group_index = 0;
+        for(auto & h2 : h1.children)
         {
             assert(h2.depth == 2);
             assert(h2.parent == &h1);
-            for(auto const & h3 : h2.children)
+
+            h2.index = group_index;
+            group_index += 1;
+
+            int bottom_index = 0;
+            for(auto & h3 : h2.children)
             {
                 assert(h3.depth == 3);
                 assert(h3.parent == &h2);
+
+                h3.index = bottom_index;
+                bottom_index += 1;
             }
         }
     }
