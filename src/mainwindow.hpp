@@ -87,6 +87,8 @@ private slots:
 
     void on_actionChangelog_triggered();
 
+    void on_actionManage_Certificates_triggered();
+
 private:
     void reloadTheme();
 

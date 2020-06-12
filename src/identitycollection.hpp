@@ -52,6 +52,8 @@ public:
 
     CryptoIdentity getIdentity(QModelIndex const & index) const;
 
+    CryptoIdentity * getMutableIdentity(QModelIndex const & index);
+
     QStringList groups() const;
 
 public:

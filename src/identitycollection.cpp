@@ -32,6 +32,7 @@ void IdentityCollection::load(QSettings &settings)
 
             id->identity.is_persistent = true;
             id->identity.display_name = settings.value("display_name").toString();
+            id->identity.user_notes = settings.value("user_notes").toString();
 
             id->identity.certificate = QSslCertificate::fromData(
                 settings.value("certificate").toByteArray(),
@@ -82,6 +83,7 @@ void IdentityCollection::save(QSettings &settings) const
             auto & id = _id->as<IdentityNode>();
 
             settings.setValue("display_name",  id.identity.display_name);
+            settings.setValue("user_notes",  id.identity.user_notes);
             settings.setValue("certificate", id.identity.certificate.toDer());
             settings.setValue("private_key", id.identity.private_key.toDer());
         }
@@ -140,6 +142,22 @@ CryptoIdentity IdentityCollection::getIdentity(const QModelIndex &index) const
     case Node::Identity: return static_cast<IdentityNode const *>(item)->identity;
     default:
         return CryptoIdentity();
+    }
+}
+
+CryptoIdentity * IdentityCollection::getMutableIdentity(const QModelIndex &index)
+{
+    if (!index.isValid())
+        return nullptr;
+
+    if (index.column() != 0)
+        return nullptr;
+
+    Node *item = static_cast<Node*>(index.internalPointer());
+    switch(item->type) {
+    case Node::Identity: return &static_cast<IdentityNode *>(item)->identity;
+    default:
+        return nullptr;
     }
 }
 

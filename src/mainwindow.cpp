@@ -13,6 +13,7 @@
 #include "ioutil.hpp"
 #include "kristall.hpp"
 
+#include "certificatemanagementdialog.hpp"
 
 MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     QMainWindow(parent),
@@ -41,12 +42,8 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
 
     ui->favourites_view->setModel(&favourites);
 
-    ui->clientcert_view->setModel(&global_identities);
-    ui->clientcert_view->expandAll();
-
     this->ui->outline_window->setVisible(false);
     this->ui->history_window->setVisible(false);
-    this->ui->clientcert_window->setVisible(false);
     this->ui->bookmarks_window->setVisible(false);
 
     for(QDockWidget * dock : findChildren<QDockWidget *>())
@@ -463,4 +460,13 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint &pos
 void MainWindow::on_actionChangelog_triggered()
 {
     this->addNewTab(true, QUrl("about:updates"));
+}
+
+void MainWindow::on_actionManage_Certificates_triggered()
+{
+    CertificateManagementDialog dialog { this };
+
+    dialog.exec();
+
+    this->saveSettings();
 }

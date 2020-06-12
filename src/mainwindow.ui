@@ -148,37 +148,6 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="clientcert_window">
-   <property name="windowTitle">
-    <string>Client Certificates</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>2</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents_4">
-    <layout class="QVBoxLayout" name="verticalLayout_5">
-     <property name="leftMargin">
-      <number>0</number>
-     </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>0</number>
-     </property>
-     <property name="bottomMargin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QTreeView" name="clientcert_view">
-       <property name="headerHidden">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
@@ -197,6 +166,7 @@
     <addaction name="actionSave_as"/>
     <addaction name="actionClose_Tab"/>
     <addaction name="separator"/>
+    <addaction name="actionManage_Certificates"/>
     <addaction name="actionSettings"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
@@ -371,6 +341,15 @@
   <action name="actionChangelog">
    <property name="text">
     <string>Changelog</string>
+   </property>
+  </action>
+  <action name="actionManage_Certificates">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/certificate.svg</normaloff>:/icons/certificate.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Manage Certificates…</string>
    </property>
   </action>
  </widget>

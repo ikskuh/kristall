@@ -164,7 +164,7 @@ ln -s /path/to/kristall .
     - [ ] Allow grouping favourites into a single-hierarchy folder structure
   - [ ] Improve style import
     - [ ] Direct preview instead of importing it as a preset. Allow user to save preset then manually
-- [ ] Changelog in the help menu
+- [ ] Handle network errors like timeout and such
 
 ### Unspecced
 - [ ] Survive full torture suite

@@ -37,6 +37,7 @@ SOURCES += \
     ../lib/luis-l-gist/interactiveview.cpp \
     browsertab.cpp \
     certificatehelper.cpp \
+    certificatemanagementdialog.cpp \
     certificateselectiondialog.cpp \
     cryptoidentity.cpp \
     documentoutlinemodel.cpp \
@@ -64,6 +65,7 @@ HEADERS += \
     ../lib/luis-l-gist/interactiveview.hpp \
     browsertab.hpp \
     certificatehelper.hpp \
+    certificatemanagementdialog.hpp \
     certificateselectiondialog.hpp \
     cryptoidentity.hpp \
     documentoutlinemodel.hpp \
@@ -89,6 +91,7 @@ HEADERS += \
 
 FORMS += \
     browsertab.ui \
+    certificatemanagementdialog.ui \
     certificateselectiondialog.ui \
     mainwindow.ui \
     mediaplayer.ui \

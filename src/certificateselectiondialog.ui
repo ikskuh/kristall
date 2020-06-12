@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Select client certificate</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="icons.qrc">
+    <normaloff>:/icons/certificate.svg</normaloff>:/icons/certificate.svg</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
