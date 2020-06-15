@@ -71,6 +71,8 @@ private slots:
 
     void on_requestFailed(QString const & reason);
 
+    void on_networkError(QString const & reason);
+
     void on_protocolViolation(QString const & reason);
 
     void on_inputRequired(QString const & query);

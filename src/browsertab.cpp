@@ -52,6 +52,7 @@ BrowserTab::BrowserTab(MainWindow * mainWindow) :
     connect(&gemini_client, &GeminiClient::transientCertificateRequested, this, &BrowserTab::on_transientCertificateRequested);
     connect(&gemini_client, &GeminiClient::authorisedCertificateRequested, this, &BrowserTab::on_authorisedCertificateRequested);
     connect(&gemini_client, &GeminiClient::certificateRejected, this, &BrowserTab::on_certificateRejected);
+    connect(&gemini_client, &GeminiClient::networkError, this, &BrowserTab::on_networkError);
 
     connect(&gopher_client, &GopherClient::requestComplete, this, &BrowserTab::on_requestComplete);
     connect(&gopher_client, &GopherClient::requestFailed, this, &BrowserTab::on_requestFailed);
@@ -266,6 +267,11 @@ void BrowserTab::on_refresh_button_clicked()
 void BrowserTab::on_requestFailed(const QString &reason)
 {
     this->setErrorMessage(QString("Request failed:\n%1").arg(reason));
+}
+
+void BrowserTab::on_networkError(const QString &reason)
+{
+    this->setErrorMessage(QString("Network error:\n%1").arg(reason));
 }
 
 void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)

@@ -6,6 +6,7 @@
 #include "geminirenderer.hpp"
 #include "protocolsetup.hpp"
 #include "documentstyle.hpp"
+#include "ssltrust.hpp"
 
 namespace Ui {
 class SettingsDialog;
@@ -33,6 +34,9 @@ public:
 
     QString uiTheme() const;
     void setUiTheme(QString const & theme);
+
+    SslTrust sslTrust() const;
+    void setSslTrust(SslTrust const & trust);
 
 private slots:
     void on_std_change_font_clicked();
@@ -89,12 +93,22 @@ private slots:
 
     void on_preset_export_clicked();
 
+    void on_trust_enable_ca_clicked();
+
+    void on_trust_disable__ca_clicked();
+
+    void on_trust_level_currentIndexChanged(int index);
+
+    void on_trust_revoke_selected_clicked();
+
 private:
     void reloadStylePreview();
 
     void updateFont(QFont & input);
 
     void updateColor(QColor & input);
+
+    void on_trusted_server_selection(QModelIndex const & current, QModelIndex const & previous);
 
 private:
     Ui::SettingsDialog *ui;
@@ -103,6 +117,8 @@ private:
     std::unique_ptr<QTextDocument> preview_document;
 
     QMap<QString, DocumentStyle> predefined_styles;
+
+    SslTrust current_trust;
 };
 
 #endif // SETTINGSDIALOG_HPP

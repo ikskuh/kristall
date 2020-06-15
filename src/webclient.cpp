@@ -35,6 +35,8 @@ bool WebClient::startRequest(const QUrl &url)
 
     connect(this->current_reply, &QNetworkReply::readyRead, this, &WebClient::on_data);
     connect(this->current_reply, &QNetworkReply::finished, this,  &WebClient::on_finished);
+    connect(this->current_reply, &QNetworkReply::errorOccurred, this, &WebClient::on_networkError);
+    connect(this->current_reply, &QNetworkReply::sslErrors, this, &WebClient::on_sslErrors);
 
     return true;
 }
@@ -71,7 +73,7 @@ void WebClient::on_finished()
     {
         auto mime = this->current_reply->header(QNetworkRequest::ContentTypeHeader).toString();
 
-        qDebug() << this->current_reply->url() << mime;
+        // qDebug() << this->current_reply->url() << mime;
 
         emit this->requestComplete(this->body, mime);
 
@@ -79,4 +81,16 @@ void WebClient::on_finished()
     }
     this->current_reply->deleteLater();
     this->current_reply = nullptr;
+}
+
+void WebClient::on_networkError(QNetworkReply::NetworkError code)
+{
+    qDebug() << code << this->current_reply->errorString();
+}
+
+void WebClient::on_sslErrors(const QList<QSslError> &errors)
+{
+    for(auto const & err : errors)
+        qDebug() << err;
+    this->current_reply->ignoreSslErrors();
 }

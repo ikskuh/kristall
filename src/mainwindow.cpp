@@ -149,6 +149,10 @@ void MainWindow::saveSettings()
     global_identities.save(global_settings);
     global_settings.endGroup();
 
+    global_settings.beginGroup("Trusted Servers");
+    global_trust.save(global_settings);
+    global_settings.endGroup();
+
     global_settings.beginGroup("Theme");
     this->current_style.save(global_settings);
     global_settings.endGroup();
@@ -245,6 +249,7 @@ void MainWindow::on_actionSettings_triggered()
     dialog.setStartPage(global_settings.value("start_page").toString());
     dialog.setProtocols(this->protocols);
     dialog.setUiTheme(global_settings.value("theme").toString());
+    dialog.setSslTrust(global_trust);
 
     if(dialog.exec() != QDialog::Accepted)
         return;
@@ -253,6 +258,7 @@ void MainWindow::on_actionSettings_triggered()
         global_settings.setValue("start_page", url.toString());
     }
 
+    global_trust = dialog.sslTrust();
     global_settings.setValue("theme", dialog.uiTheme());
 
     this->protocols = dialog.protocols();

@@ -45,6 +45,11 @@ QString NewIdentitiyDialog::groupName() const
     return this->ui->group->currentText();
 }
 
+void NewIdentitiyDialog::setGroupName(const QString &name)
+{
+    this->ui->group->setCurrentText(name);
+}
+
 void NewIdentitiyDialog::updateUI()
 {
     bool is_ok = true;
@@ -59,16 +64,18 @@ void NewIdentitiyDialog::updateUI()
 
 void NewIdentitiyDialog::on_group_editTextChanged(const QString &arg1)
 {
-    qDebug() << arg1;
+    Q_UNUSED(arg1);
     this->updateUI();
 }
 
 void NewIdentitiyDialog::on_display_name_textChanged(const QString &arg1)
 {
+    Q_UNUSED(arg1);
     this->updateUI();
 }
 
 void NewIdentitiyDialog::on_common_name_textChanged(const QString &arg1)
 {
+    Q_UNUSED(arg1);
     this->updateUI();
 }

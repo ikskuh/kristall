@@ -22,6 +22,7 @@ public:
     CryptoIdentity createIdentity() const;
 
     QString groupName() const;
+    void setGroupName(QString const & name);
 
 private slots:
     void on_group_editTextChanged(const QString &arg1);

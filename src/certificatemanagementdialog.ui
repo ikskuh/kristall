@@ -103,6 +103,10 @@
            <property name="text">
             <string>...</string>
            </property>
+           <property name="icon">
+            <iconset resource="icons.qrc">
+             <normaloff>:/icons/delete-alert.svg</normaloff>:/icons/delete-alert.svg</iconset>
+           </property>
           </widget>
          </item>
         </layout>

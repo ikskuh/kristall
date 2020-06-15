@@ -10,6 +10,7 @@
 IdentityCollection global_identities;
 QSettings global_settings { "xqTechnologies", "Kristall" };
 QClipboard * global_clipboard;
+SslTrust global_trust;
 
 int main(int argc, char *argv[])
 {
@@ -26,6 +27,10 @@ int main(int argc, char *argv[])
 
     global_settings.beginGroup("Client Identities");
     global_identities.load(global_settings);
+    global_settings.endGroup();
+
+    global_settings.beginGroup("Trusted Servers");
+    global_trust.load(global_settings);
     global_settings.endGroup();
 
     MainWindow w(&app);

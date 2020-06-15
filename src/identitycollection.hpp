@@ -48,6 +48,8 @@ public:
 
     void save(QSettings & settings) const;
 
+    bool addGroup(QString const & group);
+
     bool addCertificate(QString const & group, CryptoIdentity const & id);
 
     CryptoIdentity getIdentity(QModelIndex const & index) const;
@@ -55,6 +57,14 @@ public:
     CryptoIdentity * getMutableIdentity(QModelIndex const & index);
 
     QStringList groups() const;
+
+    //! Returns the group name of the index.
+    QString group(QModelIndex const & index) const;
+
+    bool destroyIdentity(QModelIndex const & index);
+
+    bool canDeleteGroup(QString const & group_name);
+    bool deleteGroup(QString const & group_name);
 
 public:
     // Header:
@@ -72,6 +82,8 @@ public:
 
 private:
     void relayout();
+
+    bool internalAddGroup(QString const & group_name, GroupNode * & out_group);
 
 private:
     RootNode root;

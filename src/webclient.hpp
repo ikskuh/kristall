@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QNetworkAccessManager>
+#include <QNetworkReply>
 
 class WebClient: public QObject
 {
@@ -26,9 +27,13 @@ signals:
 
     void requestFailed(QString const & message);
 
+    void networkError(QString const & message);
+
 private slots:
     void on_data();
     void on_finished();
+    void on_networkError(QNetworkReply::NetworkError code);
+    void on_sslErrors(const QList<QSslError> &errors);
 
 private:
     QNetworkAccessManager manager;

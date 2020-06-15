@@ -2,6 +2,7 @@
 #include <cassert>
 #include <QDebug>
 #include <QSslConfiguration>
+#include "kristall.hpp"
 
 GeminiClient::GeminiClient(QObject *parent) : QObject(parent)
 {
@@ -11,13 +12,10 @@ GeminiClient::GeminiClient(QObject *parent) : QObject(parent)
     connect(&socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors), this, &GeminiClient::sslErrors);
     connect(&socket, QOverload<QAbstractSocket::SocketError>::of(&QSslSocket::error), this, &GeminiClient::socketError);
 
-
     QSslConfiguration ssl_config;
     ssl_config.setProtocol(QSsl::TlsV1_2);
-    // ssl_config.setLocalCertificate(QSslCertificate::1
-
+    ssl_config.setCaCertificates(QList<QSslCertificate> { });
     socket.setSslConfiguration(ssl_config);
-
 }
 
 GeminiClient::~GeminiClient()
@@ -76,6 +74,8 @@ void GeminiClient::disableClientCertificate()
 
 void GeminiClient::socketEncrypted()
 {
+    qDebug() << "Pub key =" << socket.peerCertificate().publicKey().toPem();
+
     QString request = target_url.toString(QUrl::FormattingOptions(QUrl::FullyEncoded)) + "\r\n";
 
     QByteArray request_bytes = request.toUtf8();
@@ -255,13 +255,59 @@ void GeminiClient::socketDisconnected()
     }
 }
 
-void GeminiClient::sslErrors(const QList<QSslError> &errors)
+static bool isTrustRelated(QSslError::SslError err)
 {
-    for(auto const & error : errors) {
-        qWarning() << error.errorString() ;
+    switch(err)
+    {
+    case QSslError::CertificateUntrusted: return true;
+    case QSslError::SelfSignedCertificate: return true;
+    case QSslError::UnableToGetLocalIssuerCertificate: return true;
+    default: return false;
+    }
+}
+
+void GeminiClient::sslErrors(QList<QSslError> const & errors)
+{
+    QList<QSslError> remaining_errors = errors;
+    QList<QSslError> ignored_errors;
+
+    int i = 0;
+    while(i < remaining_errors.size())
+    {
+        auto const & err = remaining_errors.at(i);
+
+        bool ignore = false;
+        if(isTrustRelated(err.error()))
+        {
+            if(global_trust.isTrusted(target_url, socket.peerCertificate()))
+            {
+                ignore = true;
+            }
+        }
+        else if(err.error() == QSslError::UnableToVerifyFirstCertificate)
+        {
+            ignore = true;
+        }
+
+        if(ignore) {
+            ignored_errors.append(err);
+            remaining_errors.removeAt(0);
+        } else {
+            i += 1;
+        }
     }
 
-    socket.ignoreSslErrors(errors);
+    socket.ignoreSslErrors(ignored_errors);
+
+    qDebug() << "ignoring" << ignored_errors.size() << "out of" << errors.size();
+
+    for(auto const & error : remaining_errors) {
+        qWarning() << int(error.error()) << error.errorString();
+    }
+
+    if(remaining_errors.size() > 0) {
+        emit this->networkError(remaining_errors.first().errorString());
+    }
 }
 
 void GeminiClient::socketError(QAbstractSocket::SocketError socketError)
@@ -272,6 +318,7 @@ void GeminiClient::socketError(QAbstractSocket::SocketError socketError)
     if(socketError == QAbstractSocket::RemoteHostClosedError) {
         socket.close();
     } else {
-        qWarning() << socketError << socket.errorString();
+        // qWarning() << socketError << socket.errorString();
+        emit this->networkError(socket.errorString());
     }
 }

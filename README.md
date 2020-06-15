@@ -144,11 +144,11 @@ ln -s /path/to/kristall .
 ### 0.3 release
 - [ ] TLS Handling
    - [ ] Allow user to ignore TLS errors
-   - [ ] Enable TOFU for HTTPS/Gemini
+   - [ ] Enable TOFU for HTTPS
    - [ ] Enable Client Certificate Management
     - [ ] Add option: "Transient certificates survive an application reboot and are stored on disk""
     - [ ] Add management for client certificates
-      - [ ] Rename/delete certificates
+      - [x] Rename/delete certificates
       - [ ] Rename/delete/merge groups
       - [ ] Import/export PEM certificates and keys
     - [ ] Ask if the client certificate should be disabled when switching host and/or protocol
@@ -165,13 +165,14 @@ ln -s /path/to/kristall .
   - [ ] Improve style import
     - [ ] Direct preview instead of importing it as a preset. Allow user to save preset then manually
 - [ ] Handle network errors like timeout and such
-
-### Unspecced
 - [ ] Survive full torture suite
   - [ ] Correctly parse mime parameters
     - [ ] Correctly parse charset (0013, 0014)
     - [ ] Correctly parse other params (0015)
     - [ ] Correctly parse undefined params (0016)
+  - [ ] Make Kristall survive gemini://egsam.pitr.ca/
+
+### Unspecced
 - [ ] Recognize home directories with /~home and such and add "substyles"
 - [ ] [Add favicon support](gemini://mozz.us/files/rfc_gemini_favicon.gmi)
   - [ ] Add auto-generated "favicons"

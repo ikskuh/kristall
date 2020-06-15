@@ -70,6 +70,8 @@ signals:
 
     void certificateRejected(CertificateRejection reason, QString const & info);
 
+    void networkError(QString const & reason);
+
 private slots:
 
     void socketEncrypted();

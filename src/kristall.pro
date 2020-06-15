@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui svg
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets network multimedia multimediawidgets
 
@@ -30,6 +30,13 @@ win32-msvc {
     INCLUDEPATH += "C:\Program Files\OpenSSL\include"
 }
 
+android: include(/home/felix/projects/android-hass/android-sdk/android_openssl/openssl.pri)
+
+# android {
+#   INCLUDEPATH += /home/felix/projects/android-hass/android-sdk/android_openssl/static/include
+#   LIBS += -L /home/felix/projects/android-hass/android-sdk/android_openssl/static/lib/arm/
+# }
+
 INCLUDEPATH += $$PWD/../lib/luis-l-gist/
 DEPENDPATH += $$PWD/../lib/luis-l-gist/
 
@@ -58,7 +65,10 @@ SOURCES += \
     plaintextrenderer.cpp \
     protocolsetup.cpp \
     settingsdialog.cpp \
+    ssltrust.cpp \
     tabbrowsinghistory.cpp \
+    trustedhost.cpp \
+    trustedhostcollection.cpp \
     webclient.cpp
 
 HEADERS += \
@@ -86,7 +96,10 @@ HEADERS += \
     plaintextrenderer.hpp \
     protocolsetup.hpp \
     settingsdialog.hpp \
+    ssltrust.hpp \
     tabbrowsinghistory.hpp \
+    trustedhost.hpp \
+    trustedhostcollection.hpp \
     webclient.hpp
 
 FORMS += \

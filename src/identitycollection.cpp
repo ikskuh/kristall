@@ -7,6 +7,7 @@
 IdentityCollection::IdentityCollection(QObject *parent)
     : QAbstractItemModel(parent)
 {
+
 }
 
 void IdentityCollection::load(QSettings &settings)
@@ -95,28 +96,24 @@ void IdentityCollection::save(QSettings &settings) const
     settings.endArray();
 }
 
+bool IdentityCollection::addGroup(const QString &group_name)
+{
+    GroupNode * group;
+    return internalAddGroup(group_name, group);
+}
+
 bool IdentityCollection::addCertificate(const QString &group_name, const CryptoIdentity &crypto_id)
 {
     // Don't allow saving transient certificates
     if(not crypto_id.is_persistent)
         return false;
 
-    this->beginResetModel();
+    GroupNode * group;
+    internalAddGroup(group_name, group);
 
-    GroupNode * group = nullptr;
-    for(auto const & grp : root.children)
-    {
-        auto * g = static_cast<GroupNode*>(grp.get());
-        if(g->title == group_name) {
-            group = g;
-            break;
-        }
-    }
-    if(group == nullptr) {
-        group = new GroupNode();
-        group->title = group_name;
-        this->root.children.emplace_back(group);
-    }
+    QModelIndex parent_index = createIndex(group->index, 0, group);
+
+    beginInsertRows(parent_index, group->children.size(), group->children.size() + 1);
 
     auto id = std::make_unique<IdentityNode>();
     id->identity = crypto_id;
@@ -124,7 +121,7 @@ bool IdentityCollection::addCertificate(const QString &group_name, const CryptoI
 
     this->relayout();
 
-    this->endResetModel();
+    this->endInsertRows();
 
     return true;
 }
@@ -169,6 +166,77 @@ QStringList IdentityCollection::groups() const
         result.append(grp->as<GroupNode>().title);
     }
     return result;
+}
+
+QString IdentityCollection::group(const QModelIndex &index) const
+{
+    if (!index.isValid())
+        return QString { };
+
+    Node const *item = static_cast<Node const*>(index.internalPointer());
+
+    switch(item->type) {
+    case Node::Root:     return QString { };
+    case Node::Group:    return static_cast<GroupNode const *>(item)->title;
+    case Node::Identity: return static_cast<IdentityNode const *>(item)->parent->as<GroupNode>().title;
+    default:             return QString { };
+    }
+}
+
+bool IdentityCollection::destroyIdentity(const QModelIndex &index)
+{
+    if (!index.isValid())
+        return false;
+
+    Node * childItem = static_cast<Node *>(index.internalPointer());
+    Node * parent = childItem->parent;
+
+    if (parent == &root)
+        return false;
+
+    beginRemoveRows(this->parent(index), index.row(), index.row() + 1);
+
+    parent->children.erase(parent->children.begin() + childItem->index);
+
+    endRemoveRows();
+
+    return true;
+}
+
+bool IdentityCollection::canDeleteGroup(const QString &group_name)
+{
+    for(auto const & group_node : root.children)
+    {
+        auto & group = group_node->as<GroupNode>();
+        if((group.children.size() == 0) and (group.title == group_name))
+            return true;
+
+    }
+    return false;
+}
+
+bool IdentityCollection::deleteGroup(const QString &group_name)
+{
+    size_t index = 0;
+    for(auto it = root.children.begin(); it != root.children.end(); it++, index++)
+    {
+        auto & group = it->get()->as<GroupNode>();
+        if(group.title == group_name) {
+            if(group.children.size() > 0) {
+                qDebug() << "cannot delete non-empty group" << group_name;
+                return false;
+            }
+
+            beginRemoveRows(QModelIndex { }, index, index + 1);
+
+            root.children.erase(it);
+
+            endRemoveRows();
+
+            return true;
+        }
+    }
+    return false;
 }
 
 QModelIndex IdentityCollection::index(int row, int column, const QModelIndex &parent) const
@@ -265,7 +333,7 @@ void IdentityCollection::relayout()
         group.parent = &root;
         group.index = i;
 
-        qDebug() << "group[" << group.index << "]" << group.as<GroupNode>().title;
+        // qDebug() << "group[" << group.index << "]" << group.as<GroupNode>().title;
 
         for(size_t j = 0; j < group.children.size(); j++)
         {
@@ -274,7 +342,33 @@ void IdentityCollection::relayout()
             id.index = j;
             assert(id.children.size() == 0);
 
-            qDebug() << "id[" << id.index << "]" << id.as<IdentityNode>().identity.display_name;
+            // qDebug() << "id[" << id.index << "]" << id.as<IdentityNode>().identity.display_name;
         }
     }
+}
+
+bool IdentityCollection::internalAddGroup(const QString &group_name, GroupNode * & group)
+{
+    for(auto const & grp : root.children)
+    {
+        auto * g = static_cast<GroupNode*>(grp.get());
+        if(g->title == group_name) {
+            group = g;
+            return false;
+        }
+    }
+
+    auto parent = QModelIndex { };
+
+    beginInsertRows(parent, this->root.children.size(), this->root.children.size() + 1);
+
+    group = new GroupNode();
+    group->title = group_name;
+    this->root.children.emplace_back(group);
+
+    this->relayout();
+
+    endInsertRows();
+
+    return true;
 }
