@@ -28,6 +28,7 @@ private slots:
     void on_data();
     void on_finished();
     void on_sslErrors(const QList<QSslError> &errors);
+    void on_redirected(const QUrl &url);
 
 private:
     QNetworkAccessManager manager;

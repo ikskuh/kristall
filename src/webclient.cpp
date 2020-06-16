@@ -39,8 +39,8 @@ bool WebClient::startRequest(const QUrl &url)
     //     ssl_config.setCaCertificates(QList<QSslCertificate> { });
 
     QNetworkRequest request(url);
-    request.setMaximumRedirectsAllowed(5);
-    request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+    // request.setMaximumRedirectsAllowed(5);
+    request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, false);
     request.setSslConfiguration(ssl_config);
 
     this->current_reply = manager.get(request);
@@ -50,6 +50,7 @@ bool WebClient::startRequest(const QUrl &url)
     connect(this->current_reply, &QNetworkReply::readyRead, this, &WebClient::on_data);
     connect(this->current_reply, &QNetworkReply::finished, this,  &WebClient::on_finished);
     connect(this->current_reply, &QNetworkReply::sslErrors, this, &WebClient::on_sslErrors);
+    connect(this->current_reply, &QNetworkReply::redirected, this, &WebClient::on_redirected);
 
     return true;
 }
@@ -78,10 +79,15 @@ void WebClient::on_data()
 
 void WebClient::on_finished()
 {
-    if(this->current_reply->error() != QNetworkReply::NoError)
+    auto * const reply = this->current_reply;
+    this->current_reply = nullptr;
+
+    reply->deleteLater();
+
+    if(reply->error() != QNetworkReply::NoError)
     {
         NetworkError error = UnknownError;
-        switch(this->current_reply->error())
+        switch(reply->error())
         {
         case QNetworkReply::ConnectionRefusedError: error = ConnectionRefused; break;
         case QNetworkReply::RemoteHostClosedError: error = ProtocolViolation; break;
@@ -99,23 +105,32 @@ void WebClient::on_finished()
         case QNetworkReply::OperationNotImplementedError: error = InternalServerError; break;
         case QNetworkReply::ServiceUnavailableError: error = InternalServerError; break;
         default:
-            qDebug() << "Unhandled server error:" << this->current_reply->error();
+            qDebug() << "Unhandled server error:" << reply->error();
             break;
         }
 
-        qDebug() << "web network error" << this->current_reply->errorString();
-        emit this->networkError(error, this->current_reply->errorString());
+        qDebug() << "web network error" << reply->errorString();
+        emit this->networkError(error, reply->errorString());
     }
     else
     {
-        auto mime = this->current_reply->header(QNetworkRequest::ContentTypeHeader).toString();
+        int statusCode =reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
-        emit this->requestComplete(this->body, mime);
+        if(statusCode >= 200 and statusCode < 300) {
+            auto mime = reply->header(QNetworkRequest::ContentTypeHeader).toString();
+            emit this->requestComplete(this->body, mime);
+        }
+        else if(statusCode >= 300 and statusCode < 400) {
+            auto url = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+
+            emit this->redirected(url, (statusCode == 301) or (statusCode == 308));
+        }
+        else {
+            emit networkError(UnknownError, QString("Unhandled HTTP status code %1").arg(statusCode));
+        }
 
         this->body.clear();
     }
-    this->current_reply->deleteLater();
-    this->current_reply = nullptr;
 }
 
 void WebClient::on_sslErrors(const QList<QSslError> &errors)
@@ -124,4 +139,9 @@ void WebClient::on_sslErrors(const QList<QSslError> &errors)
     for(auto const & err : errors)
         qDebug() << err;
     this->current_reply->ignoreSslErrors();
+}
+
+void WebClient::on_redirected(const QUrl &url)
+{
+    qDebug() << "redirected to" << url;
 }
