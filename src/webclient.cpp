@@ -1,4 +1,5 @@
 #include "webclient.hpp"
+#include "kristall.hpp"
 
 #include <QNetworkRequest>
 #include <QNetworkReply>
@@ -30,9 +31,17 @@ bool WebClient::startRequest(const QUrl &url)
 
     this->body.clear();
 
+    QSslConfiguration ssl_config;
+    // ssl_config.setProtocol(QSsl::TlsV1_2);
+    // if(global_trust.enable_ca)
+    //     ssl_config.setCaCertificates(QSslConfiguration::systemCaCertificates());
+    // else
+    //     ssl_config.setCaCertificates(QList<QSslCertificate> { });
+
     QNetworkRequest request(url);
     request.setMaximumRedirectsAllowed(5);
     request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+    request.setSslConfiguration(ssl_config);
 
     this->current_reply = manager.get(request);
     if(this->current_reply == nullptr)

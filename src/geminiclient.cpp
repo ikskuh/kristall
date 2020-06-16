@@ -16,11 +16,6 @@ GeminiClient::GeminiClient() : ProtocolHandler(nullptr)
 #else
     connect(&socket, QOverload<QAbstractSocket::SocketError>::of(&QTcpSocket::error), this, &GeminiClient::socketError);
 #endif
-
-    QSslConfiguration ssl_config;
-    ssl_config.setProtocol(QSsl::TlsV1_2);
-    ssl_config.setCaCertificates(QList<QSslCertificate> { });
-    socket.setSslConfiguration(ssl_config);
 }
 
 GeminiClient::~GeminiClient()
@@ -40,6 +35,14 @@ bool GeminiClient::startRequest(const QUrl &url)
 
     if(socket.isOpen())
         return false;
+
+    QSslConfiguration ssl_config;
+    ssl_config.setProtocol(QSsl::TlsV1_2);
+    if(not global_trust.enable_ca)
+        ssl_config.setCaCertificates(QList<QSslCertificate> { });
+    else
+        ssl_config.setCaCertificates(QSslConfiguration::systemCaCertificates());
+    socket.setSslConfiguration(ssl_config);
 
     socket.connectToHostEncrypted(url.host(), url.port(1965));
 

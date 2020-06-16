@@ -150,7 +150,7 @@ ln -s /path/to/kristall .
    - [ ] Allow user to ignore TLS errors
    - [ ] Enable TOFU for HTTPS
    - [ ] Enable Client Certificate Management
-    - [ ] Add option: "Transient certificates survive an application reboot and are stored on disk""
+    - [ ] Add option: "Transient certificates survive an application reboot and are stored on disk"
     - [ ] Add management for client certificates
       - [x] Rename/delete certificates
       - [ ] Rename/delete/merge groups
