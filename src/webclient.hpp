@@ -5,29 +5,24 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
-class WebClient: public QObject
+#include "protocolhandler.hpp"
+
+class WebClient: public ProtocolHandler
 {
 private:
     Q_OBJECT
 public:
-    explicit WebClient(QObject *parent = nullptr);
+    explicit WebClient();
 
     ~WebClient() override;
 
-    bool startRequest(QUrl const & url);
+    bool supportsScheme(QString const & scheme) const override;
 
-    bool isInProgress() const;
+    bool startRequest(QUrl const & url) override;
 
-    bool cancelRequest();
+    bool isInProgress() const override;
 
-signals:
-    void requestProgress(qint64 transferred);
-
-    void requestComplete(QByteArray const & data, QString const & mime);
-
-    void requestFailed(QString const & message);
-
-    void networkError(QString const & message);
+    bool cancelRequest() override;
 
 private slots:
     void on_data();

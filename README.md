@@ -78,8 +78,11 @@ make
   - `qt5-qmake`
   - `qtmultimedia5-dev` 
   - `libqt5svg5-dev`
+  - `libssl-dev`
   - `make`
   - `g++`
+ 
+These notes are probably also correct for Debian (someone please verify)
 
 ##### Notes for Manjaro/Arch
 - Requires packages
@@ -210,3 +213,5 @@ Status bar is broken:
 It doesn't seem to map to tabs, if you have multiple
 open, which was a bit confusing (and would also be a really cool
 addition for easy comparison of responses).
+
+<tiwesdaeg> gemini://tilde.pink/ the first paragraph is displayed with large spacing

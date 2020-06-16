@@ -3,8 +3,8 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 
-WebClient::WebClient(QObject *parent) :
-    QObject(parent),
+WebClient::WebClient() :
+    ProtocolHandler(nullptr),
     current_reply(nullptr)
 {
     manager.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
@@ -13,6 +13,11 @@ WebClient::WebClient(QObject *parent) :
 WebClient::~WebClient()
 {
 
+}
+
+bool WebClient::supportsScheme(const QString &scheme) const
+{
+    return (scheme == "https") or (scheme == "http");
 }
 
 bool WebClient::startRequest(const QUrl &url)
@@ -67,7 +72,7 @@ void WebClient::on_finished()
     if(this->current_reply->error() != QNetworkReply::NoError)
     {
         qDebug() << "web network error" << this->current_reply->errorString();
-        emit this->requestFailed(this->current_reply->errorString());
+        emit this->networkError(UnknownError, this->current_reply->errorString());
     }
     else
     {

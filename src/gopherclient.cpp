@@ -1,7 +1,7 @@
 #include "gopherclient.hpp"
 #include "ioutil.hpp"
 
-GopherClient::GopherClient(QObject *parent) : QObject(parent)
+GopherClient::GopherClient(QObject *parent) : ProtocolHandler(parent)
 {
     connect(&socket, &QTcpSocket::connected, this, &GopherClient::on_connected);
     connect(&socket, &QTcpSocket::readyRead, this, &GopherClient::on_readRead);
@@ -11,6 +11,11 @@ GopherClient::GopherClient(QObject *parent) : QObject(parent)
 GopherClient::~GopherClient()
 {
 
+}
+
+bool GopherClient::supportsScheme(const QString &scheme) const
+{
+    return (scheme == "gopher");
 }
 
 bool GopherClient::startRequest(const QUrl &url)

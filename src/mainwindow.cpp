@@ -33,14 +33,13 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     this->statusBar()->addPermanentWidget(this->file_size);
     this->statusBar()->addPermanentWidget(this->load_time);
 
-    this->favourites.load(global_settings);
     this->protocols.load(global_settings);
 
     global_settings.beginGroup("Theme");
     this->current_style.load(global_settings);
     global_settings.endGroup();
 
-    ui->favourites_view->setModel(&favourites);
+    ui->favourites_view->setModel(&global_favourites);
 
     this->ui->outline_window->setVisible(false);
     this->ui->history_window->setVisible(false);
@@ -58,7 +57,7 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     connect(this->ui->menuNavigation, &QMenu::aboutToShow, [this]() {
         BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
         if(tab != nullptr) {
-            ui->actionAdd_to_favourites->setChecked(this->favourites.contains(tab->current_location));
+            ui->actionAdd_to_favourites->setChecked(global_favourites.contains(tab->current_location));
         }
     });
 
@@ -94,7 +93,6 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-
     this->saveSettings();
     delete ui;
 }
@@ -142,7 +140,7 @@ void MainWindow::setUrlPreview(const QUrl &url)
 
 void MainWindow::saveSettings()
 {
-    this->favourites.save(global_settings);
+    global_favourites.save(global_settings);
     this->protocols.save(global_settings);
 
     global_settings.beginGroup("Client Identities");
@@ -191,7 +189,7 @@ void MainWindow::on_browser_tabs_currentChanged(int index)
 
 void MainWindow::on_favourites_view_doubleClicked(const QModelIndex &index)
 {
-    if(auto url = this->favourites.get(index); url.isValid()) {
+    if(auto url = global_favourites.get(index); url.isValid()) {
         this->addNewTab(true, url);
     }
 }
@@ -444,7 +442,7 @@ void MainWindow::on_history_view_customContextMenuRequested(const QPoint &pos)
 void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint &pos)
 {
     if(auto idx = this->ui->favourites_view->indexAt(pos); idx.isValid()) {
-        if(QUrl url = favourites.get(idx); url.isValid()) {
+        if(QUrl url = global_favourites.get(idx); url.isValid()) {
             QMenu menu;
 
             BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());

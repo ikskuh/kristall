@@ -9,6 +9,13 @@
 
 #include "certificateselectiondialog.hpp"
 
+#include "geminiclient.hpp"
+#include "webclient.hpp"
+#include "gopherclient.hpp"
+#include "fingerclient.hpp"
+#include "abouthandler.hpp"
+#include "filehandler.hpp"
+
 #include "ioutil.hpp"
 #include "kristall.hpp"
 
@@ -24,43 +31,26 @@
 #include <QMimeDatabase>
 #include <QMimeType>
 #include <QImageReader>
+#include <QClipboard>
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
 
-
-BrowserTab::BrowserTab(MainWindow * mainWindow) :
-    QWidget(nullptr),
-    ui(new Ui::BrowserTab),
-    mainWindow(mainWindow),
-    outline(),
-    graphics_scene()
+BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
+                                                 ui(new Ui::BrowserTab),
+                                                 mainWindow(mainWindow),
+                                                 current_handler(nullptr),
+                                                 outline(),
+                                                 graphics_scene()
 {
     ui->setupUi(this);
 
-    connect(&web_client, &WebClient::requestComplete, this, &BrowserTab::on_requestComplete);
-    connect(&web_client, &WebClient::requestFailed, this, &BrowserTab::on_requestFailed);
-    connect(&web_client, &WebClient::requestProgress, this, &BrowserTab::on_requestProgress);
-
-    connect(&gemini_client, &GeminiClient::requestComplete, this, &BrowserTab::on_requestComplete);
-    connect(&gemini_client, &GeminiClient::requestProgress, this, &BrowserTab::on_requestProgress);
-    connect(&gemini_client, &GeminiClient::protocolViolation, this, &BrowserTab::on_protocolViolation);
-    connect(&gemini_client, &GeminiClient::inputRequired, this, &BrowserTab::on_inputRequired);
-    connect(&gemini_client, &GeminiClient::redirected, this, &BrowserTab::on_redirected);
-    connect(&gemini_client, &GeminiClient::temporaryFailure, this, &BrowserTab::on_temporaryFailure);
-    connect(&gemini_client, &GeminiClient::permanentFailure, this, &BrowserTab::on_permanentFailure);
-    connect(&gemini_client, &GeminiClient::transientCertificateRequested, this, &BrowserTab::on_transientCertificateRequested);
-    connect(&gemini_client, &GeminiClient::authorisedCertificateRequested, this, &BrowserTab::on_authorisedCertificateRequested);
-    connect(&gemini_client, &GeminiClient::certificateRejected, this, &BrowserTab::on_certificateRejected);
-    connect(&gemini_client, &GeminiClient::networkError, this, &BrowserTab::on_networkError);
-
-    connect(&gopher_client, &GopherClient::requestComplete, this, &BrowserTab::on_requestComplete);
-    connect(&gopher_client, &GopherClient::requestFailed, this, &BrowserTab::on_requestFailed);
-    connect(&gopher_client, &GopherClient::requestProgress, this, &BrowserTab::on_requestProgress);
-
-    connect(&finger_client, &FingerClient::requestComplete, this, &BrowserTab::on_requestComplete);
-    connect(&finger_client, &FingerClient::requestFailed, this, &BrowserTab::on_requestFailed);
-    connect(&finger_client, &FingerClient::requestProgress, this, &BrowserTab::on_requestProgress);
+    addProtocolHandler<GeminiClient>();
+    addProtocolHandler<FingerClient>();
+    addProtocolHandler<GopherClient>();
+    addProtocolHandler<WebClient>();
+    addProtocolHandler<AboutHandler>();
+    addProtocolHandler<FileHandler>();
 
     this->updateUI();
 
@@ -78,10 +68,42 @@ BrowserTab::~BrowserTab()
 
 void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
 {
-    if(mainWindow->protocols.isSchemeSupported(url.scheme()) != ProtocolSetup::Enabled)
+    if (mainWindow->protocols.isSchemeSupported(url.scheme()) != ProtocolSetup::Enabled)
     {
         QMessageBox::warning(this, "Kristall", "URI scheme not supported or disabled: " + url.scheme());
         return;
+    }
+
+    if ((this->current_handler != nullptr) and not this->current_handler->cancelRequest())
+    {
+        QMessageBox::warning(this, "Kristall", "Failed to cancel running gemini request!");
+        return;
+    }
+
+    this->current_handler = nullptr;
+    for(auto & ptr : this->protocol_handlers)
+    {
+        if(ptr->supportsScheme(url.scheme())) {
+            this->current_handler = ptr.get();
+            break;
+        }
+    }
+
+    assert((this->current_handler != nullptr) and "If this error happens, someone forgot to add a new protocol handler class in the constructor. Shame on the programmer!");
+
+    if(this->current_identitiy.isValid()) {
+        if(not this->current_handler->enableClientCertificate(this->current_identitiy)) {
+            auto answer = QMessageBox::question(
+                this,
+                "Kristall",
+                QString("You requested a %1-URL with a client certificate, but these are not supported for this scheme. Continue?").arg(url.scheme())
+            );
+            if(answer != QMessageBox::Yes)
+                return;
+            this->current_handler->disableClientCertificate();
+        }
+    } else {
+        this->current_handler->disableClientCertificate();
     }
 
     this->timer.start();
@@ -89,106 +111,16 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
     this->current_location = url;
     this->ui->url_bar->setText(url.toString(QUrl::FormattingOptions(QUrl::FullyEncoded)));
 
-    if(not gemini_client.cancelRequest()) {
-        QMessageBox::warning(this, "Kristall", "Failed to cancel running gemini request!");
-        return;
-    }
-
-    if(not web_client.cancelRequest()) {
-        QMessageBox::warning(this, "Kristall", "Failed to cancel running web request!");
-        return;
-    }
-
-    if(not gopher_client.cancelRequest()) {
-        QMessageBox::warning(this, "Kristall", "Failed to cancel running gopher request!");
-        return;
-    }
-
-    if(not finger_client.cancelRequest()) {
-        QMessageBox::warning(this, "Kristall", "Failed to cancel running finger request!");
-        return;
-    }
-
     this->redirection_count = 0;
     this->successfully_loaded = false;
 
-    if(url.scheme() == "gemini")
-    {
-        gemini_client.startRequest(url);
-    }
-    else if(url.scheme() == "http" or url.scheme() == "https")
-    {
-        web_client.startRequest(url);
-    }
-    else if(url.scheme() == "gopher")
-    {
-        gopher_client.startRequest(url);
-    }
-    else if(url.scheme() == "finger")
-    {
-        finger_client.startRequest(url);
-    }
-    else if(url.scheme() == "file")
-    {
-        QFile file { url.path() };
-
-        if(file.open(QFile::ReadOnly))
-        {
-            QMimeDatabase db;
-            auto mime = db.mimeTypeForUrl(url).name();
-            auto data = file.readAll();
-            qDebug() << "database:" << url << mime;
-            this->on_requestComplete(data, mime);
-        }
-        else
-        {
-
-        }
-    }
-    else if(url.scheme() == "about")
-    {
-        this->redirection_count = 0;
-        if(url.path() == "blank")
-        {
-            this->on_requestComplete("", "text/gemini");
-        }
-        else if(url.path() == "favourites")
-        {
-            QByteArray document;
-
-            document.append("# Favourites\n");
-            document.append("\n");
-
-            for(auto const & fav : this->mainWindow->favourites.getAll())
-            {
-                document.append("=> " + fav.toString().toUtf8() + "\n");
-            }
-
-            this->on_requestComplete(document, "text/gemini");
-        }
-        else
-        {
-            QFile file(QString(":/about/%1.gemini").arg(url.path()));
-            if(file.open(QFile::ReadOnly))
-            {
-                this->on_requestComplete(file.readAll(), "text/gemini");
-            }
-            else
-            {
-                QMessageBox::warning(this, "Kristall", "Unknown location: " + url.path());
-            }
-        }
+    if(not this->current_handler->startRequest(url)) {
+        QMessageBox::critical(this, "Kristall", QString("Failed to execute request to %1").arg(url.toString()));
+        return;
     }
 
-
-    switch(mode)
-    {
-    case DontPush:
-        break;
-
-    case PushImmediate:
+    if(mode == PushImmediate) {
         pushToHistory(url);
-        break;
     }
 
     this->updateUI();
@@ -198,7 +130,8 @@ void BrowserTab::navigateBack(QModelIndex history_index)
 {
     auto url = history.get(history_index);
 
-    if(url.isValid()) {
+    if (url.isValid())
+    {
         current_history_index = history_index;
         navigateTo(url, DontPush);
     }
@@ -214,7 +147,7 @@ void BrowserTab::navOneForward()
     navigateBack(history.oneForward(current_history_index));
 }
 
-void BrowserTab::scrollToAnchor(QString const & anchor)
+void BrowserTab::scrollToAnchor(QString const &anchor)
 {
     qDebug() << "scroll to anchor" << anchor;
     this->ui->text_browser->scrollToAnchor(anchor);
@@ -222,7 +155,7 @@ void BrowserTab::scrollToAnchor(QString const & anchor)
 
 void BrowserTab::reloadPage()
 {
-    if(current_location.isValid())
+    if (current_location.isValid())
         this->navigateTo(this->current_location, DontPush);
 }
 
@@ -233,10 +166,13 @@ void BrowserTab::toggleIsFavourite()
 
 void BrowserTab::toggleIsFavourite(bool isFavourite)
 {
-    if(isFavourite) {
-        this->mainWindow->favourites.add(this->current_location);
-    } else {
-        this->mainWindow->favourites.remove(this->current_location);
+    if (isFavourite)
+    {
+        global_favourites.add(this->current_location);
+    }
+    else
+    {
+        global_favourites.remove(this->current_location);
     }
 
     this->updateUI();
@@ -250,10 +186,11 @@ void BrowserTab::focusUrlBar()
 
 void BrowserTab::on_url_bar_returnPressed()
 {
-    QUrl url { this->ui->url_bar->text() };
+    QUrl url{this->ui->url_bar->text()};
 
-    if(url.scheme().isEmpty()) {
-        url = QUrl { "gemini://" + this->ui->url_bar->text() };
+    if (url.scheme().isEmpty())
+    {
+        url = QUrl{"gemini://" + this->ui->url_bar->text()};
     }
 
     this->navigateTo(url, PushImmediate);
@@ -264,14 +201,22 @@ void BrowserTab::on_refresh_button_clicked()
     reloadPage();
 }
 
-void BrowserTab::on_requestFailed(const QString &reason)
+void BrowserTab::on_networkError(ProtocolHandler::NetworkError error_code, const QString &reason)
 {
-    this->setErrorMessage(QString("Request failed:\n%1").arg(reason));
+    this->setErrorMessage(QString("%1:\n%2").arg(error_code).arg(reason));
 }
 
-void BrowserTab::on_networkError(const QString &reason)
+void BrowserTab::on_certificateRequired(const QString &reason)
 {
-    this->setErrorMessage(QString("Network error:\n%1").arg(reason));
+    if (not trySetClientCertificate(reason))
+    {
+        setErrorMessage(QString("The page requested a authorized client certificate, but none was provided.\r\nOriginal query was: %1").arg(reason));
+    }
+    else
+    {
+        this->navigateTo(this->current_location, DontPush);
+    }
+    this->updateUI();
 }
 
 void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
@@ -286,7 +231,12 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
 
     ui->text_browser->setStyleSheet("");
 
-    enum DocumentType { Text, Image, Media };
+    enum DocumentType
+    {
+        Text,
+        Image,
+        Media
+    };
 
     DocumentType doc_type = Text;
     std::unique_ptr<QTextDocument> document;
@@ -299,23 +249,27 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
 
     bool plaintext_only = (global_settings.value("text_display").toString() == "plain");
 
-    if(not plaintext_only and mime.startsWith("text/gemini")) {
+    if (not plaintext_only and mime.startsWith("text/gemini"))
+    {
         document = GeminiRenderer::render(
             data,
             this->current_location,
             doc_style,
             this->outline);
     }
-    else if(not plaintext_only and mime.startsWith("text/gophermap")) {
+    else if (not plaintext_only and mime.startsWith("text/gophermap"))
+    {
         document = GophermapRenderer::render(
             data,
             this->current_location,
             doc_style);
     }
-    else if(not plaintext_only and mime.startsWith("text/finger")) {
+    else if (not plaintext_only and mime.startsWith("text/finger"))
+    {
         document = PlainTextRenderer::render(data, doc_style);
     }
-    else if(not plaintext_only and mime.startsWith("text/html")) {
+    else if (not plaintext_only and mime.startsWith("text/html"))
+    {
         document = std::make_unique<QTextDocument>();
 
         document->setDefaultFont(doc_style.standard_font);
@@ -324,7 +278,8 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
         document->setHtml(QString::fromUtf8(data));
     }
 #if defined(QT_FEATURE_textmarkdownreader)
-    else if(not plaintext_only and mime.startsWith("text/markdown")) {
+    else if (not plaintext_only and mime.startsWith("text/markdown"))
+    {
         document = std::make_unique<QTextDocument>();
         document->setDefaultFont(doc_style.standard_font);
         document->setDefaultStyleSheet(doc_style.toStyleSheet());
@@ -332,22 +287,23 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
         document->setMarkdown(QString::fromUtf8(data));
     }
 #endif
-    else if(mime.startsWith("text/")) {
+    else if (mime.startsWith("text/"))
+    {
         document = PlainTextRenderer::render(data, doc_style);
     }
-    else if(mime.startsWith("image/")) {
+    else if (mime.startsWith("image/"))
+    {
         doc_type = Image;
 
         QBuffer buffer;
         buffer.setData(data);
 
-        QImageReader reader { &buffer };
+        QImageReader reader{&buffer};
         reader.setAutoTransform(true);
         reader.setAutoDetectImageFormat(true);
 
-
         QImage img;
-        if(reader.read(&img))
+        if (reader.read(&img))
         {
             auto pixmap = QPixmap::fromImage(img);
             this->graphics_scene.addPixmap(pixmap);
@@ -360,7 +316,7 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
 
         this->ui->graphics_browser->setScene(&graphics_scene);
 
-        auto * invoker = new QObject();
+        auto *invoker = new QObject();
         connect(invoker, &QObject::destroyed, [this]() {
             this->ui->graphics_browser->fitInView(graphics_scene.sceneRect(), Qt::KeepAspectRatio);
         });
@@ -368,11 +324,13 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
 
         this->ui->graphics_browser->fitInView(graphics_scene.sceneRect(), Qt::KeepAspectRatio);
     }
-    else if(mime.startsWith("video/") or mime.startsWith("audio/")) {
+    else if (mime.startsWith("video/") or mime.startsWith("audio/"))
+    {
         doc_type = Media;
         this->ui->media_browser->setMedia(data, this->current_location, mime);
     }
-    else {
+    else
+    {
         document = std::make_unique<QTextDocument>();
         document->setDefaultFont(doc_style.standard_font);
         document->setDefaultStyleSheet(doc_style.toStyleSheet());
@@ -384,7 +342,9 @@ Use the *File* menu to save the file to your local disk or navigate somewhere el
 Info:
 MIME Type: %1
 File Size: %2
-)md").arg(mime).arg(IoUtil::size_human(data.size())));
+)md")
+                                   .arg(mime)
+                                   .arg(IoUtil::size_human(data.size())));
     }
 
     assert((document != nullptr) == (doc_type == Text));
@@ -408,19 +368,15 @@ File Size: %2
     this->updateUI();
 }
 
-void BrowserTab::on_protocolViolation(const QString &reason)
-{
-    this->setErrorMessage(QString("Protocol violation:\n%1").arg(reason));
-}
-
 void BrowserTab::on_inputRequired(const QString &query)
 {
-    QInputDialog dialog { this };
+    QInputDialog dialog{this};
 
     dialog.setInputMode(QInputDialog::TextInput);
     dialog.setLabelText(query);
 
-    if(dialog.exec() != QDialog::Accepted) {
+    if (dialog.exec() != QDialog::Accepted)
+    {
         setErrorMessage(QString("Site requires input:\n%1").arg(query));
         return;
     }
@@ -432,12 +388,20 @@ void BrowserTab::on_inputRequired(const QString &query)
 
 void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
 {
-    if(redirection_count >= 5) {
+    Q_UNUSED(is_permanent);
+
+    // TODO: Make this a setting
+    if (redirection_count >= 5)
+    {
         setErrorMessage("Too many redirections!");
         return;
     }
-    else {
-        if(gemini_client.startRequest(uri)) {
+    else
+    {
+        // TODO: Implement cross-protocol redirections
+        // TODO: Implement cross-host redirection
+        if (this->current_handler->startRequest(uri))
+        {
             redirection_count += 1;
             this->current_location = uri;
             this->ui->url_bar->setText(uri.toString());
@@ -445,88 +409,6 @@ void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
     }
 }
 
-void BrowserTab::on_temporaryFailure(TemporaryFailure reason, const QString &info)
-{
-    switch(reason)
-    {
-    case TemporaryFailure::cgi_error:
-        setErrorMessage(QString("CGI Error\n%1").arg(info));
-        break;
-    case TemporaryFailure::slow_down:
-        setErrorMessage(QString("Slow Down\n%1").arg(info));
-        break;
-    case TemporaryFailure::proxy_error:
-        setErrorMessage(QString("Proxy Error\n%1").arg(info));
-        break;
-    case TemporaryFailure::unspecified:
-        setErrorMessage(QString("Temporary Failure\n%1").arg(info));
-        break;
-    case TemporaryFailure::server_unavailable:
-        setErrorMessage(QString("Server Unavailable\n%1").arg(info));
-        break;
-    }
-}
-
-void BrowserTab::on_permanentFailure(PermanentFailure reason, const QString &info)
-{
-    switch(reason)
-    {
-    case PermanentFailure::gone:
-        setErrorMessage(QString("Gone\n%1").arg(info));
-        break;
-    case PermanentFailure::not_found:
-        setErrorMessage(QString("Not Found\n%1").arg(info));
-        break;
-    case PermanentFailure::bad_request:
-        setErrorMessage(QString("Bad Request\n%1").arg(info));
-        break;
-    case PermanentFailure::unspecified:
-        setErrorMessage(QString("Permanent Failure\n%1").arg(info));
-        break;
-    case PermanentFailure::proxy_request_required:
-        setErrorMessage(QString("Proxy Request Required\n%1").arg(info));
-        break;
-    }
-}
-
-void BrowserTab::on_transientCertificateRequested(const QString &reason)
-{
-    if(not trySetClientCertificate(reason)) {
-        setErrorMessage(QString("The page requested a transient client certificate, but none was provided.\r\nOriginal query was: %1").arg(reason));
-    } else {
-        this->navigateTo(this->current_location, DontPush);
-    }
-    this->updateUI();
-}
-
-void BrowserTab::on_authorisedCertificateRequested(const QString &reason)
-{
-    if(not trySetClientCertificate(reason)) {
-        setErrorMessage(QString("The page requested a authorized client certificate, but none was provided.\r\nOriginal query was: %1").arg(reason));
-    } else {
-        this->navigateTo(this->current_location, DontPush);
-    }
-    this->updateUI();
-}
-
-void BrowserTab::on_certificateRejected(CertificateRejection reason, const QString &info)
-{
-    switch(reason)
-    {
-    case CertificateRejection::unspecified:
-        setErrorMessage(QString("Certificate Rejected\n%1").arg(info));
-        break;
-    case CertificateRejection::not_accepted:
-        setErrorMessage(QString("Certificate not accepted\n%1").arg(info));
-        break;
-    case CertificateRejection::future_certificate_rejected:
-        setErrorMessage(QString("Certificate is not yet valid\n%1").arg(info));
-        break;
-    case CertificateRejection::expired_certificate_rejected:
-        setErrorMessage(QString("Certificate expired\n%1").arg(info));
-        break;
-    }
-}
 
 void BrowserTab::on_linkHovered(const QString &url)
 {
@@ -537,8 +419,7 @@ void BrowserTab::setErrorMessage(const QString &msg)
 {
     this->on_requestComplete(
         QString("An error happened:\r\n%0").arg(msg).toUtf8(),
-        "text/plain charset=utf-8"
-    );
+        "text/plain charset=utf-8");
 
     this->updateUI();
 }
@@ -556,29 +437,37 @@ void BrowserTab::on_fav_button_clicked()
 
 #include <QDesktopServices>
 
-
 void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
 {
     qDebug() << url;
 
     QUrl real_url = url;
-    if(real_url.isRelative())
+    if (real_url.isRelative())
         real_url = this->current_location.resolved(url);
 
     auto support = mainWindow->protocols.isSchemeSupported(real_url.scheme());
 
-    if(support == ProtocolSetup::Enabled) {
+    if (support == ProtocolSetup::Enabled)
+    {
         this->navigateTo(real_url, PushImmediate);
-    } else {
+    }
+    else
+    {
         bool use_os_proxy = global_settings.value("use_os_scheme_handler").toBool();
 
-        if(use_os_proxy) {
-            if(not QDesktopServices::openUrl(url)) {
+        if (use_os_proxy)
+        {
+            if (not QDesktopServices::openUrl(url))
+            {
                 QMessageBox::warning(this, "Kristall", QString("Failed to start system URL handler for\r\n%1").arg(real_url.toString()));
             }
-        } else if(support == ProtocolSetup::Disabled) {
+        }
+        else if (support == ProtocolSetup::Disabled)
+        {
             QMessageBox::warning(this, "Kristall", QString("The requested url uses a scheme that has been disabled in the settings:\r\n%1").arg(real_url.toString()));
-        } else {
+        }
+        else
+        {
             QMessageBox::warning(this, "Kristall", QString("The requested url cannot be processed by Kristall:\r\n%1").arg(real_url.toString()));
         }
     }
@@ -586,23 +475,25 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
 
 void BrowserTab::on_text_browser_highlighted(const QUrl &url)
 {
-    if(url.isValid()) {
+    if (url.isValid())
+    {
         QUrl real_url = url;
-        if(real_url.isRelative())
+        if (real_url.isRelative())
             real_url = this->current_location.resolved(url);
         this->mainWindow->setUrlPreview(real_url);
     }
-    else {
-        this->mainWindow->setUrlPreview(QUrl { });
+    else
+    {
+        this->mainWindow->setUrlPreview(QUrl{});
     }
 }
 
 void BrowserTab::on_stop_button_clicked()
 {
-    gemini_client.cancelRequest();
-    web_client.cancelRequest();
-    gopher_client.cancelRequest();
-    finger_client.cancelRequest();
+    if(this->current_handler != nullptr) {
+        this->current_handler->cancelRequest();
+    }
+    this->updateUI();
 }
 
 void BrowserTab::on_requestProgress(qint64 transferred)
@@ -629,31 +520,33 @@ void BrowserTab::updateUI()
     this->ui->stop_button->setVisible(not this->successfully_loaded);
 
     this->ui->fav_button->setEnabled(this->successfully_loaded);
-    this->ui->fav_button->setChecked(this->mainWindow->favourites.contains(this->current_location));
+    this->ui->fav_button->setChecked(global_favourites.contains(this->current_location));
 }
 
 bool BrowserTab::trySetClientCertificate(const QString &query)
 {
-    CertificateSelectionDialog dialog { this };
+    CertificateSelectionDialog dialog{this};
 
     dialog.setServerQuery(query);
 
-    if(dialog.exec() != QDialog::Accepted) {
-        this->gemini_client.disableClientCertificate();
+    if (dialog.exec() != QDialog::Accepted)
+    {
+        for(auto & handler : this->protocol_handlers) {
+            handler->disableClientCertificate();
+        }
         this->ui->enable_client_cert_button->setChecked(false);
         return false;
     }
 
     this->current_identitiy = dialog.identity();
 
-    if(not current_identitiy.isValid()) {
+    if (not current_identitiy.isValid())
+    {
         QMessageBox::warning(this, "Kristall", "Failed to generate temporary crypto-identitiy");
-        this->gemini_client.disableClientCertificate();
         this->ui->enable_client_cert_button->setChecked(false);
         return false;
     }
 
-    this->gemini_client.enableClientCertificate(this->current_identitiy);
     this->ui->enable_client_cert_button->setChecked(true);
 
     return true;
@@ -661,40 +554,56 @@ bool BrowserTab::trySetClientCertificate(const QString &query)
 
 void BrowserTab::resetClientCertificate()
 {
-    if(this->current_identitiy.isValid() and not this->current_identitiy.is_persistent)
+    if (this->current_identitiy.isValid() and not this->current_identitiy.is_persistent)
     {
         auto respo = QMessageBox::question(this, "Kristall", "You currently have a transient session active!\r\nIf you disable the session, you will not be able to restore it. Continue?");
-        if(respo != QMessageBox::Yes) {
+        if (respo != QMessageBox::Yes)
+        {
             this->ui->enable_client_cert_button->setChecked(true);
             return;
         }
     }
 
-    this->gemini_client.disableClientCertificate();
+    this->current_identitiy = CryptoIdentity();
+
+    for(auto & handler : this->protocol_handlers) {
+        handler->disableClientCertificate();
+    }
     this->ui->enable_client_cert_button->setChecked(false);
 }
 
-#include <QClipboard>
+void BrowserTab::addProtocolHandler(std::unique_ptr<ProtocolHandler> &&handler)
+{
+    connect(handler.get(), &ProtocolHandler::requestProgress, this, &BrowserTab::on_requestProgress);
+    connect(handler.get(), &ProtocolHandler::requestComplete, this, &BrowserTab::on_requestComplete);
+    connect(handler.get(), &ProtocolHandler::redirected, this, &BrowserTab::on_redirected);
+    connect(handler.get(), &ProtocolHandler::inputRequired, this, &BrowserTab::on_inputRequired);
+    connect(handler.get(), &ProtocolHandler::networkError, this, &BrowserTab::on_networkError);
+    connect(handler.get(), &ProtocolHandler::certificateRequired, this, &BrowserTab::on_certificateRequired);
+
+    this->protocol_handlers.emplace_back(std::move(handler));
+}
 
 void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint &pos)
 {
     QMenu menu;
 
     QString anchor = ui->text_browser->anchorAt(pos);
-    if(not anchor.isEmpty()) {
-        QUrl real_url { anchor };
-        if(real_url.isRelative())
+    if (not anchor.isEmpty())
+    {
+        QUrl real_url{anchor};
+        if (real_url.isRelative())
             real_url = this->current_location.resolved(real_url);
 
-        connect(menu.addAction("Follow link…"), &QAction::triggered, [this,real_url]() {
+        connect(menu.addAction("Follow link…"), &QAction::triggered, [this, real_url]() {
             this->navigateTo(real_url, PushImmediate);
         });
 
-        connect(menu.addAction("Open in new tab…"), &QAction::triggered, [this,real_url]() {
+        connect(menu.addAction("Open in new tab…"), &QAction::triggered, [this, real_url]() {
             mainWindow->addNewTab(false, real_url);
         });
 
-        connect(menu.addAction("Copy link"), &QAction::triggered, [this,real_url]() {
+        connect(menu.addAction("Copy link"), &QAction::triggered, [this, real_url]() {
             global_clipboard->setText(real_url.toString(QUrl::FullyEncoded));
         });
 
@@ -710,9 +619,12 @@ void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint &pos)
 
 void BrowserTab::on_enable_client_cert_button_clicked(bool checked)
 {
-    if(checked) {
-        trySetClientCertificate(QString{ });
-    } else {
+    if (checked)
+    {
+        trySetClientCertificate(QString{});
+    }
+    else
+    {
         resetClientCertificate();
     }
 }

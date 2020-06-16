@@ -33,9 +33,6 @@ public:
 
     void saveSettings();
 
-public:
-    FavouriteCollection favourites;
-
 private slots:
     void on_browser_tabs_currentChanged(int index);
 

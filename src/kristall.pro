@@ -2,7 +2,6 @@ QT       += core gui svg
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets network multimedia multimediawidgets
 
-CONFIG += c++17
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -18,6 +17,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 LIBS += -lcrypto
 QMAKE_CFLAGS += -Wno-unused-parameter
 QMAKE_CXXFLAGS += -Wno-unused-parameter
+
+# Enable C++17
+QMAKE_CXXFLAGS += -std=c++17
+CONFIG += c++17
 
 win32-msvc {
     QMAKE_CFLAGS -= -Wno-unused-parameter
@@ -42,6 +45,7 @@ DEPENDPATH += $$PWD/../lib/luis-l-gist/
 
 SOURCES += \
     ../lib/luis-l-gist/interactiveview.cpp \
+    abouthandler.cpp \
     browsertab.cpp \
     certificatehelper.cpp \
     certificatemanagementdialog.cpp \
@@ -51,6 +55,7 @@ SOURCES += \
     documentstyle.cpp \
     elidelabel.cpp \
     favouritecollection.cpp \
+    filehandler.cpp \
     fingerclient.cpp \
     geminiclient.cpp \
     geminirenderer.cpp \
@@ -63,6 +68,7 @@ SOURCES += \
     mediaplayer.cpp \
     newidentitiydialog.cpp \
     plaintextrenderer.cpp \
+    protocolhandler.cpp \
     protocolsetup.cpp \
     settingsdialog.cpp \
     ssltrust.cpp \
@@ -73,6 +79,7 @@ SOURCES += \
 
 HEADERS += \
     ../lib/luis-l-gist/interactiveview.hpp \
+    abouthandler.hpp \
     browsertab.hpp \
     certificatehelper.hpp \
     certificatemanagementdialog.hpp \
@@ -82,6 +89,7 @@ HEADERS += \
     documentstyle.hpp \
     elidelabel.hpp \
     favouritecollection.hpp \
+    filehandler.hpp \
     fingerclient.hpp \
     geminiclient.hpp \
     geminirenderer.hpp \
@@ -94,6 +102,7 @@ HEADERS += \
     mediaplayer.hpp \
     newidentitiydialog.hpp \
     plaintextrenderer.hpp \
+    protocolhandler.hpp \
     protocolsetup.hpp \
     settingsdialog.hpp \
     ssltrust.hpp \

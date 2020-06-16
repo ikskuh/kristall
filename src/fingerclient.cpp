@@ -1,7 +1,7 @@
 #include "fingerclient.hpp"
 #include "ioutil.hpp"
 
-FingerClient::FingerClient(QObject *parent) : QObject(parent)
+FingerClient::FingerClient() : ProtocolHandler(nullptr)
 {
     connect(&socket, &QTcpSocket::connected, this, &FingerClient::on_connected);
     connect(&socket, &QTcpSocket::readyRead, this, &FingerClient::on_readRead);
@@ -11,6 +11,11 @@ FingerClient::FingerClient(QObject *parent) : QObject(parent)
 FingerClient::~FingerClient()
 {
 
+}
+
+bool FingerClient::supportsScheme(const QString &scheme) const
+{
+    return (scheme == "finger");
 }
 
 bool FingerClient::startRequest(const QUrl &url)

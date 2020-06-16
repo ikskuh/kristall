@@ -4,7 +4,7 @@
 #include <QSslConfiguration>
 #include "kristall.hpp"
 
-GeminiClient::GeminiClient(QObject *parent) : QObject(parent)
+GeminiClient::GeminiClient() : ProtocolHandler(nullptr)
 {
     connect(&socket, &QSslSocket::encrypted, this, &GeminiClient::socketEncrypted);
     connect(&socket, &QSslSocket::readyRead, this, &GeminiClient::socketReadyRead);
@@ -21,6 +21,11 @@ GeminiClient::GeminiClient(QObject *parent) : QObject(parent)
 GeminiClient::~GeminiClient()
 {
     is_receiving_body = false;
+}
+
+bool GeminiClient::supportsScheme(const QString &scheme) const
+{
+    return (scheme == "gemini");
 }
 
 bool GeminiClient::startRequest(const QUrl &url)
@@ -60,10 +65,11 @@ bool GeminiClient::cancelRequest()
     return true;
 }
 
-void GeminiClient::enableClientCertificate(const CryptoIdentity &ident)
+bool GeminiClient::enableClientCertificate(const CryptoIdentity &ident)
 {
     this->socket.setLocalCertificate(ident.certificate);
     this->socket.setPrivateKey(ident.private_key);
+    return true;
 }
 
 void GeminiClient::disableClientCertificate()
@@ -113,25 +119,25 @@ void GeminiClient::socketReadyRead()
                 if(buffer.size() <= 5) {
                     socket.close();
                     qDebug() << buffer;
-                    emit protocolViolation("Line is too short for valid protocol");
+                    emit networkError(ProtocolViolation, "Line is too short for valid protocol");
                     return;
                 }
                 if(buffer[buffer.size() - 1] != '\r') {
                     socket.close();
                     qDebug() << buffer;
-                    emit protocolViolation("Line does not end with <CR> <LF>");
+                    emit networkError(ProtocolViolation, "Line does not end with <CR> <LF>");
                     return;
                 }
                 if(not isdigit(buffer[0])) {
                     socket.close();
                     qDebug() << buffer;
-                    emit protocolViolation("First character is not a digit.");
+                    emit networkError(ProtocolViolation, "First character is not a digit.");
                     return;
                 }
                 if(not isdigit(buffer[1])) {
                     socket.close();
                     qDebug() << buffer;
-                    emit protocolViolation("Second character is not a digit.");
+                    emit networkError(ProtocolViolation, "Second character is not a digit.");
                     return;
                 }
                 // TODO: Implement stricter version
@@ -139,7 +145,7 @@ void GeminiClient::socketReadyRead()
                 if(not isspace(buffer[2])) {
                     socket.close();
                     qDebug() << buffer;
-                    emit protocolViolation("Third character is not a space.");
+                    emit networkError(ProtocolViolation, "Third character is not a space.");
                     return;
                 }
 
@@ -175,68 +181,57 @@ void GeminiClient::socketReadyRead()
                         emit redirected(new_url, (secondary_code == 1));
                     }
                     else {
-                        emit protocolViolation("Invalid URL for redirection!");
+                        emit networkError(ProtocolViolation, "Invalid URL for redirection!");
                     }
                     return;
                 }
 
                 case 4: { // temporary failure
-                    TemporaryFailure type = TemporaryFailure::unspecified;
+                    NetworkError type = UnknownError;
                     switch(secondary_code)
                     {
-                    case 1: type = TemporaryFailure::server_unavailable; break;
-                    case 2: type = TemporaryFailure::cgi_error; break;
-                    case 3: type = TemporaryFailure::proxy_error; break;
-                    case 4: type = TemporaryFailure::slow_down; break;
+                    case 1: type = InternalServerError; break;
+                    case 2: type = InternalServerError; break;
+                    case 3: type = InternalServerError; break;
+                    case 4: type = UnknownError; break;
                     }
-                    emit temporaryFailure(type, meta);
+                    emit networkError(type, meta);
                     return;
                 }
 
                 case 5: { // permanent failure
-                    PermanentFailure type = PermanentFailure::unspecified;
+                    NetworkError type = UnknownError;
                     switch(secondary_code)
                     {
-                    case 1: type = PermanentFailure::not_found; break;
-                    case 2: type = PermanentFailure::gone; break;
-                    case 3: type = PermanentFailure::proxy_request_required; break;
-                    case 9: type = PermanentFailure::bad_request; break;
+                    case 1: type = ResourceNotFound; break;
+                    case 2: type = ResourceNotFound; break;
+                    case 3: type = BadRequest; break;
+                    case 9: type = BadRequest; break;
                     }
-                    emit permanentFailure(type, meta);
+                    emit networkError(type, meta);
                     return;
                 }
 
                 case 6: // client certificate required
                     switch(secondary_code)
                     {
+                    case 0:
+                        emit certificateRequired(meta);
+                        return;
+
                     case 1:
-                        emit transientCertificateRequested(meta);
-                        return;
-
-                    case 2:
-                        emit authorisedCertificateRequested(meta);
-                        return;
-
-                    case 3:
-                        emit certificateRejected(CertificateRejection::not_accepted, meta);
-                        return;
-
-                    case 4:
-                        emit certificateRejected(CertificateRejection::future_certificate_rejected, meta);
-                        return;
-
-                    case 5:
-                        emit certificateRejected(CertificateRejection::expired_certificate_rejected, meta);
+                        emit networkError(Unauthorized, meta);
                         return;
 
                     default:
-                        emit certificateRejected(CertificateRejection::unspecified, meta);
+                    case 2:
+                        emit networkError(InvalidClientCertificate, meta);
                         return;
                     }
                     return;
 
                 default:
-                    emit protocolViolation("Unspecified status code used!");
+                    emit networkError(ProtocolViolation, "Unspecified status code used!");
                     return;
                 }
 
@@ -283,6 +278,11 @@ void GeminiClient::sslErrors(QList<QSslError> const & errors)
             {
                 ignore = true;
             }
+            else
+            {
+                emit this->networkError(UntrustedHost, "The requested host is not trusted.");
+                return;
+            }
         }
         else if(err.error() == QSslError::UnableToVerifyFirstCertificate)
         {
@@ -306,7 +306,7 @@ void GeminiClient::sslErrors(QList<QSslError> const & errors)
     }
 
     if(remaining_errors.size() > 0) {
-        emit this->networkError(remaining_errors.first().errorString());
+        emit this->networkError(TlsFailure, remaining_errors.first().errorString());
     }
 }
 
@@ -319,6 +319,7 @@ void GeminiClient::socketError(QAbstractSocket::SocketError socketError)
         socket.close();
     } else {
         // qWarning() << socketError << socket.errorString();
-        emit this->networkError(socket.errorString());
+        // TODO: Make the correct error here!
+        emit this->networkError(HostNotFound, socket.errorString());
     }
 }

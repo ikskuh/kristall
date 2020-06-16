@@ -13,12 +13,9 @@
 #include "tabbrowsinghistory.hpp"
 #include "geminirenderer.hpp"
 
-#include "geminiclient.hpp"
-#include "webclient.hpp"
-#include "gopherclient.hpp"
-#include "fingerclient.hpp"
-
 #include "cryptoidentity.hpp"
+
+#include "protocolhandler.hpp"
 
 namespace Ui {
 class BrowserTab;
@@ -67,28 +64,6 @@ private slots:
 
     void on_refresh_button_clicked();
 
-    void on_requestComplete(QByteArray const & data, QString const & mime);
-
-    void on_requestFailed(QString const & reason);
-
-    void on_networkError(QString const & reason);
-
-    void on_protocolViolation(QString const & reason);
-
-    void on_inputRequired(QString const & query);
-
-    void on_redirected(QUrl const & uri, bool is_permanent);
-
-    void on_temporaryFailure(TemporaryFailure reason, QString const & info);
-
-    void on_permanentFailure(PermanentFailure reason, QString const & info);
-
-    void on_transientCertificateRequested(QString const & reason);
-
-    void on_authorisedCertificateRequested(QString const & reason);
-
-    void on_certificateRejected(CertificateRejection reason, QString const & info);
-
     void on_linkHovered(const QString &url);
 
     void on_fav_button_clicked();
@@ -103,11 +78,18 @@ private slots:
 
     void on_stop_button_clicked();
 
-    void on_requestProgress(qint64 transferred);
-
     void on_text_browser_customContextMenuRequested(const QPoint &pos);
 
     void on_enable_client_cert_button_clicked(bool checked);
+
+private: // network slots
+
+    void on_requestProgress(qint64 transferred);
+    void on_requestComplete(QByteArray const & data, QString const & mime);
+    void on_redirected(QUrl const & uri, bool is_permanent);
+    void on_inputRequired(QString const & user_query);
+    void on_networkError(ProtocolHandler::NetworkError error, QString const & reason);
+    void on_certificateRequired(QString const & info);
 
 private:
     void setErrorMessage(QString const & msg);
@@ -119,16 +101,23 @@ private:
     bool trySetClientCertificate(QString const & query);
 
     void resetClientCertificate();
+
+    void addProtocolHandler(std::unique_ptr<ProtocolHandler> && handler);
+
+    template<typename T>
+    void addProtocolHandler() {
+        this->addProtocolHandler(std::make_unique<T>());
+    }
 public:
 
     Ui::BrowserTab *ui;
     MainWindow * mainWindow;
     QUrl current_location;
 
-    GeminiClient gemini_client;
-    WebClient web_client;
-    GopherClient gopher_client;
-    FingerClient finger_client;
+    std::vector<std::unique_ptr<ProtocolHandler>> protocol_handlers;
+
+    ProtocolHandler * current_handler;
+
     int redirection_count = 0;
 
     bool successfully_loaded = false;

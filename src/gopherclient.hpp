@@ -5,7 +5,9 @@
 #include <QTcpSocket>
 #include <QUrl>
 
-class GopherClient : public QObject
+#include "protocolhandler.hpp"
+
+class GopherClient : public ProtocolHandler
 {
     Q_OBJECT
 public:
@@ -13,18 +15,13 @@ public:
 
     ~GopherClient() override;
 
-    bool startRequest(QUrl const & url);
+    bool supportsScheme(QString const & scheme) const override;
 
-    bool isInProgress() const;
+    bool startRequest(QUrl const & url) override;
 
-    bool cancelRequest();
+    bool isInProgress() const override;
 
-signals:
-    void requestProgress(qint64 transferred);
-
-    void requestComplete(QByteArray const & data, QString const & mime);
-
-    void requestFailed(QString const & message);
+    bool cancelRequest() override;
 
 private slots:
     void on_connected();
