@@ -70,6 +70,7 @@ SOURCES += \
     plaintextrenderer.cpp \
     protocolhandler.cpp \
     protocolsetup.cpp \
+    searchbar.cpp \
     settingsdialog.cpp \
     ssltrust.cpp \
     tabbrowsinghistory.cpp \
@@ -104,6 +105,7 @@ HEADERS += \
     plaintextrenderer.hpp \
     protocolhandler.hpp \
     protocolsetup.hpp \
+    searchbar.hpp \
     settingsdialog.hpp \
     ssltrust.hpp \
     tabbrowsinghistory.hpp \

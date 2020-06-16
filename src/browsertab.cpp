@@ -59,6 +59,8 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
     this->ui->text_browser->setVisible(true);
 
     this->ui->text_browser->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    connect(this->ui->url_bar, &SearchBar::escapePressed, this, &BrowserTab::on_url_bar_escapePressed);
 }
 
 BrowserTab::~BrowserTab()
@@ -156,7 +158,7 @@ void BrowserTab::focusUrlBar()
 
 void BrowserTab::on_url_bar_returnPressed()
 {
-    QUrl url{this->ui->url_bar->text()};
+    QUrl url { this->ui->url_bar->text().trimmed() };
 
     if (url.scheme().isEmpty())
     {
@@ -164,6 +166,11 @@ void BrowserTab::on_url_bar_returnPressed()
     }
 
     this->navigateTo(url, PushImmediate);
+}
+
+void BrowserTab::on_url_bar_escapePressed()
+{
+    this->ui->url_bar->setText(this->current_location.toString(QUrl::FullyEncoded));
 }
 
 void BrowserTab::on_refresh_button_clicked()
@@ -443,8 +450,6 @@ void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
             }
         }
 
-        // TODO: Implement cross-protocol redirections
-        // TODO: Implement cross-host redirection
         if (this->startRequest(uri))
         {
             redirection_count += 1;

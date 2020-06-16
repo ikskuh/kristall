@@ -161,20 +161,40 @@ ln -s /path/to/kristall .
   - [ ] Option to set maximum number of redirects
 - [ ] UX improvements
   - [ ] Auto-expanding outline
-  - [ ] Escape in the URL bar reverts to the current location
+  - [x] Escape in the URL bar reverts to the current location
   - [ ] auto-highlighting/following outline
   - [ ] Improved favourites
     - [ ] Allow custom favourite title (not the URL itself)
     - [ ] Allow grouping favourites into a single-hierarchy folder structure
   - [ ] Improve style import
     - [ ] Direct preview instead of importing it as a preset. Allow user to save preset then manually
-- [ ] Handle network errors like timeout and such
+- [x] Handle network errors like timeout and such
+- [ ] Allow configurable timeouts
+	- [ ] Implement server timeouts
+	- [ ] Add configuration option for connect/transfer timeouts
 - [ ] Survive full torture suite
   - [ ] Correctly parse mime parameters
     - [ ] Correctly parse charset (0013, 0014)
     - [ ] Correctly parse other params (0015)
     - [ ] Correctly parse undefined params (0016)
   - [ ] Make Kristall survive gemini://egsam.pitr.ca/
+		- [ ] 1.1 Gemini transactions
+		- [x] 3 Gemini responses
+		- [x] 3.1 Response headers
+		- [x] 3.2 Status codes
+		- [ ] 3.2.1 1x (INPUT)
+		- [x] 3.2.2 2x (SUCCESS)
+		- [x] 3.2.3 3x (REDIRECT)
+		- [x] 3.2.4 4x (TEMPORARY FAILURE)
+		- [x] 3.2.5 5x (PERMANENT FAILURE)
+		- [x] 3.2.6 6x (CLIENT CERTIFICATE REQUIRED)
+		- [ ] 3.3 Response bodies
+		- [x] 3.4 Response body handling
+		- [x] 4 TLS
+		- [x] 4.1 Version requirements
+		- [x] 4.2 Server certificate validation
+		- [?] 4.3 Client certificates
+		→ [ ] 5 The text/gemini media type
 
 ### Unspecced
 - [ ] Recognize home directories with /~home and such and add "substyles"

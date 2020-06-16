@@ -62,6 +62,8 @@ signals:
 private slots:
     void on_url_bar_returnPressed();
 
+    void on_url_bar_escapePressed();
+
     void on_refresh_button_clicked();
 
     void on_linkHovered(const QString &url);

@@ -1,0 +1,21 @@
+# H1 Header
+## H2 Header
+### H3 Header
+Plain text document here.
+* List A
+* List B
+=> rela-link Same-Site Link
+=> //foreign.host/ Foreign Site Link
+=> https://foreign.host/ Cross-Protocol Link
+> Multi-lined
+> block quotes
+```
+  ▄▄▄       ██▀███  ▄▄▄█████▓
+ ▒████▄    ▓██ ▒ ██▒▓  ██▒ ▓▒
+ ▒██  ▀█▄  ▓██ ░▄█ ▒▒ ▓██░ ▒░
+ ░██▄▄▄▄██ ▒██▀▀█▄  ░ ▓██▓ ░
+  ▓█   ▓██▒░██▓ ▒██▒  ▒██▒ ░
+  ▒▒   ▓▒█░░ ▒▓ ░▒▓░  ▒ ░░
+   ▒   ▒▒ ░  ░▒ ░ ▒░    ░
+   ░   ▒     ░░   ░   ░
+       ░  ░   ░

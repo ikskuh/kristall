@@ -9,6 +9,9 @@ GeminiClient::GeminiClient() : ProtocolHandler(nullptr)
     connect(&socket, &QSslSocket::encrypted, this, &GeminiClient::socketEncrypted);
     connect(&socket, &QSslSocket::readyRead, this, &GeminiClient::socketReadyRead);
     connect(&socket, &QSslSocket::disconnected, this, &GeminiClient::socketDisconnected);
+    connect(&socket, &QSslSocket::stateChanged, [](QSslSocket::SocketState state) {
+        qDebug() << "Socket state changed to " << state;
+    });
     connect(&socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors), this, &GeminiClient::sslErrors);
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
@@ -33,8 +36,12 @@ bool GeminiClient::startRequest(const QUrl &url)
     if(url.scheme() != "gemini")
         return false;
 
-    if(socket.isOpen())
-        return false;
+    if(socket.state() != QTcpSocket::UnconnectedState) {
+        socket.disconnectFromHost();
+        socket.close();
+        if(not socket.waitForDisconnected(1500))
+            return false;
+    }
 
     QSslConfiguration ssl_config;
     ssl_config.setProtocol(QSsl::TlsV1_2);
@@ -61,16 +68,24 @@ bool GeminiClient::startRequest(const QUrl &url)
 
 bool GeminiClient::isInProgress() const
 {
-    return socket.isOpen();
+    return (socket.state() != QTcpSocket::UnconnectedState);
 }
 
 bool GeminiClient::cancelRequest()
 {
-    this->is_receiving_body = false;
-    this->socket.close();
-    this->buffer.clear();
-    this->body.clear();
-    return true;
+    if(isInProgress())
+    {
+        this->is_receiving_body = false;
+        this->socket.disconnectFromHost();
+        this->socket.close();
+        this->buffer.clear();
+        this->body.clear();
+        return this->socket.waitForDisconnected(250);
+    }
+    else
+    {
+        return true;
+    }
 }
 
 bool GeminiClient::enableClientCertificate(const CryptoIdentity &ident)
@@ -129,6 +144,11 @@ void GeminiClient::socketReadyRead()
                     qDebug() << buffer;
                     emit networkError(ProtocolViolation, "Line is too short for valid protocol");
                     return;
+                }
+                if(buffer.size() >= 1200)
+                {
+                    emit networkError(ProtocolViolation, "response too large!");
+                    socket.close();
                 }
                 if(buffer[buffer.size() - 1] != '\r') {
                     socket.close();
@@ -245,6 +265,11 @@ void GeminiClient::socketReadyRead()
 
                 assert(false and "unreachable");
             }
+        }
+        if((buffer.size() + response.size()) >= 1200)
+        {
+            emit networkError(ProtocolViolation, "META too large!");
+            socket.close();
         }
         buffer.append(response);
     }

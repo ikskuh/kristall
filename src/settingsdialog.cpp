@@ -102,6 +102,13 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
         &QItemSelectionModel::currentChanged,
         this,
         &SettingsDialog::on_trusted_server_selection);
+
+    this->ui->redirection_mode->clear();
+    this->ui->redirection_mode->addItem("Ask for cross-scheme or cross-host redirection");
+    this->ui->redirection_mode->addItem("Ask for cross-scheme redirection");
+    this->ui->redirection_mode->addItem("Ask for cross-host redirection");
+    this->ui->redirection_mode->addItem("Ask for all redirection");
+    this->ui->redirection_mode->addItem("Silently redirect everything");
 }
 
 SettingsDialog::~SettingsDialog()
@@ -241,28 +248,11 @@ void SettingsDialog::setSslTrust(const SslTrust &trust)
 
 void SettingsDialog::reloadStylePreview()
 {
-    auto const document = R"gemini(# H1 Header
-## H2 Header
-### H3 Header
-Plain text document here.
-* List A
-* List B
-=> rela-link Same-Site Link
-=> //foreign.host/ Foreign Site Link
-=> https://foreign.host/ Cross-Protocol Link
-> Multi-lined
-> block quotes
-```
-  ▄▄▄       ██▀███  ▄▄▄█████▓
- ▒████▄    ▓██ ▒ ██▒▓  ██▒ ▓▒
- ▒██  ▀█▄  ▓██ ░▄█ ▒▒ ▓██░ ▒░
- ░██▄▄▄▄██ ▒██▀▀█▄  ░ ▓██▓ ░
-  ▓█   ▓██▒░██▓ ▒██▒  ▒██▒ ░
-  ▒▒   ▓▒█░░ ▒▓ ░▒▓░  ▒ ░░
-   ▒   ▒▒ ░  ░▒ ░ ▒░    ░
-   ░   ▒     ░░   ░   ░
-       ░  ░   ░
-)gemini";
+    QFile document_src { ":/about/style-preview.gemini" };
+    bool ok = document_src.open(QFile::ReadOnly);
+    assert(ok and "failed to find style-preview.gemini!");
+
+    auto const document = document_src.readAll();
 
     QString host = this->ui->preview_url->text();
     if(host.length() == 0)
@@ -335,6 +325,7 @@ void SettingsDialog::updateColor(QColor &input)
 
 void SettingsDialog::on_trusted_server_selection(const QModelIndex &current, const QModelIndex &previous)
 {
+    Q_UNUSED(previous);
     if(auto host = this->current_trust.trusted_hosts.get(current); host) {
         this->ui->trust_revoke_selected->setEnabled(true);
     } else {

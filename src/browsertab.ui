@@ -115,7 +115,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="url_bar">
+      <widget class="SearchBar" name="url_bar">
        <property name="placeholderText">
         <string>gemini://</string>
        </property>
@@ -230,6 +230,11 @@ p, li { white-space: pre-wrap; }
    <class>InteractiveView</class>
    <extends>QGraphicsView</extends>
    <header location="global">interactiveview.hpp</header>
+  </customwidget>
+  <customwidget>
+   <class>SearchBar</class>
+   <extends>QLineEdit</extends>
+   <header>searchbar.hpp</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -17,5 +17,6 @@
         <file>error_page/Unauthorized.gemini</file>
         <file>error_page/UnknownError.gemini</file>
         <file>error_page/UntrustedHost.gemini</file>
+        <file>about/style-preview.gemini</file>
     </qresource>
 </RCC>
