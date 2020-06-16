@@ -67,7 +67,7 @@ QVariant TrustedHostCollection::data(const QModelIndex &index, int role) const
             {
             case QSsl::Rsa: return "RSA";
             case QSsl::Ec: return "EC";
-            case QSsl::Dh: return "DH";
+            // case QSsl::Dh: return "DH";
             case QSsl::Dsa: return "DSA";
             case QSsl::Opaque: return "Opaque";
             default: return "Unforseen";
