@@ -76,45 +76,15 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
 
     if ((this->current_handler != nullptr) and not this->current_handler->cancelRequest())
     {
-        QMessageBox::warning(this, "Kristall", "Failed to cancel running gemini request!");
+        QMessageBox::warning(this, "Kristall", "Failed to cancel running request!");
         return;
     }
 
-    this->current_handler = nullptr;
-    for(auto & ptr : this->protocol_handlers)
-    {
-        if(ptr->supportsScheme(url.scheme())) {
-            this->current_handler = ptr.get();
-            break;
-        }
-    }
-
-    assert((this->current_handler != nullptr) and "If this error happens, someone forgot to add a new protocol handler class in the constructor. Shame on the programmer!");
-
-    if(this->current_identitiy.isValid()) {
-        if(not this->current_handler->enableClientCertificate(this->current_identitiy)) {
-            auto answer = QMessageBox::question(
-                this,
-                "Kristall",
-                QString("You requested a %1-URL with a client certificate, but these are not supported for this scheme. Continue?").arg(url.scheme())
-            );
-            if(answer != QMessageBox::Yes)
-                return;
-            this->current_handler->disableClientCertificate();
-        }
-    } else {
-        this->current_handler->disableClientCertificate();
-    }
-
-    this->timer.start();
-
-    this->current_location = url;
-    this->ui->url_bar->setText(url.toString(QUrl::FormattingOptions(QUrl::FullyEncoded)));
-
     this->redirection_count = 0;
     this->successfully_loaded = false;
+    this->timer.start();
 
-    if(not this->current_handler->startRequest(url)) {
+    if(not this->startRequest(url)) {
         QMessageBox::critical(this, "Kristall", QString("Failed to execute request to %1").arg(url.toString()));
         return;
     }
@@ -430,13 +400,60 @@ void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
     }
     else
     {
+        bool is_cross_protocol = (this->current_location.scheme() != uri.scheme());
+        bool is_cross_host = (this->current_location.host() != uri.host());
+
+        QString question;
+        if(is_cross_protocol and is_cross_host)
+        {
+            question = QString(
+                "The location you visited wants to redirect you to another host and switch the protocol.\r\n"
+                "Protocol: %1\r\n"
+                "New Host: %2\r\n"
+                "Do you want to allow the redirection?"
+            ).arg(uri.scheme()).arg(uri.host());
+        }
+        else if(is_cross_protocol)
+        {
+            question = QString(
+                "The location you visited wants to switch the protocol.\r\n"
+                "Protocol: %1\r\n"
+                "Do you want to allow the redirection?"
+            ).arg(uri.scheme());
+        }
+        else if(is_cross_host)
+        {
+            question = QString(
+                "The location you visited wants to redirect you to another host.\r\n"
+                "New Host: %1\r\n"
+                "Do you want to allow the redirection?"
+            ).arg(uri.host());
+        }
+
+        if(is_cross_protocol or is_cross_host)
+        {
+            auto answer = QMessageBox::question(
+                this,
+                "Kristall",
+                question
+            );
+            if(answer != QMessageBox::Yes) {
+                setErrorMessage(QString("Redirection to %1 cancelled by user").arg(uri.toString()));
+                return;
+            }
+        }
+
         // TODO: Implement cross-protocol redirections
         // TODO: Implement cross-host redirection
-        if (this->current_handler->startRequest(uri))
+        if (this->startRequest(uri))
         {
             redirection_count += 1;
             this->current_location = uri;
             this->ui->url_bar->setText(uri.toString());
+        }
+        else
+        {
+            setErrorMessage(QString("Redirection to %1 failed").arg(uri.toString()));
         }
     }
 }
@@ -614,6 +631,40 @@ void BrowserTab::addProtocolHandler(std::unique_ptr<ProtocolHandler> &&handler)
     connect(handler.get(), &ProtocolHandler::certificateRequired, this, &BrowserTab::on_certificateRequired);
 
     this->protocol_handlers.emplace_back(std::move(handler));
+}
+
+bool BrowserTab::startRequest(const QUrl &url)
+{
+    this->current_handler = nullptr;
+    for(auto & ptr : this->protocol_handlers)
+    {
+        if(ptr->supportsScheme(url.scheme())) {
+            this->current_handler = ptr.get();
+            break;
+        }
+    }
+
+    assert((this->current_handler != nullptr) and "If this error happens, someone forgot to add a new protocol handler class in the constructor. Shame on the programmer!");
+
+    if(this->current_identitiy.isValid()) {
+        if(not this->current_handler->enableClientCertificate(this->current_identitiy)) {
+            auto answer = QMessageBox::question(
+                this,
+                "Kristall",
+                QString("You requested a %1-URL with a client certificate, but these are not supported for this scheme. Continue?").arg(url.scheme())
+            );
+            if(answer != QMessageBox::Yes)
+                return false;
+            this->current_handler->disableClientCertificate();
+        }
+    } else {
+        this->current_handler->disableClientCertificate();
+    }
+
+    this->current_location = url;
+    this->ui->url_bar->setText(url.toString(QUrl::FormattingOptions(QUrl::FullyEncoded)));
+
+    return this->current_handler->startRequest(url);
 }
 
 void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint &pos)

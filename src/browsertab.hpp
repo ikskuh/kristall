@@ -108,6 +108,8 @@ private:
     void addProtocolHandler() {
         this->addProtocolHandler(std::make_unique<T>());
     }
+
+    bool startRequest(QUrl const & url);
 public:
 
     Ui::BrowserTab *ui;
