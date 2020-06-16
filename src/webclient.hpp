@@ -32,7 +32,6 @@ signals:
 private slots:
     void on_data();
     void on_finished();
-    void on_networkError(QNetworkReply::NetworkError code);
     void on_sslErrors(const QList<QSslError> &errors);
 
 private:

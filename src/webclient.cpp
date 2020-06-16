@@ -35,7 +35,6 @@ bool WebClient::startRequest(const QUrl &url)
 
     connect(this->current_reply, &QNetworkReply::readyRead, this, &WebClient::on_data);
     connect(this->current_reply, &QNetworkReply::finished, this,  &WebClient::on_finished);
-    connect(this->current_reply, &QNetworkReply::errorOccurred, this, &WebClient::on_networkError);
     connect(this->current_reply, &QNetworkReply::sslErrors, this, &WebClient::on_sslErrors);
 
     return true;
@@ -67,6 +66,7 @@ void WebClient::on_finished()
 {
     if(this->current_reply->error() != QNetworkReply::NoError)
     {
+        qDebug() << "web network error" << this->current_reply->errorString();
         emit this->requestFailed(this->current_reply->errorString());
     }
     else
@@ -81,11 +81,6 @@ void WebClient::on_finished()
     }
     this->current_reply->deleteLater();
     this->current_reply = nullptr;
-}
-
-void WebClient::on_networkError(QNetworkReply::NetworkError code)
-{
-    qDebug() << code << this->current_reply->errorString();
 }
 
 void WebClient::on_sslErrors(const QList<QSslError> &errors)
