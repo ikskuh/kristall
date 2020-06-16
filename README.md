@@ -77,6 +77,7 @@ make
   - `qt5-default`
   - `qt5-qmake`
   - `qtmultimedia5-dev` 
+  - `libqt5svg5-dev`
   - `make`
   - `g++`
 
