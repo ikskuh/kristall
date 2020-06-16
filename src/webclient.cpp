@@ -71,14 +71,35 @@ void WebClient::on_finished()
 {
     if(this->current_reply->error() != QNetworkReply::NoError)
     {
+        NetworkError error = UnknownError;
+        switch(this->current_reply->error())
+        {
+        case QNetworkReply::ConnectionRefusedError: error = ConnectionRefused; break;
+        case QNetworkReply::RemoteHostClosedError: error = ProtocolViolation; break;
+        case QNetworkReply::HostNotFoundError: error = HostNotFound; break;
+        case QNetworkReply::TimeoutError: error = Timeout; break;
+        case QNetworkReply::SslHandshakeFailedError: error = TlsFailure; break;
+
+        case QNetworkReply::ContentAccessDenied: error = Unauthorized; break;
+        case QNetworkReply::ContentOperationNotPermittedError: error = BadRequest; break;
+        case QNetworkReply::ContentNotFoundError: error = ResourceNotFound; break;
+        case QNetworkReply::AuthenticationRequiredError: error = Unauthorized; break;
+        case QNetworkReply::ContentGoneError: error = ResourceNotFound; break;
+
+        case QNetworkReply::InternalServerError: error = InternalServerError; break;
+        case QNetworkReply::OperationNotImplementedError: error = InternalServerError; break;
+        case QNetworkReply::ServiceUnavailableError: error = InternalServerError; break;
+        default:
+            qDebug() << "Unhandled server error:" << this->current_reply->error();
+            break;
+        }
+
         qDebug() << "web network error" << this->current_reply->errorString();
-        emit this->networkError(UnknownError, this->current_reply->errorString());
+        emit this->networkError(error, this->current_reply->errorString());
     }
     else
     {
         auto mime = this->current_reply->header(QNetworkRequest::ContentTypeHeader).toString();
-
-        // qDebug() << this->current_reply->url() << mime;
 
         emit this->requestComplete(this->body, mime);
 
@@ -90,6 +111,7 @@ void WebClient::on_finished()
 
 void WebClient::on_sslErrors(const QList<QSslError> &errors)
 {
+    qDebug() << "HTTP SSL Errors:";
     for(auto const & err : errors)
         qDebug() << err;
     this->current_reply->ignoreSslErrors();

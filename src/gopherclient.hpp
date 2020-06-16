@@ -23,10 +23,12 @@ public:
 
     bool cancelRequest() override;
 
-private slots:
+private: // slots
     void on_connected();
     void on_readRead();
     void on_finished();
+    void on_socketError(QAbstractSocket::SocketError errorCode);
+
 
 private:
     QTcpSocket socket;

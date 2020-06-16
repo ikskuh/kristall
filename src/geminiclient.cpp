@@ -10,7 +10,12 @@ GeminiClient::GeminiClient() : ProtocolHandler(nullptr)
     connect(&socket, &QSslSocket::readyRead, this, &GeminiClient::socketReadyRead);
     connect(&socket, &QSslSocket::disconnected, this, &GeminiClient::socketDisconnected);
     connect(&socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors), this, &GeminiClient::sslErrors);
-    connect(&socket, QOverload<QAbstractSocket::SocketError>::of(&QSslSocket::error), this, &GeminiClient::socketError);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    connect(&socket, &QTcpSocket::errorOccurred, this, &GeminiClient::socketError);
+#else
+    connect(&socket, QOverload<QAbstractSocket::SocketError>::of(&QTcpSocket::error), this, &GeminiClient::socketError);
+#endif
 
     QSslConfiguration ssl_config;
     ssl_config.setProtocol(QSsl::TlsV1_2);
@@ -318,8 +323,6 @@ void GeminiClient::socketError(QAbstractSocket::SocketError socketError)
     if(socketError == QAbstractSocket::RemoteHostClosedError) {
         socket.close();
     } else {
-        // qWarning() << socketError << socket.errorString();
-        // TODO: Make the correct error here!
-        emit this->networkError(HostNotFound, socket.errorString());
+        this->emitNetworkError(socketError, socket.errorString());
     }
 }

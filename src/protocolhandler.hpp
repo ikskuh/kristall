@@ -1,9 +1,10 @@
 #ifndef GENERICPROTOCOLCLIENT_HPP
 #define GENERICPROTOCOLCLIENT_HPP
 
-#include <QObject>
-
 #include "cryptoidentity.hpp"
+
+#include <QObject>
+#include <QAbstractSocket>
 
 class ProtocolHandler : public QObject
 {
@@ -12,7 +13,8 @@ public:
     enum NetworkError {
         UnknownError, //!< There was an unhandled network error
         ProtocolViolation, //!< The server responded with something unexpected and violated the protocol
-        HostNotFound, //!< The host
+        HostNotFound, //!< The host was not found by the client
+        ConnectionRefused, //!< The host refused connection on that port
         ResourceNotFound, //!< The requested resource was not found on the server
         BadRequest, //!< Our client misbehaved and did a request the server cannot understand
         ProxyRequest, //!< We requested to
@@ -22,6 +24,7 @@ public:
         MistrustedHost, //!< We know the host and it's not the server identity we've seen before
         Unauthorized, //!< The requested resource could not be accessed.
         TlsFailure, //!< Unspecified TLS failure
+        Timeout, //!< The network connection timed out.
     };
 public:
     explicit ProtocolHandler(QObject *parent = nullptr);
@@ -54,6 +57,8 @@ signals:
 
     //! The server wants us to use a client certificate
     void certificateRequired(QString const & info);
+protected:
+    void emitNetworkError(QAbstractSocket::SocketError error_code, QString const & textual_description);
 };
 
 #endif // GENERICPROTOCOLCLIENT_HPP

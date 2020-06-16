@@ -1,0 +1,5 @@
+# Protocol Violation
+
+The server did not serve the content you requested in a well-defined manner and Kristall could not process the data sent.
+
+> %1

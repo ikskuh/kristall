@@ -6,6 +6,12 @@ FingerClient::FingerClient() : ProtocolHandler(nullptr)
     connect(&socket, &QTcpSocket::connected, this, &FingerClient::on_connected);
     connect(&socket, &QTcpSocket::readyRead, this, &FingerClient::on_readRead);
     connect(&socket, &QTcpSocket::disconnected, this, &FingerClient::on_finished);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    connect(&socket, &QTcpSocket::errorOccurred, this, &FingerClient::on_socketError);
+#else
+    connect(&socket, QOverload<QAbstractSocket::SocketError>::of(&QTcpSocket::error), this, &FingerClient::on_socketError);
+#endif
 }
 
 FingerClient::~FingerClient()
@@ -67,4 +73,9 @@ void FingerClient::on_finished()
         was_cancelled = true;
     }
     body.clear();
+}
+
+void FingerClient::on_socketError(QAbstractSocket::SocketError error_code)
+{
+    this->emitNetworkError(error_code, socket.errorString());
 }

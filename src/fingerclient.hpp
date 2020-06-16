@@ -27,6 +27,7 @@ private slots:
     void on_connected();
     void on_readRead();
     void on_finished();
+    void on_socketError(QTcpSocket::SocketError error_code);
 
 private:
     QTcpSocket socket;

@@ -203,7 +203,39 @@ void BrowserTab::on_refresh_button_clicked()
 
 void BrowserTab::on_networkError(ProtocolHandler::NetworkError error_code, const QString &reason)
 {
-    this->setErrorMessage(QString("%1:\n%2").arg(error_code).arg(reason));
+    QString file_name;
+    switch(error_code)
+    {
+    case ProtocolHandler::UnknownError: file_name = "UnknownError.gemini"; break;
+    case ProtocolHandler::ProtocolViolation: file_name = "ProtocolViolation.gemini"; break;
+    case ProtocolHandler::HostNotFound: file_name = "HostNotFound.gemini"; break;
+    case ProtocolHandler::ConnectionRefused: file_name = "ConnectionRefused.gemini"; break;
+    case ProtocolHandler::ResourceNotFound: file_name = "ResourceNotFound.gemini"; break;
+    case ProtocolHandler::BadRequest: file_name = "BadRequest.gemini"; break;
+    case ProtocolHandler::ProxyRequest: file_name = "ProxyRequest.gemini"; break;
+    case ProtocolHandler::InternalServerError: file_name = "InternalServerError.gemini"; break;
+    case ProtocolHandler::InvalidClientCertificate: file_name = "InvalidClientCertificate.gemini"; break;
+    case ProtocolHandler::UntrustedHost: file_name = "UntrustedHost.gemini"; break;
+    case ProtocolHandler::MistrustedHost: file_name = "MistrustedHost.gemini"; break;
+    case ProtocolHandler::Unauthorized: file_name = "Unauthorized.gemini"; break;
+    case ProtocolHandler::TlsFailure: file_name = "TlsFailure.gemini"; break;
+    case ProtocolHandler::Timeout: file_name = "Timeout.gemini"; break;
+    }
+    file_name = ":/error_page/" + file_name;
+
+    QFile file_src { file_name };
+
+    if(not file_src.open(QFile::ReadOnly)) {
+        assert(false);
+    }
+
+    auto contents = QString::fromUtf8(file_src.readAll()).arg(reason).toUtf8();
+
+    this->on_requestComplete(
+        contents,
+        "text/gemini");
+
+    this->updateUI();
 }
 
 void BrowserTab::on_certificateRequired(const QString &reason)
@@ -603,7 +635,7 @@ void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint &pos)
             mainWindow->addNewTab(false, real_url);
         });
 
-        connect(menu.addAction("Copy link"), &QAction::triggered, [this, real_url]() {
+        connect(menu.addAction("Copy link"), &QAction::triggered, [real_url]() {
             global_clipboard->setText(real_url.toString(QUrl::FullyEncoded));
         });
 
@@ -612,6 +644,14 @@ void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint &pos)
 
     connect(menu.addAction("Select all"), &QAction::triggered, [this]() {
         this->ui->text_browser->selectAll();
+    });
+
+    menu.addSeparator();
+
+    QAction * copy = menu.addAction("Copy to clipboard");
+    copy->setShortcut(QKeySequence("Ctrl-C"));
+    connect(copy, &QAction::triggered, [this]() {
+        this->ui->text_browser->copy();
     });
 
     menu.exec(ui->text_browser->mapToGlobal(pos));

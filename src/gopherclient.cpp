@@ -6,6 +6,12 @@ GopherClient::GopherClient(QObject *parent) : ProtocolHandler(parent)
     connect(&socket, &QTcpSocket::connected, this, &GopherClient::on_connected);
     connect(&socket, &QTcpSocket::readyRead, this, &GopherClient::on_readRead);
     connect(&socket, &QTcpSocket::disconnected, this, &GopherClient::on_finished);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    connect(&socket, &QTcpSocket::errorOccurred, this, &GopherClient::on_socketError);
+#else
+    connect(&socket, QOverload<QAbstractSocket::SocketError>::of(&QTcpSocket::error), this, &GopherClient::on_socketError);
+#endif
 }
 
 GopherClient::~GopherClient()
@@ -91,4 +97,9 @@ void GopherClient::on_finished()
         was_cancelled = true;
     }
     body.clear();
+}
+
+void GopherClient::on_socketError(QAbstractSocket::SocketError error_code)
+{
+    this->emitNetworkError(error_code, socket.errorString());
 }
