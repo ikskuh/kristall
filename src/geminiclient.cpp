@@ -36,6 +36,8 @@ bool GeminiClient::startRequest(const QUrl &url)
     if(url.scheme() != "gemini")
         return false;
 
+    // qDebug() << "start request" << url;
+
     if(socket.state() != QTcpSocket::UnconnectedState) {
         socket.disconnectFromHost();
         socket.close();
@@ -73,14 +75,18 @@ bool GeminiClient::isInProgress() const
 
 bool GeminiClient::cancelRequest()
 {
+    // qDebug() << "cancel request" << isInProgress();
     if(isInProgress())
     {
         this->is_receiving_body = false;
         this->socket.disconnectFromHost();
-        this->socket.close();
         this->buffer.clear();
         this->body.clear();
-        return this->socket.waitForDisconnected(250);
+        this->socket.waitForDisconnected(500);
+        this->socket.close();
+        bool success = not isInProgress();
+        // qDebug() << "cancel success" << success;
+        return success;
     }
     else
     {
@@ -103,7 +109,7 @@ void GeminiClient::disableClientCertificate()
 
 void GeminiClient::socketEncrypted()
 {
-    qDebug() << "Pub key =" << socket.peerCertificate().publicKey().toPem();
+    // qDebug() << "Pub key =" << socket.peerCertificate().publicKey().toPem();
 
     QString request = target_url.toString(QUrl::FormattingOptions(QUrl::FullyEncoded)) + "\r\n";
 
