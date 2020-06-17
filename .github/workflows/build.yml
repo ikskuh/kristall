@@ -7,28 +7,28 @@ on:
     branches: [ master ]
 
 jobs:
-  build-ubuntu-20.04:
+  build_ubuntu_20:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - uses: jurplel/install-qt-action@v2
     - name: make
       run: make
-  build-ubuntu-18.04:
+  build_ubuntu_18:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
     - uses: jurplel/install-qt-action@v2
     - name: make
       run: make
-  build-ubuntu-16.04:
+  build_ubuntu_16:
     runs-on: ubuntu-16.04
     steps:
     - uses: actions/checkout@v2
     - uses: jurplel/install-qt-action@v2
     - name: make
       run: make
-  build-windows:
+  build_windows:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
