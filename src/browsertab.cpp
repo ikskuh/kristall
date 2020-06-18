@@ -467,7 +467,7 @@ File Size: %2
     QString title = this->current_location.toString();
     emit this->titleChanged(title);
 
-    emit this->fileLoaded(data.size(), mime_text, this->timer.elapsed());
+    emit this->fileLoaded(ref_data.size(), mime_text, this->timer.elapsed());
 
     this->successfully_loaded = true;
 
@@ -481,15 +481,29 @@ void BrowserTab::on_inputRequired(const QString &query)
     dialog.setInputMode(QInputDialog::TextInput);
     dialog.setLabelText(query);
 
-    if (dialog.exec() != QDialog::Accepted)
+    while(true)
     {
-        setErrorMessage(QString("Site requires input:\n%1").arg(query));
-        return;
-    }
+        if (dialog.exec() != QDialog::Accepted)
+        {
+            setErrorMessage(QString("Site requires input:\n%1").arg(query));
+            return;
+        }
 
-    QUrl new_location = current_location;
-    new_location.setQuery(dialog.textValue());
-    this->navigateTo(new_location, DontPush);
+        QUrl new_location = current_location;
+        new_location.setQuery(dialog.textValue());
+
+        int len = new_location.toString(QUrl::FullyEncoded).toUtf8().size();
+        if(len >= 1020) {
+            QMessageBox::warning(
+                this,
+                "Kristall",
+                tr("Your input message is too long. Your input is %1 bytes, but a maximum of %2 bytes are allowed.\r\nPlease cancel or shorten your input.").arg(len).arg(1020)
+            );
+        } else {
+            this->navigateTo(new_location, DontPush);
+            break;
+        }
+    }
 }
 
 void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)

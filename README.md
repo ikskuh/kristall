@@ -159,25 +159,6 @@ ln -s /path/to/kristall .
 - [ ] Allow configurable timeouts
 	- [ ] Implement server timeouts
 	- [ ] Add configuration option for connect/transfer timeouts
-- [ ] Survive full torture suite
-  - [ ] Make Kristall survive gemini://egsam.pitr.ca/
-    - [ ] 1.1 Gemini transactions
-    - [x] 3 Gemini responses
-    - [x] 3.1 Response headers
-    - [x] 3.2 Status codes
-    - [ ] 3.2.1 1x (INPUT)
-    - [x] 3.2.2 2x (SUCCESS)
-    - [x] 3.2.3 3x (REDIRECT)
-    - [x] 3.2.4 4x (TEMPORARY FAILURE)
-    - [x] 3.2.5 5x (PERMANENT FAILURE)
-    - [x] 3.2.6 6x (CLIENT CERTIFICATE REQUIRED)
-    - [x] 3.3 Response bodies
-    - [x] 3.4 Response body handling
-    - [x] 4 TLS
-    - [x] 4.1 Version requirements
-    - [x] 4.2 Server certificate validation
-    - [?] 4.3 Client certificates
-    → [ ] 5 The text/gemini media type
     
 ### 0.4 - The colorful release
 - [ ] Implement dual-colored icon theme
