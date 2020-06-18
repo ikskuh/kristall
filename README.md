@@ -150,7 +150,6 @@ ln -s /path/to/kristall .
    - [ ] Allow user to ignore TLS errors
    - [ ] Enable TOFU for HTTPS
   - [ ] Add management for client certificates
-    - [x] Rename/delete certificates
     - [ ] Rename/delete/merge groups
     - [ ] Import/export PEM certificates and keys
     - [ ] Add a "scope" option to certificates so users can restrict the scope where the certificate is valid

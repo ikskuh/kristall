@@ -267,38 +267,56 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
 
                     QTextCharFormat fmt = standard;
 
+                    QByteArray buffer;
+
+                    auto flush = [&]() {
+                        if(buffer.size() > 0) {
+                            cursor.insertText(QString::fromUtf8(buffer), fmt);
+                            buffer.resize(0);
+                        }
+                    };
+
                     for(int i = 0; i < line.length(); i += 1)
                     {
                         char c = line.at(i);
                         if(c == ' ') {
+                            flush();
                             fmt = standard;
-                            cursor.insertText(" ");
+                            buffer.append(' ');
                             rendering_bold = false;
                             rendering_underlined = false;
                         }
                         else if(c == '*') {
-                            if(rendering_bold)
-                                cursor.insertText("*", fmt);
+                            if(rendering_bold) {
+                                buffer.append('*');
+                            }
+                            flush();
                             rendering_bold = not rendering_bold;
                             auto f = fmt.font();
                             f.setBold(rendering_bold);
                             fmt.setFont(f);
-                            if(rendering_bold)
-                                cursor.insertText("*", fmt);
+                            if(rendering_bold) {
+                                buffer.append('*');
+                            }
                         }
                         else if(c == '_') {
-                            if(rendering_underlined)
-                                cursor.insertText(" ", fmt);
+                            if(rendering_underlined) {
+                                buffer.append(' ');
+                            }
+                            flush();
                             rendering_underlined = not rendering_underlined;
                             auto f = fmt.font();
                             fmt.setUnderlineStyle(rendering_underlined ? QTextCharFormat::SingleUnderline : QTextCharFormat::NoUnderline);
-                            if(rendering_underlined)
-                                cursor.insertText(" ", fmt);
+                            if(rendering_underlined) {
+                                buffer.append(' ');
+                            }
                         }
                         else {
-                            cursor.insertText(QString::fromUtf8(&c, 1), fmt);
+                            buffer.append(c);
                         }
                     }
+
+                    flush();
 
                     cursor.insertText("\n", standard);
                 }
