@@ -45,7 +45,7 @@ bool GeminiClient::startRequest(const QUrl &url)
             return false;
     }
 
-    QSslConfiguration ssl_config;
+    QSslConfiguration ssl_config = socket.sslConfiguration();
     ssl_config.setProtocol(QSsl::TlsV1_2);
     if(not global_trust.enable_ca)
         ssl_config.setCaCertificates(QList<QSslCertificate> { });
