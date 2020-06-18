@@ -12,7 +12,8 @@
 * Client certificates are disabled when doing a host switch
 * Redirection handling is now configurable and contains some warning messages for potentially malicious redirects.
 gr
-
+* Updated application icon thanks to tiwesdaeg
+* Survives conman's client torture suite
 
 ## 0.2 - The protocol update
 * Implement Ctrl+D/*Add to favourites* menu item

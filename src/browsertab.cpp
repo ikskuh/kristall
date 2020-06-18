@@ -7,6 +7,8 @@
 #include "geminirenderer.hpp"
 #include "plaintextrenderer.hpp"
 
+#include "mimeparser.hpp"
+
 #include "certificateselectiondialog.hpp"
 
 #include "geminiclient.hpp"
@@ -35,6 +37,8 @@
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
+
+#include <iconv.h>
 
 BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
                                                  ui(new Ui::BrowserTab),
@@ -228,11 +232,104 @@ void BrowserTab::on_certificateRequired(const QString &reason)
     this->updateUI();
 }
 
-void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
+static QByteArray convertToUtf8(QByteArray const & input, QString const & charSet)
 {
-    qDebug() << "Loaded" << data.length() << "bytes of type" << mime;
+    QFile temp { "/tmp/raw.dat" };
+    temp.open(QFile::WriteOnly);
+    IoUtil::writeAll(temp, input);
 
-    this->current_mime = mime;
+    auto charset_u8 = charSet.toUpper().toUtf8();
+
+    // TRANSLIT will try to mix-match other code points to reflect to correct encoding
+    iconv_t cd = iconv_open("UTF-8", charset_u8.data());
+    if(cd == (iconv_t)-1) {
+        return QByteArray { };
+    }
+
+    QByteArray result;
+
+    char temp_buffer[4096];
+
+    char const * input_ptr = reinterpret_cast<char const *>(input.data());
+    size_t input_size = input.size();
+
+    while(input_size > 0)
+    {
+        char * out_ptr = temp_buffer;
+        size_t out_size = sizeof(temp_buffer);
+
+        size_t n = iconv(cd, const_cast<char **>(&input_ptr), &input_size, &out_ptr, &out_size);
+        if (n == size_t(-1))
+        {
+            if(errno == E2BIG) {
+                // silently ignore E2BIG, as we will continue conversion in the next loop
+            }
+            else if(errno == EILSEQ) {
+                // this is an invalid multibyte sequence.
+                // append an "replacement character" and skip a byte
+                if(input_size > 0) {
+                    input_size --;
+                    input_ptr++;
+                    result.append(u8"�");
+                }
+            }
+            else if(errno == EINVAL) {
+                // the file ends with an invalid multibyte sequence.
+                // just drop it and display the replacement-character
+                if(input_size > 0) {
+                    input_size --;
+                    input_ptr++;
+                    result.append(u8"�");
+                }
+            }
+            else {
+                perror("iconv conversion error");
+                break;
+            }
+        }
+
+        size_t len = out_ptr - temp_buffer;
+        result.append(temp_buffer, len);
+    }
+
+    iconv_close(cd);
+
+    return result;
+}
+
+void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &mime_text)
+{
+    QByteArray data = ref_data;
+    MimeType mime = MimeParser::parse(mime_text);
+
+    qDebug() << "Loaded" << ref_data.length() << "bytes of type" << mime.type << "/" << mime.subtype;
+//    for(auto & key : mime.parameters.keys()) {
+//        qDebug() << key << mime.parameters[key];
+//    }
+
+    auto charset = mime.parameter("charset", "utf-8").toUpper();
+    if(not ref_data.isEmpty() and (mime.type == "text") and (charset != "UTF-8"))
+    {
+        auto temp = convertToUtf8(ref_data, charset);
+        bool ok = (temp.size() > 0);
+        if(ok) {
+            data = std::move(temp);
+        } else {
+            auto response = QMessageBox::question(
+                this,
+                "Kristall",
+                QString("Failed to convert input charset %1 to UTF-8. Cannot display the file.\r\nDo you want to display unconverted data anyways?").arg(charset)
+            );
+
+            if(response != QMessageBox::Yes) {
+                setErrorMessage(QString("Failed to convert input charset %1 to UTF-8.").arg(charset));
+                return;
+            }
+        }
+    }
+
+
+    this->current_mime = mime_text;
     this->current_buffer = data;
 
     this->graphics_scene.clear();
@@ -258,7 +355,7 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
 
     bool plaintext_only = (global_options.text_display == GenericSettings::PlainText);
 
-    if (not plaintext_only and mime.startsWith("text/gemini"))
+    if (not plaintext_only and mime_text.startsWith("text/gemini"))
     {
         document = GeminiRenderer::render(
             data,
@@ -266,18 +363,18 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
             doc_style,
             this->outline);
     }
-    else if (not plaintext_only and mime.startsWith("text/gophermap"))
+    else if (not plaintext_only and mime_text.startsWith("text/gophermap"))
     {
         document = GophermapRenderer::render(
             data,
             this->current_location,
             doc_style);
     }
-    else if (not plaintext_only and mime.startsWith("text/finger"))
+    else if (not plaintext_only and mime_text.startsWith("text/finger"))
     {
         document = PlainTextRenderer::render(data, doc_style);
     }
-    else if (not plaintext_only and mime.startsWith("text/html"))
+    else if (not plaintext_only and mime_text.startsWith("text/html"))
     {
         document = std::make_unique<QTextDocument>();
 
@@ -287,7 +384,7 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
         document->setHtml(QString::fromUtf8(data));
     }
 #if defined(QT_FEATURE_textmarkdownreader)
-    else if (not plaintext_only and mime.startsWith("text/markdown"))
+    else if (not plaintext_only and mime_text.startsWith("text/markdown"))
     {
         document = std::make_unique<QTextDocument>();
         document->setDefaultFont(doc_style.standard_font);
@@ -296,11 +393,11 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
         document->setMarkdown(QString::fromUtf8(data));
     }
 #endif
-    else if (mime.startsWith("text/"))
+    else if (mime_text.startsWith("text/"))
     {
         document = PlainTextRenderer::render(data, doc_style);
     }
-    else if (mime.startsWith("image/"))
+    else if (mime_text.startsWith("image/"))
     {
         doc_type = Image;
 
@@ -333,10 +430,10 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
 
         this->ui->graphics_browser->fitInView(graphics_scene.sceneRect(), Qt::KeepAspectRatio);
     }
-    else if (mime.startsWith("video/") or mime.startsWith("audio/"))
+    else if (mime_text.startsWith("video/") or mime_text.startsWith("audio/"))
     {
         doc_type = Media;
-        this->ui->media_browser->setMedia(data, this->current_location, mime);
+        this->ui->media_browser->setMedia(data, this->current_location, mime_text);
     }
     else
     {
@@ -352,7 +449,7 @@ Info:
 MIME Type: %1
 File Size: %2
 )md")
-                                   .arg(mime)
+                                   .arg(mime_text)
                                    .arg(IoUtil::size_human(data.size())));
     }
 
@@ -370,7 +467,7 @@ File Size: %2
     QString title = this->current_location.toString();
     emit this->titleChanged(title);
 
-    emit this->fileLoaded(data.size(), mime, this->timer.elapsed());
+    emit this->fileLoaded(data.size(), mime_text, this->timer.elapsed());
 
     this->successfully_loaded = true;
 

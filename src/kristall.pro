@@ -66,6 +66,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     mediaplayer.cpp \
+    mimeparser.cpp \
     newidentitiydialog.cpp \
     plaintextrenderer.cpp \
     protocolhandler.cpp \
@@ -101,6 +102,7 @@ HEADERS += \
     kristall.hpp \
     mainwindow.hpp \
     mediaplayer.hpp \
+    mimeparser.hpp \
     newidentitiydialog.hpp \
     plaintextrenderer.hpp \
     protocolhandler.hpp \
