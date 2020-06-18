@@ -399,7 +399,6 @@ void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
 {
     Q_UNUSED(is_permanent);
 
-    // TODO: Make this a setting
     if (redirection_count >= global_options.max_redirections)
     {
         setErrorMessage(QString("Too many consecutive redirections. The last redirection would have redirected you to:\r\n%1").arg(uri.toString(QUrl::FullyEncoded)));
@@ -409,7 +408,6 @@ void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
     {
         bool is_cross_protocol = (this->current_location.scheme() != uri.scheme());
         bool is_cross_host = (this->current_location.host() != uri.host());
-
 
         QString question;
         if(global_options.redirection_policy == GenericSettings::WarnAlways)

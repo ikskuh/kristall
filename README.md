@@ -145,26 +145,17 @@ ln -s /path/to/kristall .
 
 ## TODO / Roadmap
 
-### 0.3 release
+### 0.3 - TLS and security
 - [ ] TLS Handling
    - [ ] Allow user to ignore TLS errors
    - [ ] Enable TOFU for HTTPS
-   - [ ] Enable Client Certificate Management
-    - [ ] Add option: "Transient certificates survive an application reboot and are stored on disk"
-    - [ ] Add management for client certificates
-      - [x] Rename/delete certificates
-      - [ ] Rename/delete/merge groups
-      - [ ] Import/export PEM certificates and keys
+  - [ ] Add management for client certificates
+    - [x] Rename/delete certificates
+    - [ ] Rename/delete/merge groups
+    - [ ] Import/export PEM certificates and keys
+    - [ ] Add a "scope" option to certificates so users can restrict the scope where the certificate is valid
 - [ ] UX improvements
   - [ ] Auto-expanding outline
-  - [x] Escape in the URL bar reverts to the current location
-  - [ ] auto-highlighting/following outline
-  - [ ] Improved favourites
-    - [ ] Allow custom favourite title (not the URL itself)
-    - [ ] Allow grouping favourites into a single-hierarchy folder structure
-  - [ ] Improve style import
-    - [ ] Direct preview instead of importing it as a preset. Allow user to save preset then manually
-- [x] Handle network errors like timeout and such
 - [ ] Allow configurable timeouts
 	- [ ] Implement server timeouts
 	- [ ] Add configuration option for connect/transfer timeouts
@@ -174,46 +165,56 @@ ln -s /path/to/kristall .
     - [ ] Correctly parse other params (0015)
     - [ ] Correctly parse undefined params (0016)
   - [ ] Make Kristall survive gemini://egsam.pitr.ca/
-		- [ ] 1.1 Gemini transactions
-		- [x] 3 Gemini responses
-		- [x] 3.1 Response headers
-		- [x] 3.2 Status codes
-		- [ ] 3.2.1 1x (INPUT)
-		- [x] 3.2.2 2x (SUCCESS)
-		- [x] 3.2.3 3x (REDIRECT)
-		- [x] 3.2.4 4x (TEMPORARY FAILURE)
-		- [x] 3.2.5 5x (PERMANENT FAILURE)
-		- [x] 3.2.6 6x (CLIENT CERTIFICATE REQUIRED)
-		- [ ] 3.3 Response bodies
-		- [x] 3.4 Response body handling
-		- [x] 4 TLS
-		- [x] 4.1 Version requirements
-		- [x] 4.2 Server certificate validation
-		- [?] 4.3 Client certificates
-		→ [ ] 5 The text/gemini media type
-
-### Unspecced
+    - [ ] 1.1 Gemini transactions
+    - [x] 3 Gemini responses
+    - [x] 3.1 Response headers
+    - [x] 3.2 Status codes
+    - [ ] 3.2.1 1x (INPUT)
+    - [x] 3.2.2 2x (SUCCESS)
+    - [x] 3.2.3 3x (REDIRECT)
+    - [x] 3.2.4 4x (TEMPORARY FAILURE)
+    - [x] 3.2.5 5x (PERMANENT FAILURE)
+    - [x] 3.2.6 6x (CLIENT CERTIFICATE REQUIRED)
+    - [ ] 3.3 Response bodies
+    - [x] 3.4 Response body handling
+    - [x] 4 TLS
+    - [x] 4.1 Version requirements
+    - [x] 4.2 Server certificate validation
+    - [?] 4.3 Client certificates
+    → [ ] 5 The text/gemini media type
+    
+### 0.4 - The colorful release
+- [ ] Improve UX
+  - [ ] Provide text search function
+  - [ ] auto-highlighting/following outline
+- [ ] Improved favourites
+  - [ ] Allow custom favourite title (not the URL itself)
+  - [ ] Allow grouping favourites into a single-hierarchy folder structure
+- [ ] Improve Unicode/Emoji support
+  - Seems to need multiple font families per font?
+- [ ] Replace Qt markdown with standalone markdown renderer
+  - [ ] Enable markdown theming
+- [ ] Improve Styles
+  - [ ] Add text/kristall-theme mime
+    - [ ] Will use a preview document instead of displaying the content
+    - [ ] Allow import of themes
+    - [ ] File extension is `.kthm`
+  - [ ] Direct preview instead of importing it as a preset. Allow user to save preset then manually
 - [ ] Recognize home directories with /~home and such and add "substyles"
 - [ ] [Add favicon support](gemini://mozz.us/files/rfc_gemini_favicon.gmi)
   - [ ] Add auto-generated "favicons"
   - [ ] Check if the site follows this guideline: `#<ICON> Title` where `<ICON>` is a unicode emoji
   - [ ] Opt-In: Regularly check for `domain/favicon.txt`
   - [ ] Opt-In: Regularly check for `domain/favicon.ico`
-  - [ ] FTP
-    - [ ] Search for FTP library or use self-written one?
-- [ ] Improve UX
-  - [ ] Provide text search function
-- [ ] Replace Qt markdown with standalone markdown renderer
-  - [ ] Enable markdown theming
-- [ ] Improve Unicode/Emoji support
-  - Seems to need multiple font families per font?
-- [ ] Add text/kristall-theme mime
-  - [ ] Will use a preview document instead of displaying the content
-  - [ ] Allow import of themes
-  - [ ] File extension is `.kthm`
+
+### Unspecced
+- [ ] Add option: "Transient certificates survive an application reboot and are stored on disk"
+- [ ] FTP
+  - [ ] Search for FTP library or use self-written one?
 - [ ] Implement more protocols
   - [ ] Gopher
     - [ ] Support more media types (include uudecode and hexbin decoder)
+- [ ] Improve UX
 
 ## Bugs
   

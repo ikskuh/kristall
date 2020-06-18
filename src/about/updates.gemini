@@ -1,6 +1,6 @@
 # Kristall Changelog
 
-## 0.3
+## 0.3 - TLS and security
 * Adds support for transient client certificates
 * Adds support for permanent client certificates
 * Added this changelog to the software itself
@@ -11,8 +11,10 @@
 * Pressing escape now resets search bar to current location
 * Client certificates are disabled when doing a host switch
 * Redirection handling is now configurable and contains some warning messages for potentially malicious redirects.
+gr
 
-## 0.2
+
+## 0.2 - The protocol update
 * Implement Ctrl+D/*Add to favourites* menu item
 * Implement Ctrl+S/*Save as...* menu item
 * Add display for "non-recognized files"
@@ -41,5 +43,5 @@
 * Added option to use your default OS protocol handler instead of displaying an error message.
 * Improved image pan and zooming. Explore those graphics!
 
-## 0.1
+## 0.1 - The start
 * Initial release
