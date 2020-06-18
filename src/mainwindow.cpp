@@ -111,7 +111,7 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new, bool load_default)
     }
 
     if(load_default) {
-        tab->navigateTo(QUrl(global_settings.value("start_page").toString()), BrowserTab::DontPush);
+        tab->navigateTo(QUrl(global_options.start_page), BrowserTab::DontPush);
     }
 
     return tab;
@@ -163,6 +163,8 @@ void MainWindow::saveSettings()
 
         global_settings.endGroup();
     }
+
+    global_options.save(global_settings);
 
     global_settings.sync();
 }
@@ -244,23 +246,19 @@ void MainWindow::on_actionSettings_triggered()
     SettingsDialog dialog;
 
     dialog.setGeminiStyle(this->current_style);
-    dialog.setStartPage(global_settings.value("start_page").toString());
     dialog.setProtocols(this->protocols);
-    dialog.setUiTheme(global_settings.value("theme").toString());
+    dialog.setOptions(global_options);
     dialog.setSslTrust(global_trust);
 
     if(dialog.exec() != QDialog::Accepted)
         return;
 
-    if(auto url = dialog.startPage(); url.isValid()) {
-        global_settings.setValue("start_page", url.toString());
-    }
-
     global_trust = dialog.sslTrust();
-    global_settings.setValue("theme", dialog.uiTheme());
+    global_options = dialog.options();
 
     this->protocols = dialog.protocols();
     this->current_style = dialog.geminiStyle();
+
     this->saveSettings();
 
     this->reloadTheme();
@@ -327,23 +325,23 @@ void MainWindow::on_actionAbout_Qt_triggered()
 
 void MainWindow::reloadTheme()
 {
-    QString theme = global_settings.value("theme").toString();
-    if(theme.isEmpty())
-        theme = "light";
-
-    if(theme == "light")
+    if(global_options.theme == Theme::light)
     {
         QFile file(":/light.qss");
         file.open(QFile::ReadOnly | QFile::Text);
         QTextStream stream(&file);
         application->setStyleSheet(stream.readAll());
+
+        QIcon::setThemeName("light");
     }
-    else if(theme == "dark")
+    else if(global_options.theme == Theme::dark)
     {
         QFile file(":/dark.qss");
         file.open(QFile::ReadOnly | QFile::Text);
         QTextStream stream(&file);
         application->setStyleSheet(stream.readAll());
+
+        QIcon::setThemeName("dark");
     }
 }
 
@@ -377,7 +375,7 @@ void MainWindow::on_actionGo_to_home_triggered()
 {
     BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
     if(tab != nullptr) {
-        tab->navigateTo(QUrl(global_settings.value("start_page").toString()), BrowserTab::PushImmediate);
+        tab->navigateTo(QUrl(global_options.start_page), BrowserTab::PushImmediate);
     }
 }
 

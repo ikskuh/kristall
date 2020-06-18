@@ -155,9 +155,6 @@ ln -s /path/to/kristall .
       - [x] Rename/delete certificates
       - [ ] Rename/delete/merge groups
       - [ ] Import/export PEM certificates and keys
-- [ ] Improve redirect handling
-  - [ ] Option how to handle redirects: "automatic, ask when cross-host, ask always"
-  - [ ] Option to set maximum number of redirects
 - [ ] UX improvements
   - [ ] Auto-expanding outline
   - [x] Escape in the URL bar reverts to the current location

@@ -7,6 +7,7 @@
 #include "protocolsetup.hpp"
 #include "documentstyle.hpp"
 #include "ssltrust.hpp"
+#include "kristall.hpp"
 
 namespace Ui {
 class SettingsDialog;
@@ -26,17 +27,14 @@ public:
         return current_style;
     }
 
-    QUrl startPage() const;
-    void setStartPage(QUrl const & url);
-
     ProtocolSetup protocols() const;
     void setProtocols(ProtocolSetup const & proto);
 
-    QString uiTheme() const;
-    void setUiTheme(QString const & theme);
-
     SslTrust sslTrust() const;
     void setSslTrust(SslTrust const & trust);
+
+    GenericSettings options() const;
+    void setOptions(GenericSettings const & options);
 
 private slots:
     void on_std_change_font_clicked();
@@ -101,6 +99,30 @@ private slots:
 
     void on_trust_revoke_selected_clicked();
 
+    void on_start_page_textChanged(const QString &arg1);
+
+    void on_ui_theme_currentIndexChanged(int index);
+
+    void on_fancypants_on_clicked();
+
+    void on_fancypants_off_clicked();
+
+    void on_texthl_on_clicked();
+
+    void on_texthl_off_clicked();
+
+    void on_gophermap_icon_clicked();
+
+    void on_gophermap_text_clicked();
+
+    void on_scheme_os_default_clicked();
+
+    void on_scheme_error_clicked();
+
+    void on_redirection_mode_currentIndexChanged(int index);
+
+    void on_max_redirects_valueChanged(int arg1);
+
 private:
     void reloadStylePreview();
 
@@ -119,6 +141,8 @@ private:
     QMap<QString, DocumentStyle> predefined_styles;
 
     SslTrust current_trust;
+
+    GenericSettings current_options;
 };
 
 #endif // SETTINGSDIALOG_HPP

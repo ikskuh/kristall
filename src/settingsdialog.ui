@@ -255,15 +255,15 @@
          </property>
         </widget>
        </item>
-       <item row="8" column="1">
-        <widget class="QComboBox" name="redirection_mode"/>
-       </item>
        <item row="8" column="0">
         <widget class="QLabel" name="label_27">
          <property name="text">
           <string>Redirection Handling</string>
          </property>
         </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QComboBox" name="redirection_mode"/>
        </item>
       </layout>
      </widget>
@@ -975,10 +975,10 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="textHighlightsBtnGroup"/>
-  <buttongroup name="gophermapBtnGroup"/>
-  <buttongroup name="textRenderingBtnGroup"/>
   <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup"/>
+  <buttongroup name="textRenderingBtnGroup"/>
+  <buttongroup name="textHighlightsBtnGroup"/>
+  <buttongroup name="gophermapBtnGroup"/>
  </buttongroups>
 </ui>

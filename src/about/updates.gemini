@@ -10,6 +10,7 @@
 * Reworked internal network structure. Makes room for future improvements
 * Pressing escape now resets search bar to current location
 * Client certificates are disabled when doing a host switch
+* Redirection handling is now configurable and contains some warning messages for potentially malicious redirects.
 
 ## 0.2
 * Implement Ctrl+D/*Add to favourites* menu item

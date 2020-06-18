@@ -256,7 +256,7 @@ void BrowserTab::on_requestComplete(const QByteArray &data, const QString &mime)
 
     this->ui->text_browser->setStyleSheet(QString("QTextBrowser { background-color: %1; }").arg(doc_style.background_color.name()));
 
-    bool plaintext_only = (global_settings.value("text_display").toString() == "plain");
+    bool plaintext_only = (global_options.text_display == GenericSettings::PlainText);
 
     if (not plaintext_only and mime.startsWith("text/gemini"))
     {
@@ -400,9 +400,9 @@ void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
     Q_UNUSED(is_permanent);
 
     // TODO: Make this a setting
-    if (redirection_count >= 5)
+    if (redirection_count >= global_options.max_redirections)
     {
-        setErrorMessage("Too many redirections!");
+        setErrorMessage(QString("Too many consecutive redirections. The last redirection would have redirected you to:\r\n%1").arg(uri.toString(QUrl::FullyEncoded)));
         return;
     }
     else
@@ -410,8 +410,17 @@ void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
         bool is_cross_protocol = (this->current_location.scheme() != uri.scheme());
         bool is_cross_host = (this->current_location.host() != uri.host());
 
+
         QString question;
-        if(is_cross_protocol and is_cross_host)
+        if(global_options.redirection_policy == GenericSettings::WarnAlways)
+        {
+            question = QString(
+                "The location you visited wants to redirect you to another location:\r\n"
+                "%1\r\n"
+                "Do you want to allow the redirection?"
+            ).arg(uri.toString(QUrl::FullyEncoded));
+        }
+        else if((global_options.redirection_policy & (GenericSettings::WarnOnHostChange | GenericSettings::WarnOnSchemeChange)) and is_cross_protocol and is_cross_host)
         {
             question = QString(
                 "The location you visited wants to redirect you to another host and switch the protocol.\r\n"
@@ -420,7 +429,7 @@ void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
                 "Do you want to allow the redirection?"
             ).arg(uri.scheme()).arg(uri.host());
         }
-        else if(is_cross_protocol)
+        else if((global_options.redirection_policy & GenericSettings::WarnOnSchemeChange) and is_cross_protocol)
         {
             question = QString(
                 "The location you visited wants to switch the protocol.\r\n"
@@ -428,7 +437,7 @@ void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
                 "Do you want to allow the redirection?"
             ).arg(uri.scheme());
         }
-        else if(is_cross_host)
+        else if((global_options.redirection_policy & GenericSettings::WarnOnHostChange) and is_cross_host)
         {
             question = QString(
                 "The location you visited wants to redirect you to another host.\r\n"
@@ -507,9 +516,7 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
     }
     else
     {
-        bool use_os_proxy = global_settings.value("use_os_scheme_handler").toBool();
-
-        if (use_os_proxy)
+        if (global_options.use_os_scheme_handler)
         {
             if (not QDesktopServices::openUrl(url))
             {

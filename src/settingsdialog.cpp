@@ -28,34 +28,10 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     this->ui->auto_theme->addItem("Light Theme", QVariant::fromValue<int>(DocumentStyle::AutoLightTheme));
 
     this->ui->ui_theme->clear();
-    this->ui->ui_theme->addItem("Light", QVariant::fromValue<QString>("light"));
-    this->ui->ui_theme->addItem("Dark", QVariant::fromValue<QString>("dark"));
+    this->ui->ui_theme->addItem("Light", QVariant::fromValue<int>(int(Theme::light)));
+    this->ui->ui_theme->addItem("Dark", QVariant::fromValue<int>(int(Theme::dark)));
 
     setGeminiStyle(DocumentStyle { });
-
-    if(global_settings.value("gophermap_display").toString() == "text") {
-        this->ui->gophermap_text->setChecked(true);
-    } else {
-        this->ui->gophermap_icon->setChecked(true);
-    }
-
-    if(global_settings.value("text_display").toString() == "plain") {
-        this->ui->fancypants_off->setChecked(true);
-    } else {
-        this->ui->fancypants_on->setChecked(true);
-    }
-
-    if(global_settings.value("text_decoration").toBool()) {
-        this->ui->texthl_on->setChecked(true);
-    } else {
-        this->ui->texthl_off->setChecked(true);
-    }
-
-    if(global_settings.value("use_os_scheme_handler").toBool()) {
-        this->ui->scheme_os_default->setChecked(true);
-    } else {
-        this->ui->scheme_error->setChecked(true);
-    }
 
     int items = global_settings.beginReadArray("Themes");
 
@@ -104,11 +80,11 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
         &SettingsDialog::on_trusted_server_selection);
 
     this->ui->redirection_mode->clear();
-    this->ui->redirection_mode->addItem("Ask for cross-scheme or cross-host redirection");
-    this->ui->redirection_mode->addItem("Ask for cross-scheme redirection");
-    this->ui->redirection_mode->addItem("Ask for cross-host redirection");
-    this->ui->redirection_mode->addItem("Ask for all redirection");
-    this->ui->redirection_mode->addItem("Silently redirect everything");
+    this->ui->redirection_mode->addItem("Ask for cross-scheme or cross-host redirection", int(GenericSettings::WarnOnHostChange | GenericSettings::WarnOnSchemeChange));
+    this->ui->redirection_mode->addItem("Ask for cross-scheme redirection", int(GenericSettings::WarnOnSchemeChange));
+    this->ui->redirection_mode->addItem("Ask for cross-host redirection", int(GenericSettings::WarnOnHostChange));
+    this->ui->redirection_mode->addItem("Ask for all redirection", int(GenericSettings::WarnAlways));
+    this->ui->redirection_mode->addItem("Silently redirect everything", int(GenericSettings::WarnNever));
 }
 
 SettingsDialog::~SettingsDialog()
@@ -181,16 +157,6 @@ void SettingsDialog::setGeminiStyle(DocumentStyle const &style)
     this->reloadStylePreview();
 }
 
-QUrl SettingsDialog::startPage() const
-{
-    return QUrl(this->ui->start_page->text());
-}
-
-void SettingsDialog::setStartPage(const QUrl &url)
-{
-    this->ui->start_page->setText(url.toString());
-}
-
 ProtocolSetup SettingsDialog::protocols() const
 {
     ProtocolSetup protocols;
@@ -207,22 +173,6 @@ void SettingsDialog::setProtocols(ProtocolSetup const & protocols)
     this->ui->enable_##X->setChecked(protocols.X);
     PROTOCOLS(M)
         #undef M
-}
-
-QString SettingsDialog::uiTheme() const
-{
-    return this->ui->ui_theme->currentData().toString();
-}
-
-void SettingsDialog::setUiTheme(const QString &theme)
-{
-    if(theme == "light")
-        this->ui->ui_theme->setCurrentIndex(0);
-    else if(theme == "dark")
-        this->ui->ui_theme->setCurrentIndex(1);
-    else
-        this->ui->ui_theme->setCurrentIndex(0);
-
 }
 
 SslTrust SettingsDialog::sslTrust() const
@@ -244,6 +194,60 @@ void SettingsDialog::setSslTrust(const SslTrust &trust)
         this->ui->trust_disable__ca->setChecked(true);
 
     this->ui->trusted_hosts->resizeColumnsToContents();
+}
+
+void SettingsDialog::setOptions(const GenericSettings &options)
+{
+    this->current_options = options;
+
+    if(this->current_options.theme == Theme::light)
+        this->ui->ui_theme->setCurrentIndex(0);
+    else if(this->current_options.theme == Theme::dark)
+        this->ui->ui_theme->setCurrentIndex(1);
+    else
+        this->ui->ui_theme->setCurrentIndex(0);
+
+    this->ui->start_page->setText(this->current_options.start_page);
+
+    if(this->current_options.gophermap_display == GenericSettings::PlainText) {
+        this->ui->gophermap_text->setChecked(true);
+    } else {
+        this->ui->gophermap_icon->setChecked(true);
+    }
+
+    if(this->current_options.text_display == GenericSettings::PlainText) {
+        this->ui->fancypants_off->setChecked(true);
+    } else {
+        this->ui->fancypants_on->setChecked(true);
+    }
+
+    if(this->current_options.enable_text_decoration) {
+        this->ui->texthl_on->setChecked(true);
+    } else {
+        this->ui->texthl_off->setChecked(true);
+    }
+
+    if(this->current_options.use_os_scheme_handler) {
+        this->ui->scheme_os_default->setChecked(true);
+    } else {
+        this->ui->scheme_error->setChecked(true);
+    }
+
+    this->ui->max_redirects->setValue(this->current_options.max_redirections);
+
+    this->ui->redirection_mode->setCurrentIndex(0);
+    for(int i = 0; i < this->ui->redirection_mode->count(); i++)
+    {
+        if(this->ui->redirection_mode->itemData(i).toInt() == this->current_options.redirection_policy) {
+            this->ui->redirection_mode->setCurrentIndex(i);
+            break;
+        }
+    }
+}
+
+GenericSettings SettingsDialog::options() const
+{
+    return this->current_options;
 }
 
 void SettingsDialog::reloadStylePreview()
@@ -479,11 +483,6 @@ void SettingsDialog::on_preset_load_clicked()
 
 void SettingsDialog::on_SettingsDialog_accepted()
 {
-    global_settings.setValue("gophermap_display", this->ui->gophermap_text->isChecked() ? "text" : "rendered");
-    global_settings.setValue("text_display", this->ui->fancypants_off->isChecked() ? "plain" : "fancy");
-    global_settings.setValue("text_decoration", this->ui->texthl_on->isChecked());
-    global_settings.setValue("use_os_scheme_handler", this->ui->scheme_os_default->isChecked());
-
     global_settings.beginWriteArray("Themes", this->predefined_styles.size());
 
     int index = 0;
@@ -588,4 +587,64 @@ void SettingsDialog::on_trust_level_currentIndexChanged(int index)
 void SettingsDialog::on_trust_revoke_selected_clicked()
 {
     this->current_trust.trusted_hosts.remove(this->ui->trusted_hosts->currentIndex());
+}
+
+void SettingsDialog::on_start_page_textChanged(const QString &start_page)
+{
+    this->current_options.start_page = start_page;
+}
+
+void SettingsDialog::on_ui_theme_currentIndexChanged(int index)
+{
+    this->current_options.theme = Theme(this->ui->ui_theme->itemData(index).toInt());
+}
+
+void SettingsDialog::on_fancypants_on_clicked()
+{
+    this->current_options.text_display = GenericSettings::FormattedText;
+}
+
+void SettingsDialog::on_fancypants_off_clicked()
+{
+    this->current_options.text_display = GenericSettings::PlainText;
+}
+
+void SettingsDialog::on_texthl_on_clicked()
+{
+    this->current_options.enable_text_decoration = true;
+}
+
+void SettingsDialog::on_texthl_off_clicked()
+{
+    this->current_options.enable_text_decoration = false;
+}
+
+void SettingsDialog::on_gophermap_icon_clicked()
+{
+    this->current_options.gophermap_display = GenericSettings::FormattedText;
+}
+
+void SettingsDialog::on_gophermap_text_clicked()
+{
+    this->current_options.gophermap_display = GenericSettings::PlainText;
+}
+
+void SettingsDialog::on_scheme_os_default_clicked()
+{
+    this->current_options.use_os_scheme_handler = true;
+}
+
+void SettingsDialog::on_scheme_error_clicked()
+{
+    this->current_options.use_os_scheme_handler = false;
+}
+
+void SettingsDialog::on_redirection_mode_currentIndexChanged(int index)
+{
+    this->current_options.redirection_policy = GenericSettings::RedirectionWarning(this->ui->redirection_mode->itemData(index).toInt());
+}
+
+void SettingsDialog::on_max_redirects_valueChanged(int max_redirections)
+{
+    this->current_options.max_redirections = max_redirections;
 }
