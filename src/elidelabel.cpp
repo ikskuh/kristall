@@ -47,7 +47,7 @@ QSize ElideLabel::minimumSizeHint() const
     if (m_elideMode != Qt::ElideNone)
     {
         const QFontMetrics& fm = fontMetrics();
-        QSize size(fm.width("..."), fm.height());
+        QSize size(fm.horizontalAdvance("..."), fm.height());
         return size;
     }
 

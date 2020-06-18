@@ -61,11 +61,15 @@ QModelIndex TabBrowsingHistory::oneBackward(QModelIndex index) const
 
 int TabBrowsingHistory::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent)
     return history.size();
 }
 
 bool TabBrowsingHistory::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+    Q_UNUSED(index)
+    Q_UNUSED(value)
+    Q_UNUSED(role)
     return false;
 }
 

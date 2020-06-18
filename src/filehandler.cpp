@@ -34,10 +34,10 @@ bool FileHandler::startRequest(const QUrl &url)
 
 bool FileHandler::isInProgress() const
 {
-
+    return false;
 }
 
 bool FileHandler::cancelRequest()
 {
-
+    return true;
 }

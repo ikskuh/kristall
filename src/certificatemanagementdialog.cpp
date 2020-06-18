@@ -81,6 +81,7 @@ void CertificateManagementDialog::on_cert_notes_textChanged()
 
 void CertificateManagementDialog::on_cert_display_name_textChanged(const QString &arg1)
 {
+    Q_UNUSED(arg1)
     if(this->selected_identity != nullptr) {
         this->selected_identity->display_name = this->ui->cert_display_name->text();
     }

@@ -84,6 +84,8 @@ void CertificateSelectionDialog::acceptTemporaryWithTimeout(QDateTime timeout)
 
 void CertificateSelectionDialog::on_currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
+    Q_UNUSED(current)
+    Q_UNUSED(previous)
     auto id = global_identities.getIdentity(current);
 
     this->ui->use_selected_cert->setEnabled(id.isValid());

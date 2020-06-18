@@ -122,11 +122,15 @@ bool FavouriteCollection::load(QSettings & settings)
 
 int FavouriteCollection::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent)
     return items.size();
 }
 
 bool FavouriteCollection::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+    Q_UNUSED(value)
+    Q_UNUSED(index)
+    Q_UNUSED(role)
     return false;
 }
 
