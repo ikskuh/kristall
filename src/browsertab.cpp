@@ -663,9 +663,25 @@ bool BrowserTab::startRequest(const QUrl &url)
             if(answer != QMessageBox::Yes)
                 return false;
             this->current_handler->disableClientCertificate();
+            this->ui->enable_client_cert_button->setChecked(false);
         }
     } else {
         this->current_handler->disableClientCertificate();
+        this->ui->enable_client_cert_button->setChecked(false);
+    }
+
+    if(this->current_identitiy.isValid() and (url.host() != this->current_location.host())) {
+        auto answer = QMessageBox::question(
+            this,
+            "Kristall",
+            "You want to visit a new host, but have a client certificate enabled. This may be a risk to expose your identity to another host.\r\nDo you want to keep the certificate enabled?",
+            QMessageBox::Yes | QMessageBox::No,
+            QMessageBox::No
+        );
+        if(answer != QMessageBox::Yes) {
+            this->current_handler->disableClientCertificate();
+            this->ui->enable_client_cert_button->setChecked(false);
+        }
     }
 
     this->current_location = url;
