@@ -154,17 +154,15 @@ ln -s /path/to/kristall .
     - [ ] Import/export PEM certificates and keys
     - [ ] Add a "scope" option to certificates so users can restrict the scope where the certificate is valid
 - [ ] Allow configurable timeouts
-	- [ ] Implement server timeouts
 	- [ ] Add configuration option for connect/transfer timeouts
-- [ ] Fix: Mime Parser according to https://tools.ietf.org/html/rfc2045#section-5.1
-  - [ ] Mime is separated by semicolon from parameters
 
 ### 0.4 - The colorful release
 - [ ] Implement dual-colored icon theme
 - [ ] Improve UX
   - [ ] Provide text search function
   - [ ] auto-highlighting/following outline
-  - [ ] Add maximum text widht option
+  - [ ] Add maximum text width option
+  - [ ] Remember scroll position for navigating back
 - [ ] Improved favourites
   - [ ] Allow custom favourite title (not the URL itself)
   - [ ] Allow grouping favourites into a single-hierarchy folder structure
@@ -184,6 +182,13 @@ ln -s /path/to/kristall .
   - [ ] Check if the site follows this guideline: `#<ICON> Title` where `<ICON>` is a unicode emoji
   - [ ] Opt-In: Regularly check for `domain/favicon.txt`
   - [ ] Opt-In: Regularly check for `domain/favicon.ico`
+- [ ] Smart searchbar
+  - [ ] Allow quick access to favourites
+  - [ ] Allow scrolling through "global" history
+  - [ ] Allow users to gather a list of "visited pages"
+  - [ ] Make default protocol configurable
+- [ ] Ctrl-F search in documents
+- [ ] Add "view source" option to show original document
 
 ### Unspecced
 - [ ] Add option: "Transient certificates survive an application reboot and are stored on disk"

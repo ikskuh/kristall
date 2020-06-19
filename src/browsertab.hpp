@@ -8,6 +8,7 @@
 #include <QTextDocument>
 #include <QNetworkAccessManager>
 #include <QElapsedTimer>
+#include <QTimer>
 
 #include "documentoutlinemodel.hpp"
 #include "tabbrowsinghistory.hpp"
@@ -106,6 +107,8 @@ private: // network slots
     void on_networkError(ProtocolHandler::NetworkError error, QString const & reason);
     void on_certificateRequired(QString const & info);
 
+    void on_networkTimeout();
+
 private:
     void setErrorMessage(QString const & msg);
 
@@ -155,6 +158,8 @@ public:
     bool is_internal_location;
 
     DocumentStats current_stats;
+
+    QTimer network_timeout_timer;
 };
 
 #endif // BROWSERTAB_HPP

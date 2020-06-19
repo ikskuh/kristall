@@ -65,6 +65,11 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
     this->ui->text_browser->setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(this->ui->url_bar, &SearchBar::escapePressed, this, &BrowserTab::on_url_bar_escapePressed);
+
+    this->network_timeout_timer.setSingleShot(true);
+    this->network_timeout_timer.setTimerType(Qt::PreciseTimer);
+
+    connect(&this->network_timeout_timer, &QTimer::timeout, this, &BrowserTab::on_networkTimeout);
 }
 
 BrowserTab::~BrowserTab()
@@ -184,6 +189,8 @@ void BrowserTab::on_refresh_button_clicked()
 
 void BrowserTab::on_networkError(ProtocolHandler::NetworkError error_code, const QString &reason)
 {
+    this->network_timeout_timer.stop();
+
     QString file_name;
     switch(error_code)
     {
@@ -221,8 +228,18 @@ void BrowserTab::on_networkError(ProtocolHandler::NetworkError error_code, const
     this->updateUI();
 }
 
+void BrowserTab::on_networkTimeout()
+{
+    if(this->current_handler != nullptr) {
+        this->current_handler->cancelRequest();
+    }
+    on_networkError(ProtocolHandler::Timeout, "The server didn't respond in time.");
+}
+
 void BrowserTab::on_certificateRequired(const QString &reason)
 {
+    this->network_timeout_timer.stop();
+
     if (not trySetClientCertificate(reason))
     {
         setErrorMessage(QString("The page requested a authorized client certificate, but none was provided.\r\nOriginal query was: %1").arg(reason));
@@ -302,6 +319,7 @@ static QByteArray convertToUtf8(QByteArray const & input, QString const & charSe
 void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &mime_text)
 {
     this->ui->media_browser->stopPlaying();
+    this->network_timeout_timer.stop();
 
     QByteArray data = ref_data;
     MimeType mime = MimeParser::parse(mime_text);
@@ -516,6 +534,8 @@ void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
 {
     Q_UNUSED(is_permanent);
 
+    this->network_timeout_timer.stop();
+
     if (redirection_count >= global_options.max_redirections)
     {
         setErrorMessage(QString("Too many consecutive redirections. The last redirection would have redirected you to:\r\n%1").arg(uri.toString(QUrl::FullyEncoded)));
@@ -706,6 +726,9 @@ void BrowserTab::on_requestProgress(qint64 transferred)
     this->current_stats.mime_type = MimeType { };
     this->current_stats.loading_time = this->timer.elapsed();
     emit this->fileLoaded(this->current_stats);
+
+    this->network_timeout_timer.stop();
+    this->network_timeout_timer.start(global_options.network_timeout);
 }
 
 void BrowserTab::on_back_button_clicked()
@@ -840,6 +863,8 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
     this->is_internal_location = (url.scheme() == "about");
     this->current_location = url;
     this->ui->url_bar->setText(url.toString(QUrl::FormattingOptions(QUrl::FullyEncoded)));
+
+    this->network_timeout_timer.start(global_options.network_timeout);
 
     return this->current_handler->startRequest(url, options);
 }

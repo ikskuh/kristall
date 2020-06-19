@@ -37,6 +37,9 @@ struct GenericSettings
     int max_redirections = 5;
     RedirectionWarning redirection_policy = WarnOnHostChange;
 
+    // 5 seconds network timeout
+    int network_timeout = 5000;
+
     void load(QSettings & settings);
     void save(QSettings & settings) const;
 };
