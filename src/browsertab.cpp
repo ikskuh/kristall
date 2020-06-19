@@ -810,20 +810,25 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
 
     assert((this->current_handler != nullptr) and "If this error happens, someone forgot to add a new protocol handler class in the constructor. Shame on the programmer!");
 
-    if(this->current_identity.isValid()) {
-        if(not this->current_handler->enableClientCertificate(this->current_identity)) {
-            auto answer = QMessageBox::question(
-                this,
-                "Kristall",
-                tr("You requested a %1-URL with a client certificate, but these are not supported for this scheme. Continue?").arg(url.scheme())
-            );
-            if(answer != QMessageBox::Yes)
-                return false;
+    auto const try_enable_certificate = [&]() -> bool {
+        if(this->current_identity.isValid()) {
+            if(not this->current_handler->enableClientCertificate(this->current_identity)) {
+                auto answer = QMessageBox::question(
+                    this,
+                    "Kristall",
+                    tr("You requested a %1-URL with a client certificate, but these are not supported for this scheme. Continue?").arg(url.scheme())
+                );
+                if(answer != QMessageBox::Yes)
+                    return false;
+                this->disableClientCertificate();
+            }
+        } else {
             this->disableClientCertificate();
         }
-    } else {
-        this->disableClientCertificate();
-    }
+        return true;
+    };
+    if(not try_enable_certificate())
+        return false;
 
     if(this->current_identity.isValid() and (url.host() != this->current_location.host())) {
         auto answer = QMessageBox::question(
@@ -876,20 +881,8 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
         }
     }
 
-    if(this->current_identity.isValid()) {
-        if(not this->current_handler->enableClientCertificate(this->current_identity)) {
-            auto answer = QMessageBox::question(
-                this,
-                "Kristall",
-                tr("You requested a %1-URL with a client certificate, but these are not supported for this scheme. Continue?").arg(url.scheme())
-            );
-            if(answer != QMessageBox::Yes)
-                return false;
-            this->disableClientCertificate();
-        }
-    } else {
-        this->disableClientCertificate();
-    }
+    if(not try_enable_certificate())
+        return false;
 
     this->is_internal_location = (url.scheme() == "about");
     this->current_location = url;
