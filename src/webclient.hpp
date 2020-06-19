@@ -24,6 +24,9 @@ public:
 
     bool cancelRequest() override;
 
+    bool enableClientCertificate(CryptoIdentity const & ident) override;
+    void disableClientCertificate() override;
+
 private slots:
     void on_data();
     void on_finished();
@@ -36,6 +39,8 @@ private:
 
     QByteArray body;
     RequestOptions options;
+
+    CryptoIdentity current_identity;
 };
 
 #endif // WEBCLIENT_HPP

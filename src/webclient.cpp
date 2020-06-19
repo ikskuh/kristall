@@ -41,6 +41,11 @@ bool WebClient::startRequest(const QUrl &url, RequestOptions options)
     else
         ssl_config.setCaCertificates(QList<QSslCertificate> { });
 
+    if(this->current_identity.isValid()) {
+        ssl_config.setLocalCertificate(this->current_identity.certificate);
+        ssl_config.setPrivateKey(this->current_identity.private_key);
+    }
+
     // request.setMaximumRedirectsAllowed(5);
     request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, false);
     request.setSslConfiguration(ssl_config);
@@ -71,6 +76,17 @@ bool WebClient::cancelRequest()
     }
     this->body.clear();
     return true;
+}
+
+bool WebClient::enableClientCertificate(const CryptoIdentity &ident)
+{
+    current_identity = ident;
+    return true;
+}
+
+void WebClient::disableClientCertificate()
+{
+    current_identity = CryptoIdentity();
 }
 
 void WebClient::on_data()
@@ -112,6 +128,7 @@ void WebClient::on_finished()
         }
 
         qDebug() << "web network error" << reply->errorString();
+        qDebug() << this->body;
         emit this->networkError(error, reply->errorString());
     }
     else
