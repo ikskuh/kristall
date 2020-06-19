@@ -763,10 +763,7 @@ bool BrowserTab::trySetClientCertificate(const QString &query)
 
     if (dialog.exec() != QDialog::Accepted)
     {
-        for(auto & handler : this->protocol_handlers) {
-            handler->disableClientCertificate();
-        }
-        this->ui->enable_client_cert_button->setChecked(false);
+        this->disableClientCertificate();
         return false;
     }
 
@@ -775,7 +772,7 @@ bool BrowserTab::trySetClientCertificate(const QString &query)
     if (not current_identitiy.isValid())
     {
         QMessageBox::warning(this, "Kristall", "Failed to generate temporary crypto-identitiy");
-        this->ui->enable_client_cert_button->setChecked(false);
+        this->disableClientCertificate();
         return false;
     }
 
@@ -796,12 +793,7 @@ void BrowserTab::resetClientCertificate()
         }
     }
 
-    this->current_identitiy = CryptoIdentity();
-
-    for(auto & handler : this->protocol_handlers) {
-        handler->disableClientCertificate();
-    }
-    this->ui->enable_client_cert_button->setChecked(false);
+    this->disableClientCertificate();
 }
 
 void BrowserTab::addProtocolHandler(std::unique_ptr<ProtocolHandler> &&handler)
@@ -838,12 +830,10 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
             );
             if(answer != QMessageBox::Yes)
                 return false;
-            this->current_handler->disableClientCertificate();
-            this->ui->enable_client_cert_button->setChecked(false);
+            this->disableClientCertificate();
         }
     } else {
-        this->current_handler->disableClientCertificate();
-        this->ui->enable_client_cert_button->setChecked(false);
+        this->disableClientCertificate();
     }
 
     if(this->current_identitiy.isValid() and (url.host() != this->current_location.host())) {
@@ -855,8 +845,7 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
             QMessageBox::No
         );
         if(answer != QMessageBox::Yes) {
-            this->current_handler->disableClientCertificate();
-            this->ui->enable_client_cert_button->setChecked(false);
+            this->disableClientCertificate();
         }
     }
 
@@ -867,6 +856,15 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
     this->network_timeout_timer.start(global_options.network_timeout);
 
     return this->current_handler->startRequest(url, options);
+}
+
+void BrowserTab::disableClientCertificate()
+{
+    for(auto & handler : this->protocol_handlers) {
+        handler->disableClientCertificate();
+    }
+    this->ui->enable_client_cert_button->setChecked(false);
+    this->current_identitiy = CryptoIdentity();
 }
 
 void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint &pos)

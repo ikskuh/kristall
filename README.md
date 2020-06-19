@@ -152,7 +152,6 @@ ln -s /path/to/kristall .
     - [ ] Rename/delete/merge groups
     - [ ] Import/export PEM certificates and keys
     - [ ] Add a "scope" option to certificates so users can restrict the scope where the certificate is valid
-- Fix bug: Somehow auto-disable of client-cert doesn't work
     
 ### 0.4 - The colorful release
 - [ ] Implement dual-colored icon theme

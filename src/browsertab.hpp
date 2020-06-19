@@ -128,6 +128,8 @@ private:
     }
 
     bool startRequest(QUrl const & url, ProtocolHandler::RequestOptions options);
+
+    void disableClientCertificate();
 public:
 
     Ui::BrowserTab *ui;
