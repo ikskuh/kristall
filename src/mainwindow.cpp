@@ -412,6 +412,7 @@ void MainWindow::on_tab_fileLoaded(DocumentStats const & stats)
         assert(index >= 0);
         if(index == this->ui->browser_tabs->currentIndex()) {
             setFileStatus(stats);
+            this->ui->outline_view->expandAll();
         }
     }
 }

@@ -148,17 +148,14 @@ ln -s /path/to/kristall .
 
 ### 0.3 - TLS and security
 - [ ] TLS Handling
-   - [ ] Enable TOFU for HTTPS
+  - [ ] Enable TOFU for HTTPS
   - [ ] Add management for client certificates
     - [ ] Rename/delete/merge groups
     - [ ] Import/export PEM certificates and keys
     - [ ] Add a "scope" option to certificates so users can restrict the scope where the certificate is valid
-- [ ] UX improvements
-  - [ ] Auto-expanding outline
 - [ ] Allow configurable timeouts
 	- [ ] Implement server timeouts
 	- [ ] Add configuration option for connect/transfer timeouts
-- [ ] Fix: Status bar
 - [ ] Fix: Mime Parser according to https://tools.ietf.org/html/rfc2045#section-5.1
   - [ ] Mime is separated by semicolon from parameters
 
@@ -199,7 +196,7 @@ ln -s /path/to/kristall .
 - [ ] Implement data streaming
   - [ ] Rework the networking API to allow streaming of content instead of receive everything, then display
   - [ ] Benefits for audio/video/progressive image formats
-  - [ ] 
+- [ ] Explicitly don't support data:// urls
 
 ## Bugs
   
