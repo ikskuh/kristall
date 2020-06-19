@@ -7,7 +7,7 @@
 * Fixed bug: Status bar label now does elide links that are too long instead of resizing the window.
 * Fixed bug: Gopher end-of-file marker is now better detected.
 * Adds support for server certificate handling for gemini://
-* Reworked internal network structure. Makes room for future improvements
+* Reworked internal network structure. Makes room for future improvements and increases network stability a lot.
 * Pressing escape now resets search bar to current location
 * Client certificates are disabled when doing a host switch
 * Redirection handling is now configurable and contains some warning messages for potentially malicious redirects.
@@ -15,6 +15,8 @@ gr
 * Updated application icon thanks to tiwesdaeg
 * Survives conman's client torture suite
 * Survives egsam's client torture suite
+* Adds configurable timeout
+* Allows TLS configuration for both Gemini and HTTPS.
 
 ## 0.2 - The protocol update
 * Implement Ctrl+D/*Add to favourites* menu item

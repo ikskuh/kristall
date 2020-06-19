@@ -4,6 +4,12 @@ A high-quality visual cross-platform gemini browser.
 ![Preview Image](https://mq32.de/public/336ac416892fd9064593631e7be9f7d8e266196b.png)
 
 ## Features
+- Multi-protocol support
+  - [Gemini](https://gemini.circumlunar.space/)
+  - HTTP
+  - HTTPS
+  - [Finger](https://tools.ietf.org/html/rfc1288)
+  - [Gopher](https://tools.ietf.org/html/rfc1436)
 - Document rendering
   - `text/gemini`
   - `text/html` (reduced feature set)
@@ -12,17 +18,14 @@ A high-quality visual cross-platform gemini browser.
   - `image/*`
   - `video/*`
   - `audio/*`
-- Multi-protocol support
-  - [Gemini](https://gemini.circumlunar.space/)
-  - HTTP
-  - HTTPS
-  - [Finger](https://tools.ietf.org/html/rfc1288)
-  - [Gopher](https://tools.ietf.org/html/rfc1436) (WIP)
+- TLS Management
+  - Supports client certificates
+  - Supports TOFU and CA TLS handling for both Gemini and HTTPS
 - [Outline generation](https://mq32.de/public/a50ef327f4150d870393b1989c5b41db495b56f7.png) ([Video](https://mq32.de/public/kristall-02.mp4))
 - Favourite Sites
 - Navigation history
 - Tabbed interface
-- Survives [ConMans torture suite](gemini://gemini.conman.org/test/torture/)
+- Survives [ConMans torture suite](gemini://gemini.conman.org/test/torture/) as well as the [Egsam Torture Suite](gemini://egsam.pitr.ca/)
 - [Special link highlighting for different targets](https://mq32.de/public/92f3ec7a64833d01f1ed001d15c8db4158e5d3c2.png)
 - Color Themes
   - Custom document color theme

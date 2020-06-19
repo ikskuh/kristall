@@ -21,7 +21,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="generic">
       <attribute name="icon">
@@ -935,7 +935,6 @@
  </connections>
  <buttongroups>
   <buttongroup name="buttonGroup"/>
-  <buttongroup name="buttonGroup_2"/>
   <buttongroup name="textRenderingBtnGroup"/>
   <buttongroup name="gophermapBtnGroup"/>
   <buttongroup name="textHighlightsBtnGroup"/>
