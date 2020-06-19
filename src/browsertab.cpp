@@ -767,9 +767,9 @@ bool BrowserTab::trySetClientCertificate(const QString &query)
         return false;
     }
 
-    this->current_identitiy = dialog.identity();
+    this->current_identity = dialog.identity();
 
-    if (not current_identitiy.isValid())
+    if (not current_identity.isValid())
     {
         QMessageBox::warning(this, "Kristall", "Failed to generate temporary crypto-identitiy");
         this->disableClientCertificate();
@@ -783,7 +783,7 @@ bool BrowserTab::trySetClientCertificate(const QString &query)
 
 void BrowserTab::resetClientCertificate()
 {
-    if (this->current_identitiy.isValid() and not this->current_identitiy.is_persistent)
+    if (this->current_identity.isValid() and not this->current_identity.is_persistent)
     {
         auto respo = QMessageBox::question(this, "Kristall", "You currently have a transient session active!\r\nIf you disable the session, you will not be able to restore it. Continue?");
         if (respo != QMessageBox::Yes)
@@ -821,8 +821,8 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
 
     assert((this->current_handler != nullptr) and "If this error happens, someone forgot to add a new protocol handler class in the constructor. Shame on the programmer!");
 
-    if(this->current_identitiy.isValid()) {
-        if(not this->current_handler->enableClientCertificate(this->current_identitiy)) {
+    if(this->current_identity.isValid()) {
+        if(not this->current_handler->enableClientCertificate(this->current_identity)) {
             auto answer = QMessageBox::question(
                 this,
                 "Kristall",
@@ -836,7 +836,7 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
         this->disableClientCertificate();
     }
 
-    if(this->current_identitiy.isValid() and (url.host() != this->current_location.host())) {
+    if(this->current_identity.isValid() and (url.host() != this->current_location.host())) {
         auto answer = QMessageBox::question(
             this,
             "Kristall",
@@ -864,7 +864,7 @@ void BrowserTab::disableClientCertificate()
         handler->disableClientCertificate();
     }
     this->ui->enable_client_cert_button->setChecked(false);
-    this->current_identitiy = CryptoIdentity();
+    this->current_identity = CryptoIdentity();
 }
 
 void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint &pos)

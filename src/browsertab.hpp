@@ -155,7 +155,7 @@ public:
     QString current_mime;
     QElapsedTimer timer;
 
-    CryptoIdentity current_identitiy;
+    CryptoIdentity current_identity;
 
     bool is_internal_location;
 
