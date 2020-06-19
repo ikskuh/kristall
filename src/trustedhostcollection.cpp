@@ -1,5 +1,7 @@
 #include "trustedhostcollection.hpp"
 
+#include <cassert>
+
 TrustedHostCollection::TrustedHostCollection(QObject *parent)
     : QAbstractTableModel(parent)
 {

@@ -1,6 +1,7 @@
 #include "ssltrust.hpp"
 
 #include <QDebug>
+#include <cassert>
 
 void SslTrust::load(QSettings &settings)
 {

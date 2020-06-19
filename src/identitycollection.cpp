@@ -35,6 +35,9 @@ void IdentityCollection::load(QSettings &settings)
             id->identity.display_name = settings.value("display_name").toString();
             id->identity.user_notes = settings.value("user_notes").toString();
 
+            id->identity.host_filter = settings.value("host_filter", "").toString();
+            id->identity.auto_enable = settings.value("auto_enable", false).toBool();
+
             id->identity.certificate = QSslCertificate::fromData(
                 settings.value("certificate").toByteArray(),
                 QSsl::Der
@@ -87,8 +90,10 @@ void IdentityCollection::save(QSettings &settings) const
             settings.setValue("user_notes",  id.identity.user_notes);
             settings.setValue("certificate", id.identity.certificate.toDer());
             settings.setValue("private_key", id.identity.private_key.toDer());
-        }
 
+            settings.setValue("host_filter", id.identity.host_filter);
+            settings.setValue("auto_enable", id.identity.auto_enable);
+        }
 
         settings.endArray();
     }

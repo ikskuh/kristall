@@ -29,6 +29,11 @@ private slots:
     void on_import_cert_button_clicked();
 
     void on_create_cert_button_clicked();
+
+    void on_cert_host_filter_textChanged(const QString &arg1);
+
+    void on_cert_auto_enable_clicked(bool checked);
+
 private:
     void on_certificates_selected(const QModelIndex &index, QModelIndex const & previous);
 private:

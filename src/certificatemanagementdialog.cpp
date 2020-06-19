@@ -53,6 +53,10 @@ void CertificateManagementDialog::on_certificates_selected(QModelIndex const& in
         );
         this->ui->cert_notes->setPlainText(cert.user_notes);
 
+        this->ui->cert_host_filter->setText(cert.host_filter);
+        this->ui->cert_auto_enable->setEnabled(not cert.host_filter.isEmpty());
+        this->ui->cert_auto_enable->setChecked(cert.auto_enable);
+
         this->ui->delete_cert_button->setEnabled(true);
     }
     else
@@ -63,6 +67,8 @@ void CertificateManagementDialog::on_certificates_selected(QModelIndex const& in
         this->ui->cert_expiration_date->setDateTime(QDateTime { });
         this->ui->cert_livetime->setText("");
         this->ui->cert_fingerprint->setPlainText("");
+        this->ui->cert_host_filter->setText("");
+        this->ui->cert_auto_enable->setChecked(false);
 
         if(auto group_name = global_identities.group(index); not group_name.isEmpty()) {
             this->ui->delete_cert_button->setEnabled(global_identities.canDeleteGroup(group_name));
@@ -149,4 +155,22 @@ void CertificateManagementDialog::on_create_cert_button_clicked()
     global_identities.addCertificate(
         dialog.groupName(),
         id);
+}
+
+void CertificateManagementDialog::on_cert_host_filter_textChanged(const QString &host_filter)
+{
+    if(this->selected_identity != nullptr) {
+        this->ui->cert_auto_enable->setEnabled(not host_filter.isEmpty());
+        this->selected_identity->host_filter = host_filter;
+    } else {
+        this->ui->cert_auto_enable->setEnabled(false);
+    }
+
+}
+
+void CertificateManagementDialog::on_cert_auto_enable_clicked(bool checked)
+{
+    if(this->selected_identity != nullptr) {
+        this->selected_identity->auto_enable = checked;
+    }
 }

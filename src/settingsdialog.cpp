@@ -9,6 +9,8 @@
 #include <QMessageBox>
 #include <QDebug>
 
+#include <cassert>
+
 #include "kristall.hpp"
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
