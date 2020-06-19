@@ -88,7 +88,9 @@ void GopherClient::on_readRead()
         }
     }
 
-    emit this->requestProgress(body.size());
+    if(not was_cancelled) {
+        emit this->requestProgress(body.size());
+    }
 }
 
 void GopherClient::on_finished()
