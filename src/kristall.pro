@@ -74,6 +74,7 @@ SOURCES += \
     searchbar.cpp \
     settingsdialog.cpp \
     ssltrust.cpp \
+    ssltrusteditor.cpp \
     tabbrowsinghistory.cpp \
     trustedhost.cpp \
     trustedhostcollection.cpp \
@@ -110,6 +111,7 @@ HEADERS += \
     searchbar.hpp \
     settingsdialog.hpp \
     ssltrust.hpp \
+    ssltrusteditor.hpp \
     tabbrowsinghistory.hpp \
     trustedhost.hpp \
     trustedhostcollection.hpp \
@@ -122,7 +124,8 @@ FORMS += \
     mainwindow.ui \
     mediaplayer.ui \
     newidentitiydialog.ui \
-    settingsdialog.ui
+    settingsdialog.ui \
+    ssltrusteditor.ui
 
 TRANSLATIONS += \
     kristall_en_US.ts

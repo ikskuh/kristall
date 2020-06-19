@@ -47,7 +47,8 @@ struct GenericSettings
 extern QSettings global_settings;
 extern IdentityCollection global_identities;
 extern QClipboard * global_clipboard;
-extern SslTrust global_trust;
+extern SslTrust global_gemini_trust;
+extern SslTrust global_https_trust;
 extern FavouriteCollection global_favourites;
 extern GenericSettings global_options;
 

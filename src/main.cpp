@@ -10,7 +10,8 @@
 IdentityCollection global_identities;
 QSettings global_settings { "xqTechnologies", "Kristall" };
 QClipboard * global_clipboard;
-SslTrust global_trust;
+SslTrust global_gemini_trust;
+SslTrust global_https_trust;
 FavouriteCollection global_favourites;
 GenericSettings global_options;
 
@@ -30,7 +31,11 @@ int main(int argc, char *argv[])
     global_settings.endGroup();
 
     global_settings.beginGroup("Trusted Servers");
-    global_trust.load(global_settings);
+    global_gemini_trust.load(global_settings);
+    global_settings.endGroup();
+
+    global_settings.beginGroup("Trusted HTTPS Servers");
+    global_https_trust.load(global_settings);
     global_settings.endGroup();
 
     global_favourites.load(global_settings);

@@ -62,23 +62,6 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
         this->on_presets_currentIndexChanged(-1);
     }
 
-    this->ui->trust_level->clear();
-    this->ui->trust_level->addItem("Trust on first encounter", QVariant::fromValue<int>(SslTrust::TrustOnFirstUse));
-    this->ui->trust_level->addItem("Trust everything", QVariant::fromValue<int>(SslTrust::TrustEverything));
-    this->ui->trust_level->addItem("Manually verify fingerprints", QVariant::fromValue<int>(SslTrust::TrustNoOne));
-
-    this->ui->trusted_hosts->setModel(&this->current_trust.trusted_hosts);
-
-    this->ui->trusted_hosts->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
-    this->ui->trusted_hosts->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
-    this->ui->trusted_hosts->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
-
-    connect(
-        this->ui->trusted_hosts->selectionModel(),
-        &QItemSelectionModel::currentChanged,
-        this,
-        &SettingsDialog::on_trusted_server_selection);
-
     this->ui->redirection_mode->clear();
     this->ui->redirection_mode->addItem("Ask for cross-scheme or cross-host redirection", int(GenericSettings::WarnOnHostChange | GenericSettings::WarnOnSchemeChange));
     this->ui->redirection_mode->addItem("Ask for cross-scheme redirection", int(GenericSettings::WarnOnSchemeChange));
@@ -175,25 +158,24 @@ void SettingsDialog::setProtocols(ProtocolSetup const & protocols)
         #undef M
 }
 
-SslTrust SettingsDialog::sslTrust() const
+SslTrust SettingsDialog::geminiSslTrust() const
 {
-    return this->current_trust;
+    return this->ui->gemini_trust_editor->trust();
 }
 
-void SettingsDialog::setSslTrust(const SslTrust &trust)
+void SettingsDialog::setGeminiSslTrust(const SslTrust &trust)
 {
-    this->current_trust = trust;
+    return this->ui->gemini_trust_editor->setTrust(trust);
+}
 
-    this->ui->trust_level->setCurrentIndex(
-        this->ui->trust_level->findData(QVariant::fromValue<int>(trust.trust_level))
-    );
+SslTrust SettingsDialog::httpsSslTrust() const
+{
+    return this->ui->https_trust_editor->trust();
+}
 
-    if(trust.enable_ca)
-        this->ui->trust_enable_ca->setChecked(true);
-    else
-        this->ui->trust_disable__ca->setChecked(true);
-
-    this->ui->trusted_hosts->resizeColumnsToContents();
+void SettingsDialog::setHttpsSslTrust(const SslTrust &trust)
+{
+    this->ui->https_trust_editor->setTrust(trust);
 }
 
 void SettingsDialog::setOptions(const GenericSettings &options)
@@ -326,16 +308,6 @@ void SettingsDialog::updateColor(QColor &input)
     if(dialog.exec() == QDialog::Accepted) {
         input = dialog.currentColor();
         setGeminiStyle(current_style);
-    }
-}
-
-void SettingsDialog::on_trusted_server_selection(const QModelIndex &current, const QModelIndex &previous)
-{
-    Q_UNUSED(previous);
-    if(auto host = this->current_trust.trusted_hosts.get(current); host) {
-        this->ui->trust_revoke_selected->setEnabled(true);
-    } else {
-        this->ui->trust_revoke_selected->setEnabled(false);
     }
 }
 
@@ -569,26 +541,6 @@ void SettingsDialog::on_preset_export_clicked()
     export_settings.setValue("name", name);
     this->predefined_styles.value(name).save(export_settings);
     export_settings.sync();
-}
-
-void SettingsDialog::on_trust_enable_ca_clicked()
-{
-    this->current_trust.enable_ca = true;
-}
-
-void SettingsDialog::on_trust_disable__ca_clicked()
-{
-    this->current_trust.enable_ca = false;
-}
-
-void SettingsDialog::on_trust_level_currentIndexChanged(int index)
-{
-    this->current_trust.trust_level = SslTrust::TrustLevel(this->ui->trust_level->itemData(index).toInt());
-}
-
-void SettingsDialog::on_trust_revoke_selected_clicked()
-{
-    this->current_trust.trusted_hosts.remove(this->ui->trusted_hosts->currentIndex());
 }
 
 void SettingsDialog::on_start_page_textChanged(const QString &start_page)

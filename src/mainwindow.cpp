@@ -148,7 +148,11 @@ void MainWindow::saveSettings()
     global_settings.endGroup();
 
     global_settings.beginGroup("Trusted Servers");
-    global_trust.save(global_settings);
+    global_gemini_trust.save(global_settings);
+    global_settings.endGroup();
+
+    global_settings.beginGroup("Trusted HTTPS Servers");
+    global_https_trust.save(global_settings);
     global_settings.endGroup();
 
     global_settings.beginGroup("Theme");
@@ -252,12 +256,14 @@ void MainWindow::on_actionSettings_triggered()
     dialog.setGeminiStyle(this->current_style);
     dialog.setProtocols(this->protocols);
     dialog.setOptions(global_options);
-    dialog.setSslTrust(global_trust);
+    dialog.setGeminiSslTrust(global_gemini_trust);
+    dialog.setHttpsSslTrust(global_https_trust);
 
     if(dialog.exec() != QDialog::Accepted)
         return;
 
-    global_trust = dialog.sslTrust();
+    global_gemini_trust = dialog.geminiSslTrust();
+    global_https_trust = dialog.httpsSslTrust();
     global_options = dialog.options();
 
     this->protocols = dialog.protocols();

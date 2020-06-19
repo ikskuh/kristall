@@ -32,14 +32,15 @@ bool WebClient::startRequest(const QUrl &url, RequestOptions options)
     this->options = options;
     this->body.clear();
 
-    QSslConfiguration ssl_config;
-    // ssl_config.setProtocol(QSsl::TlsV1_2);
-    // if(global_trust.enable_ca)
-    //     ssl_config.setCaCertificates(QSslConfiguration::systemCaCertificates());
-    // else
-    //     ssl_config.setCaCertificates(QList<QSslCertificate> { });
-
     QNetworkRequest request(url);
+
+    auto ssl_config = request.sslConfiguration();
+    // ssl_config.setProtocol(QSsl::TlsV1_2);
+    if(global_https_trust.enable_ca)
+        ssl_config.setCaCertificates(QSslConfiguration::systemCaCertificates());
+    else
+        ssl_config.setCaCertificates(QList<QSslCertificate> { });
+
     // request.setMaximumRedirectsAllowed(5);
     request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, false);
     request.setSslConfiguration(ssl_config);
@@ -141,10 +142,51 @@ void WebClient::on_sslErrors(const QList<QSslError> &errors)
         return;
     }
 
-    qDebug() << "HTTP SSL Errors:";
-    for(auto const & err : errors)
-        qDebug() << err;
-    this->current_reply->ignoreSslErrors();
+    QList<QSslError> remaining_errors = errors;
+    QList<QSslError> ignored_errors;
+
+    int i = 0;
+    while(i < remaining_errors.size())
+    {
+        auto const & err = remaining_errors.at(i);
+
+        bool ignore = false;
+        if(SslTrust::isTrustRelated(err.error()))
+        {
+            if(global_https_trust.isTrusted(current_reply->url(), current_reply->sslConfiguration().peerCertificate()))
+            {
+                ignore = true;
+            }
+            else
+            {
+                emit this->networkError(UntrustedHost, "The requested host is not trusted.");
+                return;
+            }
+        }
+        else if(err.error() == QSslError::UnableToVerifyFirstCertificate)
+        {
+            ignore = true;
+        }
+
+        if(ignore) {
+            ignored_errors.append(err);
+            remaining_errors.removeAt(0);
+        } else {
+            i += 1;
+        }
+    }
+
+    current_reply->ignoreSslErrors(ignored_errors);
+
+    qDebug() << "ignoring" << ignored_errors.size() << "out of" << errors.size();
+
+    for(auto const & error : remaining_errors) {
+        qWarning() << int(error.error()) << error.errorString();
+    }
+
+    if(remaining_errors.size() > 0) {
+        emit this->networkError(TlsFailure, remaining_errors.first().errorString());
+    }
 }
 
 void WebClient::on_redirected(const QUrl &url)

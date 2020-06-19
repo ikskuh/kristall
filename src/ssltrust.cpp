@@ -74,3 +74,14 @@ bool SslTrust::isTrusted(QUrl const & url, const QSslCertificate &certificate)
         return false;
     }
 }
+
+bool SslTrust::isTrustRelated(QSslError::SslError err)
+{
+    switch(err)
+    {
+    case QSslError::CertificateUntrusted: return true;
+    case QSslError::SelfSignedCertificate: return true;
+    case QSslError::UnableToGetLocalIssuerCertificate: return true;
+    default: return false;
+    }
+}

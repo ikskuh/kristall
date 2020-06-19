@@ -49,7 +49,7 @@ bool GeminiClient::startRequest(const QUrl &url, RequestOptions options)
 
     QSslConfiguration ssl_config = socket.sslConfiguration();
     ssl_config.setProtocol(QSsl::TlsV1_2);
-    if(not global_trust.enable_ca)
+    if(not global_gemini_trust.enable_ca)
         ssl_config.setCaCertificates(QList<QSslCertificate> { });
     else
         ssl_config.setCaCertificates(QSslConfiguration::systemCaCertificates());
@@ -291,17 +291,6 @@ void GeminiClient::socketDisconnected()
     }
 }
 
-static bool isTrustRelated(QSslError::SslError err)
-{
-    switch(err)
-    {
-    case QSslError::CertificateUntrusted: return true;
-    case QSslError::SelfSignedCertificate: return true;
-    case QSslError::UnableToGetLocalIssuerCertificate: return true;
-    default: return false;
-    }
-}
-
 void GeminiClient::sslErrors(QList<QSslError> const & errors)
 {
     if(options & IgnoreTlsErrors) {
@@ -318,9 +307,9 @@ void GeminiClient::sslErrors(QList<QSslError> const & errors)
         auto const & err = remaining_errors.at(i);
 
         bool ignore = false;
-        if(isTrustRelated(err.error()))
+        if(SslTrust::isTrustRelated(err.error()))
         {
-            if(global_trust.isTrusted(target_url, socket.peerCertificate()))
+            if(global_gemini_trust.isTrusted(target_url, socket.peerCertificate()))
             {
                 ignore = true;
             }

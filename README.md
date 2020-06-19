@@ -72,7 +72,7 @@ make
 - It seems like Qt wants `libzstd.so.3.1` instead of `libzstd.so.3.2`. Just symlink that file into the build directory
 - Use `make` and not `gmake` to build the project.
 
-##### Notes for Ubuntu 20.04:
+##### Notes for Ubuntu 20.04 / Linux Mint:
 - Requires packages
   - `qt5-default`
   - `qt5-qmake`
@@ -148,14 +148,13 @@ ln -s /path/to/kristall .
 
 ### 0.3 - TLS and security
 - [ ] TLS Handling
-  - [ ] Enable TOFU for HTTPS
   - [ ] Add management for client certificates
     - [ ] Rename/delete/merge groups
     - [ ] Import/export PEM certificates and keys
     - [ ] Add a "scope" option to certificates so users can restrict the scope where the certificate is valid
-- [ ] Allow configurable timeouts
-	- [ ] Add configuration option for connect/transfer timeouts
-
+- Fix bug: Somehow auto-disable of client-cert doesn't work
+- Fix bug: gopher seems to time out?
+    
 ### 0.4 - The colorful release
 - [ ] Implement dual-colored icon theme
 - [ ] Improve UX

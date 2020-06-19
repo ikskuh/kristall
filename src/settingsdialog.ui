@@ -21,7 +21,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="generic">
       <attribute name="icon">
@@ -854,92 +854,23 @@
       <attribute name="title">
        <string>Gemini TLS</string>
       </attribute>
-      <layout class="QFormLayout" name="formLayout_2">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_23">
-         <property name="text">
-          <string>Trust Level</string>
-         </property>
-        </widget>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="SslTrustEditor" name="gemini_trust_editor" native="true"/>
        </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="trust_level"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_24">
-         <property name="text">
-          <string>Certificate Authorities</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_8">
-         <item>
-          <widget class="QRadioButton" name="trust_enable_ca">
-           <property name="text">
-            <string>Use local certificate authorities</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">buttonGroup_2</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="trust_disable__ca">
-           <property name="text">
-            <string>Don't use local certificate authorities</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">buttonGroup_2</string>
-           </attribute>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_25">
-         <property name="text">
-          <string>Trusted Hosts</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <layout class="QVBoxLayout" name="verticalLayout_3">
-         <item>
-          <widget class="QTableView" name="trusted_hosts">
-           <property name="cornerButtonEnabled">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_9">
-           <item>
-            <widget class="QToolButton" name="trust_revoke_selected">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Revoke trust</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-        </layout>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="https_trust">
+      <attribute name="icon">
+       <iconset resource="icons.qrc">
+        <normaloff>:/icons/certificate.svg</normaloff>:/icons/certificate.svg</iconset>
+      </attribute>
+      <attribute name="title">
+       <string>HTTPS TLS</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="SslTrustEditor" name="https_trust_editor" native="true"/>
        </item>
       </layout>
      </widget>
@@ -957,6 +888,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SslTrustEditor</class>
+   <extends>QWidget</extends>
+   <header>ssltrusteditor.hpp</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="icons.qrc"/>
  </resources>
@@ -997,8 +936,8 @@
  <buttongroups>
   <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_2"/>
-  <buttongroup name="gophermapBtnGroup"/>
   <buttongroup name="textRenderingBtnGroup"/>
+  <buttongroup name="gophermapBtnGroup"/>
   <buttongroup name="textHighlightsBtnGroup"/>
  </buttongroups>
 </ui>

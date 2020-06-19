@@ -30,8 +30,11 @@ public:
     ProtocolSetup protocols() const;
     void setProtocols(ProtocolSetup const & proto);
 
-    SslTrust sslTrust() const;
-    void setSslTrust(SslTrust const & trust);
+    SslTrust geminiSslTrust() const;
+    void setGeminiSslTrust(SslTrust const & trust);
+
+    SslTrust httpsSslTrust() const;
+    void setHttpsSslTrust(SslTrust const & trust);
 
     GenericSettings options() const;
     void setOptions(GenericSettings const & options);
@@ -91,14 +94,6 @@ private slots:
 
     void on_preset_export_clicked();
 
-    void on_trust_enable_ca_clicked();
-
-    void on_trust_disable__ca_clicked();
-
-    void on_trust_level_currentIndexChanged(int index);
-
-    void on_trust_revoke_selected_clicked();
-
     void on_start_page_textChanged(const QString &arg1);
 
     void on_ui_theme_currentIndexChanged(int index);
@@ -131,8 +126,6 @@ private:
     void updateFont(QFont & input);
 
     void updateColor(QColor & input);
-
-    void on_trusted_server_selection(QModelIndex const & current, QModelIndex const & previous);
 
 private:
     Ui::SettingsDialog *ui;

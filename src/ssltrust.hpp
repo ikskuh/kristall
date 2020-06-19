@@ -4,6 +4,7 @@
 #include <QSslCertificate>
 #include <QSslKey>
 #include <QSettings>
+#include <QSslError>
 
 #include "trustedhostcollection.hpp"
 
@@ -32,6 +33,8 @@ struct SslTrust
     void save(QSettings & settings) const;
 
     bool isTrusted(QUrl const & url, QSslCertificate const & certificate);
+
+    static bool isTrustRelated(QSslError::SslError err);
 };
 
 #endif // SSLTRUST_HPP
