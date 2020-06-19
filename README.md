@@ -142,12 +142,12 @@ ln -s /path/to/kristall .
 - Thanks to [Vane Vander](https://mayvaneday.art/) for providin the Haiku build instructions
 - Thanks to James Tomasino, styan and tiwesdaeg for improving the `Makefile`
 - Thanks to [Alex Naskos](https://github.com/alexnask) for providing windows build instructions
+- Thanks to tiwesdaeg for improving the application icon
 
 ## TODO / Roadmap
 
 ### 0.3 - TLS and security
 - [ ] TLS Handling
-   - [ ] Allow user to ignore TLS errors
    - [ ] Enable TOFU for HTTPS
   - [ ] Add management for client certificates
     - [ ] Rename/delete/merge groups
@@ -158,12 +158,15 @@ ln -s /path/to/kristall .
 - [ ] Allow configurable timeouts
 	- [ ] Implement server timeouts
 	- [ ] Add configuration option for connect/transfer timeouts
+- [ ] Fix: Audio doesn't stop when you load other media. This is a bit of shit.
+- [ ] Fix: Status bar
     
 ### 0.4 - The colorful release
 - [ ] Implement dual-colored icon theme
 - [ ] Improve UX
   - [ ] Provide text search function
   - [ ] auto-highlighting/following outline
+  - [ ] Add maximum text widht option
 - [ ] Improved favourites
   - [ ] Allow custom favourite title (not the URL itself)
   - [ ] Allow grouping favourites into a single-hierarchy folder structure
@@ -192,6 +195,10 @@ ln -s /path/to/kristall .
   - [ ] Gopher
     - [ ] Support more media types (include uudecode and hexbin decoder)
 - [ ] Improve UX
+- [ ] Implement data streaming
+  - [ ] Rework the networking API to allow streaming of content instead of receive everything, then display
+  - [ ] Benefits for audio/video/progressive image formats
+  - [ ] 
 
 ## Bugs
   
@@ -200,7 +207,7 @@ ln -s /path/to/kristall .
 MAC needs different default font:
 https://usercontent.irccloud-cdn.com/file/OrkuXDfQ/image.png
 
-Audio doesn't stop when you load other media. This is a bit of shit.
+
 
 
 Status bar is broken:

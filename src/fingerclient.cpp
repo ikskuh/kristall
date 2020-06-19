@@ -24,8 +24,10 @@ bool FingerClient::supportsScheme(const QString &scheme) const
     return (scheme == "finger");
 }
 
-bool FingerClient::startRequest(const QUrl &url)
+bool FingerClient::startRequest(const QUrl &url, RequestOptions options)
 {
+    Q_UNUSED(options)
+
     if(isInProgress())
         return false;
 

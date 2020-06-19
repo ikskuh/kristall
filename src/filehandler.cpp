@@ -14,8 +14,10 @@ bool FileHandler::supportsScheme(const QString &scheme) const
     return (scheme == "file");
 }
 
-bool FileHandler::startRequest(const QUrl &url)
+bool FileHandler::startRequest(const QUrl &url, RequestOptions options)
 {
+    Q_UNUSED(options)
+
     QFile file { url.path() };
 
     if (file.open(QFile::ReadOnly))

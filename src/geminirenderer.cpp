@@ -244,8 +244,10 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 QString suffix = "";
                 if (absolute_url.scheme() != root_url.scheme())
                 {
-                    suffix = " [" + absolute_url.scheme().toUpper() + "]";
-                    fmt = cross_protocol_link;
+                    if(absolute_url.scheme() != "kristall+ctrl") {
+                        suffix = " [" + absolute_url.scheme().toUpper() + "]";
+                        fmt = cross_protocol_link;
+                    }
                 }
 
                 fmt.setAnchor(true);

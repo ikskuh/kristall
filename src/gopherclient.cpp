@@ -24,8 +24,10 @@ bool GopherClient::supportsScheme(const QString &scheme) const
     return (scheme == "gopher");
 }
 
-bool GopherClient::startRequest(const QUrl &url)
+bool GopherClient::startRequest(const QUrl &url, RequestOptions options)
 {
+    Q_UNUSED(options)
+
     if(isInProgress())
         return false;
 

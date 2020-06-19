@@ -90,7 +90,7 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
     this->successfully_loaded = false;
     this->timer.start();
 
-    if(not this->startRequest(url)) {
+    if(not this->startRequest(url, ProtocolHandler::Default)) {
         QMessageBox::critical(this, "Kristall", QString("Failed to execute request to %1").arg(url.toString()));
         return;
     }
@@ -211,6 +211,8 @@ void BrowserTab::on_networkError(ProtocolHandler::NetworkError error_code, const
     }
 
     auto contents = QString::fromUtf8(file_src.readAll()).arg(reason).toUtf8();
+
+    this->is_internal_location = true;
 
     this->on_requestComplete(
         contents,
@@ -568,7 +570,7 @@ void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
             }
         }
 
-        if (this->startRequest(uri))
+        if (this->startRequest(uri, ProtocolHandler::Default))
         {
             redirection_count += 1;
             this->current_location = uri;
@@ -584,7 +586,8 @@ void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
 
 void BrowserTab::on_linkHovered(const QString &url)
 {
-    this->mainWindow->setUrlPreview(QUrl(url));
+    if(not url.startsWith("kristall+ctrl:"))
+        this->mainWindow->setUrlPreview(QUrl(url));
 }
 
 void BrowserTab::setErrorMessage(const QString &msg)
@@ -612,6 +615,34 @@ void BrowserTab::on_fav_button_clicked()
 void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
 {
     qDebug() << url;
+
+    if(url.scheme() == "kristall+ctrl")
+    {
+        if(this->is_internal_location) {
+            QString opt = url.path();
+            qDebug() << "kristall control action" << opt;
+            if(opt == "ignore-tls") {
+                auto response = QMessageBox::question(
+                    this,
+                    "Kristall",
+                    tr("This sites certificate could not be verified! This may be a man-in-the-middle attack on the server to send you malicious content (or the server admin made a configuration mistake).\r\nAre you sure you want to continue?"),
+                    QMessageBox::Yes | QMessageBox::No,
+                    QMessageBox::No
+                );
+                if(response == QMessageBox::Yes) {
+                    this->startRequest(this->current_location, ProtocolHandler::IgnoreTlsErrors);
+                }
+
+            }
+        } else {
+            QMessageBox::critical(
+                this,
+                "Kristall",
+                tr("Malicious site detected! This site tries to use the Kristall control scheme!\r\nA trustworthy site does not do this!").arg(this->current_location.host())
+            );
+        }
+        return;
+    }
 
     QUrl real_url = url;
     if (real_url.isRelative())
@@ -756,7 +787,7 @@ void BrowserTab::addProtocolHandler(std::unique_ptr<ProtocolHandler> &&handler)
     this->protocol_handlers.emplace_back(std::move(handler));
 }
 
-bool BrowserTab::startRequest(const QUrl &url)
+bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions options)
 {
     this->current_handler = nullptr;
     for(auto & ptr : this->protocol_handlers)
@@ -800,10 +831,11 @@ bool BrowserTab::startRequest(const QUrl &url)
         }
     }
 
+    this->is_internal_location = (url.scheme() == "about");
     this->current_location = url;
     this->ui->url_bar->setText(url.toString(QUrl::FormattingOptions(QUrl::FullyEncoded)));
 
-    return this->current_handler->startRequest(url);
+    return this->current_handler->startRequest(url, options);
 }
 
 void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint &pos)

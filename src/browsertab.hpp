@@ -111,7 +111,7 @@ private:
         this->addProtocolHandler(std::make_unique<T>());
     }
 
-    bool startRequest(QUrl const & url);
+    bool startRequest(QUrl const & url, ProtocolHandler::RequestOptions options);
 public:
 
     Ui::BrowserTab *ui;
@@ -138,6 +138,8 @@ public:
     QElapsedTimer timer;
 
     CryptoIdentity current_identitiy;
+
+    bool is_internal_location;
 };
 
 #endif // BROWSERTAB_HPP

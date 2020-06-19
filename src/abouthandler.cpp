@@ -14,8 +14,9 @@ bool AboutHandler::supportsScheme(const QString &scheme) const
     return (scheme == "about");
 }
 
-bool AboutHandler::startRequest(const QUrl &url)
+bool AboutHandler::startRequest(const QUrl &url, ProtocolHandler::RequestOptions options)
 {
+    Q_UNUSED(options)
     if (url.path() == "blank")
     {
         emit this->requestComplete("", "text/gemini");

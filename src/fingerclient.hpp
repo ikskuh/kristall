@@ -17,7 +17,7 @@ public:
 
     bool supportsScheme(QString const & scheme) const override;
 
-    bool startRequest(QUrl const & url) override;
+    bool startRequest(QUrl const & url, RequestOptions options) override;
 
     bool isInProgress() const override;
 

@@ -31,7 +31,7 @@ bool GeminiClient::supportsScheme(const QString &scheme) const
     return (scheme == "gemini");
 }
 
-bool GeminiClient::startRequest(const QUrl &url)
+bool GeminiClient::startRequest(const QUrl &url, RequestOptions options)
 {
     if(url.scheme() != "gemini")
         return false;
@@ -44,6 +44,8 @@ bool GeminiClient::startRequest(const QUrl &url)
         if(not socket.waitForDisconnected(1500))
             return false;
     }
+
+    this->options = options;
 
     QSslConfiguration ssl_config = socket.sslConfiguration();
     ssl_config.setProtocol(QSsl::TlsV1_2);
@@ -239,7 +241,7 @@ void GeminiClient::socketReadyRead()
                     {
                     case 1: type = ResourceNotFound; break;
                     case 2: type = ResourceNotFound; break;
-                    case 3: type = BadRequest; break;
+                    case 3: type = ProxyRequest; break;
                     case 9: type = BadRequest; break;
                     }
                     emit networkError(type, meta);
@@ -302,6 +304,11 @@ static bool isTrustRelated(QSslError::SslError err)
 
 void GeminiClient::sslErrors(QList<QSslError> const & errors)
 {
+    if(options & IgnoreTlsErrors) {
+        socket.ignoreSslErrors(errors);
+        return;
+    }
+
     QList<QSslError> remaining_errors = errors;
     QList<QSslError> ignored_errors;
 

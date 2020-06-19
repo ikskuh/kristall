@@ -17,7 +17,7 @@ public:
         ConnectionRefused, //!< The host refused connection on that port
         ResourceNotFound, //!< The requested resource was not found on the server
         BadRequest, //!< Our client misbehaved and did a request the server cannot understand
-        ProxyRequest, //!< We requested to
+        ProxyRequest, //!< We requested a proxy operation, but the server does not allow that
         InternalServerError,
         InvalidClientCertificate,
         UntrustedHost, //!< We don't know the host, and we don't trust it
@@ -26,12 +26,16 @@ public:
         TlsFailure, //!< Unspecified TLS failure
         Timeout, //!< The network connection timed out.
     };
+    enum RequestOptions {
+        Default = 0,
+        IgnoreTlsErrors = 1,
+    };
 public:
     explicit ProtocolHandler(QObject *parent = nullptr);
 
     virtual bool supportsScheme(QString const & scheme) const = 0;
 
-    virtual bool startRequest(QUrl const & url) = 0;
+    virtual bool startRequest(QUrl const & url, RequestOptions options) = 0;
 
     virtual bool isInProgress() const = 0;
 

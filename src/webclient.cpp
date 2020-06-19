@@ -21,7 +21,7 @@ bool WebClient::supportsScheme(const QString &scheme) const
     return (scheme == "https") or (scheme == "http");
 }
 
-bool WebClient::startRequest(const QUrl &url)
+bool WebClient::startRequest(const QUrl &url, RequestOptions options)
 {
     if(url.scheme() != "http" and url.scheme() != "https")
         return false;
@@ -29,6 +29,7 @@ bool WebClient::startRequest(const QUrl &url)
     if(this->current_reply != nullptr)
         return true;
 
+    this->options = options;
     this->body.clear();
 
     QSslConfiguration ssl_config;
@@ -135,6 +136,11 @@ void WebClient::on_finished()
 
 void WebClient::on_sslErrors(const QList<QSslError> &errors)
 {
+    if(options & IgnoreTlsErrors) {
+        this->current_reply->ignoreSslErrors(errors);
+        return;
+    }
+
     qDebug() << "HTTP SSL Errors:";
     for(auto const & err : errors)
         qDebug() << err;

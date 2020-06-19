@@ -18,7 +18,7 @@ public:
 
     bool supportsScheme(QString const & scheme) const override;
 
-    bool startRequest(QUrl const & url) override;
+    bool startRequest(QUrl const & url, RequestOptions options) override;
 
     bool isInProgress() const override;
 
@@ -35,6 +35,7 @@ private:
     QNetworkReply * current_reply;
 
     QByteArray body;
+    RequestOptions options;
 };
 
 #endif // WEBCLIENT_HPP
