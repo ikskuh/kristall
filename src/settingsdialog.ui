@@ -265,6 +265,26 @@
        <item row="8" column="1">
         <widget class="QComboBox" name="redirection_mode"/>
        </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_28">
+         <property name="text">
+          <string>Network Timeout</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QSpinBox" name="network_timeout">
+         <property name="suffix">
+          <string> ms</string>
+         </property>
+         <property name="minimum">
+          <number>100</number>
+         </property>
+         <property name="maximum">
+          <number>90000</number>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="style_tab">
@@ -975,10 +995,10 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_2"/>
+  <buttongroup name="gophermapBtnGroup"/>
   <buttongroup name="textRenderingBtnGroup"/>
   <buttongroup name="textHighlightsBtnGroup"/>
-  <buttongroup name="gophermapBtnGroup"/>
  </buttongroups>
 </ui>

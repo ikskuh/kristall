@@ -243,6 +243,8 @@ void SettingsDialog::setOptions(const GenericSettings &options)
             break;
         }
     }
+
+    this->ui->network_timeout->setValue(this->current_options.network_timeout);
 }
 
 GenericSettings SettingsDialog::options() const
@@ -647,4 +649,9 @@ void SettingsDialog::on_redirection_mode_currentIndexChanged(int index)
 void SettingsDialog::on_max_redirects_valueChanged(int max_redirections)
 {
     this->current_options.max_redirections = max_redirections;
+}
+
+void SettingsDialog::on_network_timeout_valueChanged(int timeout)
+{
+    this->current_options.network_timeout = timeout;
 }

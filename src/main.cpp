@@ -58,6 +58,7 @@ int main(int argc, char *argv[])
 
 void GenericSettings::load(QSettings &settings)
 {
+    network_timeout = settings.value("network_timeout", 5000).toInt();
     start_page = settings.value("start_page", "about:favourites").toString();
 
     if(settings.value("text_display", "fancy").toString() == "plain")
@@ -93,4 +94,5 @@ void GenericSettings::save(QSettings &settings) const
     settings.setValue("use_os_scheme_handler", use_os_scheme_handler);
     settings.setValue("max_redirections", max_redirections);
     settings.setValue("redirection_policy", int(redirection_policy));
+    settings.setValue("network_timeout", network_timeout);
 }

@@ -123,6 +123,8 @@ private slots:
 
     void on_max_redirects_valueChanged(int arg1);
 
+    void on_network_timeout_valueChanged(int arg1);
+
 private:
     void reloadStylePreview();
 
