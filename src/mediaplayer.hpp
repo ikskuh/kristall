@@ -20,6 +20,8 @@ public:
 
     void setMedia(QByteArray const & data, QUrl const & ref_url, QString const & mime);
 
+    void stopPlaying();
+
 private slots:
     void on_playpause_button_clicked();
 

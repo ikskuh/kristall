@@ -52,6 +52,11 @@ void MediaPlayer::setMedia(QByteArray const & data, QUrl const & ref_url, QStrin
     this->player.setMedia(content, &this->media_stream);
 }
 
+void MediaPlayer::stopPlaying()
+{
+    this->player.stop();
+}
+
 void MediaPlayer::on_playpause_button_clicked()
 {
     if(this->player.state() != QMediaPlayer::PlayingState) {

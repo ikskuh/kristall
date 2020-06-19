@@ -158,7 +158,6 @@ ln -s /path/to/kristall .
 - [ ] Allow configurable timeouts
 	- [ ] Implement server timeouts
 	- [ ] Add configuration option for connect/transfer timeouts
-- [ ] Fix: Audio doesn't stop when you load other media. This is a bit of shit.
 - [ ] Fix: Status bar
     
 ### 0.4 - The colorful release

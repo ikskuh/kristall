@@ -301,6 +301,8 @@ static QByteArray convertToUtf8(QByteArray const & input, QString const & charSe
 
 void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &mime_text)
 {
+    this->ui->media_browser->stopPlaying();
+
     QByteArray data = ref_data;
     MimeType mime = MimeParser::parse(mime_text);
 
@@ -632,7 +634,6 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
                 if(response == QMessageBox::Yes) {
                     this->startRequest(this->current_location, ProtocolHandler::IgnoreTlsErrors);
                 }
-
             }
         } else {
             QMessageBox::critical(
