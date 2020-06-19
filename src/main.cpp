@@ -85,7 +85,7 @@ void GenericSettings::load(QSettings &settings)
 
 void GenericSettings::save(QSettings &settings) const
 {
-    settings.setValue("start_page", "about:favourites");
+    settings.setValue("start_page", this->start_page);
     settings.setValue("text_display", (text_display == FormattedText) ? "fancy" : "plain");
     settings.setValue("text_decoration", enable_text_decoration);
     settings.setValue("theme", (theme == Theme::dark) ? "dark" : "light");
