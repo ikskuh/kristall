@@ -332,9 +332,8 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
         }
     }
 
-
     this->current_mime = mime_text;
-    this->current_buffer = data;
+    this->current_buffer = ref_data;
 
     this->graphics_scene.clear();
     this->ui->text_browser->setText("");
@@ -471,7 +470,10 @@ File Size: %2
     QString title = this->current_location.toString();
     emit this->titleChanged(title);
 
-    emit this->fileLoaded(ref_data.size(), mime_text, this->timer.elapsed());
+    this->current_stats.file_size = ref_data.size();
+    this->current_stats.mime_type = mime;
+    this->current_stats.loading_time = this->timer.elapsed();
+    emit this->fileLoaded(this->current_stats);
 
     this->successfully_loaded = true;
 
@@ -700,7 +702,10 @@ void BrowserTab::on_stop_button_clicked()
 
 void BrowserTab::on_requestProgress(qint64 transferred)
 {
-    emit this->fileLoaded(transferred, "Loading...", timer.elapsed());
+    this->current_stats.file_size = transferred;
+    this->current_stats.mime_type = MimeType { };
+    this->current_stats.loading_time = this->timer.elapsed();
+    emit this->fileLoaded(this->current_stats);
 }
 
 void BrowserTab::on_back_button_clicked()

@@ -159,7 +159,9 @@ ln -s /path/to/kristall .
 	- [ ] Implement server timeouts
 	- [ ] Add configuration option for connect/transfer timeouts
 - [ ] Fix: Status bar
-    
+- [ ] Fix: Mime Parser according to https://tools.ietf.org/html/rfc2045#section-5.1
+  - [ ] Mime is separated by semicolon from parameters
+
 ### 0.4 - The colorful release
 - [ ] Implement dual-colored icon theme
 - [ ] Improve UX

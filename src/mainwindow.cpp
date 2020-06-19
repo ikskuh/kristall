@@ -179,13 +179,17 @@ void MainWindow::on_browser_tabs_currentChanged(int index)
             this->ui->outline_view->expandAll();
 
             this->ui->history_view->setModel(&tab->history);
+
+            this->setFileStatus(tab->current_stats);
         } else {
             this->ui->outline_view->setModel(nullptr);
             this->ui->history_view->setModel(nullptr);
+            this->setFileStatus(DocumentStats { });
         }
     } else {
         this->ui->outline_view->setModel(nullptr);
         this->ui->history_view->setModel(nullptr);
+        this->setFileStatus(DocumentStats { });
     }
 }
 
@@ -345,6 +349,19 @@ void MainWindow::reloadTheme()
     }
 }
 
+void MainWindow::setFileStatus(const DocumentStats &stats)
+{
+    if(stats.isValid()) {
+        this->file_size->setText(IoUtil::size_human(stats.file_size));
+        this->file_mime->setText(stats.mime_type.toString());
+        this->load_time->setText(QString("%1 ms").arg(stats.loading_time));
+    } else {
+        this->file_size->setText("");
+        this->file_mime->setText("");
+        this->load_time->setText("");
+    }
+}
+
 void MainWindow::on_actionSave_as_triggered()
 {
     BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
@@ -387,16 +404,14 @@ void MainWindow::on_actionAdd_to_favourites_triggered()
     }
 }
 
-void MainWindow::on_tab_fileLoaded(qint64 fileSize, const QString &mime, int msec)
+void MainWindow::on_tab_fileLoaded(DocumentStats const & stats)
 {
     auto * tab = qobject_cast<BrowserTab*>(sender());
     if(tab != nullptr) {
         int index = this->ui->browser_tabs->indexOf(tab);
         assert(index >= 0);
         if(index == this->ui->browser_tabs->currentIndex()) {
-            this->file_size->setText(IoUtil::size_human(fileSize));
-            this->file_mime->setText(mime);
-            this->load_time->setText(QString("%1 ms").arg(msec));
+            setFileStatus(stats);
         }
     }
 }

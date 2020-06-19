@@ -12,6 +12,8 @@
 
 #include "elidelabel.hpp"
 
+#include "browsertab.hpp"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -72,7 +74,7 @@ private slots:
 
     void on_actionAdd_to_favourites_triggered();
 
-    void on_tab_fileLoaded(qint64 fileSize, QString const & mime, int msec);
+    void on_tab_fileLoaded(DocumentStats const & stats);
 
     void on_focus_inputbar();
 
@@ -88,6 +90,8 @@ private slots:
 
 private:
     void reloadTheme();
+
+    void setFileStatus(DocumentStats const & stats);
 
 public:
     QApplication * application;

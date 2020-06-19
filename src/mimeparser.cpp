@@ -15,6 +15,24 @@ QString MimeType::parameter(const QString &param_name, QString const & default_v
     return val;
 }
 
+QString MimeType::toString() const
+{
+    if(isValid()) {
+        QString result = type;
+        if(not subtype.isEmpty())
+            result += "/" + subtype;
+        for(auto const & key : parameters.keys()) {
+            result += "; ";
+            result += key;
+            result += "=";
+            result += parameters[key];
+        }
+        return result;
+    } else {
+        return QString { };
+    }
+}
+
 MimeType MimeParser::parse(const QString &mime_text)
 {
     MimeType type;
@@ -22,7 +40,7 @@ MimeType MimeParser::parse(const QString &mime_text)
     QString arg_list;
     QString mime_part;
 
-    if(int idx = mime_text.indexOf(' '); idx >= 0) {
+    if(int idx = mime_text.indexOf(';'); idx >= 0) {
         arg_list = mime_text.mid(idx + 1).trimmed().toLower();
         mime_part = mime_text.mid(0, idx).trimmed().toLower();
     } else {

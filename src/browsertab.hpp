@@ -17,11 +17,24 @@
 
 #include "protocolhandler.hpp"
 
+#include "mimeparser.hpp"
+
 namespace Ui {
 class BrowserTab;
 }
 
 class MainWindow;
+
+struct DocumentStats
+{
+    int loading_time = 0; // in ms
+    MimeType mime_type;
+    qint64 file_size = 0;
+
+    bool isValid() const {
+        return mime_type.isValid();
+    }
+};
 
 class BrowserTab : public QWidget
 {
@@ -57,7 +70,7 @@ public:
 signals:
     void titleChanged(QString const & title);
     void locationChanged(QUrl const & url);
-    void fileLoaded(qint64 fileSize, QString const & mime, int msec);
+    void fileLoaded(DocumentStats const & stats);
 
 private slots:
     void on_url_bar_returnPressed();
@@ -140,6 +153,8 @@ public:
     CryptoIdentity current_identitiy;
 
     bool is_internal_location;
+
+    DocumentStats current_stats;
 };
 
 #endif // BROWSERTAB_HPP

@@ -17,6 +17,8 @@ struct MimeType
     bool isValid() const {
         return not type.isEmpty();
     }
+
+    QString toString() const;
 };
 
 struct MimeParser
