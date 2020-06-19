@@ -66,6 +66,9 @@ public:
     bool canDeleteGroup(QString const & group_name);
     bool deleteGroup(QString const & group_name);
 
+    //! Returns a list of non-mutable references to all contained identities
+    QVector<CryptoIdentity const *> allIdentities() const;
+
 public:
     // Header:
     // QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;

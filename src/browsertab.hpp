@@ -129,6 +129,7 @@ private:
 
     bool startRequest(QUrl const & url, ProtocolHandler::RequestOptions options);
 
+    bool enableClientCertificate(CryptoIdentity const & ident);
     void disableClientCertificate();
 public:
 

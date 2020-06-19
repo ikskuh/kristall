@@ -35,6 +35,12 @@ struct CryptoIdentity
     bool isValid() const {
         return (not this->certificate.isNull()) and (not this->private_key.isNull());
     }
+
+    //! returns true if a host does not match the filter criterion
+    bool isHostFiltered(QUrl const & url) const;
+
+    //! returns true when the identity should be enabled on url
+    bool isAutomaticallyEnabledOn(QUrl const & url) const;
 };
 
 #endif // CRYPTOIDENTITIY_HPP

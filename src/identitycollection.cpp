@@ -244,6 +244,21 @@ bool IdentityCollection::deleteGroup(const QString &group_name)
     return false;
 }
 
+QVector<const CryptoIdentity *> IdentityCollection::allIdentities() const
+{
+    QVector<const CryptoIdentity *> identities;
+
+    for(auto const & group : this->root.children)
+    {
+        for(auto const & ident : group->children)
+        {
+            identities.append(&ident->as<IdentityNode>().identity);
+        }
+    }
+
+    return identities;
+}
+
 QModelIndex IdentityCollection::index(int row, int column, const QModelIndex &parent) const
 {
     if (not hasIndex(row, column, parent))

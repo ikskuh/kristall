@@ -767,18 +767,7 @@ bool BrowserTab::trySetClientCertificate(const QString &query)
         return false;
     }
 
-    this->current_identity = dialog.identity();
-
-    if (not current_identity.isValid())
-    {
-        QMessageBox::warning(this, "Kristall", "Failed to generate temporary crypto-identitiy");
-        this->disableClientCertificate();
-        return false;
-    }
-
-    this->ui->enable_client_cert_button->setChecked(true);
-
-    return true;
+    return this->enableClientCertificate(dialog.identity());
 }
 
 void BrowserTab::resetClientCertificate()
@@ -826,7 +815,7 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
             auto answer = QMessageBox::question(
                 this,
                 "Kristall",
-                QString("You requested a %1-URL with a client certificate, but these are not supported for this scheme. Continue?").arg(url.scheme())
+                tr("You requested a %1-URL with a client certificate, but these are not supported for this scheme. Continue?").arg(url.scheme())
             );
             if(answer != QMessageBox::Yes)
                 return false;
@@ -840,13 +829,66 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
         auto answer = QMessageBox::question(
             this,
             "Kristall",
-            "You want to visit a new host, but have a client certificate enabled. This may be a risk to expose your identity to another host.\r\nDo you want to keep the certificate enabled?",
+            tr("You want to visit a new host, but have a client certificate enabled. This may be a risk to expose your identity to another host.\r\nDo you want to keep the certificate enabled?"),
             QMessageBox::Yes | QMessageBox::No,
             QMessageBox::No
         );
         if(answer != QMessageBox::Yes) {
             this->disableClientCertificate();
         }
+    }
+
+    if(this->current_identity.isValid() and this->current_identity.isHostFiltered(url)) {
+        auto answer = QMessageBox::question(
+            this,
+            "Kristall",
+            tr("Your client certificate has a host filter enabled and this site does not match the host filter.\r\nNew URL: %1\r\nHost Filter: %2\r\nDo you want to keep the certificate enabled?")
+                .arg(url.toString(QUrl::FullyEncoded))
+                .arg(this->current_identity.host_filter),
+            QMessageBox::Yes | QMessageBox::No,
+            QMessageBox::No
+        );
+        if(answer != QMessageBox::Yes) {
+            this->disableClientCertificate();
+        }
+    }
+    else if(not this->current_identity.isValid()) {
+        for(auto ident_ptr : global_identities.allIdentities())
+        {
+            if(ident_ptr->isAutomaticallyEnabledOn(url)) {
+
+                auto answer = QMessageBox::question(
+                    this,
+                    "Kristall",
+                    tr("An automatic client certificate was detected for this site:\r\n%1\r\nDo you want to enable that certificate?")
+                        .arg(ident_ptr->display_name),
+                    QMessageBox::Yes | QMessageBox::No,
+                    QMessageBox::No
+                );
+                if(answer != QMessageBox::Yes) {
+                    break;
+                }
+
+                enableClientCertificate(*ident_ptr);
+
+                break;
+            }
+        }
+    }
+
+    if(this->current_identity.isValid()) {
+        if(not this->current_handler->enableClientCertificate(this->current_identity)) {
+            auto answer = QMessageBox::question(
+                this,
+                "Kristall",
+                tr("You requested a %1-URL with a client certificate, but these are not supported for this scheme. Continue?").arg(url.scheme())
+            );
+            if(answer != QMessageBox::Yes)
+                return false;
+            this->disableClientCertificate();
+        }
+    } else {
+        this->disableClientCertificate();
     }
 
     this->is_internal_location = (url.scheme() == "about");
@@ -856,6 +898,19 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
     this->network_timeout_timer.start(global_options.network_timeout);
 
     return this->current_handler->startRequest(url, options);
+}
+
+bool BrowserTab::enableClientCertificate(const CryptoIdentity &ident)
+{
+    if (not ident.isValid())
+    {
+        QMessageBox::warning(this, "Kristall", "Failed to generate temporary crypto-identitiy");
+        this->disableClientCertificate();
+        return false;
+    }
+    this->current_identity = ident;
+    this->ui->enable_client_cert_button->setChecked(true);
+    return true;
 }
 
 void BrowserTab::disableClientCertificate()
