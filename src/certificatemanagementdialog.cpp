@@ -150,6 +150,69 @@ void CertificateManagementDialog::on_import_cert_button_clicked()
 
     if(dialog.exec() != QDialog::Accepted)
         return;
+
+    QFile cert_file { dialog.certificateFileName() };
+    if(not cert_file.open(QFile::ReadOnly)) {
+        QMessageBox::warning(
+            this,
+            "Kristall",
+            tr("The file %1 could not be found!").arg(dialog.certificateFileName())
+        );
+        return;
+    }
+
+    QFile key_file { dialog.keyFileName() };
+    if(not key_file.open(QFile::ReadOnly)) {
+        QMessageBox::warning(
+            this,
+            "Kristall",
+            tr("The file %1 could not be found!").arg(dialog.keyFileName())
+        );
+        return;
+    }
+
+    CryptoIdentity ident;
+    ident.private_key = QSslKey {
+        &key_file,
+        dialog.keyAlgorithm(),
+        dialog.keyFileName().endsWith(".der") ? QSsl::Der : QSsl::Pem,
+        QSsl::PrivateKey
+    };
+    ident.certificate = QSslCertificate {
+        &cert_file,
+        dialog.keyFileName().endsWith(".der") ? QSsl::Der : QSsl::Pem,
+    };
+    ident.user_notes = tr("Imported from:\r\nkey: %1\r\n:cert: %2").arg(dialog.keyFileName()).arg(dialog.certificateFileName());
+    ident.display_name = "Imported Certificate";
+    ident.auto_enable = false;
+    ident.host_filter = "";
+    ident.is_persistent = true;
+
+    if(ident.private_key.isNull()) {
+        QMessageBox::warning(
+            this,
+            "Kristall",
+            tr("The key file %1 could not be loaded. Please verify your key file.").arg(dialog.keyFileName())
+        );
+        return;
+    }
+
+    if(ident.certificate.isNull()) {
+        QMessageBox::warning(
+            this,
+            "Kristall",
+            tr("The certificate file %1 could not be loaded. Please verify your certificate.").arg(dialog.keyFileName())
+        );
+        return;
+    }
+
+    if(not global_identities.addCertificate(tr("Imported Certificates"), ident)) {
+        QMessageBox::warning(
+            this,
+            "Kristall",
+            tr("Failed to import the certificate.")
+        );
+    }
 }
 
 void CertificateManagementDialog::on_create_cert_button_clicked()
