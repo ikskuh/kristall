@@ -48,6 +48,7 @@ SOURCES += \
     abouthandler.cpp \
     browsertab.cpp \
     certificatehelper.cpp \
+    certificateiodialog.cpp \
     certificatemanagementdialog.cpp \
     certificateselectiondialog.cpp \
     cryptoidentity.cpp \
@@ -85,6 +86,7 @@ HEADERS += \
     abouthandler.hpp \
     browsertab.hpp \
     certificatehelper.hpp \
+    certificateiodialog.hpp \
     certificatemanagementdialog.hpp \
     certificateselectiondialog.hpp \
     cryptoidentity.hpp \
@@ -119,6 +121,7 @@ HEADERS += \
 
 FORMS += \
     browsertab.ui \
+    certificateiodialog.ui \
     certificatemanagementdialog.ui \
     certificateselectiondialog.ui \
     mainwindow.ui \

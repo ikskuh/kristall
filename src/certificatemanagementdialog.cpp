@@ -4,6 +4,7 @@
 #include "kristall.hpp"
 
 #include "newidentitiydialog.hpp"
+#include "certificateiodialog.hpp"
 
 #include <QCryptographicHash>
 #include <QMessageBox>
@@ -130,12 +131,25 @@ void CertificateManagementDialog::on_delete_cert_button_clicked()
 
 void CertificateManagementDialog::on_export_cert_button_clicked()
 {
+    if(this->selected_identity == nullptr)
+        return;
+    CertificateIoDialog dialog { this };
 
+    dialog.setKeyAlgorithm(this->selected_identity->private_key.algorithm());
+    dialog.setIoMode(CertificateIoDialog::Export);
+
+    if(dialog.exec() != QDialog::Accepted)
+        return;
 }
 
 void CertificateManagementDialog::on_import_cert_button_clicked()
 {
+    CertificateIoDialog dialog { this };
 
+    dialog.setIoMode(CertificateIoDialog::Import);
+
+    if(dialog.exec() != QDialog::Accepted)
+        return;
 }
 
 void CertificateManagementDialog::on_create_cert_button_clicked()
