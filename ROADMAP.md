@@ -6,7 +6,6 @@ This document contains TODO items for planned Kristall releases as well as some 
 - [ ] TLS Handling
   - [ ] Add management for client certificates
     - [ ] Allow merge/delete/merge groups
-    - [ ] Import/export PEM certificates and keys
 
 ## 0.4 - The colorful release
 - [ ] Implement dual-colored icon theme

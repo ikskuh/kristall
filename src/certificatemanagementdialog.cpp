@@ -5,6 +5,7 @@
 
 #include "newidentitiydialog.hpp"
 #include "certificateiodialog.hpp"
+#include "ioutil.hpp"
 
 #include <QCryptographicHash>
 #include <QMessageBox>
@@ -140,6 +141,62 @@ void CertificateManagementDialog::on_export_cert_button_clicked()
 
     if(dialog.exec() != QDialog::Accepted)
         return;
+
+    {
+        QFile cert_file { dialog.certificateFileName() };
+        if(not cert_file.open(QFile::WriteOnly)) {
+            QMessageBox::warning(
+                this,
+                "Kristall",
+                tr("The file %1 could not be found!").arg(dialog.certificateFileName())
+            );
+            return;
+        }
+
+        QByteArray cert_blob;
+        if(dialog.certificateFileName().endsWith(".der")) {
+            cert_blob = this->selected_identity->certificate.toDer();
+        } else {
+            cert_blob = this->selected_identity->certificate.toPem();
+        }
+
+        if(not IoUtil::writeAll(cert_file, cert_blob)) {
+            QMessageBox::warning(
+                this,
+                "Kristall",
+                tr("The file %1 could not be created found!").arg(dialog.certificateFileName())
+            );
+            return;
+        }
+    }
+
+    {
+        QFile key_file { dialog.keyFileName() };
+        if(not key_file.open(QFile::WriteOnly)) {
+            QMessageBox::warning(
+                this,
+                "Kristall",
+                tr("The file %1 could not be found!").arg(dialog.keyFileName())
+            );
+            return;
+        }
+
+        QByteArray key_blob;
+        if(dialog.keyFileName().endsWith(".der")) {
+            key_blob = this->selected_identity->private_key.toDer();
+        } else {
+            key_blob = this->selected_identity->private_key.toPem();
+        }
+
+        if(not IoUtil::writeAll(key_file, key_blob)) {
+            QMessageBox::warning(
+                this,
+                "Kristall",
+                tr("The file %1 could not be created found!").arg(dialog.keyFileName())
+            );
+            return;
+        }
+    }
 }
 
 void CertificateManagementDialog::on_import_cert_button_clicked()
