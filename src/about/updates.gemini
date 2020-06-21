@@ -13,6 +13,7 @@
 * Adds configurable and improved redirection handling including warnings for potentially malicious redirects.
 * Adds improved text highlighting, now works with UTF-8. Still experimental, though 😉
 * Adds about:style-preview
+* Adds new UI theme: OS Default (uses Qt's default skin)
 * Fixed bug: Status bar label now does elide links that are too long instead of resizing the window.
 * Fixed bug: Gopher end-of-file marker is now better detected.
 * Fixed bug: Auto-URL detection works with leading/trailing spaces

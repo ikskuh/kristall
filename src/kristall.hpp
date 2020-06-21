@@ -11,6 +11,7 @@
 
 enum class Theme : int
 {
+    os_default = -1,
     light = 0,
     dark = 1,
 };

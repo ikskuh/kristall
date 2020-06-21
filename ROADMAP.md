@@ -2,9 +2,6 @@
 
 This document contains TODO items for planned Kristall releases as well as some random TODOs and reported bugs.
 
-## 0.3
-- [ ] Implement "Manually verify fingerprints"
-
 ## 0.4 - The colorful release
 - [ ] Implement dual-colored icon theme
 - [ ] Improve UX

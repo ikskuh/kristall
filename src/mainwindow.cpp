@@ -335,6 +335,11 @@ void MainWindow::on_actionAbout_Qt_triggered()
 
 void MainWindow::reloadTheme()
 {
+    if(global_options.theme == Theme::os_default)
+    {
+        application->setStyleSheet("");
+        QIcon::setThemeName("light");
+    }
     if(global_options.theme == Theme::light)
     {
         QFile file(":/light.qss");

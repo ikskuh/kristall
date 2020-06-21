@@ -78,10 +78,13 @@ void GenericSettings::load(QSettings &settings)
 
     enable_text_decoration = settings.value("text_decoration", false).toBool();
 
-    if(settings.value("theme", "light").toString() == "dark")
+    QString theme_name = settings.value("theme", "os_default").toString();
+    if(theme_name== "dark")
         theme = Theme::dark;
-    else
+    else if(theme_name == "light")
         theme = Theme::light;
+    else
+        theme = Theme::os_default;
 
     if(settings.value("gophermap_display", "rendered").toString() == "rendered")
         gophermap_display = FormattedText;
@@ -99,7 +102,14 @@ void GenericSettings::save(QSettings &settings) const
     settings.setValue("start_page", this->start_page);
     settings.setValue("text_display", (text_display == FormattedText) ? "fancy" : "plain");
     settings.setValue("text_decoration", enable_text_decoration);
-    settings.setValue("theme", (theme == Theme::dark) ? "dark" : "light");
+    QString theme_name = "os_default";
+    switch(theme) {
+    case Theme::dark:       theme_name = "dark"; break;
+    case Theme::light:      theme_name = "light"; break;
+    case Theme::os_default: theme_name = "os_default"; break;
+    }
+
+    settings.setValue("theme", theme_name);
     settings.setValue("gophermap_display", (gophermap_display == FormattedText) ? "rendered" : "text");
     settings.setValue("use_os_scheme_handler", use_os_scheme_handler);
     settings.setValue("max_redirections", max_redirections);

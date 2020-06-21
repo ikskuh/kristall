@@ -25,13 +25,14 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     static_assert(DocumentStyle::AutoLightTheme == 2);
 
     this->ui->auto_theme->clear();
-    this->ui->auto_theme->addItem("Disabled", QVariant::fromValue<int>(DocumentStyle::Fixed));
-    this->ui->auto_theme->addItem("Dark Theme", QVariant::fromValue<int>(DocumentStyle::AutoDarkTheme));
-    this->ui->auto_theme->addItem("Light Theme", QVariant::fromValue<int>(DocumentStyle::AutoLightTheme));
+    this->ui->auto_theme->addItem(tr("Disabled"), QVariant::fromValue<int>(DocumentStyle::Fixed));
+    this->ui->auto_theme->addItem(tr("Dark Theme"), QVariant::fromValue<int>(DocumentStyle::AutoDarkTheme));
+    this->ui->auto_theme->addItem(tr("Light Theme"), QVariant::fromValue<int>(DocumentStyle::AutoLightTheme));
 
     this->ui->ui_theme->clear();
-    this->ui->ui_theme->addItem("Light", QVariant::fromValue<int>(int(Theme::light)));
-    this->ui->ui_theme->addItem("Dark", QVariant::fromValue<int>(int(Theme::dark)));
+    this->ui->ui_theme->addItem(tr("OS Default"), QVariant::fromValue<int>(int(Theme::os_default)));
+    this->ui->ui_theme->addItem(tr("Light"), QVariant::fromValue<int>(int(Theme::light)));
+    this->ui->ui_theme->addItem(tr("Dark"), QVariant::fromValue<int>(int(Theme::dark)));
 
     setGeminiStyle(DocumentStyle { });
 
