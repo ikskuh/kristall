@@ -62,6 +62,10 @@ See [BUILDING.md](BUILDING.md)
 - Thanks to [Alex Naskos](https://github.com/alexnask) for providing windows build instructions
 - Thanks to tiwesdaeg for improving the application icon
 
+## Changelog
+
+See [src/about/updates.gemini](src/about/updates.gemini)
+
 ## Roadmap
 
 See [ROADMAP.md](ROADMAP.md)
