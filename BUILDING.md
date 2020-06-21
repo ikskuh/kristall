@@ -86,7 +86,8 @@ Use the `Makefile` to build `build/kristall` instead of the default target. Ther
 
 The provided desktop file can be installed into the local system
 ```sh
-ln -s Kristall.desktop ~/.local/share/applications/kristall.desktop
+cp Kristall.desktop ~/.local/share/applications/kristall.desktop
+update-desktop-database ~/.local/share/applications
 ```
 
 ### Haiku
