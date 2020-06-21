@@ -3,6 +3,9 @@
 #include <cassert>
 #include <QDebug>
 #include <QIcon>
+#include <QMimeData>
+
+#include <memory>
 
 IdentityCollection::IdentityCollection(QObject *parent)
     : QAbstractItemModel(parent)
@@ -343,6 +346,184 @@ QVariant IdentityCollection::data(const QModelIndex &index, int role) const
     }
 
     return QVariant();
+}
+
+Qt::ItemFlags IdentityCollection::flags(const QModelIndex &index) const
+{
+    if (!index.isValid())
+        return Qt::NoItemFlags;
+    Node const *item = static_cast<Node const*>(index.internalPointer());
+    switch(item->type) {
+    case Node::Identity:
+        return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled;
+    case Node::Group:
+        return QAbstractItemModel::flags(index) | Qt::ItemIsDropEnabled;
+    default:
+        return QAbstractItemModel::flags(index);
+    }
+}
+
+QStringList IdentityCollection::mimeTypes() const
+{
+    QStringList mimes;
+    mimes << "x-kristall/identity";
+    return mimes;
+}
+
+#include <QBuffer>
+#include <QDataStream>
+
+QMimeData *IdentityCollection::mimeData(const QModelIndexList &indexes) const
+{
+    if(indexes.size() != 1)
+        return nullptr;
+    auto const & index = indexes.at(0);
+
+    if (not index.isValid())
+        return nullptr;
+
+    Node const *item = static_cast<Node const*>(index.internalPointer());
+    switch(item->type) {
+    case Node::Identity: {
+        auto const & identity = item->as<IdentityNode>().identity;
+
+        QByteArray buffer;
+
+        {
+            QDataStream stream { &buffer, QIODevice::WriteOnly };
+            stream << identity.display_name;
+            stream << identity.user_notes;
+            stream << identity.host_filter;
+            stream << identity.auto_enable;
+            stream << identity.certificate.toDer();
+            stream << identity.private_key.algorithm();
+            stream << identity.private_key.toDer();
+        }
+        assert(buffer.size() > 0);
+
+        auto mime = std::make_unique<QMimeData>();
+
+        mime->setData("x-kristall/identity", buffer);
+
+        return mime.release();
+    }
+    default:
+        return nullptr;
+    }
+}
+
+bool IdentityCollection::canDropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) const
+{
+    Q_UNUSED(row);
+    Q_UNUSED(column);
+
+    if (not parent.isValid())
+        return false;
+
+    Node const *item = static_cast<Node const*>(parent.internalPointer());
+    switch(item->type) {
+    case Node::Group: {
+        return data->hasFormat("x-kristall/identity") and (action == Qt::MoveAction);
+    }
+    default:
+        return false;
+    }
+}
+
+bool IdentityCollection::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
+{
+    Q_UNUSED(column);
+
+    if(action != Qt::MoveAction)
+        return false;
+
+    if (not parent.isValid())
+        return false;
+
+    Node *item = static_cast<Node *>(parent.internalPointer());
+    switch(item->type) {
+    case Node::Group: {
+        auto ident_blob = data->data("x-kristall/identity");
+
+        auto node = std::make_unique<IdentityNode>();
+        CryptoIdentity & identity = node->identity;
+        {
+            QDataStream stream { &ident_blob, QIODevice::ReadOnly };
+
+            QByteArray cert_data, key_data;
+            QSsl::KeyAlgorithm key_algorithm;
+
+            stream >> identity.display_name;
+            stream >> identity.user_notes;
+            stream >> identity.host_filter;
+            stream >> identity.auto_enable;
+            stream >> cert_data;
+            stream >> key_algorithm;
+            stream >> key_data;
+
+            identity.certificate = QSslCertificate { cert_data, QSsl::Der };
+            identity.private_key = QSslKey { key_data, key_algorithm, QSsl::Der, QSsl::PrivateKey };
+        }
+
+        if(not identity.isValid())
+            return false;
+
+        auto & insert_list = item->as<GroupNode>().children;
+
+        if((row < 0) or (size_t(row) >= insert_list.size())) {
+            beginInsertRows(parent, insert_list.size(), insert_list.size() + 1);
+            insert_list.emplace_back(std::move(node));
+        } else {
+            beginInsertRows(parent, row, row + 1);
+            insert_list.emplace(insert_list.begin() + size_t(row), std::move(node));
+        }
+        endInsertRows();
+
+        qDebug() << "dropping" << data->formats() << row;
+
+        this->relayout();
+        return true;
+    }
+    default:
+        return false;
+    }
+}
+
+Qt::DropActions IdentityCollection::supportedDropActions() const
+{
+    return Qt::MoveAction;
+}
+
+Qt::DropActions IdentityCollection::supportedDragActions() const
+{
+    return Qt::MoveAction;
+}
+
+bool IdentityCollection::removeRows(int row, int count, const QModelIndex &parent)
+{
+    if (not parent.isValid())
+        return false;
+
+    if(count != 1)
+        return false;
+
+    Node *item = static_cast<Node *>(parent.internalPointer());
+    switch(item->type) {
+    case Node::Group: {
+        auto & children = item->as<GroupNode>().children;
+
+        if((row < 0) or (size_t(row) >= children.size()))
+            return false;
+
+        beginRemoveRows(parent, row, row + 1);
+        children.erase(children.begin() + size_t(row));
+        endRemoveRows();
+
+        return true;
+    }
+    default:
+        return false;
+    }
 }
 
 void IdentityCollection::relayout()
