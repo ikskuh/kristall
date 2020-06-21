@@ -252,14 +252,24 @@ There is also the scheme about: which can be used to access internal sites for c
 => about:style-preview
 
 ## Security Concept
-Kristall has some 
-> TODO: Write
+Kristall has some built-in security measures to make your browsing experience safe and sane.
 
-* Client certificates are disabled when doing a host switch
-* Client certificates allow host filtering
-* Redirects check certain stuff
-* TOFU
-* CA
+### Philosophy
+
+Kristall will always try to warn or ask you if anything critical will happen.
+Sneakily redirecting you to another host?
+You missed disabling your client certficiate when switching hosts?
+Kristall will ask you whether you want to keep your current settings and continue or if you want to disable that feature. These security measures are quite non-intrusive and help you "not missing the click".
+
+It will also make some artificial hurdles when you can *really* make something that is critical, like visiting a host with a mistrusted certificate or deleting your client certificates.
+
+### Security Measures
+
+* Client certificates will be disabled when doing a host or protocol switch
+* Client certificates allow host filtering to double-opt-in for non-planned hosts
+* Redirects check for cross-scheme or cross-host redirections.
+* Fine-grained customizations
+* Trusting TLS connections based on manually built lists, TOFU method or using the certificate authority system
 
 ## Supported Media Types
 * text/plain
