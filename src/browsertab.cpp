@@ -62,6 +62,12 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
     this->ui->graphics_browser->setVisible(false);
     this->ui->text_browser->setVisible(true);
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    this->ui->text_browser->setTabStopDistance(40);
+#else
+    this->ui->text_browser->setTabStopWidth(40);
+#endif
+
     this->ui->text_browser->setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(this->ui->url_bar, &SearchBar::escapePressed, this, &BrowserTab::on_url_bar_escapePressed);
@@ -269,7 +275,7 @@ static QByteArray convertToUtf8(QByteArray const & input, QString const & charSe
 
     char temp_buffer[4096];
 
-    char const * input_ptr = reinterpret_cast<char const *>(input.data());
+    char * input_ptr = const_cast<char *>(reinterpret_cast<char const *>(input.data()));
     size_t input_size = input.size();
 
     while(input_size > 0)
@@ -277,7 +283,7 @@ static QByteArray convertToUtf8(QByteArray const & input, QString const & charSe
         char * out_ptr = temp_buffer;
         size_t out_size = sizeof(temp_buffer);
 
-        size_t n = iconv(cd, const_cast<char **>(&input_ptr), &input_size, &out_ptr, &out_size);
+        size_t n = iconv(cd, &input_ptr, &input_size, &out_ptr, &out_size);
         if (n == size_t(-1))
         {
             if(errno == E2BIG) {
