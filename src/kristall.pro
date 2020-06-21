@@ -15,6 +15,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 LIBS += -lcrypto
+
+# We need iconv on non-linux platforms
+!linux: LIBS += -liconv
+
 QMAKE_CFLAGS += -Wno-unused-parameter -Werror=return-type
 QMAKE_CXXFLAGS += -Wno-unused-parameter -Werror=return-type
 
