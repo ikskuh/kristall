@@ -1,10 +1,10 @@
 # Install to /usr/local unless otherwise specified, such as `make PREFIX=/app`
-PREFIX=/usr/local
+PREFIX?=/usr/local
 
 # What to run to install various files
-INSTALL=install -D
+INSTALL?=install
 # Run to install the actual binary
-INSTALL_PROGRAM=$(INSTALL)
+INSTALL_PROGRAM=$(INSTALL) -m 755
 # Run to install application data, with differing permissions
 INSTALL_DATA=$(INSTALL) -m 644
 
@@ -17,7 +17,7 @@ kristall: build/kristall
 
 build/kristall: src/*
 	mkdir -p build
-	cd build && qmake ../src/kristall.pro && $(MAKE)
+	cd build && qmake ../src/kristall.pro && $(MAKE) $(MAKEFLAGS)
 
 install: kristall
 	# Install icons
