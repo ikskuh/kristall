@@ -50,6 +50,8 @@ bool WebClient::startRequest(const QUrl &url, RequestOptions options)
     request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, false);
     request.setSslConfiguration(ssl_config);
 
+    this->manager.clearAccessCache();
+    this->manager.clearConnectionCache();
     this->current_reply = manager.get(request);
     if(this->current_reply == nullptr)
         return false;
@@ -99,6 +101,8 @@ void WebClient::on_data()
 
 void WebClient::on_finished()
 {
+    emit this->hostCertificateLoaded(this->current_reply->sslConfiguration().peerCertificate());
+
     auto * const reply = this->current_reply;
     this->current_reply = nullptr;
 
@@ -159,6 +163,8 @@ void WebClient::on_finished()
 
 void WebClient::on_sslErrors(const QList<QSslError> &errors)
 {
+    emit this->hostCertificateLoaded(this->current_reply->sslConfiguration().peerCertificate());
+
     if(options & IgnoreTlsErrors) {
         this->current_reply->ignoreSslErrors(errors);
         return;
@@ -175,18 +181,19 @@ void WebClient::on_sslErrors(const QList<QSslError> &errors)
         bool ignore = false;
         if(SslTrust::isTrustRelated(err.error()))
         {
-            switch(global_https_trust.getTrust(this->current_reply->url(), this->current_reply->sslConfiguration().peerCertificate()))
+            auto cert = this->current_reply->sslConfiguration().peerCertificate();
+            switch(global_https_trust.getTrust(this->current_reply->url(), cert))
             {
             case SslTrust::Trusted:
                 ignore = true;
                 break;
             case SslTrust::Untrusted:
                 this->suppress_socket_tls_error = true;
-                emit this->networkError(UntrustedHost, "The requested host is not trusted.");
+                emit this->networkError(UntrustedHost,  toFingerprintString(cert));
                 return;
             case SslTrust::Mistrusted:
                 this->suppress_socket_tls_error = true;
-                emit this->networkError(MistrustedHost, "The requested is in the trust store and its signature changed..");
+                emit this->networkError(MistrustedHost, toFingerprintString(cert));
                 return;
             }
         }

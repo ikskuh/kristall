@@ -61,6 +61,9 @@ signals:
 
     //! The server wants us to use a client certificate
     void certificateRequired(QString const & info);
+
+    //! The server uses TLS and has a certificate.
+    void hostCertificateLoaded(QSslCertificate const & cert);
 protected:
     void emitNetworkError(QAbstractSocket::SocketError error_code, QString const & textual_description);
 };

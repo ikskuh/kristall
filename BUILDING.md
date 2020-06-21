@@ -74,6 +74,7 @@ Use the `Makefile` to build `build/kristall` instead of the default target. Ther
     - `qt5_devel`
     - `qt5_tools`
     - `libiconv_devel`
+    - `openssl_devel` (should be preinstalled)
 2. Use `make` to build th executable
 
 ## Manual Installation

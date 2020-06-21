@@ -38,6 +38,9 @@ struct SslTrust
     void load(QSettings & settings);
     void save(QSettings & settings) const;
 
+    //! Adds the certificate to the trust store. Returns `true` on success.
+    bool addTrust(QUrl const & url, QSslCertificate const & certificate);
+
     bool isTrusted(QUrl const & url, QSslCertificate const & certificate);
 
     TrustStatus getTrust(QUrl const & url, QSslCertificate const & certificate);

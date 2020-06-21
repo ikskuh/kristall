@@ -47,6 +47,27 @@ void SslTrust::save(QSettings &settings) const
     settings.endArray();
 }
 
+bool SslTrust::addTrust(const QUrl &url, const QSslCertificate &certificate)
+{
+    if(certificate.isNull())
+        return false;
+    if(auto host_or_none = trusted_hosts.get(url.host()); host_or_none)
+    {
+        return false;
+    }
+    else
+    {
+        TrustedHost host;
+        host.host_name = url.host();
+        host.trusted_at = QDateTime::currentDateTime();
+        host.public_key = certificate.publicKey();
+
+        bool ok = trusted_hosts.insert(host);
+        assert(ok);
+        return true;
+    }
+}
+
 bool SslTrust::isTrusted(QUrl const & url, const QSslCertificate &certificate)
 {
     return (getTrust(url, certificate) == Trusted);
@@ -54,6 +75,9 @@ bool SslTrust::isTrusted(QUrl const & url, const QSslCertificate &certificate)
 
 SslTrust::TrustStatus SslTrust::getTrust(const QUrl &url, const QSslCertificate &certificate)
 {
+    if(certificate.isNull())
+        return Untrusted;
+
     if(trust_level == TrustEverything)
         return Trusted;
 

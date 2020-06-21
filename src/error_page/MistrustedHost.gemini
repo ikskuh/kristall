@@ -2,6 +2,7 @@
 
 The host you tried to visit does not look trustworty anymore. The certificate changed since your last visit.
 
-If you still trust this host, please revoke trust in the settings menu, then reload the page.
+Fingerprint:
+%1
 
-> %1
+If you still trust this host, please revoke trust in the settings menu, then reload the page.

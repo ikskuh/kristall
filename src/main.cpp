@@ -15,6 +15,11 @@ SslTrust global_https_trust;
 FavouriteCollection global_favourites;
 GenericSettings global_options;
 
+QString toFingerprintString(QSslCertificate const & certificate)
+{
+    return QCryptographicHash::hash(certificate.toDer(), QCryptographicHash::Sha256).toHex(':');
+}
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);

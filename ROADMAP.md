@@ -38,6 +38,7 @@ This document contains TODO items for planned Kristall releases as well as some 
   - [ ] Make default protocol configurable
 - [ ] Ctrl-F search in documents
 - [ ] Add "view source" option to show original document
+- [ ] Implement graphic fingerprint display instead of hex-based one
 
 ## Unspecced
 - [ ] Add option: "Transient certificates survive an application reboot and are stored on disk"

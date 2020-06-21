@@ -106,6 +106,7 @@ private: // network slots
     void on_inputRequired(QString const & user_query);
     void on_networkError(ProtocolHandler::NetworkError error, QString const & reason);
     void on_certificateRequired(QString const & info);
+    void on_hostCertificateLoaded(QSslCertificate const & cert);
 
     void on_networkTimeout();
 
@@ -151,6 +152,7 @@ public:
     QModelIndex current_history_index;
 
     std::unique_ptr<QTextDocument> current_document;
+    QSslCertificate current_server_certificate;
 
     QByteArray current_buffer;
     QString current_mime;

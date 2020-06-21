@@ -3,6 +3,7 @@
 
 #include <QSettings>
 #include <QClipboard>
+#include <QSslCertificate>
 
 #include "identitycollection.hpp"
 #include "ssltrust.hpp"
@@ -43,6 +44,11 @@ struct GenericSettings
     void load(QSettings & settings);
     void save(QSettings & settings) const;
 };
+
+//! Converts the certificate to a standardized fingerprint representation
+//! also commonly used in browsers:
+//! `:`-separated SHA256 hash
+QString toFingerprintString(QSslCertificate const & certificate);
 
 extern QSettings global_settings;
 extern IdentityCollection global_identities;

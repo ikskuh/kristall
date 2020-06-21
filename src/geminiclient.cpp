@@ -9,9 +9,9 @@ GeminiClient::GeminiClient() : ProtocolHandler(nullptr)
     connect(&socket, &QSslSocket::encrypted, this, &GeminiClient::socketEncrypted);
     connect(&socket, &QSslSocket::readyRead, this, &GeminiClient::socketReadyRead);
     connect(&socket, &QSslSocket::disconnected, this, &GeminiClient::socketDisconnected);
-    connect(&socket, &QSslSocket::stateChanged, [](QSslSocket::SocketState state) {
-        qDebug() << "Socket state changed to " << state;
-    });
+//    connect(&socket, &QSslSocket::stateChanged, [](QSslSocket::SocketState state) {
+//        qDebug() << "Socket state changed to " << state;
+//    });
     connect(&socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors), this, &GeminiClient::sslErrors);
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
@@ -45,6 +45,8 @@ bool GeminiClient::startRequest(const QUrl &url, RequestOptions options)
             return false;
     }
 
+    this->is_error_state = false;
+
     this->options = options;
 
     QSslConfiguration ssl_config = socket.sslConfiguration();
@@ -54,7 +56,6 @@ bool GeminiClient::startRequest(const QUrl &url, RequestOptions options)
     else
         ssl_config.setCaCertificates(QSslConfiguration::systemCaCertificates());
     socket.setSslConfiguration(ssl_config);
-
 
     socket.connectToHostEncrypted(url.host(), url.port(1965));
 
@@ -113,7 +114,7 @@ void GeminiClient::disableClientCertificate()
 
 void GeminiClient::socketEncrypted()
 {
-    // qDebug() << "Pub key =" << socket.peerCertificate().publicKey().toPem();
+    emit this->hostCertificateLoaded(this->socket.peerCertificate());
 
     QString request = target_url.toString(QUrl::FormattingOptions(QUrl::FullyEncoded)) + "\r\n";
 
@@ -133,6 +134,8 @@ void GeminiClient::socketEncrypted()
 
 void GeminiClient::socketReadyRead()
 {
+    if(this->is_error_state) // don't do any further
+        return;
     QByteArray response = socket.readAll();
 
     if(is_receiving_body)
@@ -287,7 +290,7 @@ void GeminiClient::socketReadyRead()
 
 void GeminiClient::socketDisconnected()
 {
-    if(is_receiving_body) {
+    if(this->is_receiving_body and not this->is_error_state) {
         body.append(socket.readAll());
         emit requestComplete(body, mime_type);
     }
@@ -295,6 +298,8 @@ void GeminiClient::socketDisconnected()
 
 void GeminiClient::sslErrors(QList<QSslError> const & errors)
 {
+    emit this->hostCertificateLoaded(this->socket.peerCertificate());
+
     if(options & IgnoreTlsErrors) {
         socket.ignoreSslErrors(errors);
         return;
@@ -317,12 +322,14 @@ void GeminiClient::sslErrors(QList<QSslError> const & errors)
                 ignore = true;
                 break;
             case SslTrust::Untrusted:
+                this->is_error_state = true;
                 this->suppress_socket_tls_error = true;
-                emit this->networkError(UntrustedHost, "The requested host is not trusted.");
+                emit this->networkError(UntrustedHost, toFingerprintString(socket.peerCertificate()));
                 return;
             case SslTrust::Mistrusted:
+                this->is_error_state = true;
                 this->suppress_socket_tls_error = true;
-                emit this->networkError(MistrustedHost, "The requested host is in the trust store and its signature changed...");
+                emit this->networkError(MistrustedHost, toFingerprintString(socket.peerCertificate()));
                 return;
             }
         }
@@ -360,6 +367,7 @@ void GeminiClient::socketError(QAbstractSocket::SocketError socketError)
     if(socketError == QAbstractSocket::RemoteHostClosedError) {
         socket.close();
     } else {
+        this->is_error_state = true;
         if(not this->suppress_socket_tls_error) {
             this->emitNetworkError(socketError, socket.errorString());
         }

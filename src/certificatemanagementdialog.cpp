@@ -50,9 +50,7 @@ void CertificateManagementDialog::on_certificates_selected(QModelIndex const& in
         this->ui->cert_common_name->setText(cert.certificate.subjectInfo(QSslCertificate::CommonName).join(", "));
         this->ui->cert_expiration_date->setDateTime(cert.certificate.expiryDate());
         this->ui->cert_livetime->setText(QString("%1 days").arg(QDateTime::currentDateTime().daysTo(cert.certificate.expiryDate())));
-        this->ui->cert_fingerprint->setPlainText(
-            QCryptographicHash::hash(cert.certificate.toDer(), QCryptographicHash::Sha256).toHex(':')
-        );
+        this->ui->cert_fingerprint->setPlainText(toFingerprintString(cert.certificate));
         this->ui->cert_notes->setPlainText(cert.user_notes);
 
         this->ui->cert_host_filter->setText(cert.host_filter);

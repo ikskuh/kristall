@@ -34,6 +34,7 @@
 #include <QMimeType>
 #include <QImageReader>
 #include <QClipboard>
+#include <QDesktopServices>
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
@@ -255,6 +256,11 @@ void BrowserTab::on_certificateRequired(const QString &reason)
         this->navigateTo(this->current_location, DontPush);
     }
     this->updateUI();
+}
+
+void BrowserTab::on_hostCertificateLoaded(const QSslCertificate &cert)
+{
+    this->current_server_certificate = cert;
 }
 
 static QByteArray convertToUtf8(QByteArray const & input, QString const & charSet)
@@ -510,6 +516,8 @@ File Size: %2
 
 void BrowserTab::on_inputRequired(const QString &query)
 {
+    this->network_timeout_timer.stop();
+
     QInputDialog dialog{this};
 
     dialog.setInputMode(QInputDialog::TextInput);
@@ -644,17 +652,18 @@ void BrowserTab::on_fav_button_clicked()
     toggleIsFavourite(this->ui->fav_button->isChecked());
 }
 
-#include <QDesktopServices>
-
 void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
 {
-    qDebug() << url;
+    static int click_count = 0;
+    qDebug() << (++click_count) << url;
 
     if(url.scheme() == "kristall+ctrl")
     {
         if(this->is_internal_location) {
             QString opt = url.path();
             qDebug() << "kristall control action" << opt;
+
+            // this will bypass the TLS security
             if(opt == "ignore-tls") {
                 auto response = QMessageBox::question(
                     this,
@@ -666,6 +675,36 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
                 if(response == QMessageBox::Yes) {
                     this->startRequest(this->current_location, ProtocolHandler::IgnoreTlsErrors);
                 }
+            }
+            //
+            else if(opt == "ignore-tls-safe") {
+                this->startRequest(this->current_location, ProtocolHandler::IgnoreTlsErrors);
+            }
+            // Add this page to the list of trusted hosts and continue
+            else if(opt == "add-fingerprint") {
+                auto answer = QMessageBox::question(
+                    this,
+                    "Kristall",
+                    tr("Do you really want to add the server certificate to your list of trusted hosts?\r\nHost: %1")
+                        .arg(this->current_location.host()),
+                    QMessageBox::Yes | QMessageBox::No,
+                    QMessageBox::Yes // that's a sane option here
+                );
+                if(answer != QMessageBox::Yes) {
+                    return;
+                }
+
+                if(this->current_location.scheme() == "gemini") {
+                    global_gemini_trust.addTrust(this->current_location, this->current_server_certificate);
+                }
+                else if(this->current_location.scheme() == "https") {
+                    global_https_trust.addTrust(this->current_location, this->current_server_certificate);
+                }
+                else {
+                    assert(false and "missing protocol implementation!");
+                }
+
+                this->startRequest(this->current_location, ProtocolHandler::Default);
             }
         } else {
             QMessageBox::critical(
@@ -803,12 +842,15 @@ void BrowserTab::addProtocolHandler(std::unique_ptr<ProtocolHandler> &&handler)
     connect(handler.get(), &ProtocolHandler::inputRequired, this, &BrowserTab::on_inputRequired);
     connect(handler.get(), &ProtocolHandler::networkError, this, &BrowserTab::on_networkError);
     connect(handler.get(), &ProtocolHandler::certificateRequired, this, &BrowserTab::on_certificateRequired);
+    connect(handler.get(), &ProtocolHandler::hostCertificateLoaded, this, &BrowserTab::on_hostCertificateLoaded);
 
     this->protocol_handlers.emplace_back(std::move(handler));
 }
 
 bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions options)
 {
+    this->current_server_certificate = QSslCertificate { };
+
     this->current_handler = nullptr;
     for(auto & ptr : this->protocol_handlers)
     {
