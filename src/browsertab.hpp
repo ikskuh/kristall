@@ -80,8 +80,6 @@ private slots:
 
     void on_refresh_button_clicked();
 
-    void on_linkHovered(const QString &url);
-
     void on_fav_button_clicked();
 
     void on_text_browser_anchorClicked(const QUrl &arg1);

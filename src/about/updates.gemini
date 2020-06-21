@@ -3,20 +3,28 @@
 ## 0.3 - TLS and security
 * Adds support for transient client certificates
 * Adds support for permanent client certificates
-* Added this changelog to the software itself
+* Adds this changelog to Kristall itself
+* Adds configurable server timeout
+* Adds support for server certificate handling (TOFU) for gemini://
+* Adds support for server certificate handling (TOFU) for https://
+* Adds nice error pages instead of silently ignoring errors or displaying a message box
+* Adds key shortcut: Pressing Escape in the URL bar now resets URL bar to current location
+* Adds support for non-UTF8 encodings. iconv really helps here!
+* Adds configurable and improved redirection handling including warnings for potentially malicious redirects.
+* Adds improved text highlighting, now works with UTF-8. Still experimental, though 😉
+* Adds about:style-preview
 * Fixed bug: Status bar label now does elide links that are too long instead of resizing the window.
 * Fixed bug: Gopher end-of-file marker is now better detected.
-* Adds support for server certificate handling for gemini://
-* Reworked internal network structure. Makes room for future improvements and increases network stability a lot.
-* Pressing escape now resets search bar to current location
-* Client certificates are disabled when doing a host switch
-* Redirection handling is now configurable and contains some warning messages for potentially malicious redirects.
-gr
-* Updated application icon thanks to tiwesdaeg
+* Fixed bug: Auto-URL detection works with leading/trailing spaces
+* Fixed bug: Loading stats in status bar are now switched between tabs even when no active change is happening.
+* Fixes bug: Gemini query input now checks if the URL exceeds the specified limit.
+* Fixed bug: Outline rendering is now stable
+* Fixes bug: Media player now stops playing when switching to another site.
+* Refactored internal network structure. Makes room for future improvements and increases network stability a lot.
+* Refactored mime type handling
+* Updates application icon thanks to tiwesdaeg
 * Survives conman's client torture suite
 * Survives egsam's client torture suite
-* Adds configurable timeout
-* Allows TLS configuration for both Gemini and HTTPS.
 
 ## 0.2 - The protocol update
 * Implement Ctrl+D/*Add to favourites* menu item

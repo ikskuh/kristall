@@ -2,6 +2,11 @@
 
 
 
+bool MimeType::is(const QString &type) const
+{
+    return (this->type == type);
+}
+
 bool MimeType::is(const QString &type, const QString &sub_type) const
 {
     return (this->type == type) and (this->subtype == sub_type);

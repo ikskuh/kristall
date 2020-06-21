@@ -10,6 +10,7 @@ struct MimeType
     QString subtype;
     QMap<QString, QString> parameters;
 
+    bool is(QString const & type) const;
     bool is(QString const & type, QString const & sub_type) const;
 
     QString parameter(QString const & param_name, QString const & default_value = QString { }) const;

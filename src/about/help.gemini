@@ -1,13 +1,10 @@
 # Kristall Help
-
 This is the manual for the Kristall small-internet browser. It contains explanations on how to use the program, what each setting means and
 
 ## The Mission
-
 Kristall tries to fill the hole of graphical browsers for alternative internet protocols with a high usability and feature richness.
 
 ## The main interface
-
 The main interface of Kristall consists of three parts:
 
 * the navigation bar on top,
@@ -15,7 +12,6 @@ The main interface of Kristall consists of three parts:
 * and the status bar on the bottom
 
 ### Navigation bar
-
 In the navigation bar, you have some buttons and your URL bar.
 
 You can enter any supported URL in the URL bar, press *Return* and Kristall will then load the page in the content view. You usually need to specify the url scheme to navigate to a site, but you can omit the gemini:// prefix for gemini pages. If the URL has no scheme, it will be automatically added by Kristall.
@@ -27,22 +23,18 @@ The button with the small heart in it will add or remove this page to your favou
 The button with the shield icon toggles your use of client certificates. Pressing it when no client certificate is enabled, a dialog will pop up asking you to select or create a certificate. When a certificate is enabled, the button will have a filled shield with a small lock in it. Pressing the button now will disable the currently used certificate. Note that if you're using a transient certificate, Kristall will ask you a safety question before destroying the certificate.
 
 ### Content view
-
 The content view renders the requested document. For hypertext documents, you get a nicely rendered version of those documents, other text files are displayed in monospace. Audio and video files are played in a small built-in media player that allows you to play/pause the media, scroll around in the time line and mute/unmute audio. Images are rendered in an interactive view where you can drag the image around and zoom in/out with the mouse wheel.
 
 Documents that can't be rendered will be displayed with file size and mime type, so you can save them to disk and open the files with another program.
 
 ### Status bar
-
 The status bar displays auxiliary information:
 On the left, you can see the link target when you hover a link. On the right, you can see the document size, time needed to load the document and the mime type of the content. This is especially important when Kristall is not able to render the document nicely.
 
 ## Menus
-
 This chapter explains what each menu button does. I hope that most stuff isn't surprising 😉
 
 ### File
-
 [New Tab] will open a new tab to surf.
 
 [Save as] allows you to save the currently displayed file to your disk.
@@ -56,7 +48,6 @@ This chapter explains what each menu button does. I hope that most stuff isn't s
 [Quit] will close Kristall.
 
 ### Navigation
-
 This menu contains means to navigate the internet.
 
 [Go to home] will navigate your current tab to your home page.
@@ -70,7 +61,6 @@ This menu contains means to navigate the internet.
 [Add to favourites] will add or remove the current page to your list of favourites.
 
 ### View
-
 This menu allows you to show/hide dockable dialogs.
 
 [Document Outline] toggles the document outline. Documents with text/gemini get an automatic outline generation that can be used to navigate larger documents quicker. This document is a good place to try that out!
@@ -80,7 +70,6 @@ This menu allows you to show/hide dockable dialogs.
 [History] shows the surfing history of the current tab. Double-clicking an entry navigates back and forth in your history without disturbing the list.
 
 ### Help
-
 This menu contains some stuff that provides help or information about Kristall.
 
 [Help] displays this document.
@@ -92,11 +81,9 @@ This menu contains some stuff that provides help or information about Kristall.
 [About Qt] shows a dialog containing legal information about the Qt version used.
 
 ## Settings
-
 Kristall offers a vast amount of settings. You can style the documents to your liking, changing fonts and colors. You can also fine-tune the behaviour of Kristall to match your likings and keep track of your trusted pages.
 
 ### Generic
-
 This tab contains an unsorted list of settings that allow you to tweak Kristalls behaviour.
 
 [UI Theme] controls whether the Qt interface is displayed in a dark or a light theme. You can adjust that to your system style or to your site rendering.
@@ -120,7 +107,6 @@ This tab contains an unsorted list of settings that allow you to tweak Kristalls
 [Network Timeout] is the time a server is allowed to *not respond anything* before a error message appears. As long as a server dripples some bytes to Kristall, no timeout will happen, so having a slow or bad connection shouldn't yield timeouts.
 
 ### Style
-
 On this tab, you can tweak the document rendering in Kristall. On the left half you can see all possible colors and fonts you can tweak, on the right half of the window is a preview rendering with your currently selected style.
 Most items in the *Style* category have either a [Font], [Color] or both buttons. Click these to change the respective value.
 
@@ -157,7 +143,6 @@ Most items in the *Style* category have either a [Font], [Color] or both buttons
 The lone text with with the [host.name] text in it can be used to preview some auto-generated themes. It only refreshes the preview and seeds the auto generator with a new host name.
 
 ### Gemini TLS and HTTPS TLS
-
 These two sites contain the TLS settings for either Gemini or HTTPS. Both protocols are handled in the same way, but with different data sets, so each one has its own settings page.
 
 [Trust Level] defines how you trust hosts. [Trust on first encounter] is also known as *Trust On First Use* (or TOFU) and will store the servers public key in Kristalls database of trusted hosts. If a host is later encountered that has changed its public key, an error will be displayed to the user that this host may be compromised (as the changing of a public key can be a man-in-the-middle attack). [Trust everything] will just happily accept every TLS server, ignoring the certificate issuer completly. [Manually verify fingerprints] allows you to chose whether you trust a server or not based on its fingerprint. This will be displayed in the error page as well as the option to add that server to your list of trusted hosts.
@@ -169,14 +154,61 @@ These two sites contain the TLS settings for either Gemini or HTTPS. Both protoc
 [Revoke trust] allows you to remove a server from your database. Select a server in the list and click the button. Kristall will now act as it hasn't ever seen that server before and will now handle the server as an unknown one.
 
 ## Certificate Manager
+This dialog allows you to manage your client certificates. There are options to import, export, delete and create new certificates as well as manage your existing ones.
 
-This dialog allows you to manage your client certificates.
+The window is separated in two halves:
+The left half is the overview over your certificates and your available actions.
+The right half contains information about the currently selected certificate.
 
-> TODO
-> aodofüad
+The overview displays your certificates managed in groups. Each certificate is contained in a group that allows you to structure your certificates better. Good groups for example is *Accounts*, *Access Token*, *Games*, ... You can move certificates between different groups by using drag'n'drop. Just click the certificate and drag it over into another group.
+When selecting a certificate, its details are displayed on the right side of the screen:
+[Display Name] is the text you will see in the overview on the left and on the smaller dialog selection screen. You can type in here whatever you want, it's just for you. It's possible to edit this value.
+[Common Name] is the CN value that was used when creating the certificate. Its used as a identifier and the only required field when creating the cert. You cannot change this.
+[Expiration Date] is the date when your certificate expires.
+[Expires in] shows the numbe of days until your certificate expires. This may be more intuitive to work with, but communicating the expiration date is recommended.
+[Host Filter] is a security-measurement to shield you from accidental identity exposure. You can type in a URL with wildcards, using ? for a single character, * for any number of characters, including zero and […] for allowing a set of certain characters to be matched. When you try activating the certificate on a URL that does not match your Host Filter, Kristall will ask you if you really want to enable the certificate. This prevents you from accidentially using the certificate on a host or URL where it shouldn't be used.
+[Auto-Enable Certificate] is built on top of the Host Filter. When you don't have a client certificate enabled *and* you visit a URL that matches the Host Filter property, Kristall will ask you if you want to enable that certificate. This is convenient when you need a certificate to visit that location anyways and this allows you to quickly enable your default certificate.
+[Fingerprint] is the SHA256 fingerprint of this certificate.
+[Notes] is a free-form text field for your private use. Kristall does not use this value what-so-ever. Use this field to make notes about that certificate.
+
+You can find more information about the wildcard syntax here:
+=> https://doc.qt.io/qt-5/qregexp.html#qregexp-wildcard-matching Wildcard Matching
+
+Below the certificate overview are four buttons, described from left to the right:
+[Create certificate] will open up the certificate creation dialog and allows you to create a new certificate.
+[Import certificate] will open up the certificate i/o dialog. This allows you to import a existing certificate/key pair, supporting RSA and EC cryptography as well as PEM/DER encoded files.
+[Export certificate] will open up the certificate i/o dialog. This allows you to export the currently selected certificate into a certificate/key pair. This allows PEM/DER encoded files and you should remember/note what kind of format your key has. Exporting allows you to back up you keys, change to another browser or share them with your friends (don't!).
+[Delete certificate] will delete the currently selected certificate or group. You will get a security pop-up when deleting a certificate as this is a non-reversable operation (unless you made a back-up). Deleting empty groups is always allowed without pop-up, deleting non-empty groups is not allowed.
+
+Using passphrases for importing/exporting certificates is currently not supported.
+
+Please note that changes in this dialog are immediaty applied and there is no way back when doing an action. This may change in the future, but will stay like this for now.
+
+## Certificate Selection Dialog
+This dialog allows you to enable client certificates. It is opend by clicking the shield button in the navigation bar or it will automatically pop up when a site requests the use of a client certificate.
+
+In the upper part, this dialog provides you with a list of all your persistent certificates. If you want to use one of those, select the certificate and click [Use]. Or simply double-click a certificate to chose it.
+You can also ad-hoc create a new certificate with the click on [Create new identity]. This will open up the certificate creation dialog which allows you to create new identities.
+On the lower part you can create temporary certificates that have a short lifespan and will be destroyed as soon as you disable the certificate or close your client.
+
+## Certificate Creation Dialog
+This dialog provides means to create a new persistent identity.
+
+[Group] is the name of the group where this certificate should be stored. You can either chose an existing group from the drop down or just enter a non-existing name to create a new group ad-hoc.
+[Display Name] is the title of the certificate that Kristall will show you. It will not be sent to a server ever.
+[Common Name] is the CN field in the X509 certificate. It's required for identitication to the hosts.
+[Exporation Date] is the date when your certificate becomes invalid. Kristall choses a default of "1 year from now on", but you can chose any time you want, even just 30 minutes. Better chose a long time though if you don't know how long you need that certificate.
+
+With a click on [OK], Kristall will create a new certificate and put it in your certificate store. It can then be selected from the certificate selection dialog or certificate manager.
+
+## Certificate I/O Dialog
+This dialog enables you to import or export certificate-key-pairs into or from Kristall.
+
+[Key Type] contains the type of your key. If you import, you need to select the correct key type there, if you export, it will be disabled, but shows the correct type of key for your identity.
+[Key File] needs to be a full path to either a .der or .pem file where Kristall will load/store the key from/to.
+[Certificate File] needs to be a full path to either a .der or .pem file where Kristall will load/store the certificate from/to.
 
 ## Shortcuts
-
 This list contains all built-in shortcuts:
 
 * Ctrl+T ⇒ New tab
@@ -191,7 +223,6 @@ This list contains all built-in shortcuts:
 * F5 ⇒ Refresh current tab
 
 ## Protocol support
-
 These protocols are currently supported via their respective URL schemes:
 => https://gemini.circumlunar.space/ Gemini
 => https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol HTTP/HTTPS
@@ -199,14 +230,9 @@ These protocols are currently supported via their respective URL schemes:
 => https://en.wikipedia.org/wiki/Finger_protocol Finger
 
 ### Gemini
-
 Kristall tries to implement the current feature set of the gemini specification. All response types of a gemini server are relayed to the user and the user choses when to do certain actions or not. Redirections are followed automatically.
 
-One thing that is not implemented yet is correct TLS handling:
-Kristall ignores all server certificates and happily accepts any connection. It also does not support client certificates yet. This is subject to change in the next release cycle, stay tuned!
-
 ### Gopher
-
 Kristall provides access to gopherspace and supports most modern/common file types:
 * Gophermaps / Directories
 * Text
@@ -218,15 +244,24 @@ Kristall provides access to gopherspace and supports most modern/common file typ
 There is currently no support for automatic redirection on URL: resources or special/oldschool file types like DOS/HexBin/UUencoded data.
 
 ### Built-in sites
-
 There is also the scheme about: which can be used to access internal sites for configuration, usability or help (this is one of them!):
 => about:blank
 => about:favourites
 => about:help
 => about:updates
+=> about:style-preview
+
+## Security Concept
+Kristall has some 
+> TODO: Write
+
+* Client certificates are disabled when doing a host switch
+* Client certificates allow host filtering
+* Redirects check certain stuff
+* TOFU
+* CA
 
 ## Supported Media Types
-
 * text/plain
 * text/gemini
 * text/html
@@ -239,7 +274,6 @@ There is also the scheme about: which can be used to access internal sites for c
 All unrecognized text files will be rendered as text/plain documents with a monospaced font.
 
 ## Contact me
-
 I'm eager to hear from your experience! Did everything work? Is something especially cool or bad? Tell me what you think or what annoys you!
 
 Please note that everything here is still work-in-progress and may crash!

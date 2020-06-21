@@ -392,7 +392,7 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
 
     bool plaintext_only = (global_options.text_display == GenericSettings::PlainText);
 
-    if (not plaintext_only and mime_text.startsWith("text/gemini"))
+    if (not plaintext_only and mime.is("text", "gemini"))
     {
         document = GeminiRenderer::render(
             data,
@@ -400,18 +400,14 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
             doc_style,
             this->outline);
     }
-    else if (not plaintext_only and mime_text.startsWith("text/gophermap"))
+    else if (not plaintext_only and mime.is("text","gophermap"))
     {
         document = GophermapRenderer::render(
             data,
             this->current_location,
             doc_style);
     }
-    else if (not plaintext_only and mime_text.startsWith("text/finger"))
-    {
-        document = PlainTextRenderer::render(data, doc_style);
-    }
-    else if (not plaintext_only and mime_text.startsWith("text/html"))
+    else if (not plaintext_only and mime.is("text","html"))
     {
         document = std::make_unique<QTextDocument>();
 
@@ -421,7 +417,7 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
         document->setHtml(QString::fromUtf8(data));
     }
 #if defined(QT_FEATURE_textmarkdownreader)
-    else if (not plaintext_only and mime_text.startsWith("text/markdown"))
+    else if (not plaintext_only and mime.is("text","markdown"))
     {
         document = std::make_unique<QTextDocument>();
         document->setDefaultFont(doc_style.standard_font);
@@ -430,11 +426,11 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
         document->setMarkdown(QString::fromUtf8(data));
     }
 #endif
-    else if (mime_text.startsWith("text/"))
+    else if (mime.is("text"))
     {
         document = PlainTextRenderer::render(data, doc_style);
     }
-    else if (mime_text.startsWith("image/"))
+    else if (mime.is("image"))
     {
         doc_type = Image;
 
@@ -467,7 +463,7 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
 
         this->ui->graphics_browser->fitInView(graphics_scene.sceneRect(), Qt::KeepAspectRatio);
     }
-    else if (mime_text.startsWith("video/") or mime_text.startsWith("audio/"))
+    else if (mime.is("video") or mime.is("audio"))
     {
         doc_type = Media;
         this->ui->media_browser->setMedia(data, this->current_location, mime_text);
@@ -625,13 +621,6 @@ void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
     }
 }
 
-
-void BrowserTab::on_linkHovered(const QString &url)
-{
-    if(not url.startsWith("kristall+ctrl:"))
-        this->mainWindow->setUrlPreview(QUrl(url));
-}
-
 void BrowserTab::setErrorMessage(const QString &msg)
 {
     this->on_requestComplete(
@@ -748,7 +737,7 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
 
 void BrowserTab::on_text_browser_highlighted(const QUrl &url)
 {
-    if (url.isValid())
+    if (url.isValid() and not (url.scheme() == "kristall+ctrl"))
     {
         QUrl real_url = url;
         if (real_url.isRelative())
