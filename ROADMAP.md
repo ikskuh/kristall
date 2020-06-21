@@ -63,3 +63,5 @@ open, which was a bit confusing (and would also be a really cool
 addition for easy comparison of responses).
 
 <tiwesdaeg> gemini://tilde.pink/ the first paragraph is displayed with large spacing
+
+<styan> xq: Also, Kristall still compilers on my FreeBSD laptop.  And still core-dumps if it is compiled while LibreSSL is installed (not a Kristall problem, just a QT problem).

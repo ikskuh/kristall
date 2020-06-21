@@ -25,6 +25,9 @@ make
 - It seems like Qt wants `libzstd.so.3.1` instead of `libzstd.so.3.2`. Just symlink that file into the build directory
 - Use `make` and not `gmake` to build the project.
 
+#### Notes on FreeBSD
+- Kristall can't be used with LibreSSL, but requires OpenSSL (probably because of Qt)
+
 #### Notes for Ubuntu
 Supported Versions: 18.04, 20.04
 Unsupported Versions: 16.04
