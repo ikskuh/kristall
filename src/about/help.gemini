@@ -6,7 +6,6 @@ This is the manual for the Kristall small-internet browser. It contains explanat
 
 Kristall tries to fill the hole of graphical browsers for alternative internet protocols with a high usability and feature richness.
 
-
 ## The main interface
 
 The main interface of Kristall consists of three parts:
@@ -17,19 +16,23 @@ The main interface of Kristall consists of three parts:
 
 ### Navigation bar
 
-In the navigation bar, you have 4 buttons and your URL bar.
+In the navigation bar, you have some buttons and your URL bar.
 
-The two buttons on the left give you the ability to navigate back and forth in your browsing history. The refresh button will reload the current page. The button with the small heart in it will add or remove this page to your favourites.
+You can enter any supported URL in the URL bar, press *Return* and Kristall will then load the page in the content view. You usually need to specify the url scheme to navigate to a site, but you can omit the gemini:// prefix for gemini pages. If the URL has no scheme, it will be automatically added by Kristall.
 
-You can enter any supported URL in the URL bar and Kristall will then load the page in the content view.
+The two buttons on the left give you the ability to navigate back and forth in your browsing history. The button with the round arrow is the refresh button and allows you to reload the currently displayed site. While a site is loading, it is replaced with the stop button (square icon) that allows you to cancel the current request.
 
-## Content view
+On the right side of the URL bar you will find two buttons:
+The button with the small heart in it will add or remove this page to your favourites, this can be done as well by pressing CTRL-D. When the heart on the button is filled, the site is contained in your favourites. If not, the heart has only a outline display.
+The button with the shield icon toggles your use of client certificates. Pressing it when no client certificate is enabled, a dialog will pop up asking you to select or create a certificate. When a certificate is enabled, the button will have a filled shield with a small lock in it. Pressing the button now will disable the currently used certificate. Note that if you're using a transient certificate, Kristall will ask you a safety question before destroying the certificate.
+
+### Content view
 
 The content view renders the requested document. For hypertext documents, you get a nicely rendered version of those documents, other text files are displayed in monospace. Audio and video files are played in a small built-in media player that allows you to play/pause the media, scroll around in the time line and mute/unmute audio. Images are rendered in an interactive view where you can drag the image around and zoom in/out with the mouse wheel.
 
 Documents that can't be rendered will be displayed with file size and mime type, so you can save them to disk and open the files with another program.
 
-## Status bar
+### Status bar
 
 The status bar displays auxiliary information:
 On the left, you can see the link target when you hover a link. On the right, you can see the document size, time needed to load the document and the mime type of the content. This is especially important when Kristall is not able to render the document nicely.
@@ -45,6 +48,8 @@ This chapter explains what each menu button does. I hope that most stuff isn't s
 [Save as] allows you to save the currently displayed file to your disk.
 
 [Close Tab] will close the current tab. Does the same as clicking the small (×) button on the tab itself.
+
+[Manage Certificates] will bring up a dialog that allows you to create, delete or change client certificates.
 
 [Settings] will open a dialog that helps you configure Kristall to your likings.
 
@@ -74,13 +79,13 @@ This menu allows you to show/hide dockable dialogs.
 
 [History] shows the surfing history of the current tab. Double-clicking an entry navigates back and forth in your history without disturbing the list.
 
-[Client Certificates] opens a yet-to-be-implemented dock for managing client certificates.
-
 ### Help
 
 This menu contains some stuff that provides help or information about Kristall.
 
 [Help] displays this document.
+
+[Changelog] will open a document that lists the changes in Kristall in a bulleted list.
 
 [About] shows a dialog with some information about Kristall.
 
@@ -88,7 +93,7 @@ This menu contains some stuff that provides help or information about Kristall.
 
 ## Settings
 
-Kristall offers a vast amount of settings. You can style the documents to your liking, changing fonts and colors. You can also fine-tune the behaviour of Kristall to match your likings.
+Kristall offers a vast amount of settings. You can style the documents to your liking, changing fonts and colors. You can also fine-tune the behaviour of Kristall to match your likings and keep track of your trusted pages.
 
 ### Generic
 
@@ -107,6 +112,12 @@ This tab contains an unsorted list of settings that allow you to tweak Kristalls
 [Gopher Map] allows you to chose a modern iconized style for gopher maps or, if you are an old schooler, just use a textual description of the item types in the map.
 
 [Unknown Scheme] changes the behaviour how Kristall handles unknown/disabled URL schemes. [Use OS default handler] will invoke your OS default, [Display error message] will just pop up a message box and tell you that Kristall cannot handle this URL.
+
+[Max. Number of Redirections] is a setting that allows you to restrict sites to redirect you only a certain amount of times before erroring out. Setting this to 0 will disable redirections completly, displaying an error with the target URL.
+
+[Redirection Handling] allows you to fine-tune the way Kristall allows redirections. Each of the options defines if Kristall should ask you to allow the redirect or do it silently. [Ask for cross-scheme redirection] will pop up a message box if a host tries to redirect you from one URL scheme to another, e.g. when a web server redirects you from HTTP to HTTPS. [Ask for cross-host redirection] will pop up the message box for all redirections through host boundaries, e.g. when example.com redirects you to www.example.com. [Ask for cross-scheme or cross-host redirection] will enable both of the previous behaviours, asking when any cross-boundary redirection happens. [Ask for all redirections] will pop up a message box every time a server tries to redirect you, keeping you in full control over all redirections. [Silently redirect everything] is the exact oppositve of that, accepting all redirections without warning or notice.
+
+[Network Timeout] is the time a server is allowed to *not respond anything* before a error message appears. As long as a server dripples some bytes to Kristall, no timeout will happen, so having a slow or bad connection shouldn't yield timeouts.
 
 ### Style
 
@@ -144,6 +155,25 @@ Most items in the *Style* category have either a [Font], [Color] or both buttons
 [Presets] is a cool feature to save, restore and share your color themes. The dropdown contains a list of all previously created colors schemes. With the [+] button you can create a scheme with a unique name. The floppy disk button will override the currently selected preset with all the settings displayed above. The folder button will restore a previously saved preset. The last two buttons allow you to import/export presets to disk and share them with your friends! Share all your beautiful color schemes with the world!
 
 The lone text with with the [host.name] text in it can be used to preview some auto-generated themes. It only refreshes the preview and seeds the auto generator with a new host name.
+
+### Gemini TLS and HTTPS TLS
+
+These two sites contain the TLS settings for either Gemini or HTTPS. Both protocols are handled in the same way, but with different data sets, so each one has its own settings page.
+
+[Trust Level] defines how you trust hosts. [Trust on first encounter] is also known as *Trust On First Use* (or TOFU) and will store the servers public key in Kristalls database of trusted hosts. If a host is later encountered that has changed its public key, an error will be displayed to the user that this host may be compromised (as the changing of a public key can be a man-in-the-middle attack). [Trust everything] will just happily accept every TLS server, ignoring the certificate issuer completly. [Manually verify fingerprints] allows you to chose whether you trust a server or not based on its fingerprint. This will be displayed in the error page as well as the option to add that server to your list of trusted hosts.
+
+[Certificate Authorities] allows you to enable/disable the use of your systems CA trust store. Sites that can be enabled via the CA system will not be added to the list of trusted hosts (as it is only meant for TOFU/manual implementation), but will not error out. [Use local certificate authorities] will enable that behaviour, [Don't use local certificate authorities] will disable it.
+
+[Trusted Hosts] displays your database of currently trusted hosts for either Gemini or HTTPS servers. You can see the host name (which is used for identification), the date when you trusted the server and the type of the key that server is using.
+
+[Revoke trust] allows you to remove a server from your database. Select a server in the list and click the button. Kristall will now act as it hasn't ever seen that server before and will now handle the server as an unknown one.
+
+## Certificate Manager
+
+This dialog allows you to manage your client certificates.
+
+> TODO
+> aodofüad
 
 ## Shortcuts
 
@@ -193,6 +223,7 @@ There is also the scheme about: which can be used to access internal sites for c
 => about:blank
 => about:favourites
 => about:help
+=> about:updates
 
 ## Supported Media Types
 
