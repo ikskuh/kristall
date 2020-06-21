@@ -2,11 +2,6 @@
 
 This document contains TODO items for planned Kristall releases as well as some random TODOs and reported bugs.
 
-## 0.3 - TLS and security
-- [ ] TLS Handling
-  - [ ] Add management for client certificates
-    - [ ] Allow merge/delete/merge groups
-
 ## 0.4 - The colorful release
 - [ ] Implement dual-colored icon theme
 - [ ] Improve UX
