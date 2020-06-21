@@ -396,7 +396,7 @@ QMimeData *IdentityCollection::mimeData(const QModelIndexList &indexes) const
             stream << identity.host_filter;
             stream << identity.auto_enable;
             stream << identity.certificate.toDer();
-            stream << identity.private_key.algorithm();
+            stream << int(identity.private_key.algorithm());
             stream << identity.private_key.toDer();
         }
         assert(buffer.size() > 0);
@@ -451,7 +451,7 @@ bool IdentityCollection::dropMimeData(const QMimeData *data, Qt::DropAction acti
             QDataStream stream { &ident_blob, QIODevice::ReadOnly };
 
             QByteArray cert_data, key_data;
-            QSsl::KeyAlgorithm key_algorithm;
+            int key_algorithm;
 
             stream >> identity.display_name;
             stream >> identity.user_notes;
@@ -462,7 +462,7 @@ bool IdentityCollection::dropMimeData(const QMimeData *data, Qt::DropAction acti
             stream >> key_data;
 
             identity.certificate = QSslCertificate { cert_data, QSsl::Der };
-            identity.private_key = QSslKey { key_data, key_algorithm, QSsl::Der, QSsl::PrivateKey };
+            identity.private_key = QSslKey { key_data, QSsl::KeyAlgorithm(key_algorithm), QSsl::Der, QSsl::PrivateKey };
         }
 
         if(not identity.isValid())
