@@ -185,12 +185,13 @@ void SettingsDialog::setOptions(const GenericSettings &options)
 {
     this->current_options = options;
 
-    if(this->current_options.theme == Theme::light)
-        this->ui->ui_theme->setCurrentIndex(0);
-    else if(this->current_options.theme == Theme::dark)
-        this->ui->ui_theme->setCurrentIndex(1);
-    else
-        this->ui->ui_theme->setCurrentIndex(0);
+    this->ui->ui_theme->setCurrentIndex(0);
+    for(int i = 0; i < this->ui->ui_theme->count(); i++) {
+        if(this->ui->ui_theme->itemData(i).toInt() == int(options.theme)) {
+            this->ui->ui_theme->setCurrentIndex(i);
+            break;
+        }
+    }
 
     this->ui->start_page->setText(this->current_options.start_page);
 
