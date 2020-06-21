@@ -55,11 +55,13 @@ bool GeminiClient::startRequest(const QUrl &url, RequestOptions options)
         ssl_config.setCaCertificates(QSslConfiguration::systemCaCertificates());
     socket.setSslConfiguration(ssl_config);
 
+
     socket.connectToHostEncrypted(url.host(), url.port(1965));
 
-    buffer.clear();
-    body.clear();
-    is_receiving_body = false;
+    this->buffer.clear();
+    this->body.clear();
+    this->is_receiving_body = false;
+    this->suppress_socket_tls_error = true;
 
     if(not socket.isOpen())
         return false;
@@ -309,13 +311,18 @@ void GeminiClient::sslErrors(QList<QSslError> const & errors)
         bool ignore = false;
         if(SslTrust::isTrustRelated(err.error()))
         {
-            if(global_gemini_trust.isTrusted(target_url, socket.peerCertificate()))
+            switch(global_gemini_trust.getTrust(target_url, socket.peerCertificate()))
             {
+            case SslTrust::Trusted:
                 ignore = true;
-            }
-            else
-            {
+                break;
+            case SslTrust::Untrusted:
+                this->suppress_socket_tls_error = true;
                 emit this->networkError(UntrustedHost, "The requested host is not trusted.");
+                return;
+            case SslTrust::Mistrusted:
+                this->suppress_socket_tls_error = true;
+                emit this->networkError(MistrustedHost, "The requested host is in the trust store and its signature changed...");
                 return;
             }
         }
@@ -353,6 +360,8 @@ void GeminiClient::socketError(QAbstractSocket::SocketError socketError)
     if(socketError == QAbstractSocket::RemoteHostClosedError) {
         socket.close();
     } else {
-        this->emitNetworkError(socketError, socket.errorString());
+        if(not this->suppress_socket_tls_error) {
+            this->emitNetworkError(socketError, socket.errorString());
+        }
     }
 }

@@ -41,6 +41,8 @@ private:
     RequestOptions options;
 
     CryptoIdentity current_identity;
+
+    bool suppress_socket_tls_error;
 };
 
 #endif // WEBCLIENT_HPP

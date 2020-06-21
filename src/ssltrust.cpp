@@ -49,15 +49,20 @@ void SslTrust::save(QSettings &settings) const
 
 bool SslTrust::isTrusted(QUrl const & url, const QSslCertificate &certificate)
 {
+    return (getTrust(url, certificate) == Trusted);
+}
+
+SslTrust::TrustStatus SslTrust::getTrust(const QUrl &url, const QSslCertificate &certificate)
+{
     if(trust_level == TrustEverything)
-        return true;
+        return Trusted;
 
     if(auto host_or_none = trusted_hosts.get(url.host()); host_or_none)
     {
         if(host_or_none->public_key == certificate.publicKey())
-            return true;
+            return Trusted;
         qDebug() << "certificate mismatch for" << url;
-        return false;
+        return Mistrusted;
     }
     else
     {
@@ -70,9 +75,9 @@ bool SslTrust::isTrusted(QUrl const & url, const QSslCertificate &certificate)
 
             bool ok = trusted_hosts.insert(host);
             assert(ok);
-            return true;
+            return Trusted;
         }
-        return false;
+        return Untrusted;
     }
 }
 

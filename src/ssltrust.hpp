@@ -16,6 +16,12 @@ struct SslTrust
         TrustNoOne      = 2, // approve every fingerprint by hand
     };
 
+    enum TrustStatus {
+        Untrusted = 0,
+        Trusted = 1,
+        Mistrusted = 2,
+    };
+
     SslTrust() = default;
     SslTrust(SslTrust const &) = default;
     SslTrust(SslTrust &&) = default;
@@ -33,6 +39,8 @@ struct SslTrust
     void save(QSettings & settings) const;
 
     bool isTrusted(QUrl const & url, QSslCertificate const & certificate);
+
+    TrustStatus getTrust(QUrl const & url, QSslCertificate const & certificate);
 
     static bool isTrustRelated(QSslError::SslError err);
 };

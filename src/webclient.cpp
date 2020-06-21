@@ -54,6 +54,8 @@ bool WebClient::startRequest(const QUrl &url, RequestOptions options)
     if(this->current_reply == nullptr)
         return false;
 
+    this->suppress_socket_tls_error = true;
+
     connect(this->current_reply, &QNetworkReply::readyRead, this, &WebClient::on_data);
     connect(this->current_reply, &QNetworkReply::finished, this,  &WebClient::on_finished);
     connect(this->current_reply, &QNetworkReply::sslErrors, this, &WebClient::on_sslErrors);
@@ -129,7 +131,10 @@ void WebClient::on_finished()
 
         qDebug() << "web network error" << reply->errorString();
         qDebug() << this->body;
-        emit this->networkError(error, reply->errorString());
+
+        if(not this->suppress_socket_tls_error) {
+            emit this->networkError(error, reply->errorString());
+        }
     }
     else
     {
@@ -170,13 +175,18 @@ void WebClient::on_sslErrors(const QList<QSslError> &errors)
         bool ignore = false;
         if(SslTrust::isTrustRelated(err.error()))
         {
-            if(global_https_trust.isTrusted(current_reply->url(), current_reply->sslConfiguration().peerCertificate()))
+            switch(global_https_trust.getTrust(this->current_reply->url(), this->current_reply->sslConfiguration().peerCertificate()))
             {
+            case SslTrust::Trusted:
                 ignore = true;
-            }
-            else
-            {
+                break;
+            case SslTrust::Untrusted:
+                this->suppress_socket_tls_error = true;
                 emit this->networkError(UntrustedHost, "The requested host is not trusted.");
+                return;
+            case SslTrust::Mistrusted:
+                this->suppress_socket_tls_error = true;
+                emit this->networkError(MistrustedHost, "The requested is in the trust store and its signature changed..");
                 return;
             }
         }

@@ -41,6 +41,7 @@ private slots:
 
 private:
     bool is_receiving_body;
+    bool suppress_socket_tls_error;
 
     QUrl target_url;
     QSslSocket socket;
