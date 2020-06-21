@@ -275,7 +275,11 @@ static QByteArray convertToUtf8(QByteArray const & input, QString const & charSe
 
     char temp_buffer[4096];
 
+#if defined(__NetBSD__)
+    char const * input_ptr = reinterpret_cast<char const *>(input.data());
+#else
     char * input_ptr = const_cast<char *>(reinterpret_cast<char const *>(input.data()));
+#endif
     size_t input_size = input.size();
 
     while(input_size > 0)
