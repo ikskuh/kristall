@@ -8,6 +8,8 @@
 
 #include "kristall.hpp"
 
+#include "textstyleinstance.hpp"
+
 static QByteArray trim_whitespace(QByteArray items)
 {
     int start = 0;
@@ -29,37 +31,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
         DocumentStyle const & themed_style,
         DocumentOutlineModel &outline)
 {
-    QTextCharFormat preformatted;
-    preformatted.setFont(themed_style.preformatted_font);
-    preformatted.setForeground(themed_style.preformatted_color);
-
-    QTextCharFormat standard;
-    standard.setFont(themed_style.standard_font);
-    standard.setForeground(themed_style.standard_color);
-
-    QTextCharFormat standard_link;
-    standard_link.setFont(themed_style.standard_font);
-    standard_link.setForeground(QBrush(themed_style.internal_link_color));
-
-    QTextCharFormat external_link;
-    external_link.setFont(themed_style.standard_font);
-    external_link.setForeground(QBrush(themed_style.external_link_color));
-
-    QTextCharFormat cross_protocol_link;
-    cross_protocol_link.setFont(themed_style.standard_font);
-    cross_protocol_link.setForeground(QBrush(themed_style.cross_scheme_link_color));
-
-    QTextCharFormat standard_h1;
-    standard_h1.setFont(themed_style.h1_font);
-    standard_h1.setForeground(QBrush(themed_style.h1_color));
-
-    QTextCharFormat standard_h2;
-    standard_h2.setFont(themed_style.h2_font);
-    standard_h2.setForeground(QBrush(themed_style.h2_color));
-
-    QTextCharFormat standard_h3;
-    standard_h3.setFont(themed_style.h3_font);
-    standard_h3.setForeground(QBrush(themed_style.h3_color));
+    TextStyleInstance text_style { themed_style };
 
     std::unique_ptr<GeminiDocument> result = std::make_unique<GeminiDocument>();
     result->setDocumentMargin(themed_style.margin);
@@ -105,7 +77,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
             else
             {
                 cursor.setBlockFormat(preformatted_format);
-                cursor.setCharFormat(preformatted);
+                cursor.setCharFormat(text_style.preformatted);
                 cursor.insertText(line + "\n");
             }
         }
@@ -125,7 +97,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
 
                 QString item = trim_whitespace(line.mid(1));
 
-                cursor.insertText(item, standard);
+                cursor.insertText(item, text_style.standard);
                 continue;
             }
             else
@@ -146,7 +118,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 blockquote  = true;
 
                 cursor.setBlockFormat(block_quote_format);
-                cursor.insertText(trim_whitespace(line.mid(1)) + "\n", standard);
+                cursor.insertText(trim_whitespace(line.mid(1)) + "\n", text_style.standard);
 
                 continue;
             }
@@ -163,7 +135,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 auto heading = trim_whitespace(line.mid(3));
 
                 auto id = unique_anchor_name();
-                auto fmt = standard_h3;
+                auto fmt = text_style.standard_h3;
                 fmt.setAnchor(true);
                 fmt.setAnchorNames(QStringList { id });
 
@@ -175,7 +147,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 auto heading = trim_whitespace(line.mid(2));
 
                 auto id = unique_anchor_name();
-                auto fmt = standard_h2;
+                auto fmt = text_style.standard_h2;
                 fmt.setAnchor(true);
                 fmt.setAnchorNames(QStringList { id });
 
@@ -187,7 +159,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 auto heading = trim_whitespace(line.mid(1));
 
                 auto id = unique_anchor_name();
-                auto fmt = standard_h1;
+                auto fmt = text_style.standard_h1;
                 fmt.setAnchor(true);
                 fmt.setAnchorNames(QStringList { id });
 
@@ -227,18 +199,18 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
 
                 // qDebug() << link << title;
 
-                auto fmt = standard_link;
+                auto fmt = text_style.standard_link;
 
                 QString prefix;
                 if (absolute_url.host() == root_url.host())
                 {
                     prefix = themed_style.internal_link_prefix;
-                    fmt = standard_link;
+                    fmt = text_style.standard_link;
                 }
                 else
                 {
                     prefix = themed_style.external_link_prefix;
-                    fmt = external_link;
+                    fmt = text_style.external_link;
                 }
 
                 QString suffix = "";
@@ -246,7 +218,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 {
                     if(absolute_url.scheme() != "kristall+ctrl") {
                         suffix = " [" + absolute_url.scheme().toUpper() + "]";
-                        fmt = cross_protocol_link;
+                        fmt = text_style.cross_protocol_link;
                     }
                 }
 
@@ -267,7 +239,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                     bool rendering_bold = false;
                     bool rendering_underlined = false;
 
-                    QTextCharFormat fmt = standard;
+                    QTextCharFormat fmt = text_style.standard;
 
                     QByteArray buffer;
 
@@ -283,7 +255,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                         char c = line.at(i);
                         if(c == ' ') {
                             flush();
-                            fmt = standard;
+                            fmt = text_style.standard;
                             buffer.append(' ');
                             rendering_bold = false;
                             rendering_underlined = false;
@@ -320,10 +292,10 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
 
                     flush();
 
-                    cursor.insertText("\n", standard);
+                    cursor.insertText("\n", text_style.standard);
                 }
                 else {
-                    cursor.insertText(line + "\n", standard);
+                    cursor.insertText(line + "\n", text_style.standard);
                 }
             }
         }

@@ -5,6 +5,7 @@
 #include "renderers/gophermaprenderer.hpp"
 #include "renderers/geminirenderer.hpp"
 #include "renderers/plaintextrenderer.hpp"
+#include "renderers/markdownrenderer.hpp"
 
 #include "mimeparser.hpp"
 
@@ -416,16 +417,14 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
         document->setDocumentMargin(doc_style.margin);
         document->setHtml(QString::fromUtf8(data));
     }
-#if defined(QT_FEATURE_textmarkdownreader)
     else if (not plaintext_only and mime.is("text","markdown"))
     {
-        document = std::make_unique<QTextDocument>();
-        document->setDefaultFont(doc_style.standard_font);
-        document->setDefaultStyleSheet(doc_style.toStyleSheet());
-        document->setDocumentMargin(doc_style.margin);
-        document->setMarkdown(QString::fromUtf8(data));
+        document = MarkdownRenderer::render(
+            data,
+            this->current_location,
+            doc_style,
+            this->outline);
     }
-#endif
     else if (mime.is("text"))
     {
         document = PlainTextRenderer::render(data, doc_style);

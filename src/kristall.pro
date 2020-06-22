@@ -67,6 +67,8 @@ SOURCES += \
     ioutil.cpp \
     main.cpp \
     mainwindow.cpp \
+    renderers/markdownrenderer.cpp \
+    renderers/textstyleinstance.cpp \
     widgets/mediaplayer.cpp \
     mimeparser.cpp \
     protocolhandler.cpp \
@@ -105,6 +107,8 @@ HEADERS += \
     ioutil.hpp \
     kristall.hpp \
     mainwindow.hpp \
+    renderers/markdownrenderer.hpp \
+    renderers/textstyleinstance.hpp \
     widgets/mediaplayer.hpp \
     mimeparser.hpp \
     protocolhandler.hpp \
