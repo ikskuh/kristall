@@ -3,6 +3,8 @@ HEADERS += \
   $$PWD/src/buffer.h \
   $$PWD/src/chunk.h \
   $$PWD/src/cmark.h \
+  $$PWD/src/cmark_export.h \
+  $$PWD/src/cmark_version.h \
   $$PWD/src/config.h \
   $$PWD/src/cmark_ctype.h \
   $$PWD/src/config.h \

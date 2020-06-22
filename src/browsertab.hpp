@@ -12,7 +12,7 @@
 
 #include "documentoutlinemodel.hpp"
 #include "tabbrowsinghistory.hpp"
-#include "geminirenderer.hpp"
+#include "renderers/geminirenderer.hpp"
 
 #include "cryptoidentity.hpp"
 

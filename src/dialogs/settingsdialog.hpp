@@ -3,7 +3,7 @@
 
 #include <QDialog>
 
-#include "geminirenderer.hpp"
+#include "renderers/geminirenderer.hpp"
 #include "protocolsetup.hpp"
 #include "documentstyle.hpp"
 #include "ssltrust.hpp"

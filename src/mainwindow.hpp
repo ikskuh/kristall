@@ -7,10 +7,10 @@
 
 
 #include "favouritecollection.hpp"
-#include "geminirenderer.hpp"
+#include "renderers/geminirenderer.hpp"
 #include "protocolsetup.hpp"
 
-#include "elidelabel.hpp"
+#include "widgets/elidelabel.hpp"
 
 #include "browsertab.hpp"
 

@@ -52,90 +52,90 @@ DEPENDPATH += $$PWD/../lib/luis-l-gist/
 
 SOURCES += \
     ../lib/luis-l-gist/interactiveview.cpp \
-    abouthandler.cpp \
     browsertab.cpp \
     certificatehelper.cpp \
-    certificateiodialog.cpp \
-    certificatemanagementdialog.cpp \
-    certificateselectiondialog.cpp \
     cryptoidentity.cpp \
+    dialogs/certificateiodialog.cpp \
+    dialogs/certificatemanagementdialog.cpp \
+    dialogs/certificateselectiondialog.cpp \
+    dialogs/newidentitiydialog.cpp \
+    dialogs/settingsdialog.cpp \
     documentoutlinemodel.cpp \
     documentstyle.cpp \
-    elidelabel.cpp \
     favouritecollection.cpp \
-    filehandler.cpp \
-    fingerclient.cpp \
-    geminiclient.cpp \
-    geminirenderer.cpp \
-    gopherclient.cpp \
-    gophermaprenderer.cpp \
     identitycollection.cpp \
     ioutil.cpp \
     main.cpp \
     mainwindow.cpp \
-    mediaplayer.cpp \
+    widgets/mediaplayer.cpp \
     mimeparser.cpp \
-    newidentitiydialog.cpp \
-    plaintextrenderer.cpp \
     protocolhandler.cpp \
+    protocols/abouthandler.cpp \
+    protocols/filehandler.cpp \
+    protocols/fingerclient.cpp \
+    protocols/geminiclient.cpp \
+    protocols/gopherclient.cpp \
+    protocols/webclient.cpp \
     protocolsetup.cpp \
-    searchbar.cpp \
-    settingsdialog.cpp \
+    renderers/geminirenderer.cpp \
+    renderers/gophermaprenderer.cpp \
+    renderers/plaintextrenderer.cpp \
     ssltrust.cpp \
-    ssltrusteditor.cpp \
     tabbrowsinghistory.cpp \
     trustedhost.cpp \
     trustedhostcollection.cpp \
-    webclient.cpp
+    widgets/elidelabel.cpp \
+    widgets/searchbar.cpp \
+    widgets/ssltrusteditor.cpp
 
 HEADERS += \
     ../lib/luis-l-gist/interactiveview.hpp \
-    abouthandler.hpp \
     browsertab.hpp \
     certificatehelper.hpp \
-    certificateiodialog.hpp \
-    certificatemanagementdialog.hpp \
-    certificateselectiondialog.hpp \
     cryptoidentity.hpp \
+    dialogs/certificateiodialog.hpp \
+    dialogs/certificatemanagementdialog.hpp \
+    dialogs/certificateselectiondialog.hpp \
+    dialogs/newidentitiydialog.hpp \
+    dialogs/settingsdialog.hpp \
     documentoutlinemodel.hpp \
     documentstyle.hpp \
-    elidelabel.hpp \
     favouritecollection.hpp \
-    filehandler.hpp \
-    fingerclient.hpp \
-    geminiclient.hpp \
-    geminirenderer.hpp \
-    gopherclient.hpp \
-    gophermaprenderer.hpp \
     identitycollection.hpp \
     ioutil.hpp \
     kristall.hpp \
     mainwindow.hpp \
-    mediaplayer.hpp \
+    widgets/mediaplayer.hpp \
     mimeparser.hpp \
-    newidentitiydialog.hpp \
-    plaintextrenderer.hpp \
     protocolhandler.hpp \
+    protocols/abouthandler.hpp \
+    protocols/filehandler.hpp \
+    protocols/fingerclient.hpp \
+    protocols/geminiclient.hpp \
+    protocols/gopherclient.hpp \
+    protocols/webclient.hpp \
     protocolsetup.hpp \
-    searchbar.hpp \
-    settingsdialog.hpp \
+    renderers/geminirenderer.hpp \
+    renderers/gophermaprenderer.hpp \
+    renderers/plaintextrenderer.hpp \
     ssltrust.hpp \
-    ssltrusteditor.hpp \
     tabbrowsinghistory.hpp \
     trustedhost.hpp \
     trustedhostcollection.hpp \
-    webclient.hpp
+    widgets/elidelabel.hpp \
+    widgets/searchbar.hpp \
+    widgets/ssltrusteditor.hpp
 
 FORMS += \
-    browsertab.ui \
-    certificateiodialog.ui \
-    certificatemanagementdialog.ui \
-    certificateselectiondialog.ui \
-    mainwindow.ui \
-    mediaplayer.ui \
-    newidentitiydialog.ui \
-    settingsdialog.ui \
-    ssltrusteditor.ui
+  browsertab.ui \
+  dialogs/certificateiodialog.ui \
+  dialogs/certificatemanagementdialog.ui \
+  dialogs/certificateselectiondialog.ui \
+  dialogs/newidentitiydialog.ui \
+  dialogs/settingsdialog.ui \
+  mainwindow.ui \
+  widgets/mediaplayer.ui \
+  widgets/ssltrusteditor.ui
 
 TRANSLATIONS += \
     kristall_en_US.ts

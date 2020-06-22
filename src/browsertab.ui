@@ -43,7 +43,8 @@
         <string>Back</string>
        </property>
        <property name="icon">
-        <iconset theme="navigate-back"/>
+        <iconset theme="navigate-back">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -59,7 +60,8 @@
         <string>Forward</string>
        </property>
        <property name="icon">
-        <iconset theme="navigate-forward"/>
+        <iconset theme="navigate-forward">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -75,7 +77,8 @@
         <string>Stop</string>
        </property>
        <property name="icon">
-        <iconset theme="close"/>
+        <iconset theme="close">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -91,7 +94,8 @@
         <string>Reload</string>
        </property>
        <property name="icon">
-        <iconset theme="refresh"/>
+        <iconset theme="refresh">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -201,7 +205,7 @@ p, li { white-space: pre-wrap; }
   <customwidget>
    <class>MediaPlayer</class>
    <extends>QWidget</extends>
-   <header>mediaplayer.hpp</header>
+   <header>widgets/mediaplayer.hpp</header>
    <container>1</container>
   </customwidget>
   <customwidget>
@@ -212,7 +216,7 @@ p, li { white-space: pre-wrap; }
   <customwidget>
    <class>SearchBar</class>
    <extends>QLineEdit</extends>
-   <header>searchbar.hpp</header>
+   <header>widgets/searchbar.hpp</header>
   </customwidget>
  </customwidgets>
  <resources>

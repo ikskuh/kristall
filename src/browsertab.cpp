@@ -1,22 +1,22 @@
 #include "browsertab.hpp"
 #include "ui_browsertab.h"
 #include "mainwindow.hpp"
-#include "settingsdialog.hpp"
 
-#include "gophermaprenderer.hpp"
-#include "geminirenderer.hpp"
-#include "plaintextrenderer.hpp"
+#include "renderers/gophermaprenderer.hpp"
+#include "renderers/geminirenderer.hpp"
+#include "renderers/plaintextrenderer.hpp"
 
 #include "mimeparser.hpp"
 
-#include "certificateselectiondialog.hpp"
+#include "dialogs/settingsdialog.hpp"
+#include "dialogs/certificateselectiondialog.hpp"
 
-#include "geminiclient.hpp"
-#include "webclient.hpp"
-#include "gopherclient.hpp"
-#include "fingerclient.hpp"
-#include "abouthandler.hpp"
-#include "filehandler.hpp"
+#include "protocols/geminiclient.hpp"
+#include "protocols/webclient.hpp"
+#include "protocols/gopherclient.hpp"
+#include "protocols/fingerclient.hpp"
+#include "protocols/abouthandler.hpp"
+#include "protocols/filehandler.hpp"
 
 #include "ioutil.hpp"
 #include "kristall.hpp"

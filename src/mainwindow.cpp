@@ -1,7 +1,7 @@
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
 #include "browsertab.hpp"
-#include "settingsdialog.hpp"
+#include "dialogs/settingsdialog.hpp"
 #include <cassert>
 #include <QMessageBox>
 #include <memory>
@@ -13,7 +13,7 @@
 #include "ioutil.hpp"
 #include "kristall.hpp"
 
-#include "certificatemanagementdialog.hpp"
+#include "dialogs/certificatemanagementdialog.hpp"
 
 MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     QMainWindow(parent),
