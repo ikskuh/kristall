@@ -44,6 +44,9 @@ android: include(/home/felix/projects/android-hass/android-sdk/android_openssl/o
 #   LIBS += -L /home/felix/projects/android-hass/android-sdk/android_openssl/static/lib/arm/
 # }
 
+
+include($$PWD/../lib/cmark/cmark.pri)
+
 INCLUDEPATH += $$PWD/../lib/luis-l-gist/
 DEPENDPATH += $$PWD/../lib/luis-l-gist/
 
