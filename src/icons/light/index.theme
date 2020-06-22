@@ -1,0 +1,21 @@
+[Icon Theme]
+Name=light
+Comment=This is the Kristall' light icon theme
+
+Directories=actions,objects
+
+[actions]
+Size=32
+MinSize=16
+MaxSize=512
+Type=Scalable
+
+
+[objects]
+Size=32
+MinSize=16
+MaxSize=512
+Type=Scalable
+
+
+

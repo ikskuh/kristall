@@ -27,6 +27,7 @@ private slots:
 
     void on_mute_button_clicked(bool checked);
 
+private: // slots
     void on_media_positionChanged(qint64 pos);
 
     void on_media_playbackChanged(QMediaPlayer::State);

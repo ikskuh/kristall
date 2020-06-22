@@ -14,8 +14,7 @@
    <string>Certificate Manager</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="icons.qrc">
-    <normaloff>:/icons/certificate.svg</normaloff>:/icons/certificate.svg</iconset>
+   <iconset theme="certificate"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -52,11 +51,10 @@
             <string>Craete new certificate</string>
            </property>
            <property name="text">
-            <string>...</string>
+            <string>Create...</string>
            </property>
            <property name="icon">
-            <iconset resource="icons.qrc">
-             <normaloff>:/icons/plus.svg</normaloff>:/icons/plus.svg</iconset>
+            <iconset theme="create-new"/>
            </property>
           </widget>
          </item>
@@ -66,11 +64,10 @@
             <string>Import certificate</string>
            </property>
            <property name="text">
-            <string>...</string>
+            <string>Import...</string>
            </property>
            <property name="icon">
-            <iconset resource="icons.qrc">
-             <normaloff>:/icons/content-save-import.svg</normaloff>:/icons/content-save-import.svg</iconset>
+            <iconset theme="save-import"/>
            </property>
           </widget>
          </item>
@@ -96,11 +93,10 @@
             <string>Export certificate</string>
            </property>
            <property name="text">
-            <string>...</string>
+            <string>Export...</string>
            </property>
            <property name="icon">
-            <iconset resource="icons.qrc">
-             <normaloff>:/icons/content-save-move.svg</normaloff>:/icons/content-save-move.svg</iconset>
+            <iconset theme="save-export"/>
            </property>
           </widget>
          </item>
@@ -113,11 +109,10 @@
             <string>Delete certificate</string>
            </property>
            <property name="text">
-            <string>...</string>
+            <string>Delete</string>
            </property>
            <property name="icon">
-            <iconset resource="icons.qrc">
-             <normaloff>:/icons/delete-alert.svg</normaloff>:/icons/delete-alert.svg</iconset>
+            <iconset theme="delete-alert"/>
            </property>
           </widget>
          </item>
@@ -261,9 +256,7 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="icons.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>

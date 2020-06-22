@@ -3,8 +3,9 @@
 This document contains TODO items for planned Kristall releases as well as some random TODOs and reported bugs.
 
 ## 0.4 - The colorful release
-- [ ] Implement dual-colored icon theme
+- [x] Implement dual-colored icon theme
 - [ ] Improve UX
+  - [ ] Fix all tab-indices
   - [ ] Provide text search function
   - [ ] auto-highlighting/following outline
   - [ ] Add maximum text width option
@@ -36,6 +37,17 @@ This document contains TODO items for planned Kristall releases as well as some 
 - [ ] Ctrl-F search in documents
 - [ ] Add "view source" option to show original document
 - [ ] Implement graphic fingerprint display instead of hex-based one
+- [ ] `<krixano>` xq, I have a feature request for Kristall - the ability to middle click a tab to close it.
+- [ ] `<krixano>` Also, middle clicking links to open them in new tab
+- [ ] Support "offline files"
+  - [ ] Allow manually caching a file to be visited when no internet connection is 
+  - [ ] Add an "offline mode" that only allowes cached files
+  - [ ] New url scheme for cached sites: kristall+cache://
+  - [ ] Add window that 
+- [ ] Folder based color scheme system
+  - [ ] Migrate settings-based color schemes to folder
+  - [ ] Add per-site scheming
+  - [ ] Define human-readable color scheme file format
 
 ## Unspecced
 - [ ] Add option: "Transient certificates survive an application reboot and are stored on disk"

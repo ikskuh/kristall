@@ -57,6 +57,9 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="outline_window">
+   <property name="windowIcon">
+    <iconset theme="table-of-contents"/>
+   </property>
    <property name="windowTitle">
     <string>Document Outline</string>
    </property>
@@ -92,8 +95,7 @@
   </widget>
   <widget class="QDockWidget" name="bookmarks_window">
    <property name="windowIcon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/heart.svg</normaloff>:/icons/heart.svg</iconset>
+    <iconset theme="bookmarks"/>
    </property>
    <property name="windowTitle">
     <string>Bookmarks</string>
@@ -122,6 +124,9 @@
    </widget>
   </widget>
   <widget class="QDockWidget" name="history_window">
+   <property name="windowIcon">
+    <iconset theme="history"/>
+   </property>
    <property name="windowTitle">
     <string>History</string>
    </property>
@@ -205,14 +210,16 @@
   </widget>
   <action name="actionAbout">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/info.svg</normaloff>:/icons/info.svg</iconset>
+    <iconset theme="info"/>
    </property>
    <property name="text">
     <string>About...</string>
    </property>
   </action>
   <action name="actionQuit">
+   <property name="icon">
+    <iconset theme="close"/>
+   </property>
    <property name="text">
     <string>Quit</string>
    </property>
@@ -227,8 +234,7 @@
   </action>
   <action name="actionClose_Tab">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/close.svg</normaloff>:/icons/close.svg</iconset>
+    <iconset theme="close"/>
    </property>
    <property name="text">
     <string>Close Tab</string>
@@ -239,8 +245,7 @@
   </action>
   <action name="actionSettings">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+    <iconset theme="settings"/>
    </property>
    <property name="text">
     <string>Settings</string>
@@ -248,8 +253,7 @@
   </action>
   <action name="actionBackward">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/arrow-left.svg</normaloff>:/icons/arrow-left.svg</iconset>
+    <iconset theme="navigate-back"/>
    </property>
    <property name="text">
     <string>Backward</string>
@@ -260,8 +264,7 @@
   </action>
   <action name="actionForward">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/arrow-right.svg</normaloff>:/icons/arrow-right.svg</iconset>
+    <iconset theme="navigate-forward"/>
    </property>
    <property name="text">
     <string>Foreward</string>
@@ -272,8 +275,7 @@
   </action>
   <action name="actionRefresh">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/refresh.svg</normaloff>:/icons/refresh.svg</iconset>
+    <iconset theme="refresh"/>
    </property>
    <property name="text">
     <string>Refresh</string>
@@ -283,14 +285,17 @@
    </property>
   </action>
   <action name="actionAbout_Qt">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/common/qt.svg</normaloff>:/icons/common/qt.svg</iconset>
+   </property>
    <property name="text">
     <string>About Qt...</string>
    </property>
   </action>
   <action name="actionSave_as">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/content-save.svg</normaloff>:/icons/content-save.svg</iconset>
+    <iconset theme="save"/>
    </property>
    <property name="text">
     <string>Save as...</string>
@@ -305,7 +310,7 @@
    </property>
    <property name="icon">
     <iconset resource="icons.qrc">
-     <normaloff>:/icons/heart.svg</normaloff>:/icons/heart.svg</iconset>
+     <normaloff>:/icons/common/favourite-on.svg</normaloff>:/icons/common/favourite-on.svg</iconset>
    </property>
    <property name="text">
     <string>Add to favourites</string>
@@ -316,8 +321,7 @@
   </action>
   <action name="actionGo_to_home">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/home.svg</normaloff>:/icons/home.svg</iconset>
+    <iconset theme="home"/>
    </property>
    <property name="text">
     <string>Go to home</string>
@@ -328,8 +332,7 @@
   </action>
   <action name="actionHelp">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/help-box.svg</normaloff>:/icons/help-box.svg</iconset>
+    <iconset theme="help"/>
    </property>
    <property name="text">
     <string>Help</string>
@@ -339,14 +342,16 @@
    </property>
   </action>
   <action name="actionChangelog">
+   <property name="icon">
+    <iconset theme="changelog"/>
+   </property>
    <property name="text">
     <string>Changelog</string>
    </property>
   </action>
   <action name="actionManage_Certificates">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/certificate.svg</normaloff>:/icons/certificate.svg</iconset>
+    <iconset theme="certificate"/>
    </property>
    <property name="text">
     <string>Manage Certificates…</string>

@@ -14,8 +14,7 @@
    <string>Settings</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="icons.qrc">
-    <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+   <iconset theme="settings"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -25,8 +24,7 @@
      </property>
      <widget class="QWidget" name="generic">
       <attribute name="icon">
-       <iconset resource="icons.qrc">
-        <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
+       <iconset theme="settings"/>
       </attribute>
       <attribute name="title">
        <string>Generic</string>
@@ -289,8 +287,7 @@
      </widget>
      <widget class="QWidget" name="style_tab">
       <attribute name="icon">
-       <iconset resource="icons.qrc">
-        <normaloff>:/icons/palette.svg</normaloff>:/icons/palette.svg</iconset>
+       <iconset theme="palette"/>
       </attribute>
       <attribute name="title">
        <string>Style</string>
@@ -319,8 +316,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/palette.svg</normaloff>:/icons/palette.svg</iconset>
+              <iconset theme="palette"/>
              </property>
             </widget>
            </item>
@@ -358,8 +354,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/format-font.svg</normaloff>:/icons/format-font.svg</iconset>
+              <iconset theme="font"/>
              </property>
             </widget>
            </item>
@@ -369,8 +364,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/palette.svg</normaloff>:/icons/palette.svg</iconset>
+              <iconset theme="palette"/>
              </property>
             </widget>
            </item>
@@ -401,8 +395,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/format-font.svg</normaloff>:/icons/format-font.svg</iconset>
+              <iconset theme="font"/>
              </property>
             </widget>
            </item>
@@ -412,8 +405,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/palette.svg</normaloff>:/icons/palette.svg</iconset>
+              <iconset theme="palette"/>
              </property>
             </widget>
            </item>
@@ -444,8 +436,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/format-font.svg</normaloff>:/icons/format-font.svg</iconset>
+              <iconset theme="font"/>
              </property>
             </widget>
            </item>
@@ -455,8 +446,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/palette.svg</normaloff>:/icons/palette.svg</iconset>
+              <iconset theme="palette"/>
              </property>
             </widget>
            </item>
@@ -487,8 +477,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/format-font.svg</normaloff>:/icons/format-font.svg</iconset>
+              <iconset theme="font"/>
              </property>
             </widget>
            </item>
@@ -498,8 +487,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/palette.svg</normaloff>:/icons/palette.svg</iconset>
+              <iconset theme="palette"/>
              </property>
             </widget>
            </item>
@@ -536,8 +524,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/format-font.svg</normaloff>:/icons/format-font.svg</iconset>
+              <iconset theme="font"/>
              </property>
             </widget>
            </item>
@@ -547,8 +534,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/palette.svg</normaloff>:/icons/palette.svg</iconset>
+              <iconset theme="palette"/>
              </property>
             </widget>
            </item>
@@ -621,8 +607,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/palette.svg</normaloff>:/icons/palette.svg</iconset>
+              <iconset theme="palette"/>
              </property>
             </widget>
            </item>
@@ -646,8 +631,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/palette.svg</normaloff>:/icons/palette.svg</iconset>
+              <iconset theme="palette"/>
              </property>
             </widget>
            </item>
@@ -671,8 +655,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/palette.svg</normaloff>:/icons/palette.svg</iconset>
+              <iconset theme="palette"/>
              </property>
             </widget>
            </item>
@@ -722,8 +705,7 @@
               <string>...</string>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/plus.svg</normaloff>:/icons/plus.svg</iconset>
+              <iconset theme="create-new"/>
              </property>
             </widget>
            </item>
@@ -736,8 +718,7 @@
               <string>...</string>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/content-save.svg</normaloff>:/icons/content-save.svg</iconset>
+              <iconset theme="save"/>
              </property>
             </widget>
            </item>
@@ -750,8 +731,7 @@
               <string>...</string>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/folder-open.svg</normaloff>:/icons/folder-open.svg</iconset>
+              <iconset theme="folder"/>
              </property>
             </widget>
            </item>
@@ -767,8 +747,7 @@
               <string>...</string>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/content-save-import.svg</normaloff>:/icons/content-save-import.svg</iconset>
+              <iconset theme="save-import"/>
              </property>
             </widget>
            </item>
@@ -781,8 +760,7 @@
               <string>...</string>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/content-save-move.svg</normaloff>:/icons/content-save-move.svg</iconset>
+              <iconset theme="save-export"/>
              </property>
             </widget>
            </item>
@@ -817,8 +795,7 @@
               <string>...</string>
              </property>
              <property name="icon">
-              <iconset resource="icons.qrc">
-               <normaloff>:/icons/palette.svg</normaloff>:/icons/palette.svg</iconset>
+              <iconset theme="palette"/>
              </property>
             </widget>
            </item>
@@ -848,8 +825,7 @@
      </widget>
      <widget class="QWidget" name="gem_trust_page">
       <attribute name="icon">
-       <iconset resource="icons.qrc">
-        <normaloff>:/icons/certificate.svg</normaloff>:/icons/certificate.svg</iconset>
+       <iconset theme="certificate"/>
       </attribute>
       <attribute name="title">
        <string>Gemini TLS</string>
@@ -862,8 +838,7 @@
      </widget>
      <widget class="QWidget" name="https_trust">
       <attribute name="icon">
-       <iconset resource="icons.qrc">
-        <normaloff>:/icons/certificate.svg</normaloff>:/icons/certificate.svg</iconset>
+       <iconset theme="certificate"/>
       </attribute>
       <attribute name="title">
        <string>HTTPS TLS</string>
@@ -896,9 +871,7 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="icons.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>
@@ -935,8 +908,8 @@
  </connections>
  <buttongroups>
   <buttongroup name="buttonGroup"/>
-  <buttongroup name="textRenderingBtnGroup"/>
-  <buttongroup name="gophermapBtnGroup"/>
   <buttongroup name="textHighlightsBtnGroup"/>
+  <buttongroup name="gophermapBtnGroup"/>
+  <buttongroup name="textRenderingBtnGroup"/>
  </buttongroups>
 </ui>

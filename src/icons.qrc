@@ -1,26 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/arrow-left.svg</file>
-        <file>icons/arrow-right.svg</file>
-        <file>icons/heart-outline.svg</file>
-        <file>icons/heart.svg</file>
-        <file>icons/menu.svg</file>
-        <file>icons/refresh.svg</file>
-        <file>icons/close.svg</file>
-        <file>icons/format-font.svg</file>
-        <file>icons/palette.svg</file>
-        <file>icons/kristall.svg</file>
-        <file>icons/settings.svg</file>
-        <file>icons/content-save-move.svg</file>
-        <file>icons/content-save.svg</file>
-        <file>icons/home.svg</file>
-        <file>icons/plus.svg</file>
-        <file>icons/content-save-import.svg</file>
-        <file>icons/folder-open.svg</file>
-        <file>icons/volume-high.svg</file>
-        <file>icons/volume-off.svg</file>
-        <file>icons/play.svg</file>
-        <file>icons/pause.svg</file>
+        <file>icons/common/certificate-off.svg</file>
+        <file>icons/common/certificate-on.svg</file>
+        <file>icons/common/favourite-off.svg</file>
+        <file>icons/common/favourite-on.svg</file>
         <file>icons/gopher/binary.svg</file>
         <file>icons/gopher/directory.svg</file>
         <file>icons/gopher/dns.svg</file>
@@ -33,11 +16,66 @@
         <file>icons/gopher/sound.svg</file>
         <file>icons/gopher/telnet.svg</file>
         <file>icons/gopher/text.svg</file>
-        <file>icons/info.svg</file>
-        <file>icons/help-box.svg</file>
-        <file>icons/shield-outline.svg</file>
-        <file>icons/shield-lock.svg</file>
-        <file>icons/certificate.svg</file>
-        <file>icons/delete-alert.svg</file>
+        <file>icons/light/actions/close.svg</file>
+        <file>icons/light/actions/delete-alert.svg</file>
+        <file>icons/light/actions/navigate-back.svg</file>
+        <file>icons/light/actions/navigate-forward.svg</file>
+        <file>icons/light/actions/pause.svg</file>
+        <file>icons/light/actions/play.svg</file>
+        <file>icons/light/actions/refresh.svg</file>
+        <file>icons/light/actions/save-export.svg</file>
+        <file>icons/light/actions/save-import.svg</file>
+        <file>icons/light/actions/save.svg</file>
+        <file>icons/light/objects/certificate.svg</file>
+        <file>icons/light/objects/folder.svg</file>
+        <file>icons/light/objects/font.svg</file>
+        <file>icons/light/objects/home.svg</file>
+        <file>icons/light/objects/info.svg</file>
+        <file>icons/light/objects/menu.svg</file>
+        <file>icons/light/objects/palette.svg</file>
+        <file>icons/light/objects/settings.svg</file>
+        <file>icons/light/objects/volume-on.svg</file>
+        <file>icons/light/objects/volume-off.svg</file>
+        <file>icons/light/index.theme</file>
+        <file>icons/kristall-128.png</file>
+        <file>icons/kristall-16.png</file>
+        <file>icons/kristall-32.png</file>
+        <file>icons/kristall-64.png</file>
+        <file>icons/kristall.svg</file>
+        <file>icons/light/objects/help.svg</file>
+        <file>icons/common/qt.svg</file>
+        <file>icons/light/objects/changelog.svg</file>
+        <file>icons/light/objects/bookmarks.svg</file>
+        <file>icons/light/objects/history.svg</file>
+        <file>icons/light/objects/table-of-contents.svg</file>
+        <file>icons/light/actions/create-new.svg</file>
+        <file>icons/dark/actions/close.svg</file>
+        <file>icons/dark/actions/create-new.svg</file>
+        <file>icons/dark/actions/delete-alert.svg</file>
+        <file>icons/dark/actions/navigate-back.svg</file>
+        <file>icons/dark/actions/navigate-forward.svg</file>
+        <file>icons/dark/actions/pause.svg</file>
+        <file>icons/dark/actions/play.svg</file>
+        <file>icons/dark/actions/refresh.svg</file>
+        <file>icons/dark/actions/save-export.svg</file>
+        <file>icons/dark/actions/save-import.svg</file>
+        <file>icons/dark/actions/save.svg</file>
+        <file>icons/dark/objects/bookmarks.svg</file>
+        <file>icons/dark/objects/certificate.svg</file>
+        <file>icons/dark/objects/changelog.svg</file>
+        <file>icons/dark/objects/folder.svg</file>
+        <file>icons/dark/objects/font.svg</file>
+        <file>icons/dark/objects/help.svg</file>
+        <file>icons/dark/objects/history.svg</file>
+        <file>icons/dark/objects/home.svg</file>
+        <file>icons/dark/objects/info.svg</file>
+        <file>icons/dark/objects/menu.svg</file>
+        <file>icons/dark/objects/palette.svg</file>
+        <file>icons/dark/objects/settings.svg</file>
+        <file>icons/dark/objects/table-of-contents.svg</file>
+        <file>icons/dark/objects/volume-off.svg</file>
+        <file>icons/dark/objects/volume-on.svg</file>
+        <file>icons/dark/index.theme</file>
+        <file>icons/update-themes.sh</file>
     </qresource>
 </RCC>

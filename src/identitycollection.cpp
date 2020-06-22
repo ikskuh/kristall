@@ -339,8 +339,8 @@ QVariant IdentityCollection::data(const QModelIndex &index, int role) const
 
         switch(item->type) {
         case Node::Root: return QVariant { };
-        case Node::Group: return QIcon(":/icons/folder-open.svg");
-        case Node::Identity: return QIcon(":/icons/certificate.svg");
+        case Node::Group: return QIcon::fromTheme("folder");
+        case Node::Identity: return QIcon::fromTheme("certificate");
         default: return QVariant { };
         }
     }

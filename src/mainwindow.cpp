@@ -51,6 +51,7 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
         act->setCheckable(true);
         act->setChecked(dock->isVisible());
         act->setData(QVariant::fromValue(dock));
+        // act->setIcon(dock->windowIcon());
         connect(act, QOverload<bool>::of(&QAction::triggered), dock, &QDockWidget::setVisible);
     }
 

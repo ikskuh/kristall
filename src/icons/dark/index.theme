@@ -1,0 +1,21 @@
+[Icon Theme]
+Name=dark
+Comment=This is the Kristall' dark icon theme
+
+Directories=actions,objects
+
+[actions]
+Size=32
+MinSize=16
+MaxSize=512
+Type=Scalable
+
+
+[objects]
+Size=32
+MinSize=16
+MaxSize=512
+Type=Scalable
+
+
+

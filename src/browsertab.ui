@@ -40,11 +40,10 @@
         <string>Navigate back</string>
        </property>
        <property name="text">
-        <string/>
+        <string>Back</string>
        </property>
        <property name="icon">
-        <iconset resource="icons.qrc">
-         <normaloff>:/icons/arrow-left.svg</normaloff>:/icons/arrow-left.svg</iconset>
+        <iconset theme="navigate-back"/>
        </property>
       </widget>
      </item>
@@ -57,11 +56,10 @@
         <string>Navigate forward</string>
        </property>
        <property name="text">
-        <string>...</string>
+        <string>Forward</string>
        </property>
        <property name="icon">
-        <iconset resource="icons.qrc">
-         <normaloff>:/icons/arrow-right.svg</normaloff>:/icons/arrow-right.svg</iconset>
+        <iconset theme="navigate-forward"/>
        </property>
       </widget>
      </item>
@@ -74,11 +72,10 @@
         <string>Stop loading</string>
        </property>
        <property name="text">
-        <string/>
+        <string>Stop</string>
        </property>
        <property name="icon">
-        <iconset resource="icons.qrc">
-         <normaloff>:/icons/close.svg</normaloff>:/icons/close.svg</iconset>
+        <iconset theme="close"/>
        </property>
       </widget>
      </item>
@@ -91,11 +88,10 @@
         <string>Refresh current location</string>
        </property>
        <property name="text">
-        <string/>
+        <string>Reload</string>
        </property>
        <property name="icon">
-        <iconset resource="icons.qrc">
-         <normaloff>:/icons/refresh.svg</normaloff>:/icons/refresh.svg</iconset>
+        <iconset theme="refresh"/>
        </property>
       </widget>
      </item>
@@ -115,12 +111,12 @@
         <string>Add/remove from favourites</string>
        </property>
        <property name="text">
-        <string/>
+        <string>Favourite</string>
        </property>
        <property name="icon">
         <iconset resource="icons.qrc">
-         <normaloff>:/icons/heart-outline.svg</normaloff>
-         <normalon>:/icons/heart.svg</normalon>:/icons/heart-outline.svg</iconset>
+         <normaloff>:/icons/common/favourite-off.svg</normaloff>
+         <normalon>:/icons/common/favourite-on.svg</normalon>:/icons/common/favourite-off.svg</iconset>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -136,12 +132,12 @@
         <string>Enable/disable client certificate for this tab</string>
        </property>
        <property name="text">
-        <string>...</string>
+        <string>Client Certificate</string>
        </property>
        <property name="icon">
         <iconset resource="icons.qrc">
-         <normaloff>:/icons/shield-outline.svg</normaloff>
-         <normalon>:/icons/shield-lock.svg</normalon>:/icons/shield-outline.svg</iconset>
+         <normaloff>:/icons/common/certificate-off.svg</normaloff>
+         <normalon>:/icons/common/certificate-on.svg</normalon>:/icons/common/certificate-off.svg</iconset>
        </property>
        <property name="checkable">
         <bool>true</bool>

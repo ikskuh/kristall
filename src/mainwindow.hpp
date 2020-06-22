@@ -44,10 +44,6 @@ private slots:
 
     void on_history_view_doubleClicked(const QModelIndex &index);
 
-    void on_tab_titleChanged(QString const & title);
-
-    void on_tab_locationChanged(QUrl const & url);
-
     void on_outline_view_clicked(const QModelIndex &index);
 
     void on_actionSettings_triggered();
@@ -74,10 +70,6 @@ private slots:
 
     void on_actionAdd_to_favourites_triggered();
 
-    void on_tab_fileLoaded(DocumentStats const & stats);
-
-    void on_focus_inputbar();
-
     void on_actionHelp_triggered();
 
     void on_history_view_customContextMenuRequested(const QPoint &pos);
@@ -87,6 +79,17 @@ private slots:
     void on_actionChangelog_triggered();
 
     void on_actionManage_Certificates_triggered();
+
+private: // slots
+
+    void on_tab_fileLoaded(DocumentStats const & stats);
+
+    void on_tab_titleChanged(QString const & title);
+
+    void on_tab_locationChanged(QUrl const & url);
+
+    void on_focus_inputbar();
+
 
 private:
     void reloadTheme();

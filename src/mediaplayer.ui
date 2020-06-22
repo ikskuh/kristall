@@ -28,8 +28,7 @@
         <string>...</string>
        </property>
        <property name="icon">
-        <iconset resource="icons.qrc">
-         <normaloff>:/icons/play.svg</normaloff>:/icons/play.svg</iconset>
+        <iconset theme="play"/>
        </property>
       </widget>
      </item>
@@ -59,9 +58,7 @@
         <string>...</string>
        </property>
        <property name="icon">
-        <iconset resource="icons.qrc">
-         <normaloff>:/icons/volume-high.svg</normaloff>
-         <normalon>:/icons/volume-off.svg</normalon>:/icons/volume-high.svg</iconset>
+        <iconset theme="volume-on"/>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -83,8 +80,6 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
