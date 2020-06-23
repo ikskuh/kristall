@@ -259,9 +259,33 @@ static void renderNode(RenderState &state, cmark_node const & node, QTextCharFor
     }
     case CMARK_NODE_LINK:
     {
-        auto fmt = state.text_style.standard_link;
-        fmt.setAnchorHref(QString::fromUtf8((char*)node.as.link.url));
+        QUrl absolute_url = QString::fromUtf8((char*)node.as.link.url);
+        if(absolute_url.isRelative()) {
+            absolute_url = state.root_url.resolved(absolute_url);
+        }
+
+        QTextCharFormat fmt = state.text_style.external_link;
+        if (absolute_url.host() == state.root_url.host())
+        {
+            fmt = state.text_style.standard_link;
+        }
+        else
+        {
+            fmt = state.text_style.external_link;
+        }
+
+        QString suffix = "";
+        if (absolute_url.scheme() != state.root_url.scheme())
+        {
+            if(absolute_url.scheme() != "kristall+ctrl") {
+                suffix = " [" + absolute_url.scheme().toUpper() + "]";
+                fmt = state.text_style.cross_protocol_link;
+            }
+        }
+
+        fmt.setAnchorHref(absolute_url.toString(QUrl::FullyEncoded));
         renderChildren(state, node, fmt);
+        cursor.insertText(suffix, fmt);
         break;
     }
     case CMARK_NODE_IMAGE:
