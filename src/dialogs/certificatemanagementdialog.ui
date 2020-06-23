@@ -14,7 +14,8 @@
    <string>Certificate Manager</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="certificate"/>
+   <iconset theme="certificate">
+    <normaloff>.</normaloff>.</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -54,7 +55,8 @@
             <string>Create...</string>
            </property>
            <property name="icon">
-            <iconset theme="create-new"/>
+            <iconset theme="create-new">
+             <normaloff>.</normaloff>.</iconset>
            </property>
           </widget>
          </item>
@@ -67,7 +69,8 @@
             <string>Import...</string>
            </property>
            <property name="icon">
-            <iconset theme="save-import"/>
+            <iconset theme="save-import">
+             <normaloff>.</normaloff>.</iconset>
            </property>
           </widget>
          </item>
@@ -96,7 +99,8 @@
             <string>Export...</string>
            </property>
            <property name="icon">
-            <iconset theme="save-export"/>
+            <iconset theme="save-export">
+             <normaloff>.</normaloff>.</iconset>
            </property>
           </widget>
          </item>
@@ -112,7 +116,8 @@
             <string>Delete</string>
            </property>
            <property name="icon">
-            <iconset theme="delete-alert"/>
+            <iconset theme="delete-alert">
+             <normaloff>.</normaloff>.</iconset>
            </property>
           </widget>
          </item>
@@ -256,6 +261,20 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>certificates</tabstop>
+  <tabstop>create_cert_button</tabstop>
+  <tabstop>import_cert_button</tabstop>
+  <tabstop>export_cert_button</tabstop>
+  <tabstop>delete_cert_button</tabstop>
+  <tabstop>cert_display_name</tabstop>
+  <tabstop>cert_common_name</tabstop>
+  <tabstop>cert_expiration_date</tabstop>
+  <tabstop>cert_host_filter</tabstop>
+  <tabstop>cert_auto_enable</tabstop>
+  <tabstop>cert_fingerprint</tabstop>
+  <tabstop>cert_notes</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

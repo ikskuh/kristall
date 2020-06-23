@@ -14,7 +14,7 @@
    <string>Create new certificate</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="icons.qrc">
+   <iconset>
     <normaloff>:/icons/certificate.svg</normaloff>:/icons/certificate.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -78,9 +78,13 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="icons.qrc"/>
- </resources>
+ <tabstops>
+  <tabstop>group</tabstop>
+  <tabstop>display_name</tabstop>
+  <tabstop>common_name</tabstop>
+  <tabstop>expiration_date</tabstop>
+ </tabstops>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>

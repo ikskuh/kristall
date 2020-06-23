@@ -21,7 +21,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="generic">
       <attribute name="icon">
@@ -896,6 +896,54 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>ui_theme</tabstop>
+  <tabstop>start_page</tabstop>
+  <tabstop>enable_gemini</tabstop>
+  <tabstop>enable_gopher</tabstop>
+  <tabstop>enable_finger</tabstop>
+  <tabstop>enable_http</tabstop>
+  <tabstop>enable_https</tabstop>
+  <tabstop>fancypants_on</tabstop>
+  <tabstop>fancypants_off</tabstop>
+  <tabstop>texthl_on</tabstop>
+  <tabstop>texthl_off</tabstop>
+  <tabstop>gophermap_icon</tabstop>
+  <tabstop>gophermap_text</tabstop>
+  <tabstop>scheme_os_default</tabstop>
+  <tabstop>scheme_error</tabstop>
+  <tabstop>max_redirects</tabstop>
+  <tabstop>redirection_mode</tabstop>
+  <tabstop>network_timeout</tabstop>
+  <tabstop>bg_change_color</tabstop>
+  <tabstop>style_preview</tabstop>
+  <tabstop>std_change_font</tabstop>
+  <tabstop>std_change_color</tabstop>
+  <tabstop>pre_change_font</tabstop>
+  <tabstop>pre_change_color</tabstop>
+  <tabstop>h1_change_font</tabstop>
+  <tabstop>h1_change_color</tabstop>
+  <tabstop>h2_change_font</tabstop>
+  <tabstop>h2_change_color</tabstop>
+  <tabstop>h3_change_font</tabstop>
+  <tabstop>h3_change_color</tabstop>
+  <tabstop>link_local_change_color</tabstop>
+  <tabstop>link_foreign_change_color</tabstop>
+  <tabstop>link_cross_change_color</tabstop>
+  <tabstop>link_local_prefix</tabstop>
+  <tabstop>link_foreign_prefix</tabstop>
+  <tabstop>quote_change_color</tabstop>
+  <tabstop>auto_theme</tabstop>
+  <tabstop>page_margin</tabstop>
+  <tabstop>presets</tabstop>
+  <tabstop>preset_new</tabstop>
+  <tabstop>preset_save</tabstop>
+  <tabstop>preset_load</tabstop>
+  <tabstop>preset_import</tabstop>
+  <tabstop>preset_export</tabstop>
+  <tabstop>preview_url</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -932,9 +980,9 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
-  <buttongroup name="textHighlightsBtnGroup"/>
   <buttongroup name="gophermapBtnGroup"/>
+  <buttongroup name="textHighlightsBtnGroup"/>
   <buttongroup name="textRenderingBtnGroup"/>
+  <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>

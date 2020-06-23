@@ -14,7 +14,7 @@
    <string>Select client certificate</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="icons.qrc">
+   <iconset>
     <normaloff>:/icons/certificate.svg</normaloff>:/icons/certificate.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -56,7 +56,7 @@
         <string>Create new identity</string>
        </property>
        <property name="icon">
-        <iconset resource="icons.qrc">
+        <iconset>
          <normaloff>:/icons/plus.svg</normaloff>:/icons/plus.svg</iconset>
        </property>
       </widget>
@@ -148,9 +148,7 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="icons.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>

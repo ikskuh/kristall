@@ -5,7 +5,7 @@ This document contains TODO items for planned Kristall releases as well as some 
 ## 0.4 - The colorful release
 - [x] Implement dual-colored icon theme
 - [ ] Improve UX
-  - [ ] Fix all tab-indices
+  - [x] Fix all tab-indices
   - [ ] Provide text search function
   - [ ] auto-highlighting/following outline
   - [ ] Add maximum text width option
@@ -15,8 +15,10 @@ This document contains TODO items for planned Kristall releases as well as some 
   - [ ] Allow grouping favourites into a single-hierarchy folder structure
 - [ ] Improve Unicode/Emoji support
   - Seems to need multiple font families per font?
-- [ ] Replace Qt markdown with standalone markdown renderer
-  - [ ] Enable markdown theming
+- [x] Replace Qt markdown with standalone markdown renderer
+  - [x] Enable basic markdown theming
+  - [ ] Extent theming to support H4…H6, emph/bold text
+  - [ ] Improve block quote / code block rendering
 - [ ] Improve Styles
   - [ ] Add text/kristall-theme mime
     - [ ] Will use a preview document instead of displaying the content
