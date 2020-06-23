@@ -25,4 +25,9 @@ TextStyleInstance::TextStyleInstance(DocumentStyle const & themed_style)
 
   standard_h3.setFont(themed_style.h3_font);
   standard_h3.setForeground(QBrush(themed_style.h3_color));
+
+  preformatted_format.setNonBreakableLines(true);
+
+  block_quote_format.setIndent(1);
+  block_quote_format.setBackground(themed_style.blockquote_color);
 }

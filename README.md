@@ -52,6 +52,10 @@ A high-quality visual cross-platform gemini browser.
 
 ## Build/Install Instructions
 
+**Note:** `master` branch is the latest development status (sometimes called "nightly") whereas the tagged versions are the stable releases.
+
+If you want to build a stable experience, check out the latest version and build that!
+
 See [BUILDING.md](BUILDING.md)
 
 ## Credits

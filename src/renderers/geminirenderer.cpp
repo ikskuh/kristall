@@ -42,16 +42,6 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
 
     QTextCursor cursor{result.get()};
 
-    QTextBlockFormat standard_format = cursor.blockFormat();
-
-    QTextBlockFormat preformatted_format = standard_format;
-    preformatted_format.setNonBreakableLines(true);
-
-    QTextBlockFormat block_quote_format = standard_format;
-    block_quote_format.setIndent(1);
-    block_quote_format.setBackground(themed_style.blockquote_color);
-
-
     bool verbatim = false;
     QTextList *current_list = nullptr;
     bool blockquote = false;
@@ -71,12 +61,12 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
         {
             if (line.startsWith("```"))
             {
-                cursor.setBlockFormat(standard_format);
+                cursor.setBlockFormat(text_style.standard_format);
                 verbatim = false;
             }
             else
             {
-                cursor.setBlockFormat(preformatted_format);
+                cursor.setBlockFormat(text_style.preformatted_format);
                 cursor.setCharFormat(text_style.preformatted);
                 cursor.insertText(line + "\n");
             }
@@ -105,7 +95,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 if (current_list != nullptr)
                 {
                     cursor.insertBlock();
-                    cursor.setBlockFormat(standard_format);
+                    cursor.setBlockFormat(text_style.standard_format);
                 }
                 current_list = nullptr;
             }
@@ -117,7 +107,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 }
                 blockquote  = true;
 
-                cursor.setBlockFormat(block_quote_format);
+                cursor.setBlockFormat(text_style.block_quote_format);
                 cursor.insertText(trim_whitespace(line.mid(1)) + "\n", text_style.standard);
 
                 continue;
@@ -125,7 +115,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
             else
             {
                 if(blockquote) {
-                    cursor.setBlockFormat(standard_format);
+                    cursor.setBlockFormat(text_style.standard_format);
                 }
                 blockquote  = false;
             }

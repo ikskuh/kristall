@@ -65,15 +65,24 @@ struct RenderState
     DocumentStyle const *style;
     DocumentOutlineModel *outline;
     TextStyleInstance text_style;
+
+    bool suppress_next_block = false;
+
+    void emitNewBlock() {
+        if(not suppress_next_block) {
+            cursor.insertBlock();
+        }
+        suppress_next_block = false;
+    }
 };
 
-static void renderNode(RenderState &state, cmark_node const &node);
+static void renderNode(RenderState &state, cmark_node const &node, QTextCharFormat current_format);
 
-static void renderChildren(RenderState &state, cmark_node const & node)
+static void renderChildren(RenderState &state, cmark_node const & node, QTextCharFormat current_format)
 {
     for (auto child = node.first_child; child != nullptr; child = child->next)
     {
-        renderNode(state, *child);
+        renderNode(state, *child, current_format);
     }
 }
 
@@ -93,7 +102,7 @@ static QString extractNodeText(cmark_node const &node)
     return QString::fromUtf8((char const*)node.data, node.len);
 }
 
-static void renderNode(RenderState &state, cmark_node const & node)
+static void renderNode(RenderState &state, cmark_node const & node, QTextCharFormat current_format)
 {
     auto & cursor = state.cursor;
 
@@ -101,31 +110,59 @@ static void renderNode(RenderState &state, cmark_node const & node)
     {
     case CMARK_NODE_DOCUMENT:
     {
-        renderChildren(state, node);
+        renderChildren(state, node, current_format);
         break;
     }
 
     case CMARK_NODE_BLOCK_QUOTE:
     {
-        qDebug() << "CMARK_NODE_BLOCK_QUOTE";
+        state.emitNewBlock();
+        state.suppress_next_block = true;
+
+        cursor.setBlockFormat(state.text_style.block_quote_format);
+        renderChildren(state, node, current_format);
+
+        state.emitNewBlock();
+        state.suppress_next_block = true;
+        cursor.setBlockFormat(state.text_style.standard_format);
+
         break;
     }
     case CMARK_NODE_LIST:
     {
         auto fmt = cursor.blockFormat();
-        cursor.insertList(QTextListFormat::ListDisc);
-        renderChildren(state, node);
+
+        if(node.as.list.list_type == CMARK_BULLET_LIST) {
+            cursor.insertList(QTextListFormat::ListDisc);
+        } else {
+            cursor.insertList(QTextListFormat::ListDecimal);
+        }
+
+        state.suppress_next_block = true;
+        renderChildren(state, node, current_format);
+
+        state.emitNewBlock();
+        state.suppress_next_block = true;
         cursor.setBlockFormat(fmt);
         break;
     }
     case CMARK_NODE_ITEM:
     {
-        renderChildren(state, node);
+        renderChildren(state, node, current_format);
         break;
     }
     case CMARK_NODE_CODE_BLOCK:
     {
-        qDebug() << "CMARK_NODE_CODE_BLOCK";
+        state.emitNewBlock();
+        cursor.setBlockFormat(state.text_style.preformatted_format);
+
+        QString code = extractNodeText(node);
+        cursor.insertText(code, state.text_style.preformatted);
+
+        state.emitNewBlock();
+        state.suppress_next_block = true;
+        cursor.setBlockFormat(state.text_style.standard_format);
+
         break;
     }
     case CMARK_NODE_HTML_BLOCK:
@@ -140,20 +177,21 @@ static void renderNode(RenderState &state, cmark_node const & node)
     }
     case CMARK_NODE_PARAGRAPH:
     {
-        cursor.insertBlock();
-        renderChildren(state, node);
+        state.emitNewBlock();
+        renderChildren(state, node, current_format);
         break;
     }
     case CMARK_NODE_HEADING:
     {
-        cursor.insertBlock();
+        QTextCharFormat fmt = current_format;
+        state.emitNewBlock();
         switch(node.as.heading.level) {
-        case 1: cursor.setCharFormat(state.text_style.standard_h1); break;
-        case 2: cursor.setCharFormat(state.text_style.standard_h2); break;
-        case 3: cursor.setCharFormat(state.text_style.standard_h3); break;
-        case 4: cursor.setCharFormat(state.text_style.standard_h3); break;
-        case 5: cursor.setCharFormat(state.text_style.standard_h3); break;
-        case 6: cursor.setCharFormat(state.text_style.standard_h3); break;
+        case 1: fmt = state.text_style.standard_h1; break;
+        case 2: fmt = state.text_style.standard_h2; break;
+        case 3: fmt = state.text_style.standard_h3; break;
+        case 4: fmt = state.text_style.standard_h3; break;
+        case 5: fmt = state.text_style.standard_h3; break;
+        case 6: fmt = state.text_style.standard_h3; break;
 
         default: qDebug() << "heading" << node.as.heading.level; break;
         }
@@ -164,8 +202,7 @@ static void renderNode(RenderState &state, cmark_node const & node)
         case 3: state.outline->appendH3("Unknown H3", QString { }); break;
         }
 
-        renderChildren(state, node);
-        cursor.setCharFormat(state.text_style.standard);
+        renderChildren(state, node, fmt);
         break;
     }
     case CMARK_NODE_THEMATIC_BREAK:
@@ -175,22 +212,25 @@ static void renderNode(RenderState &state, cmark_node const & node)
     }
     case CMARK_NODE_TEXT:
     {
-        cursor.insertText(extractNodeText(node));
+        cursor.insertText(extractNodeText(node), current_format);
         break;
     }
     case CMARK_NODE_SOFTBREAK:
     {
-        qDebug() << "CMARK_NODE_SOFTBREAK";
+        // qDebug() << "CMARK_NODE_SOFTBREAK";
+        cursor.insertText(" ", current_format);
         break;
     }
     case CMARK_NODE_LINEBREAK:
     {
-        qDebug() << "CMARK_NODE_LINEBREAK";
+        // qDebug() << "CMARK_NODE_LINEBREAK";
+        state.emitNewBlock();
         break;
     }
     case CMARK_NODE_CODE:
     {
-        qDebug() << "CMARK_NODE_CODE";
+        QString code = extractNodeText(node);
+        cursor.insertText(code, state.text_style.preformatted);
         break;
     }
     case CMARK_NODE_HTML_INLINE:
@@ -205,20 +245,23 @@ static void renderNode(RenderState &state, cmark_node const & node)
     }
     case CMARK_NODE_EMPH:
     {
-        qDebug() << "CMARK_NODE_EMPH";
+        auto fmt = current_format;
+        fmt.setFontItalic(true);
+        renderChildren(state, node, fmt);
         break;
     }
     case CMARK_NODE_STRONG:
     {
-        qDebug() << "CMARK_NODE_STRONG";
+        auto fmt = current_format;
+        fmt.setFontWeight(QFont::Bold);
+        renderChildren(state, node, fmt);
         break;
     }
     case CMARK_NODE_LINK:
     {
-        // TODO: Implementing linking
-        // cursor.insertText(QString::fromUtf8((char*)node.as.link.title));
-        // qDebug() << "CMARK_NODE_LINK" << (char*)node.as.link.url;
-        renderChildren(state, node);
+        auto fmt = state.text_style.standard_link;
+        fmt.setAnchorHref(QString::fromUtf8((char*)node.as.link.url));
+        renderChildren(state, node, fmt);
         break;
     }
     case CMARK_NODE_IMAGE:
@@ -243,8 +286,6 @@ std::unique_ptr<QTextDocument> MarkdownRenderer::render(
     if (not md_root)
         return nullptr;
 
-    qDebug() << md_root.get();
-
     auto doc = std::make_unique<QTextDocument>();
     doc->setDocumentMargin(style.margin);
     doc->setIndentWidth(20);
@@ -259,7 +300,7 @@ std::unique_ptr<QTextDocument> MarkdownRenderer::render(
         TextStyleInstance { style },
     };
 
-    renderNode(state, *md_root);
+    renderNode(state, *md_root, state.text_style.standard);
 
     outline.endBuild();
 
