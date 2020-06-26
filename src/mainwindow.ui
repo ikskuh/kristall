@@ -35,7 +35,7 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QTabWidget" name="browser_tabs">
+     <widget class="BrowserTabWidget" name="browser_tabs">
       <property name="currentIndex">
        <number>-1</number>
       </property>
@@ -58,7 +58,8 @@
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="outline_window">
    <property name="windowIcon">
-    <iconset theme="table-of-contents"/>
+    <iconset theme="table-of-contents">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="windowTitle">
     <string>Document Outline</string>
@@ -95,7 +96,8 @@
   </widget>
   <widget class="QDockWidget" name="bookmarks_window">
    <property name="windowIcon">
-    <iconset theme="bookmarks"/>
+    <iconset theme="bookmarks">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="windowTitle">
     <string>Bookmarks</string>
@@ -125,7 +127,8 @@
   </widget>
   <widget class="QDockWidget" name="history_window">
    <property name="windowIcon">
-    <iconset theme="history"/>
+    <iconset theme="history">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="windowTitle">
     <string>History</string>
@@ -210,7 +213,8 @@
   </widget>
   <action name="actionAbout">
    <property name="icon">
-    <iconset theme="info"/>
+    <iconset theme="info">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>About...</string>
@@ -218,7 +222,8 @@
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset theme="close"/>
+    <iconset theme="close">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Quit</string>
@@ -234,7 +239,8 @@
   </action>
   <action name="actionClose_Tab">
    <property name="icon">
-    <iconset theme="close"/>
+    <iconset theme="close">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Close Tab</string>
@@ -245,7 +251,8 @@
   </action>
   <action name="actionSettings">
    <property name="icon">
-    <iconset theme="settings"/>
+    <iconset theme="settings">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Settings</string>
@@ -253,7 +260,8 @@
   </action>
   <action name="actionBackward">
    <property name="icon">
-    <iconset theme="navigate-back"/>
+    <iconset theme="navigate-back">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Backward</string>
@@ -264,7 +272,8 @@
   </action>
   <action name="actionForward">
    <property name="icon">
-    <iconset theme="navigate-forward"/>
+    <iconset theme="navigate-forward">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Foreward</string>
@@ -275,7 +284,8 @@
   </action>
   <action name="actionRefresh">
    <property name="icon">
-    <iconset theme="refresh"/>
+    <iconset theme="refresh">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Refresh</string>
@@ -295,7 +305,8 @@
   </action>
   <action name="actionSave_as">
    <property name="icon">
-    <iconset theme="save"/>
+    <iconset theme="save">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Save as...</string>
@@ -321,7 +332,8 @@
   </action>
   <action name="actionGo_to_home">
    <property name="icon">
-    <iconset theme="home"/>
+    <iconset theme="home">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Go to home</string>
@@ -332,7 +344,8 @@
   </action>
   <action name="actionHelp">
    <property name="icon">
-    <iconset theme="help"/>
+    <iconset theme="help">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Help</string>
@@ -343,7 +356,8 @@
   </action>
   <action name="actionChangelog">
    <property name="icon">
-    <iconset theme="changelog"/>
+    <iconset theme="changelog">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Changelog</string>
@@ -351,13 +365,22 @@
   </action>
   <action name="actionManage_Certificates">
    <property name="icon">
-    <iconset theme="certificate"/>
+    <iconset theme="certificate">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Manage Certificates…</string>
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>BrowserTabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>widgets/browsertabwidget.hpp</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="icons.qrc"/>
  </resources>

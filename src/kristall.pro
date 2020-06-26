@@ -69,6 +69,8 @@ SOURCES += \
     mainwindow.cpp \
     renderers/markdownrenderer.cpp \
     renderers/textstyleinstance.cpp \
+    widgets/browsertabbar.cpp \
+    widgets/browsertabwidget.cpp \
     widgets/mediaplayer.cpp \
     mimeparser.cpp \
     protocolhandler.cpp \
@@ -109,6 +111,8 @@ HEADERS += \
     mainwindow.hpp \
     renderers/markdownrenderer.hpp \
     renderers/textstyleinstance.hpp \
+    widgets/browsertabbar.hpp \
+    widgets/browsertabwidget.hpp \
     widgets/mediaplayer.hpp \
     mimeparser.hpp \
     protocolhandler.hpp \

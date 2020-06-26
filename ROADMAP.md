@@ -26,6 +26,7 @@ This document contains TODO items for planned Kristall releases as well as some 
     - [ ] Allow import of themes
     - [ ] File extension is `.kthm`
   - [ ] Direct preview instead of importing it as a preset. Allow user to save preset then manually
+  - [ ] Make gss (gemini style sheets) a subset of cascading style sheets
 - [ ] Recognize home directories with /~home and such and add "substyles"
 - [ ] [Add favicon support](gemini://mozz.us/files/rfc_gemini_favicon.gmi)
   - [ ] Add auto-generated "favicons"
@@ -40,7 +41,7 @@ This document contains TODO items for planned Kristall releases as well as some 
 - [ ] Ctrl-F search in documents
 - [ ] Add "view source" option to show original document
 - [ ] Implement graphic fingerprint display instead of hex-based one
-- [ ] `<krixano>` xq, I have a feature request for Kristall - the ability to middle click a tab to close it.
+- [x] `<krixano>` xq, I have a feature request for Kristall - the ability to middle click a tab to close it.
 - [ ] `<krixano>` Also, middle clicking links to open them in new tab
 - [ ] Support "offline files"
   - [ ] Allow manually caching a file to be visited when no internet connection is 
