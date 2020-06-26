@@ -199,6 +199,63 @@ p, li { white-space: pre-wrap; }
      </item>
     </layout>
    </item>
+   <item>
+    <widget class="QWidget" name="search_bar" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLineEdit" name="search_box"/>
+      </item>
+      <item>
+       <widget class="QToolButton" name="search_previous">
+        <property name="text">
+         <string>Previous</string>
+        </property>
+        <property name="icon">
+         <iconset theme="search-previous"/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="search_next">
+        <property name="toolTip">
+         <string>Next</string>
+        </property>
+        <property name="text">
+         <string>Next</string>
+        </property>
+        <property name="icon">
+         <iconset theme="search-next"/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="close_search">
+        <property name="toolTip">
+         <string>Hide search</string>
+        </property>
+        <property name="text">
+         <string>Hide</string>
+        </property>
+        <property name="icon">
+         <iconset theme="close"/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>

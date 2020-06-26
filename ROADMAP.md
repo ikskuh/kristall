@@ -6,7 +6,7 @@ This document contains TODO items for planned Kristall releases as well as some 
 - [x] Implement dual-colored icon theme
 - [ ] Improve UX
   - [x] Fix all tab-indices
-  - [ ] Provide text search function
+  - [x] Provide text search function
   - [ ] auto-highlighting/following outline
   - [ ] Implement support for snail-case anchors
   - [ ] Add maximum text width option
@@ -38,7 +38,7 @@ This document contains TODO items for planned Kristall releases as well as some 
   - [ ] Allow scrolling through "global" history
   - [ ] Allow users to gather a list of "visited pages"
   - [ ] Make default protocol configurable
-- [ ] Ctrl-F search in documents
+- [x] Ctrl-F search in documents
 - [ ] Add "view source" option to show original document
 - [ ] Implement graphic fingerprint display instead of hex-based one
 - [x] `<krixano>` xq, I have a feature request for Kristall - the ability to middle click a tab to close it.

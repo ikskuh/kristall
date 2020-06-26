@@ -36,6 +36,8 @@
 #include <QImageReader>
 #include <QClipboard>
 #include <QDesktopServices>
+#include <QShortcut>
+#include <QKeySequence>
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
@@ -60,6 +62,8 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
 
     this->updateUI();
 
+    this->ui->search_bar->setVisible(false);
+
     this->ui->media_browser->setVisible(false);
     this->ui->graphics_browser->setVisible(false);
     this->ui->text_browser->setVisible(true);
@@ -78,6 +82,25 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
     this->network_timeout_timer.setTimerType(Qt::PreciseTimer);
 
     connect(&this->network_timeout_timer, &QTimer::timeout, this, &BrowserTab::on_networkTimeout);
+
+
+
+    {
+        QShortcut * sc = new QShortcut(QKeySequence("Ctrl+F"), this);
+        connect(sc, &QShortcut::activated, this, &BrowserTab::on_focusSearchbar);
+    }
+    {
+        QShortcut * sc = new QShortcut(QKeySequence("F3"), this);
+        connect(sc, &QShortcut::activated, this, &BrowserTab::on_search_next_clicked);
+    }
+    {
+        QShortcut * sc = new QShortcut(QKeySequence("Shift+F3"), this);
+        connect(sc, &QShortcut::activated, this, &BrowserTab::on_search_previous_clicked);
+    }
+    {
+        QShortcut * sc = new QShortcut(QKeySequence("Escape"), this->ui->search_bar);
+        connect(sc, &QShortcut::activated, this, &BrowserTab::on_close_search_clicked);
+    }
 }
 
 BrowserTab::~BrowserTab()
@@ -173,6 +196,16 @@ void BrowserTab::focusUrlBar()
     this->ui->url_bar->selectAll();
 }
 
+void BrowserTab::focusSearchBar()
+{
+    if(not this->ui->search_bar->isVisible()) {
+        this->ui->search_box->setText("");
+    }
+    this->ui->search_bar->setVisible(true);
+    this->ui->search_box->setFocus();
+    this->ui->search_box->selectAll();
+}
+
 void BrowserTab::on_url_bar_returnPressed()
 {
     QUrl url { this->ui->url_bar->text().trimmed() };
@@ -242,6 +275,11 @@ void BrowserTab::on_networkTimeout()
         this->current_handler->cancelRequest();
     }
     on_networkError(ProtocolHandler::Timeout, "The server didn't respond in time.");
+}
+
+void BrowserTab::on_focusSearchbar()
+{
+    this->focusSearchBar();
 }
 
 void BrowserTab::on_certificateRequired(const QString &reason)
@@ -1009,4 +1047,30 @@ void BrowserTab::on_enable_client_cert_button_clicked(bool checked)
     {
         resetClientCertificate();
     }
+}
+
+void BrowserTab::on_search_box_textChanged(const QString &arg1)
+{
+    this->ui->text_browser->setTextCursor(QTextCursor { this->ui->text_browser->document() });
+    this->ui->text_browser->find(arg1);
+}
+
+void BrowserTab::on_search_box_returnPressed()
+{
+    this->ui->text_browser->find(this->ui->search_box->text());
+}
+
+void BrowserTab::on_search_next_clicked()
+{
+    this->ui->text_browser->find(this->ui->search_box->text());
+}
+
+void BrowserTab::on_search_previous_clicked()
+{
+    this->ui->text_browser->find(this->ui->search_box->text(), QTextDocument::FindBackward);
+}
+
+void BrowserTab::on_close_search_clicked()
+{
+    this->ui->search_bar->setVisible(false);
 }

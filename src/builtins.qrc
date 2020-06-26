@@ -18,5 +18,63 @@
         <file>error_page/UnknownError.gemini</file>
         <file>error_page/UntrustedHost.gemini</file>
         <file>about/style-preview.gemini</file>
+        <file>icons/dark/actions/close.svg</file>
+        <file>icons/dark/actions/create-new.svg</file>
+        <file>icons/dark/actions/delete-alert.svg</file>
+        <file>icons/dark/actions/navigate-back.svg</file>
+        <file>icons/dark/actions/navigate-forward.svg</file>
+        <file>icons/dark/actions/pause.svg</file>
+        <file>icons/dark/actions/play.svg</file>
+        <file>icons/dark/actions/refresh.svg</file>
+        <file>icons/dark/actions/save-export.svg</file>
+        <file>icons/dark/actions/save-import.svg</file>
+        <file>icons/dark/actions/save.svg</file>
+        <file>icons/dark/actions/search-next.svg</file>
+        <file>icons/dark/actions/search-previous.svg</file>
+        <file>icons/dark/objects/bookmarks.svg</file>
+        <file>icons/dark/objects/certificate.svg</file>
+        <file>icons/dark/objects/changelog.svg</file>
+        <file>icons/dark/objects/folder.svg</file>
+        <file>icons/dark/objects/font.svg</file>
+        <file>icons/dark/objects/help.svg</file>
+        <file>icons/dark/objects/history.svg</file>
+        <file>icons/dark/objects/home.svg</file>
+        <file>icons/dark/objects/info.svg</file>
+        <file>icons/dark/objects/menu.svg</file>
+        <file>icons/dark/objects/palette.svg</file>
+        <file>icons/dark/objects/settings.svg</file>
+        <file>icons/dark/objects/table-of-contents.svg</file>
+        <file>icons/dark/objects/volume-off.svg</file>
+        <file>icons/dark/objects/volume-on.svg</file>
+        <file>icons/dark/index.theme</file>
+        <file>icons/light/actions/close.svg</file>
+        <file>icons/light/actions/create-new.svg</file>
+        <file>icons/light/actions/delete-alert.svg</file>
+        <file>icons/light/actions/navigate-back.svg</file>
+        <file>icons/light/actions/navigate-forward.svg</file>
+        <file>icons/light/actions/pause.svg</file>
+        <file>icons/light/actions/play.svg</file>
+        <file>icons/light/actions/refresh.svg</file>
+        <file>icons/light/actions/save-export.svg</file>
+        <file>icons/light/actions/save-import.svg</file>
+        <file>icons/light/actions/save.svg</file>
+        <file>icons/light/actions/search-next.svg</file>
+        <file>icons/light/actions/search-previous.svg</file>
+        <file>icons/light/objects/bookmarks.svg</file>
+        <file>icons/light/objects/certificate.svg</file>
+        <file>icons/light/objects/changelog.svg</file>
+        <file>icons/light/objects/folder.svg</file>
+        <file>icons/light/objects/font.svg</file>
+        <file>icons/light/objects/help.svg</file>
+        <file>icons/light/objects/history.svg</file>
+        <file>icons/light/objects/home.svg</file>
+        <file>icons/light/objects/info.svg</file>
+        <file>icons/light/objects/menu.svg</file>
+        <file>icons/light/objects/palette.svg</file>
+        <file>icons/light/objects/settings.svg</file>
+        <file>icons/light/objects/table-of-contents.svg</file>
+        <file>icons/light/objects/volume-off.svg</file>
+        <file>icons/light/objects/volume-on.svg</file>
+        <file>icons/light/index.theme</file>
     </qresource>
 </RCC>

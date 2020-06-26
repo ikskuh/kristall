@@ -77,5 +77,9 @@
         <file>icons/dark/objects/volume-on.svg</file>
         <file>icons/dark/index.theme</file>
         <file>icons/update-themes.sh</file>
+        <file>icons/dark/actions/search-next.svg</file>
+        <file>icons/dark/actions/search-previous.svg</file>
+        <file>icons/light/actions/search-next.svg</file>
+        <file>icons/light/actions/search-previous.svg</file>
     </qresource>
 </RCC>

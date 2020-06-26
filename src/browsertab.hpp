@@ -9,6 +9,7 @@
 #include <QNetworkAccessManager>
 #include <QElapsedTimer>
 #include <QTimer>
+#include <QTextCursor>
 
 #include "documentoutlinemodel.hpp"
 #include "tabbrowsinghistory.hpp"
@@ -68,6 +69,8 @@ public:
 
     void focusUrlBar();
 
+    void focusSearchBar();
+
 signals:
     void titleChanged(QString const & title);
     void locationChanged(QUrl const & url);
@@ -96,6 +99,16 @@ private slots:
 
     void on_enable_client_cert_button_clicked(bool checked);
 
+    void on_search_box_textChanged(const QString &arg1);
+
+    void on_search_box_returnPressed();
+
+    void on_search_next_clicked();
+
+    void on_search_previous_clicked();
+
+    void on_close_search_clicked();
+
 private: // network slots
 
     void on_requestProgress(qint64 transferred);
@@ -107,6 +120,9 @@ private: // network slots
     void on_hostCertificateLoaded(QSslCertificate const & cert);
 
     void on_networkTimeout();
+
+private: // ui slots
+    void on_focusSearchbar();
 
 private:
     void setErrorMessage(QString const & msg);
@@ -163,6 +179,8 @@ public:
     DocumentStats current_stats;
 
     QTimer network_timeout_timer;
+
+    QTextCursor current_search_position;
 };
 
 #endif // BROWSERTAB_HPP
