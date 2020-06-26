@@ -71,6 +71,7 @@ SOURCES += \
     renderers/textstyleinstance.cpp \
     widgets/browsertabbar.cpp \
     widgets/browsertabwidget.cpp \
+    widgets/kristalltextbrowser.cpp \
     widgets/mediaplayer.cpp \
     mimeparser.cpp \
     protocolhandler.cpp \
@@ -113,6 +114,7 @@ HEADERS += \
     renderers/textstyleinstance.hpp \
     widgets/browsertabbar.hpp \
     widgets/browsertabwidget.hpp \
+    widgets/kristalltextbrowser.hpp \
     widgets/mediaplayer.hpp \
     mimeparser.hpp \
     protocolhandler.hpp \

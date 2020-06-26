@@ -156,7 +156,7 @@
       <enum>QLayout::SetDefaultConstraint</enum>
      </property>
      <item>
-      <widget class="QTextBrowser" name="text_browser">
+      <widget class="KristallTextBrowser" name="text_browser">
        <property name="styleSheet">
         <string notr="true"/>
        </property>
@@ -217,6 +217,11 @@ p, li { white-space: pre-wrap; }
    <class>SearchBar</class>
    <extends>QLineEdit</extends>
    <header>widgets/searchbar.hpp</header>
+  </customwidget>
+  <customwidget>
+   <class>KristallTextBrowser</class>
+   <extends>QTextBrowser</extends>
+   <header>widgets/kristalltextbrowser.hpp</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -49,7 +49,7 @@
          <item>
           <widget class="QToolButton" name="create_cert_button">
            <property name="toolTip">
-            <string>Craete new certificate</string>
+            <string>Create new certificate</string>
            </property>
            <property name="text">
             <string>Create...</string>
