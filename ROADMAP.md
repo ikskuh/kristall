@@ -8,6 +8,7 @@ This document contains TODO items for planned Kristall releases as well as some 
   - [x] Fix all tab-indices
   - [ ] Provide text search function
   - [ ] auto-highlighting/following outline
+  - [ ] Implement support for snail-case anchors
   - [ ] Add maximum text width option
   - [ ] Remember scroll position for navigating back
 - [ ] Improved favourites
@@ -32,7 +33,7 @@ This document contains TODO items for planned Kristall releases as well as some 
   - [ ] Opt-In: Regularly check for `domain/favicon.txt`
   - [ ] Opt-In: Regularly check for `domain/favicon.ico`
 - [ ] Smart searchbar
-  - [ ] Allow quick access to favourites
+  - [x] Allow quick access to favourites
   - [ ] Allow scrolling through "global" history
   - [ ] Allow users to gather a list of "visited pages"
   - [ ] Make default protocol configurable

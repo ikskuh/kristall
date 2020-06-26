@@ -1,10 +1,16 @@
 #include "searchbar.hpp"
+#include "kristall.hpp"
 
 #include <QKeyEvent>
+#include <QCompleter>
 
 SearchBar::SearchBar(QWidget *parent) : QLineEdit(parent)
 {
-
+    QCompleter *completer = new QCompleter(this);
+    completer->setModel(&global_favourites);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    completer->setCompletionRole(Qt::DisplayRole);
+    this->setCompleter(completer);
 }
 
 void SearchBar::keyPressEvent(QKeyEvent *event)
