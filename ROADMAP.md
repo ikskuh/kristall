@@ -23,10 +23,10 @@ This document contains TODO items for planned Kristall releases as well as some 
   - [ ] Extent theming to support H4…H6, emph/bold text
   - [ ] Improve block quote / code block rendering
 - [ ] Improve Styles
-  - [ ] Add text/kristall-theme mime
-    - [ ] Will use a preview document instead of displaying the content
-    - [ ] Allow import of themes
-    - [ ] File extension is `.kthm`
+  - [x] Add text/kristall-theme mime
+    - [x] Will use a preview document instead of displaying the content
+    - [x] Allow import of themes
+    - [x] File extension is `.kthm`
   - [ ] Direct preview instead of importing it as a preset. Allow user to save preset then manually
   - [ ] Make gss (gemini style sheets) a subset of cascading style sheets
 - [ ] Recognize home directories with /~home and such and add "substyles"

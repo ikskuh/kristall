@@ -304,10 +304,6 @@ void BrowserTab::on_hostCertificateLoaded(const QSslCertificate &cert)
 
 static QByteArray convertToUtf8(QByteArray const & input, QString const & charSet)
 {
-    QFile temp { "/tmp/raw.dat" };
-    temp.open(QFile::WriteOnly);
-    IoUtil::writeAll(temp, input);
-
     auto charset_u8 = charSet.toUpper().toUtf8();
 
     // TRANSLIT will try to mix-match other code points to reflect to correct encoding
@@ -405,7 +401,7 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
         }
     }
 
-    this->current_mime = mime_text;
+    this->current_mime = mime;
     this->current_buffer = ref_data;
 
     this->graphics_scene.clear();
@@ -454,6 +450,35 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
         document->setDefaultStyleSheet(doc_style.toStyleSheet());
         document->setDocumentMargin(doc_style.margin);
         document->setHtml(QString::fromUtf8(data));
+    }
+    else if (not plaintext_only and mime.is("text","x-kristall-theme"))
+    {
+        // ugly workaround for QSettings needing a file
+        QFile temp_file { kristall::dirs::cache_root.absoluteFilePath("preview-theme.kthm") };
+
+        if(temp_file.open(QFile::WriteOnly)) {
+            IoUtil::writeAll(temp_file, data);
+            temp_file.close();
+        }
+
+        QSettings temp_settings {
+            temp_file.fileName(),
+            QSettings::IniFormat
+        };
+
+        DocumentStyle preview_style;
+        preview_style.load(temp_settings);
+
+        QFile src { ":/about/style-preview.gemini" };
+        src.open(QFile::ReadOnly);
+
+        document = GeminiRenderer::render(
+            src.readAll(),
+            this->current_location,
+            preview_style,
+            this->outline);
+
+        this->ui->text_browser->setStyleSheet(QString("QTextBrowser { background-color: %1; }").arg(preview_style.background_color.name()));
     }
     else if (not plaintext_only and mime.is("text","markdown"))
     {
@@ -684,12 +709,14 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new
     // used for fake-buttons
     if(url.scheme() == "kristall+ctrl")
     {
-        if(this->is_internal_location) {
+        bool is_theme_preview = this->current_mime.is("text", "x-kristall-theme");
+
+        if(this->is_internal_location or is_theme_preview) {
             QString opt = url.path();
             qDebug() << "kristall control action" << opt;
 
             // this will bypass the TLS security
-            if(opt == "ignore-tls") {
+            if(not is_theme_preview and opt == "ignore-tls") {
                 auto response = QMessageBox::question(
                     this,
                     "Kristall",
@@ -702,11 +729,11 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new
                 }
             }
             //
-            else if(opt == "ignore-tls-safe") {
+            else if(not is_theme_preview and opt == "ignore-tls-safe") {
                 this->startRequest(this->current_location, ProtocolHandler::IgnoreTlsErrors);
             }
             // Add this page to the list of trusted hosts and continue
-            else if(opt == "add-fingerprint") {
+            else if(not is_theme_preview and opt == "add-fingerprint") {
                 auto answer = QMessageBox::question(
                     this,
                     "Kristall",
@@ -730,6 +757,83 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new
                 }
 
                 this->startRequest(this->current_location, ProtocolHandler::Default);
+            }
+            else if(opt == "install-theme") {
+
+                if(is_theme_preview)
+                {
+                    // ugly workaround for QSettings needing a file
+                    QFile temp_file { kristall::dirs::cache_root.absoluteFilePath("preview-theme.kthm") };
+
+                    if(temp_file.open(QFile::WriteOnly)) {
+                        IoUtil::writeAll(temp_file, this->current_buffer);
+                        temp_file.close();
+                    }
+
+                    QSettings temp_settings {
+                        temp_file.fileName(),
+                        QSettings::IniFormat
+                    };
+
+                    QString name;
+                    if(auto name_var = temp_settings.value("name"); name_var.isNull())
+                    {
+                        QInputDialog input { this };
+                        input.setInputMode(QInputDialog::TextInput);
+                        input.setLabelText(tr("This style has no embedded name. Please enter a name for the preset:"));
+                        input.setTextValue(this->current_location.fileName().split(".", QString::SkipEmptyParts).first());
+
+                        if(input.exec() != QDialog::Accepted)
+                            return;
+
+                        name = input.textValue().trimmed();
+                    }
+                    else
+                    {
+                        name = name_var.toString();
+                    }
+
+                    auto answer = QMessageBox::question(
+                        this,
+                        "Kristall",
+                        tr("Do you want to add the style %1 to your collection?").arg(name)
+                    );
+                    if(answer != QMessageBox::Yes)
+                        return;
+
+                    QString fileName;
+
+                    int index = 0;
+                    do
+                    {
+                        fileName = DocumentStyle::createFileNameFromName(name, index);
+                        index += 1;
+                    } while(kristall::dirs::styles.exists(fileName));
+
+                    QFile target_file { kristall::dirs::styles.absoluteFilePath(fileName) };
+
+                    if(target_file.open(QFile::WriteOnly)) {
+                        IoUtil::writeAll(target_file, this->current_buffer);
+                        target_file.close();
+                    }
+
+                    QSettings final_settings {
+                        target_file.fileName(),
+                        QSettings::IniFormat
+                    };
+                    final_settings.setValue("name", name);
+                    final_settings.sync();
+
+                    QMessageBox::information(
+                        this,
+                        "Kristall",
+                        tr("The theme %1 was successfully added to your theme collection!").arg(name)
+                    );
+                }
+                else
+                {
+                    qDebug() << "install-theme triggered from non-theme document!";
+                }
             }
         } else {
             QMessageBox::critical(

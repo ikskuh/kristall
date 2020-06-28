@@ -239,9 +239,9 @@ GenericSettings SettingsDialog::options() const
 
 void SettingsDialog::reloadStylePreview()
 {
-    QFile document_src { ":/about/style-preview.gemini" };
+    QFile document_src { ":/about/style-display.gemini" };
     bool ok = document_src.open(QFile::ReadOnly);
-    assert(ok and "failed to find style-preview.gemini!");
+    assert(ok and "failed to find style-display.gemini!");
 
     auto const document = document_src.readAll();
 

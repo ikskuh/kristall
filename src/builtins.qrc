@@ -76,5 +76,6 @@
         <file>icons/light/objects/volume-off.svg</file>
         <file>icons/light/objects/volume-on.svg</file>
         <file>icons/light/index.theme</file>
+        <file>about/style-display.gemini</file>
     </qresource>
 </RCC>

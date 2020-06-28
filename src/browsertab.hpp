@@ -169,7 +169,7 @@ public:
     QSslCertificate current_server_certificate;
 
     QByteArray current_buffer;
-    QString current_mime;
+    MimeType current_mime;
     QElapsedTimer timer;
 
     CryptoIdentity current_identity;
