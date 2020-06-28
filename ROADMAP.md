@@ -11,6 +11,7 @@ This document contains TODO items for planned Kristall releases as well as some 
   - [ ] Implement support for snail-case anchors
   - [ ] Add maximum text width option
   - [ ] Remember scroll position for navigating back
+  - [ ] Ctrl-Leftclick for "open in new tab"
 - [ ] Improved favourites
   - [ ] Allow custom favourite title (not the URL itself)
   - [ ] Allow grouping favourites into a single-hierarchy folder structure

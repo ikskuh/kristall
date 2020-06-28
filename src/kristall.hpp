@@ -1,6 +1,7 @@
 #ifndef KRISTALL_HPP
 #define KRISTALL_HPP
 
+#include <QDir>
 #include <QSettings>
 #include <QClipboard>
 #include <QSslCertificate>
@@ -58,5 +59,24 @@ extern SslTrust global_gemini_trust;
 extern SslTrust global_https_trust;
 extern FavouriteCollection global_favourites;
 extern GenericSettings global_options;
+
+///
+/// Kristall directory structure:
+/// ~/.cache/kristall/
+///     ./offline-pages/${HOST}/${HASHED_URL}
+///         : Contains "mime/type\r\n${BLOB}"
+/// ~/.config/kristall/
+///     ./themes/${THEME_ID}/theme.qss
+///     ./styles/${STYLE_ID}.ini
+///     ./config.ini
+///
+namespace kristall
+{
+    extern QDir config_root;
+    extern QDir cache_root;
+    extern QDir offline_pages;
+    extern QDir themes;
+    extern QDir styles;
+}
 
 #endif // KRISTALL_HPP

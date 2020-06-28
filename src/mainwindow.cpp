@@ -112,7 +112,9 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new, bool load_default)
     }
 
     if(load_default) {
-        tab->navigateTo(QUrl(global_options.start_page), BrowserTab::DontPush);
+        tab->navigateTo(QUrl(global_options.start_page), BrowserTab::PushImmediate);
+    } else {
+        tab->navigateTo(QUrl("about:blank"), BrowserTab::DontPush);
     }
 
     return tab;

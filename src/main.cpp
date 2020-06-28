@@ -7,6 +7,8 @@
 #include <QCommandLineParser>
 #include <QDebug>
 
+#include <QStandardPaths>
+
 IdentityCollection global_identities;
 QSettings global_settings { "xqTechnologies", "Kristall" };
 QClipboard * global_clipboard;
@@ -15,19 +17,62 @@ SslTrust global_https_trust;
 FavouriteCollection global_favourites;
 GenericSettings global_options;
 
+namespace kristall
+{
+    QDir config_root;
+    QDir cache_root;
+    QDir offline_pages;
+    QDir themes;
+    QDir styles;
+}
+
 QString toFingerprintString(QSslCertificate const & certificate)
 {
     return QCryptographicHash::hash(certificate.toDer(), QCryptographicHash::Sha256).toHex(':');
 }
 
+#define SSTR(X) STR(X)
+#define STR(X) #X
+
+static QDir derive_dir(QDir const & parent, QString subdir)
+{
+    QDir child = parent;
+    if(not child.mkpath(subdir)) {
+        qWarning() << "failed to initialize directory:" << subdir;
+        return QDir { };
+    }
+    if(not child.cd(subdir)) {
+        qWarning() << "failed to setup directory:" << subdir;
+        return QDir { };
+    }
+    return child;
+}
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+    app.setApplicationVersion(SSTR(KRISTALL_VERSION));
 
     global_clipboard = app.clipboard();
 
     QCommandLineParser cli_parser;
-    cli_parser.parse(app.arguments());
+    cli_parser.addVersionOption();
+    cli_parser.addHelpOption();
+    cli_parser.addPositionalArgument("urls", app.tr("The urls that should be opened instead of the start page"), "[urls...]");
+
+    cli_parser.process(app);
+
+
+
+    QString cache_root = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QString config_root = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+
+    kristall::config_root = QDir { config_root };
+    kristall::cache_root  = QDir { cache_root };
+
+    kristall::offline_pages = derive_dir(kristall::cache_root, "offline-pages");
+    kristall::themes = derive_dir(kristall::config_root, "themes");
+    kristall::styles = derive_dir(kristall::config_root, "styles");
 
     global_options.load(global_settings);
 
