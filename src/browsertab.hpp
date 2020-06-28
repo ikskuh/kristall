@@ -85,7 +85,7 @@ private slots:
 
     void on_fav_button_clicked();
 
-    void on_text_browser_anchorClicked(const QUrl &arg1);
+    void on_text_browser_anchorClicked(const QUrl &arg1, bool open_in_new_tab);
 
     void on_text_browser_highlighted(const QUrl &arg1);
 

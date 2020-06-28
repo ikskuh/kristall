@@ -678,7 +678,7 @@ void BrowserTab::on_fav_button_clicked()
     toggleIsFavourite(this->ui->fav_button->isChecked());
 }
 
-void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
+void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new_tab)
 {
     // Ctrl scheme is *always* the current tab, it's
     // used for fake-buttons
@@ -749,7 +749,7 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
 
     if (support == ProtocolSetup::Enabled)
     {
-        if(this->ui->text_browser->last_button == Qt::MiddleButton) {
+        if(open_in_new_tab) {
             mainWindow->addNewTab(false, real_url);
         } else {
             this->navigateTo(real_url, PushImmediate);

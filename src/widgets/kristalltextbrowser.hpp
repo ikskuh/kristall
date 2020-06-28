@@ -12,9 +12,14 @@ public:
 
     void mouseReleaseEvent(QMouseEvent * event) override;
 
+signals:
+    void anchorClicked(QUrl const &, bool open_in_new_tab);
 
-public:
-    Qt::MouseButton last_button;
+private: // slots
+    void on_anchorClicked(QUrl const & url);
+
+private:
+    bool signal_new_tab = false;
 };
 
 #endif // KRISTALLTEXTBROWSER_HPP
