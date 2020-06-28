@@ -20,6 +20,13 @@ build/kristall: src/*
 	cd build && qmake ../src/kristall.pro && $(MAKE) $(MAKEFLAGS)
 
 install: kristall
+	# Create target directories
+	mkdir -p $(sharedir)/icons/hicolor/scalable/apps/
+	mkdir -p $(sharedir)/icons/hicolor/16x16/apps/
+	mkdir -p $(sharedir)/icons/hicolor/32x32/apps/
+	mkdir -p $(sharedir)/icons/hicolor/64x64/apps/
+	mkdir -p $(sharedir)/icons/hicolor/128x128/apps/
+	mkdir -p $(sharedir)/applications/
 	# Install icons
 	$(INSTALL_DATA) src/icons/kristall.svg $(sharedir)/icons/hicolor/scalable/apps/net.random-projects.kristall.svg
 	$(INSTALL_DATA) src/icons/kristall-16.png $(sharedir)/icons/hicolor/16x16/apps/net.random-projects.kristall.png
