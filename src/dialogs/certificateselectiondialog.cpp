@@ -16,7 +16,7 @@ CertificateSelectionDialog::CertificateSelectionDialog(QWidget *parent) :
     ui->setupUi(this);
     this->ui->server_request->setVisible(false);
 
-    this->ui->certificates->setModel(&global_identities);
+    this->ui->certificates->setModel(&kristall::identities);
     this->ui->certificates->expandAll();
 
     connect(this->ui->certificates->selectionModel(), &QItemSelectionModel::currentChanged, this, &CertificateSelectionDialog::on_currentChanged);
@@ -86,7 +86,7 @@ void CertificateSelectionDialog::on_currentChanged(const QModelIndex &current, c
 {
     Q_UNUSED(current)
     Q_UNUSED(previous)
-    auto id = global_identities.getIdentity(current);
+    auto id = kristall::identities.getIdentity(current);
 
     this->ui->use_selected_cert->setEnabled(id.isValid());
 }
@@ -103,7 +103,7 @@ void CertificateSelectionDialog::on_create_new_cert_clicked()
         return;
     id.is_persistent = true;
 
-    global_identities.addCertificate(
+    kristall::identities.addCertificate(
         dialog.groupName(),
         id);
 }
@@ -111,7 +111,7 @@ void CertificateSelectionDialog::on_create_new_cert_clicked()
 void CertificateSelectionDialog::on_use_selected_cert_clicked()
 {
     auto sel = this->ui->certificates->selectionModel()->currentIndex();
-    this->cryto_identity = global_identities.getIdentity(sel);
+    this->cryto_identity = kristall::identities.getIdentity(sel);
     if(this->cryto_identity.isValid()) {
         this->accept();
     } else {
@@ -121,7 +121,7 @@ void CertificateSelectionDialog::on_use_selected_cert_clicked()
 
 void CertificateSelectionDialog::on_certificates_doubleClicked(const QModelIndex &index)
 {
-    this->cryto_identity = global_identities.getIdentity(index);
+    this->cryto_identity = kristall::identities.getIdentity(index);
     if(this->cryto_identity.isValid()) {
         this->accept();
     } else {

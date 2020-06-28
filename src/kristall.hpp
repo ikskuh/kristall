@@ -9,6 +9,8 @@
 #include "identitycollection.hpp"
 #include "ssltrust.hpp"
 #include "favouritecollection.hpp"
+#include "protocolsetup.hpp"
+#include "documentstyle.hpp"
 
 enum class Theme : int
 {
@@ -52,14 +54,6 @@ struct GenericSettings
 //! `:`-separated SHA256 hash
 QString toFingerprintString(QSslCertificate const & certificate);
 
-extern QSettings global_settings;
-extern IdentityCollection global_identities;
-extern QClipboard * global_clipboard;
-extern SslTrust global_gemini_trust;
-extern SslTrust global_https_trust;
-extern FavouriteCollection global_favourites;
-extern GenericSettings global_options;
-
 ///
 /// Kristall directory structure:
 /// ~/.cache/kristall/
@@ -72,11 +66,36 @@ extern GenericSettings global_options;
 ///
 namespace kristall
 {
-    extern QDir config_root;
-    extern QDir cache_root;
-    extern QDir offline_pages;
-    extern QDir themes;
-    extern QDir styles;
+    extern ProtocolSetup protocols;
+
+    extern QSettings * settings;
+    extern IdentityCollection identities;
+    extern QClipboard * clipboard;
+    extern FavouriteCollection favourites;
+    extern GenericSettings options;
+
+    extern DocumentStyle document_style;
+
+    namespace trust {
+        extern SslTrust gemini;
+        extern SslTrust https;
+    }
+
+    namespace dirs {
+        extern QDir config_root;
+        extern QDir cache_root;
+
+        //! Contains files per host
+        extern QDir offline_pages;
+
+        //! Contains custom UI themes for kristall
+        extern QDir themes;
+
+        //! Contains custom document styles / presets
+        extern QDir styles;
+    }
+
+    void saveSettings();
 }
 
 #endif // KRISTALL_HPP

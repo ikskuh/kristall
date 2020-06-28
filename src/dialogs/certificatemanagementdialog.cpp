@@ -17,7 +17,7 @@ CertificateManagementDialog::CertificateManagementDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    this->ui->certificates->setModel(&global_identities);
+    this->ui->certificates->setModel(&identity_set);
     this->ui->certificates->expandAll();
 
     connect(
@@ -34,11 +34,23 @@ CertificateManagementDialog::~CertificateManagementDialog()
     delete ui;
 }
 
+IdentityCollection CertificateManagementDialog::identitySet() const
+{
+    return this->identity_set;
+}
+
+void CertificateManagementDialog::setIdentitySet(const IdentityCollection &src)
+{
+    this->identity_set = src;
+    this->ui->certificates->expandAll();
+
+}
+
 void CertificateManagementDialog::on_certificates_selected(QModelIndex const& index, QModelIndex const & previous)
 {
     Q_UNUSED(previous);
 
-    selected_identity = global_identities.getMutableIdentity(index);
+    selected_identity = identity_set.getMutableIdentity(index);
 
     this->ui->export_cert_button->setEnabled(selected_identity != nullptr);
 
@@ -70,8 +82,8 @@ void CertificateManagementDialog::on_certificates_selected(QModelIndex const& in
         this->ui->cert_host_filter->setText("");
         this->ui->cert_auto_enable->setChecked(false);
 
-        if(auto group_name = global_identities.group(index); not group_name.isEmpty()) {
-            this->ui->delete_cert_button->setEnabled(global_identities.canDeleteGroup(group_name));
+        if(auto group_name = identity_set.group(index); not group_name.isEmpty()) {
+            this->ui->delete_cert_button->setEnabled(identity_set.canDeleteGroup(group_name));
         } else {
             this->ui->delete_cert_button->setEnabled(false);
         }
@@ -97,7 +109,7 @@ void CertificateManagementDialog::on_delete_cert_button_clicked()
 {
     auto index = this->ui->certificates->currentIndex();
 
-    if(global_identities.getMutableIdentity(index) != nullptr)
+    if(identity_set.getMutableIdentity(index) != nullptr)
     {
         auto answer = QMessageBox::question(
             this,
@@ -108,11 +120,11 @@ void CertificateManagementDialog::on_delete_cert_button_clicked()
         );
         if(answer != QMessageBox::Yes)
             return;
-        if(not global_identities.destroyIdentity(index)) {
+        if(not identity_set.destroyIdentity(index)) {
             QMessageBox::warning(this, "Kristall", "Could not destroy identity!");
         }
     }
-    else if(auto group_name = global_identities.group(index); not group_name.isEmpty()) {
+    else if(auto group_name = identity_set.group(index); not group_name.isEmpty()) {
 
         auto answer = QMessageBox::question(
             this,
@@ -122,7 +134,7 @@ void CertificateManagementDialog::on_delete_cert_button_clicked()
         if(answer != QMessageBox::Yes)
             return;
 
-        if(not global_identities.deleteGroup(group_name)) {
+        if(not identity_set.deleteGroup(group_name)) {
             QMessageBox::warning(this, "Kristall", "Could not delete group!");
         }
     }
@@ -261,7 +273,7 @@ void CertificateManagementDialog::on_import_cert_button_clicked()
         return;
     }
 
-    if(not global_identities.addCertificate(tr("Imported Certificates"), ident)) {
+    if(not identity_set.addCertificate(tr("Imported Certificates"), ident)) {
         QMessageBox::warning(
             this,
             "Kristall",
@@ -274,7 +286,7 @@ void CertificateManagementDialog::on_create_cert_button_clicked()
 {
     NewIdentitiyDialog dialog { this };
 
-    dialog.setGroupName(global_identities.group(this->ui->certificates->currentIndex()));
+    dialog.setGroupName(identity_set.group(this->ui->certificates->currentIndex()));
 
     if(dialog.exec() != QDialog::Accepted)
         return;
@@ -284,7 +296,7 @@ void CertificateManagementDialog::on_create_cert_button_clicked()
         return;
     id.is_persistent = true;
 
-    global_identities.addCertificate(
+    identity_set.addCertificate(
         dialog.groupName(),
         id);
 }

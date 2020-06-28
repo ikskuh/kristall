@@ -11,20 +11,16 @@ ProtocolSetup::ProtocolSetup()
 
 void ProtocolSetup::save(QSettings &settings) const
 {
-    settings.beginGroup("Protocols");
 #define MAC(X) settings.setValue(#X, this->X);
     PROTOCOLS(MAC)
 #undef MAC
-    settings.endGroup();
 }
 
 void ProtocolSetup::load(QSettings &settings)
 {
-    settings.beginGroup("Protocols");
 #define MAC(X) if(settings.contains(#X)) this->X = settings.value(#X).toBool();
     PROTOCOLS(MAC)
 #undef MAC
-    settings.endGroup();
 }
 
 ProtocolSetup::ProtocolSupport ProtocolSetup::isSchemeSupported(QString const & _scheme) const

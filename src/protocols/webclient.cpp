@@ -36,7 +36,7 @@ bool WebClient::startRequest(const QUrl &url, RequestOptions options)
 
     auto ssl_config = request.sslConfiguration();
     // ssl_config.setProtocol(QSsl::TlsV1_2);
-    if(global_https_trust.enable_ca)
+    if(kristall::trust::https.enable_ca)
         ssl_config.setCaCertificates(QSslConfiguration::systemCaCertificates());
     else
         ssl_config.setCaCertificates(QList<QSslCertificate> { });
@@ -182,7 +182,7 @@ void WebClient::on_sslErrors(const QList<QSslError> &errors)
         if(SslTrust::isTrustRelated(err.error()))
         {
             auto cert = this->current_reply->sslConfiguration().peerCertificate();
-            switch(global_https_trust.getTrust(this->current_reply->url(), cert))
+            switch(kristall::trust::https.getTrust(this->current_reply->url(), cert))
             {
             case SslTrust::Trusted:
                 ignore = true;

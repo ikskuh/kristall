@@ -46,6 +46,11 @@ class IdentityCollection : public QAbstractItemModel
 public:
     explicit IdentityCollection(QObject *parent = nullptr);
 
+    IdentityCollection(IdentityCollection const & other);
+
+    IdentityCollection & operator=(IdentityCollection const &);
+    IdentityCollection & operator=(IdentityCollection &&);
+
 public:
     void load(QSettings & settings);
 

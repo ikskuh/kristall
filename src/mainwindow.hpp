@@ -8,7 +8,6 @@
 
 #include "favouritecollection.hpp"
 #include "renderers/geminirenderer.hpp"
-#include "protocolsetup.hpp"
 
 #include "widgets/elidelabel.hpp"
 
@@ -32,8 +31,6 @@ public:
     BrowserTab * addNewTab(bool focus_new, QUrl const & url);
 
     void setUrlPreview(QUrl const & url);
-
-    void saveSettings();
 
 private slots:
     void on_browser_tabs_currentChanged(int index);
@@ -98,9 +95,6 @@ private:
 
 public:
     QApplication * application;
-    DocumentStyle current_style;
-    ProtocolSetup protocols;
-
 private:
     Ui::MainWindow *ui;
 

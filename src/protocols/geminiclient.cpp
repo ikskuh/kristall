@@ -51,7 +51,7 @@ bool GeminiClient::startRequest(const QUrl &url, RequestOptions options)
 
     QSslConfiguration ssl_config = socket.sslConfiguration();
     ssl_config.setProtocol(QSsl::TlsV1_2);
-    if(not global_gemini_trust.enable_ca)
+    if(not kristall::trust::gemini.enable_ca)
         ssl_config.setCaCertificates(QList<QSslCertificate> { });
     else
         ssl_config.setCaCertificates(QSslConfiguration::systemCaCertificates());
@@ -316,7 +316,7 @@ void GeminiClient::sslErrors(QList<QSslError> const & errors)
         bool ignore = false;
         if(SslTrust::isTrustRelated(err.error()))
         {
-            switch(global_gemini_trust.getTrust(target_url, socket.peerCertificate()))
+            switch(kristall::trust::gemini.getTrust(target_url, socket.peerCertificate()))
             {
             case SslTrust::Trusted:
                 ignore = true;

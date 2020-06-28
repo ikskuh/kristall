@@ -26,7 +26,7 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
     external_link.setFont(themed_style.standard_font);
     external_link.setForeground(QBrush(themed_style.external_link_color));
 
-    bool emit_text_only = (global_options.gophermap_display == GenericSettings::PlainText);
+    bool emit_text_only = (kristall::options.gophermap_display == GenericSettings::PlainText);
 
     std::unique_ptr<QTextDocument> result = std::make_unique<QTextDocument>();
     result->setDocumentMargin(themed_style.margin);

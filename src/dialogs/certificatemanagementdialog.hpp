@@ -4,6 +4,7 @@
 #include <QDialog>
 
 #include "cryptoidentity.hpp"
+#include "identitycollection.hpp"
 
 namespace Ui {
 class CertificateManagementDialog;
@@ -16,6 +17,9 @@ class CertificateManagementDialog : public QDialog
 public:
     explicit CertificateManagementDialog(QWidget *parent = nullptr);
     ~CertificateManagementDialog();
+
+    IdentityCollection identitySet() const;
+    void setIdentitySet(IdentityCollection const & src);
 
 private slots:
     void on_cert_notes_textChanged();
@@ -38,6 +42,8 @@ private:
     void on_certificates_selected(const QModelIndex &index, QModelIndex const & previous);
 private:
     Ui::CertificateManagementDialog *ui;
+
+    IdentityCollection identity_set;
 
     CryptoIdentity * selected_identity;
 };

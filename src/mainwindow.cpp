@@ -33,13 +33,7 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     this->statusBar()->addPermanentWidget(this->file_size);
     this->statusBar()->addPermanentWidget(this->load_time);
 
-    this->protocols.load(global_settings);
-
-    global_settings.beginGroup("Theme");
-    this->current_style.load(global_settings);
-    global_settings.endGroup();
-
-    ui->favourites_view->setModel(&global_favourites);
+    ui->favourites_view->setModel(&kristall::favourites);
 
     this->ui->outline_window->setVisible(false);
     this->ui->history_window->setVisible(false);
@@ -58,7 +52,7 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     connect(this->ui->menuNavigation, &QMenu::aboutToShow, [this]() {
         BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
         if(tab != nullptr) {
-            ui->actionAdd_to_favourites->setChecked(global_favourites.contains(tab->current_location));
+            ui->actionAdd_to_favourites->setChecked(kristall::favourites.contains(tab->current_location));
         }
     });
 
@@ -75,17 +69,6 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
         connect(sc, &QShortcut::activated, this, &MainWindow::on_focus_inputbar);
     }
 
-    {
-        global_settings.beginGroup("Window State");
-        if(global_settings.contains("geometry")) {
-            restoreGeometry(global_settings.value("geometry").toByteArray());
-        }
-        if(global_settings.contains("state")) {
-            restoreState(global_settings.value("state").toByteArray());
-        }
-        global_settings.endGroup();
-    }
-
     this->ui->favourites_view->setContextMenuPolicy(Qt::CustomContextMenu);
     this->ui->history_view->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -94,7 +77,6 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    this->saveSettings();
     delete ui;
 }
 
@@ -112,7 +94,7 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new, bool load_default)
     }
 
     if(load_default) {
-        tab->navigateTo(QUrl(global_options.start_page), BrowserTab::PushImmediate);
+        tab->navigateTo(QUrl(kristall::options.start_page), BrowserTab::PushImmediate);
     } else {
         tab->navigateTo(QUrl("about:blank"), BrowserTab::DontPush);
     }
@@ -141,41 +123,6 @@ void MainWindow::setUrlPreview(const QUrl &url)
     }
 }
 
-void MainWindow::saveSettings()
-{
-    global_favourites.save(global_settings);
-    this->protocols.save(global_settings);
-
-    global_settings.beginGroup("Client Identities");
-    global_identities.save(global_settings);
-    global_settings.endGroup();
-
-    global_settings.beginGroup("Trusted Servers");
-    global_gemini_trust.save(global_settings);
-    global_settings.endGroup();
-
-    global_settings.beginGroup("Trusted HTTPS Servers");
-    global_https_trust.save(global_settings);
-    global_settings.endGroup();
-
-    global_settings.beginGroup("Theme");
-    this->current_style.save(global_settings);
-    global_settings.endGroup();
-
-    {
-        global_settings.beginGroup("Window State");
-
-        global_settings.setValue("geometry", saveGeometry());
-        global_settings.setValue("state", saveState());
-
-        global_settings.endGroup();
-    }
-
-    global_options.save(global_settings);
-
-    global_settings.sync();
-}
-
 void MainWindow::on_browser_tabs_currentChanged(int index)
 {
     if(index >= 0) {
@@ -202,7 +149,7 @@ void MainWindow::on_browser_tabs_currentChanged(int index)
 
 void MainWindow::on_favourites_view_doubleClicked(const QModelIndex &index)
 {
-    if(auto url = global_favourites.get(index); url.isValid()) {
+    if(auto url = kristall::favourites.get(index); url.isValid()) {
         this->addNewTab(true, url);
     }
 }
@@ -256,23 +203,23 @@ void MainWindow::on_actionSettings_triggered()
 {
     SettingsDialog dialog;
 
-    dialog.setGeminiStyle(this->current_style);
-    dialog.setProtocols(this->protocols);
-    dialog.setOptions(global_options);
-    dialog.setGeminiSslTrust(global_gemini_trust);
-    dialog.setHttpsSslTrust(global_https_trust);
+    dialog.setGeminiStyle(kristall::document_style);
+    dialog.setProtocols(kristall::protocols);
+    dialog.setOptions(kristall::options);
+    dialog.setGeminiSslTrust(kristall::trust::gemini);
+    dialog.setHttpsSslTrust(kristall::trust::https);
 
     if(dialog.exec() != QDialog::Accepted)
         return;
 
-    global_gemini_trust = dialog.geminiSslTrust();
-    global_https_trust = dialog.httpsSslTrust();
-    global_options = dialog.options();
+    kristall::trust::gemini = dialog.geminiSslTrust();
+    kristall::trust::https = dialog.httpsSslTrust();
+    kristall::options = dialog.options();
 
-    this->protocols = dialog.protocols();
-    this->current_style = dialog.geminiStyle();
+    kristall::protocols = dialog.protocols();
+    kristall::document_style = dialog.geminiStyle();
 
-    this->saveSettings();
+    kristall::saveSettings();
 
     this->reloadTheme();
 }
@@ -338,12 +285,12 @@ void MainWindow::on_actionAbout_Qt_triggered()
 
 void MainWindow::reloadTheme()
 {
-    if(global_options.theme == Theme::os_default)
+    if(kristall::options.theme == Theme::os_default)
     {
         application->setStyleSheet("");
         QIcon::setThemeName("light");
     }
-    if(global_options.theme == Theme::light)
+    if(kristall::options.theme == Theme::light)
     {
         QFile file(":/light.qss");
         file.open(QFile::ReadOnly | QFile::Text);
@@ -352,7 +299,7 @@ void MainWindow::reloadTheme()
 
         QIcon::setThemeName("light");
     }
-    else if(global_options.theme == Theme::dark)
+    else if(kristall::options.theme == Theme::dark)
     {
         QFile file(":/dark.qss");
         file.open(QFile::ReadOnly | QFile::Text);
@@ -406,7 +353,7 @@ void MainWindow::on_actionGo_to_home_triggered()
 {
     BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
     if(tab != nullptr) {
-        tab->navigateTo(QUrl(global_options.start_page), BrowserTab::PushImmediate);
+        tab->navigateTo(QUrl(kristall::options.start_page), BrowserTab::PushImmediate);
     }
 }
 
@@ -470,7 +417,7 @@ void MainWindow::on_history_view_customContextMenuRequested(const QPoint &pos)
 void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint &pos)
 {
     if(auto idx = this->ui->favourites_view->indexAt(pos); idx.isValid()) {
-        if(QUrl url = global_favourites.get(idx); url.isValid()) {
+        if(QUrl url = kristall::favourites.get(idx); url.isValid()) {
             QMenu menu;
 
             BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
@@ -498,7 +445,11 @@ void MainWindow::on_actionManage_Certificates_triggered()
 {
     CertificateManagementDialog dialog { this };
 
-    dialog.exec();
+    dialog.setIdentitySet(kristall::identities);
+    if(dialog.exec() != QDialog::Accepted)
+        return;
 
-    this->saveSettings();
+    kristall::identities = dialog.identitySet();
+
+    kristall::saveSettings();
 }

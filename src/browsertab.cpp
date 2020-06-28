@@ -110,7 +110,7 @@ BrowserTab::~BrowserTab()
 
 void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
 {
-    if (mainWindow->protocols.isSchemeSupported(url.scheme()) != ProtocolSetup::Enabled)
+    if (kristall::protocols.isSchemeSupported(url.scheme()) != ProtocolSetup::Enabled)
     {
         QMessageBox::warning(this, "Kristall", "URI scheme not supported or disabled: " + url.scheme());
         return;
@@ -180,11 +180,11 @@ void BrowserTab::toggleIsFavourite(bool isFavourite)
 {
     if (isFavourite)
     {
-        global_favourites.add(this->current_location);
+        kristall::favourites.add(this->current_location);
     }
     else
     {
-        global_favourites.remove(this->current_location);
+        kristall::favourites.remove(this->current_location);
     }
 
     this->updateUI();
@@ -425,11 +425,11 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
 
     this->outline.clear();
 
-    auto doc_style = mainWindow->current_style.derive(this->current_location);
+    auto doc_style = kristall::document_style.derive(this->current_location);
 
     this->ui->text_browser->setStyleSheet(QString("QTextBrowser { background-color: %1; }").arg(doc_style.background_color.name()));
 
-    bool plaintext_only = (global_options.text_display == GenericSettings::PlainText);
+    bool plaintext_only = (kristall::options.text_display == GenericSettings::PlainText);
 
     if (not plaintext_only and mime.is("text", "gemini"))
     {
@@ -587,7 +587,7 @@ void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
 
     this->network_timeout_timer.stop();
 
-    if (redirection_count >= global_options.max_redirections)
+    if (redirection_count >= kristall::options.max_redirections)
     {
         setErrorMessage(QString("Too many consecutive redirections. The last redirection would have redirected you to:\r\n%1").arg(uri.toString(QUrl::FullyEncoded)));
         return;
@@ -598,7 +598,7 @@ void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
         bool is_cross_host = (this->current_location.host() != uri.host());
 
         QString question;
-        if(global_options.redirection_policy == GenericSettings::WarnAlways)
+        if(kristall::options.redirection_policy == GenericSettings::WarnAlways)
         {
             question = QString(
                 "The location you visited wants to redirect you to another location:\r\n"
@@ -606,7 +606,7 @@ void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
                 "Do you want to allow the redirection?"
             ).arg(uri.toString(QUrl::FullyEncoded));
         }
-        else if((global_options.redirection_policy & (GenericSettings::WarnOnHostChange | GenericSettings::WarnOnSchemeChange)) and is_cross_protocol and is_cross_host)
+        else if((kristall::options.redirection_policy & (GenericSettings::WarnOnHostChange | GenericSettings::WarnOnSchemeChange)) and is_cross_protocol and is_cross_host)
         {
             question = QString(
                 "The location you visited wants to redirect you to another host and switch the protocol.\r\n"
@@ -615,7 +615,7 @@ void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
                 "Do you want to allow the redirection?"
             ).arg(uri.scheme()).arg(uri.host());
         }
-        else if((global_options.redirection_policy & GenericSettings::WarnOnSchemeChange) and is_cross_protocol)
+        else if((kristall::options.redirection_policy & GenericSettings::WarnOnSchemeChange) and is_cross_protocol)
         {
             question = QString(
                 "The location you visited wants to switch the protocol.\r\n"
@@ -623,7 +623,7 @@ void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
                 "Do you want to allow the redirection?"
             ).arg(uri.scheme());
         }
-        else if((global_options.redirection_policy & GenericSettings::WarnOnHostChange) and is_cross_host)
+        else if((kristall::options.redirection_policy & GenericSettings::WarnOnHostChange) and is_cross_host)
         {
             question = QString(
                 "The location you visited wants to redirect you to another host.\r\n"
@@ -720,10 +720,10 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
                 }
 
                 if(this->current_location.scheme() == "gemini") {
-                    global_gemini_trust.addTrust(this->current_location, this->current_server_certificate);
+                    kristall::trust::gemini.addTrust(this->current_location, this->current_server_certificate);
                 }
                 else if(this->current_location.scheme() == "https") {
-                    global_https_trust.addTrust(this->current_location, this->current_server_certificate);
+                    kristall::trust::https.addTrust(this->current_location, this->current_server_certificate);
                 }
                 else {
                     assert(false and "missing protocol implementation!");
@@ -745,7 +745,7 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
     if (real_url.isRelative())
         real_url = this->current_location.resolved(url);
 
-    auto support = mainWindow->protocols.isSchemeSupported(real_url.scheme());
+    auto support = kristall::protocols.isSchemeSupported(real_url.scheme());
 
     if (support == ProtocolSetup::Enabled)
     {
@@ -757,7 +757,7 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url)
     }
     else
     {
-        if (global_options.use_os_scheme_handler)
+        if (kristall::options.use_os_scheme_handler)
         {
             if (not QDesktopServices::openUrl(url))
             {
@@ -806,7 +806,7 @@ void BrowserTab::on_requestProgress(qint64 transferred)
     emit this->fileLoaded(this->current_stats);
 
     this->network_timeout_timer.stop();
-    this->network_timeout_timer.start(global_options.network_timeout);
+    this->network_timeout_timer.start(kristall::options.network_timeout);
 }
 
 void BrowserTab::on_back_button_clicked()
@@ -830,7 +830,7 @@ void BrowserTab::updateUI()
     this->ui->stop_button->setVisible(in_progress);
 
     this->ui->fav_button->setEnabled(this->successfully_loaded);
-    this->ui->fav_button->setChecked(global_favourites.contains(this->current_location));
+    this->ui->fav_button->setChecked(kristall::favourites.contains(this->current_location));
 }
 
 bool BrowserTab::trySetClientCertificate(const QString &query)
@@ -939,7 +939,7 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
         }
     }
     else if(not this->current_identity.isValid()) {
-        for(auto ident_ptr : global_identities.allIdentities())
+        for(auto ident_ptr : kristall::identities.allIdentities())
         {
             if(ident_ptr->isAutomaticallyEnabledOn(url)) {
 
@@ -969,7 +969,7 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
     this->current_location = url;
     this->ui->url_bar->setText(url.toString(QUrl::FormattingOptions(QUrl::FullyEncoded)));
 
-    this->network_timeout_timer.start(global_options.network_timeout);
+    this->network_timeout_timer.start(kristall::options.network_timeout);
 
     return this->current_handler->startRequest(url, options);
 }
@@ -1016,7 +1016,7 @@ void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint &pos)
         });
 
         connect(menu.addAction("Copy link"), &QAction::triggered, [real_url]() {
-            global_clipboard->setText(real_url.toString(QUrl::FullyEncoded));
+            kristall::clipboard->setText(real_url.toString(QUrl::FullyEncoded));
         });
 
         menu.addSeparator();

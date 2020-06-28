@@ -7,7 +7,7 @@
 SearchBar::SearchBar(QWidget *parent) : QLineEdit(parent)
 {
     QCompleter *completer = new QCompleter(this);
-    completer->setModel(&global_favourites);
+    completer->setModel(&kristall::favourites);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     completer->setCompletionRole(Qt::DisplayRole);
     this->setCompleter(completer);

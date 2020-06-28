@@ -28,7 +28,7 @@ bool AboutHandler::startRequest(const QUrl &url, ProtocolHandler::RequestOptions
         document.append("# Favourites\n");
         document.append("\n");
 
-        for (auto const &fav : global_favourites.getAll())
+        for (auto const &fav : kristall::favourites.getAll())
         {
             document.append("=> " + fav.toString().toUtf8() + "\n");
         }

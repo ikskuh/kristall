@@ -19,7 +19,7 @@ NewIdentitiyDialog::NewIdentitiyDialog(QWidget *parent) :
     ui->expiration_date->setTime(QTime(12, 00));
 
     ui->group->clear();
-    for(auto group_name : global_identities.groups())
+    for(auto group_name : kristall::identities.groups())
     {
         ui->group->addItem(group_name);
     }

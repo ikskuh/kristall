@@ -7,6 +7,7 @@
 #include <QCryptographicHash>
 #include <QDebug>
 
+#include <cctype>
 #include <array>
 #include <cmath>
 
@@ -115,24 +116,24 @@ static QString encodeCssFont (const QFont& refFont)
 }
 
 DocumentStyle::DocumentStyle() : theme(Fixed),
-                             standard_font(),
-                             h1_font(),
-                             h2_font(),
-                             h3_font(),
-                             preformatted_font(),
-                             background_color("#edefff"),
-                             standard_color(0x00, 0x00, 0x00),
-                             preformatted_color(0x00, 0x00, 0x00),
-                             h1_color("#022f90"),
-                             h2_color("#022f90"),
-                             h3_color("#022f90"),
-                             blockquote_color("#FFFFFF"),
-                             internal_link_color("#0e8fff"),
-                             external_link_color("#0e8fff"),
-                             cross_scheme_link_color("#0960a7"),
-                             internal_link_prefix("→ "),
-                             external_link_prefix("⇒ "),
-                             margin(55.0)
+    standard_font(),
+    h1_font(),
+    h2_font(),
+    h3_font(),
+    preformatted_font(),
+    background_color("#edefff"),
+    standard_color(0x00, 0x00, 0x00),
+    preformatted_color(0x00, 0x00, 0x00),
+    h1_color("#022f90"),
+    h2_color("#022f90"),
+    h3_color("#022f90"),
+    blockquote_color("#FFFFFF"),
+    internal_link_color("#0e8fff"),
+    external_link_color("#0e8fff"),
+    cross_scheme_link_color("#0960a7"),
+    internal_link_prefix("→ "),
+    external_link_prefix("⇒ "),
+    margin(55.0)
 {
     preformatted_font.setFamily("monospace");
     preformatted_font.setPointSizeF(10.0);
@@ -153,61 +154,174 @@ DocumentStyle::DocumentStyle() : theme(Fixed),
     h3_font.setPointSizeF(12.0);
 }
 
+QString DocumentStyle::createFileNameFromName(const QString &src, int index)
+{
+    QString result;
+    result.reserve(src.size() + 5);
+    for(int i = 0; i < src.size(); i++)
+    {
+        QChar c = src.at(i);
+        if(c.isLetterOrNumber()) {
+            result.append(c.toLower());
+        }
+        else if(c.isSpace()) {
+            result.append('-');
+        }
+        else {
+            result.append(QString("").arg(c.unicode()));
+        }
+    }
+
+    if(index > 0) {
+        result.append(QString("-%1").arg(index));
+    }
+    result.append(".kthm");
+    return result;
+}
+
 bool DocumentStyle::save(QSettings &settings) const
 {
-    settings.setValue("standard_font", standard_font.toString());
-    settings.setValue("h1_font", h1_font.toString());
-    settings.setValue("h2_font", h2_font.toString());
-    settings.setValue("h3_font", h3_font.toString());
-    settings.setValue("preformatted_font", preformatted_font.toString());
+    settings.setValue("version", 1);
+    settings.setValue("theme", int(theme));
 
     settings.setValue("background_color", background_color.name());
-    settings.setValue("standard_color", standard_color.name());
-    settings.setValue("preformatted_color", preformatted_color.name());
     settings.setValue("blockquote_color", blockquote_color.name());
-    settings.setValue("h1_color", h1_color.name());
-    settings.setValue("h2_color", h2_color.name());
-    settings.setValue("h3_color", h3_color.name());
-    settings.setValue("internal_link_color", internal_link_color.name());
-    settings.setValue("external_link_color", external_link_color.name());
-    settings.setValue("cross_scheme_link_color", cross_scheme_link_color.name());
-
-    settings.setValue("internal_link_prefix", internal_link_prefix);
-    settings.setValue("external_link_prefix", external_link_prefix);
 
     settings.setValue("margins", margin);
-    settings.setValue("theme", int(theme));
+
+    {
+        settings.beginGroup("Standard");
+        settings.setValue("font", standard_font.toString());
+        settings.setValue("color", standard_color.name());
+        settings.endGroup();
+    }
+    {
+        settings.beginGroup("Preformatted");
+        settings.setValue("font", preformatted_font.toString());
+        settings.setValue("color", preformatted_color.name());
+        settings.endGroup();
+    }
+    {
+        settings.beginGroup("H1");
+        settings.setValue("font", h1_font.toString());
+        settings.setValue("color", h1_color.name());
+        settings.endGroup();
+    }
+    {
+        settings.beginGroup("H2");
+        settings.setValue("font", h2_font.toString());
+        settings.setValue("color", h2_color.name());
+        settings.endGroup();
+    }
+    {
+        settings.beginGroup("H3");
+        settings.setValue("font", h3_font.toString());
+        settings.setValue("color", h3_color.name());
+        settings.endGroup();
+    }
+    {
+        settings.beginGroup("Link");
+
+        settings.setValue("color_internal", internal_link_color.name());
+        settings.setValue("color_external", external_link_color.name());
+        settings.setValue("color_cross_scheme", cross_scheme_link_color.name());
+
+        settings.setValue("internal_prefix", internal_link_prefix);
+        settings.setValue("external_prefix", external_link_prefix);
+
+        settings.endGroup();
+    }
+
     return true;
 }
 
 bool DocumentStyle::load(QSettings &settings)
 {
-    if(settings.contains("standard_color"))
+    switch(settings.value("version", 0).toInt())
     {
-        standard_font.fromString(settings.value("standard_font").toString());
-        h1_font.fromString(settings.value("h1_font").toString());
-        h2_font.fromString(settings.value("h2_font").toString());
-        h3_font.fromString(settings.value("h3_font").toString());
-        preformatted_font.fromString(settings.value("preformatted_font").toString());
+    case 0: {
+        if(settings.contains("standard_color"))
+        {
+            standard_font.fromString(settings.value("standard_font").toString());
+            h1_font.fromString(settings.value("h1_font").toString());
+            h2_font.fromString(settings.value("h2_font").toString());
+            h3_font.fromString(settings.value("h3_font").toString());
+            preformatted_font.fromString(settings.value("preformatted_font").toString());
 
-        background_color = QColor(settings.value("background_color").toString());
-        standard_color = QColor(settings.value("standard_color").toString());
-        preformatted_color = QColor(settings.value("preformatted_color").toString());
-        blockquote_color = QColor(settings.value("blockquote_color").toString());
-        h1_color = QColor(settings.value("h1_color").toString());
-        h2_color = QColor(settings.value("h2_color").toString());
-        h3_color = QColor(settings.value("h3_color").toString());
-        internal_link_color = QColor(settings.value("internal_link_color").toString());
-        external_link_color = QColor(settings.value("external_link_color").toString());
-        cross_scheme_link_color = QColor(settings.value("cross_scheme_link_color").toString());
+            background_color = QColor(settings.value("background_color").toString());
+            standard_color = QColor(settings.value("standard_color").toString());
+            preformatted_color = QColor(settings.value("preformatted_color").toString());
+            blockquote_color = QColor(settings.value("blockquote_color").toString());
+            h1_color = QColor(settings.value("h1_color").toString());
+            h2_color = QColor(settings.value("h2_color").toString());
+            h3_color = QColor(settings.value("h3_color").toString());
+            internal_link_color = QColor(settings.value("internal_link_color").toString());
+            external_link_color = QColor(settings.value("external_link_color").toString());
+            cross_scheme_link_color = QColor(settings.value("cross_scheme_link_color").toString());
 
-        internal_link_prefix = settings.value("internal_link_prefix").toString();
-        external_link_prefix = settings.value("external_link_prefix").toString();
+            internal_link_prefix = settings.value("internal_link_prefix").toString();
+            external_link_prefix = settings.value("external_link_prefix").toString();
 
-        margin = settings.value("margins").toDouble();
-        theme = Theme(settings.value("theme").toInt());
+            margin = settings.value("margins").toDouble();
+            theme = Theme(settings.value("theme").toInt());
+        }
+        return true;
     }
-    return true;
+    case 1: {
+        theme = Theme(settings.value("theme", int(theme)).toInt());
+
+        background_color = QColor { settings.value("background_color", background_color.name()).toString() };
+        blockquote_color = QColor { settings.value("blockquote_color", blockquote_color.name()).toString() };
+
+        margin = settings.value("margins", 55).toInt();
+
+        {
+            settings.beginGroup("Standard");
+            standard_font.fromString(settings.value("font", standard_font.toString()).toString());
+            standard_color = QString { settings.value("color", standard_color.name()).toString() };
+            settings.endGroup();
+        }
+        {
+            settings.beginGroup("Preformatted");
+            preformatted_font.fromString(settings.value("font", preformatted_font.toString()).toString());
+            preformatted_color = QString { settings.value("color", preformatted_color.name()).toString() };
+            settings.endGroup();
+        }
+        {
+            settings.beginGroup("H1");
+            h1_font.fromString(settings.value("font", h1_font.toString()).toString());
+            h1_color = QString { settings.value("color", h1_color.name()).toString() };
+            settings.endGroup();
+        }
+        {
+            settings.beginGroup("H2");
+            h2_font.fromString(settings.value("font", h2_font.toString()).toString());
+            h2_color = QString { settings.value("color", h2_color.name()).toString() };
+            settings.endGroup();
+        }
+        {
+            settings.beginGroup("H3");
+            h3_font.fromString(settings.value("font", h3_font.toString()).toString());
+            h3_color = QString { settings.value("color", h3_color.name()).toString() };
+            settings.endGroup();
+        }
+        {
+            settings.beginGroup("Link");
+
+            internal_link_color = QString { settings.value("color_internal", internal_link_color.name()).toString() };
+            external_link_color = QString {settings.value("color_external", external_link_color.name()).toString() };
+            cross_scheme_link_color = QString {settings.value("color_cross_scheme", cross_scheme_link_color.name()).toString() };
+
+            internal_link_prefix = settings.value("internal_prefix", internal_link_prefix).toString();
+            external_link_prefix = settings.value("external_prefix", external_link_prefix).toString();
+
+            settings.endGroup();
+        }
+
+        return true;
+    }
+    }
+    return false;
 }
 
 DocumentStyle DocumentStyle::derive(const QUrl &url) const

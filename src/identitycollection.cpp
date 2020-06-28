@@ -13,6 +13,69 @@ IdentityCollection::IdentityCollection(QObject *parent)
 
 }
 
+IdentityCollection::IdentityCollection(const IdentityCollection &other)
+{
+    for(auto const & grp : other.root.children)
+    {
+        auto const & src_group = grp->as<GroupNode>();
+        auto dst_group = std::make_unique<GroupNode>();
+
+        dst_group->title = src_group.title;
+
+        for(auto const & id : src_group.children) {
+            auto const & src_id = id->as<IdentityNode>();
+            auto dst_id = std::make_unique<IdentityNode>();
+
+            dst_id->identity = src_id.identity;
+
+            dst_group->children.emplace_back(std::move(dst_id));
+        }
+
+        root.children.emplace_back(std::move(dst_group));
+    }
+
+
+    relayout();
+}
+
+IdentityCollection &IdentityCollection::operator=(const IdentityCollection & other)
+{
+    beginResetModel();
+
+    root.children.clear();
+    for(auto const & grp : other.root.children)
+    {
+        auto const & src_group = grp->as<GroupNode>();
+        auto dst_group = std::make_unique<GroupNode>();
+
+        dst_group->title = src_group.title;
+
+        for(auto const & id : src_group.children) {
+            auto const & src_id = id->as<IdentityNode>();
+            auto dst_id = std::make_unique<IdentityNode>();
+
+            dst_id->identity = src_id.identity;
+
+            dst_group->children.emplace_back(std::move(dst_id));
+        }
+
+        root.children.emplace_back(std::move(dst_group));
+    }
+
+    this->relayout();
+    endResetModel();
+    return *this;
+}
+
+IdentityCollection &IdentityCollection::operator=(IdentityCollection && other)
+{
+    beginResetModel();
+    this->root.children = std::move(other.root.children);
+    this->relayout();
+    endResetModel();
+    return *this;
+}
+
 void IdentityCollection::load(QSettings &settings)
 {
     this->beginResetModel();

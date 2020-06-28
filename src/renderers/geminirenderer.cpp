@@ -38,7 +38,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
     result->background_color = themed_style.background_color;
     result->setIndentWidth(20);
 
-    bool emit_fancy_text = global_options.enable_text_decoration;
+    bool emit_fancy_text = kristall::options.enable_text_decoration;
 
     QTextCursor cursor{result.get()};
 

@@ -16,6 +16,9 @@ struct DocumentStyle
 
     DocumentStyle();
 
+    //! Calculates a filtered/legal file name with all non-allowed chars escaped
+    static QString createFileNameFromName(QString const & src, int index);
+
     Theme theme;
 
     QFont standard_font;

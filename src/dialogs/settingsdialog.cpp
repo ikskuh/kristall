@@ -36,22 +36,21 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
     setGeminiStyle(DocumentStyle { });
 
-    int items = global_settings.beginReadArray("Themes");
-
     this->predefined_styles.clear();
-    for(int i = 0; i < items; i++)
+    for(auto const & fileName : kristall::dirs::styles.entryList())
     {
-        global_settings.setArrayIndex(i);
+        QSettings style_sheet {
+            kristall::dirs::styles.absoluteFilePath(fileName),
+            QSettings::IniFormat
+        };
 
-        QString name = global_settings.value("name").toString();
+        QString name = style_sheet.value("name").toString();
 
         DocumentStyle style;
-        style.load(global_settings);
+        style.load(style_sheet);
 
         this->predefined_styles.insert(name, style);
     }
-
-    global_settings.endArray();
 
     this->ui->presets->clear();
     for(auto const & style_name : this->predefined_styles.keys())
@@ -59,7 +58,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
         this->ui->presets->addItem(style_name);
     }
 
-    if(items > 0) {
+    if(this->predefined_styles.size() > 0) {
         on_presets_currentIndexChanged(0);
     } else {
         this->on_presets_currentIndexChanged(-1);
@@ -461,19 +460,28 @@ void SettingsDialog::on_preset_load_clicked()
 
 void SettingsDialog::on_SettingsDialog_accepted()
 {
-    global_settings.beginWriteArray("Themes", this->predefined_styles.size());
+    QStringList files = kristall::dirs::styles.entryList();
 
-    int index = 0;
     for(auto const & style_name : this->predefined_styles.keys())
     {
-        global_settings.setArrayIndex(index);
+        QString fileName = DocumentStyle::createFileNameFromName(style_name, 0);
+        files.removeAll(fileName);
 
-        global_settings.setValue("name", style_name);
-        this->predefined_styles.value(style_name).save(global_settings);
+        QSettings style_sheet {
+            kristall::dirs::styles.absoluteFilePath(fileName),
+            QSettings::IniFormat
+        };
 
-        index += 1;
+        style_sheet.setValue("name", style_name);
+        this->predefined_styles.value(style_name).save(style_sheet);
+
+        style_sheet.sync();
     }
-    global_settings.endArray();
+
+    for(auto const & fileName : files)
+    {
+        kristall::dirs::styles.remove(fileName);
+    }
 }
 
 void SettingsDialog::on_preset_import_clicked()
