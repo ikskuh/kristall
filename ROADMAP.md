@@ -12,6 +12,7 @@ This document contains TODO items for planned Kristall releases as well as some 
   - [ ] Add maximum text width option
   - [ ] Remember scroll position for navigating back
   - [ ] Ctrl-Leftclick for "open in new tab"
+  - [ ] Selecting theme in settings dialog is now instant-change
 - [ ] Improved favourites
   - [ ] Allow custom favourite title (not the URL itself)
   - [ ] Allow grouping favourites into a single-hierarchy folder structure

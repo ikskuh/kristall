@@ -31,6 +31,7 @@ QString toFingerprintString(QSslCertificate const & certificate)
 }
 
 static QSettings * app_settings_ptr;
+static QApplication * app;
 
 #define SSTR(X) STR(X)
 #define STR(X) #X
@@ -49,10 +50,14 @@ static QDir derive_dir(QDir const & parent, QString subdir)
     return child;
 }
 
+
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     app.setApplicationVersion(SSTR(KRISTALL_VERSION));
+
+    ::app = &app;
 
     kristall::clipboard = app.clipboard();
 
@@ -177,6 +182,8 @@ int main(int argc, char *argv[])
 
     kristall::favourites.load(app_settings);
 
+    kristall::setTheme(kristall::options.theme);
+
     MainWindow w(&app);
 
     auto urls = cli_parser.positionalArguments();
@@ -300,4 +307,32 @@ void kristall::saveSettings()
     kristall::options.save(app_settings);
 
     app_settings.sync();
+}
+
+void kristall::setTheme(Theme theme)
+{
+    assert(app != nullptr);
+    if(theme == Theme::os_default)
+    {
+        app->setStyleSheet("");
+        QIcon::setThemeName("light");
+    }
+    if(theme == Theme::light)
+    {
+        QFile file(":/light.qss");
+        file.open(QFile::ReadOnly | QFile::Text);
+        QTextStream stream(&file);
+        app->setStyleSheet(stream.readAll());
+
+        QIcon::setThemeName("light");
+    }
+    else if(theme == Theme::dark)
+    {
+        QFile file(":/dark.qss");
+        file.open(QFile::ReadOnly | QFile::Text);
+        QTextStream stream(&file);
+        app->setStyleSheet(stream.readAll());
+
+        QIcon::setThemeName("dark");
+    }
 }

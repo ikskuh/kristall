@@ -89,8 +89,6 @@ private: // slots
 
 
 private:
-    void reloadTheme();
-
     void setFileStatus(DocumentStats const & stats);
 
 public:

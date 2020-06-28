@@ -96,6 +96,8 @@ namespace kristall
     }
 
     void saveSettings();
+
+    void setTheme(Theme theme);
 }
 
 #endif // KRISTALL_HPP

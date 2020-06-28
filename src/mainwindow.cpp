@@ -71,8 +71,6 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
 
     this->ui->favourites_view->setContextMenuPolicy(Qt::CustomContextMenu);
     this->ui->history_view->setContextMenuPolicy(Qt::CustomContextMenu);
-
-    reloadTheme();
 }
 
 MainWindow::~MainWindow()
@@ -209,8 +207,10 @@ void MainWindow::on_actionSettings_triggered()
     dialog.setGeminiSslTrust(kristall::trust::gemini);
     dialog.setHttpsSslTrust(kristall::trust::https);
 
-    if(dialog.exec() != QDialog::Accepted)
+    if(dialog.exec() != QDialog::Accepted) {
+        kristall::setTheme(kristall::options.theme);
         return;
+    }
 
     kristall::trust::gemini = dialog.geminiSslTrust();
     kristall::trust::https = dialog.httpsSslTrust();
@@ -221,7 +221,7 @@ void MainWindow::on_actionSettings_triggered()
 
     kristall::saveSettings();
 
-    this->reloadTheme();
+    kristall::setTheme(kristall::options.theme);
 }
 
 void MainWindow::on_actionNew_Tab_triggered()
@@ -281,33 +281,6 @@ void MainWindow::on_actionRefresh_triggered()
 void MainWindow::on_actionAbout_Qt_triggered()
 {
     QMessageBox::aboutQt(this, "Kristall");
-}
-
-void MainWindow::reloadTheme()
-{
-    if(kristall::options.theme == Theme::os_default)
-    {
-        application->setStyleSheet("");
-        QIcon::setThemeName("light");
-    }
-    if(kristall::options.theme == Theme::light)
-    {
-        QFile file(":/light.qss");
-        file.open(QFile::ReadOnly | QFile::Text);
-        QTextStream stream(&file);
-        application->setStyleSheet(stream.readAll());
-
-        QIcon::setThemeName("light");
-    }
-    else if(kristall::options.theme == Theme::dark)
-    {
-        QFile file(":/dark.qss");
-        file.open(QFile::ReadOnly | QFile::Text);
-        QTextStream stream(&file);
-        application->setStyleSheet(stream.readAll());
-
-        QIcon::setThemeName("dark");
-    }
 }
 
 void MainWindow::setFileStatus(const DocumentStats &stats)

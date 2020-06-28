@@ -563,6 +563,8 @@ void SettingsDialog::on_start_page_textChanged(const QString &start_page)
 void SettingsDialog::on_ui_theme_currentIndexChanged(int index)
 {
     this->current_options.theme = Theme(this->ui->ui_theme->itemData(index).toInt());
+
+    kristall::setTheme(this->current_options.theme);
 }
 
 void SettingsDialog::on_fancypants_on_clicked()
