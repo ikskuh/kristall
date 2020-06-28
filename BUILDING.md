@@ -49,8 +49,9 @@ These notes are probably also correct for Debian (someone please verify)
 
 #### Notes for Manjaro/Arch
 - Required packages
-  - `qt5`
+  - `qt5-base`
   - `qt5-multimedia`
+  - `qt5-svg`
   - `openssl` or `libressl`
 
 #### Notes on void linux
