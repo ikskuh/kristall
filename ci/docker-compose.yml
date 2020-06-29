@@ -4,3 +4,7 @@ services:
     image: "kristall-ci:1.0"
     volumes:
       - ./output:/artifacts
+    devices:
+      - /dev/fuse:/dev/fuse
+    cap_add:
+      - SYS_ADMIN
