@@ -35,8 +35,6 @@ public:
 private slots:
     void on_browser_tabs_currentChanged(int index);
 
-    void on_favourites_view_doubleClicked(const QModelIndex &index);
-
     void on_browser_tabs_tabCloseRequested(int index);
 
     void on_history_view_doubleClicked(const QModelIndex &index);

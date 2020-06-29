@@ -147,7 +147,7 @@ int main(int argc, char *argv[])
                     app_settings.endGroup();
                 }
 
-                // deprecated_settings.setValue("deprecated", true);
+                deprecated_settings.setValue("deprecated", true);
             }
             else
             {
@@ -159,6 +159,7 @@ int main(int argc, char *argv[])
     // Migrate to new favourites format
     if(int len = app_settings.beginReadArray("favourites"); len > 0)
     {
+        qDebug() << "Migrating old-style favourites...";
         std::vector<Favourite> favs;
 
         favs.reserve(len);
@@ -332,7 +333,9 @@ void kristall::saveSettings()
     assert(app_settings_ptr != nullptr);
     QSettings & app_settings = *app_settings_ptr;
 
+    app_settings.beginGroup("Favourites");
     kristall::favourites.save(app_settings);
+    app_settings.endGroup();
 
     app_settings.beginGroup("Protocols");
     kristall::protocols.save(app_settings);

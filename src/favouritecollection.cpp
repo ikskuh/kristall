@@ -412,6 +412,16 @@ QVariant FavouriteCollection::data(const QModelIndex &index, int role) const
             return "Unknown";
         }
     }
+    if (role == Qt::EditRole)
+    {
+        switch(item->type) {
+        case Node::Root: return "root";
+        case Node::Group: return static_cast<GroupNode const *>(item)->title;
+        case Node::Favourite: return static_cast<FavouriteNode const *>(item)->favourite.title;
+        default:
+            return "Unknown";
+        }
+    }
     else if(role == Qt::DecorationRole) {
 
         switch(item->type) {
@@ -425,6 +435,31 @@ QVariant FavouriteCollection::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+bool FavouriteCollection::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (!index.isValid())
+        return false;
+
+    Node *item = static_cast<Node*>(index.internalPointer());
+    if (role == Qt::EditRole)
+    {
+        switch(item->type) {
+        case Node::Root: return false;
+        case Node::Group:
+            item->as<GroupNode>().title = value.toString();
+            emit this->dataChanged(index, index, { Qt::EditRole });
+            return true;
+        case Node::Favourite:
+            item->as<FavouriteNode>().favourite.title = value.toString();
+            emit this->dataChanged(index, index, { Qt::EditRole });
+            return true;
+        default: return false;
+        }
+    }
+
+    return false;
+}
+
 Qt::ItemFlags FavouriteCollection::flags(const QModelIndex &index) const
 {
     if (!index.isValid())
@@ -432,9 +467,9 @@ Qt::ItemFlags FavouriteCollection::flags(const QModelIndex &index) const
     Node const *item = static_cast<Node const*>(index.internalPointer());
     switch(item->type) {
     case Node::Favourite:
-        return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled;
+        return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled | Qt::ItemIsEditable;
     case Node::Group:
-        return QAbstractItemModel::flags(index) | Qt::ItemIsDropEnabled;
+        return QAbstractItemModel::flags(index) | Qt::ItemIsDropEnabled | Qt::ItemIsEditable;
     default:
         return QAbstractItemModel::flags(index);
     }

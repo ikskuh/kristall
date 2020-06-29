@@ -10,6 +10,8 @@
 #include <QFile>
 #include <QTextStream>
 #include <QFileDialog>
+#include <QInputDialog>
+
 #include "ioutil.hpp"
 #include "kristall.hpp"
 
@@ -145,12 +147,12 @@ void MainWindow::on_browser_tabs_currentChanged(int index)
     }
 }
 
-void MainWindow::on_favourites_view_doubleClicked(const QModelIndex &index)
-{
-    if(auto url = kristall::favourites.getFavourite(index).destination; url.isValid()) {
-        this->addNewTab(true, url);
-    }
-}
+//void MainWindow::on_favourites_view_doubleClicked(const QModelIndex &index)
+//{
+//    if(auto url = kristall::favourites.getFavourite(index).destination; url.isValid()) {
+//        this->addNewTab(true, url);
+//    }
+//}
 
 void MainWindow::on_browser_tabs_tabCloseRequested(int index)
 {
@@ -406,6 +408,26 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint &pos
 
             menu.exec(this->ui->favourites_view->mapToGlobal(pos));
         }
+        else if(QString group = kristall::favourites.group(idx); not group.isEmpty()) {
+            qDebug() << group;
+        }
+    }
+    else {
+        QMenu menu;
+
+        connect(menu.addAction("Create new group..."), &QAction::triggered, [this]() {
+            QInputDialog dialog { this };
+
+            dialog.setInputMode(QInputDialog::TextInput);
+            dialog.setLabelText(tr("Enter name of the new group:"));
+
+            if(dialog.exec() != QDialog::Accepted)
+                return;
+
+            kristall::favourites.addGroup(dialog.textValue());
+        });
+
+        menu.exec(this->ui->favourites_view->mapToGlobal(pos));
     }
 }
 

@@ -30,7 +30,11 @@ bool AboutHandler::startRequest(const QUrl &url, ProtocolHandler::RequestOptions
 
         for (auto const &fav : kristall::favourites.allFavourites())
         {
-            document.append("=> " + fav->destination.toString().toUtf8() + "\n");
+            if(fav->title.isEmpty()) {
+                document.append("=> " + fav->destination.toString().toUtf8() + "\n");
+            } else {
+                document.append("=> " + fav->destination.toString().toUtf8() + " " + fav->title.toUtf8() + "\n");
+            }
         }
 
         this->requestComplete(document, "text/gemini");

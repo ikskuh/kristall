@@ -14,8 +14,8 @@ This document contains TODO items for planned Kristall releases as well as some 
   - [x] Ctrl-Leftclick for "open in new tab"
   - [ ] Selecting theme in settings dialog is now instant-change
 - [ ] Improved favourites
-  - [ ] Allow custom favourite title (not the URL itself)
-  - [ ] Allow grouping favourites into a single-hierarchy folder structure
+  - [x] Allow custom favourite title (not the URL itself)
+  - [x] Allow grouping favourites into a single-hierarchy folder structure
 - [ ] Improve Unicode/Emoji support
   - Seems to need multiple font families per font?
 - [x] Replace Qt markdown with standalone markdown renderer
