@@ -26,14 +26,23 @@ bool AboutHandler::startRequest(const QUrl &url, ProtocolHandler::RequestOptions
         QByteArray document;
 
         document.append("# Favourites\n");
-        document.append("\n");
+
+        QString current_group;
 
         for (auto const &fav : kristall::favourites.allFavourites())
         {
-            if(fav->title.isEmpty()) {
-                document.append("=> " + fav->destination.toString().toUtf8() + "\n");
+            if(current_group != fav.first) {
+
+                document.append("\n");
+                document.append(QString("## %1\n").arg(fav.first));
+
+                current_group = fav.first;
+            }
+
+            if(fav.second->title.isEmpty()) {
+                document.append("=> " + fav.second->destination.toString().toUtf8() + "\n");
             } else {
-                document.append("=> " + fav->destination.toString().toUtf8() + " " + fav->title.toUtf8() + "\n");
+                document.append("=> " + fav.second->destination.toString().toUtf8() + " " + fav.second->title.toUtf8() + "\n");
             }
         }
 

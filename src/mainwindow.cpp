@@ -406,6 +406,12 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint &pos
                 addNewTab(true, url);
             });
 
+            menu.addSeparator();
+
+            connect(menu.addAction("Delete"), &QAction::triggered, [idx]() {
+                kristall::favourites.destroyFavourite(idx);
+            });
+
             menu.exec(this->ui->favourites_view->mapToGlobal(pos));
         }
         else if(QString group = kristall::favourites.group(idx); not group.isEmpty()) {

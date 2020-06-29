@@ -286,15 +286,18 @@ bool FavouriteCollection::deleteGroup(const QString &group_name)
     return false;
 }
 
-QVector<const Favourite *> FavouriteCollection::allFavourites() const
+QVector<QPair<QString, Favourite const *>> FavouriteCollection::allFavourites() const
 {
-    QVector<const Favourite *> identities;
+    QVector<QPair<QString, Favourite const *>> identities;
 
     for(auto const & group : this->root.children)
     {
         for(auto const & ident : group->children)
         {
-            identities.append(&ident->as<FavouriteNode>().favourite);
+            identities.append(QPair<QString, Favourite const *> {
+                group->as<GroupNode>().title,
+                &ident->as<FavouriteNode>().favourite
+            });
         }
     }
 

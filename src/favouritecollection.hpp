@@ -91,8 +91,10 @@ public:
     bool canDeleteGroup(QString const & group_name);
     bool deleteGroup(QString const & group_name);
 
-    //! Returns a list of non-mutable references to all contained identities
-    QVector<Favourite const *> allFavourites() const;
+    //! Returns a list of non-mutable references to all contained favourites.
+    //! Note that the group will change in-order, so all favourites for group a
+    //! will be listed, then all for group b, no intermixing is done.
+    QVector<QPair<QString, Favourite const *>> allFavourites() const;
 
     bool containsUrl(QUrl const & url) const;
 
