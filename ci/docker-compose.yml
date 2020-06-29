@@ -1,0 +1,6 @@
+version: '3'
+services:
+  builder:
+    image: "kristall-ci:1.0"
+    volumes:
+      - ./output:/artifacts
