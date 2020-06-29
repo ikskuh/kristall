@@ -52,7 +52,7 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     connect(this->ui->menuNavigation, &QMenu::aboutToShow, [this]() {
         BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
         if(tab != nullptr) {
-            ui->actionAdd_to_favourites->setChecked(kristall::favourites.contains(tab->current_location));
+            ui->actionAdd_to_favourites->setChecked(kristall::favourites.containsUrl(tab->current_location));
         }
     });
 
@@ -147,7 +147,7 @@ void MainWindow::on_browser_tabs_currentChanged(int index)
 
 void MainWindow::on_favourites_view_doubleClicked(const QModelIndex &index)
 {
-    if(auto url = kristall::favourites.get(index); url.isValid()) {
+    if(auto url = kristall::favourites.getFavourite(index).destination; url.isValid()) {
         this->addNewTab(true, url);
     }
 }
@@ -390,7 +390,7 @@ void MainWindow::on_history_view_customContextMenuRequested(const QPoint &pos)
 void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint &pos)
 {
     if(auto idx = this->ui->favourites_view->indexAt(pos); idx.isValid()) {
-        if(QUrl url = kristall::favourites.get(idx); url.isValid()) {
+        if(QUrl url = kristall::favourites.getFavourite(idx).destination; url.isValid()) {
             QMenu menu;
 
             BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());

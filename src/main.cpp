@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
 
     QSettings app_settings {
         kristall::dirs::config_root.absoluteFilePath("config.ini"),
-        QSettings::IniFormat
+                QSettings::IniFormat
     };
     app_settings_ptr = &app_settings;
 
@@ -120,8 +120,8 @@ int main(int argc, char *argv[])
                         } while(kristall::dirs::styles.exists(fileName));
 
                         QSettings style_sheet {
-                             kristall::dirs::styles.absoluteFilePath(fileName),
-                            QSettings::IniFormat
+                            kristall::dirs::styles.absoluteFilePath(fileName),
+                                    QSettings::IniFormat
                         };
                         style_sheet.setValue("name", name);
                         style.save(style_sheet);
@@ -147,13 +147,61 @@ int main(int argc, char *argv[])
                     app_settings.endGroup();
                 }
 
-                deprecated_settings.setValue("deprecated", true);
+                // deprecated_settings.setValue("deprecated", true);
             }
             else
             {
                 qDebug() << "Migration complete. Please delete" << deprecated_settings.fileName();
             }
         }
+    }
+
+    // Migrate to new favourites format
+    if(int len = app_settings.beginReadArray("favourites"); len > 0)
+    {
+        std::vector<Favourite> favs;
+
+        favs.reserve(len);
+        for(int i = 0; i < len; i++)
+        {
+            app_settings.setArrayIndex(i);
+
+            Favourite fav;
+            fav.destination = app_settings.value("url").toString();
+            fav.title = QString { };
+
+            favs.emplace_back(std::move(fav));
+        }
+        app_settings.endArray();
+
+
+        app_settings.beginGroup("Favourites");
+        {
+            app_settings.beginWriteArray("groups");
+
+            app_settings.setArrayIndex(0);
+            app_settings.setValue("name", QObject::tr("Unsorted"));
+
+            {
+                app_settings.beginWriteArray("favourites", len);
+                for(int i = 0; i < len; i++)
+                {
+                    auto const & fav = favs.at(i);
+                    app_settings.setArrayIndex(i);
+                    app_settings.setValue("title", fav.title);
+                    app_settings.setValue("url", fav.destination);
+                }
+                app_settings.endArray();
+            }
+
+            app_settings.endArray();
+        }
+        app_settings.endGroup();
+
+        app_settings.remove("favourites");
+    }
+    else {
+        app_settings.endArray();
     }
 
     kristall::settings = &app_settings;
@@ -180,7 +228,9 @@ int main(int argc, char *argv[])
     kristall::document_style.load(app_settings);
     app_settings.endGroup();
 
+    app_settings.beginGroup("Favourites");
     kristall::favourites.load(app_settings);
+    app_settings.endGroup();
 
     kristall::setTheme(kristall::options.theme);
 

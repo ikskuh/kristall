@@ -120,7 +120,17 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QListView" name="favourites_view"/>
+      <widget class="QTreeView" name="favourites_view">
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::InternalMove</enum>
+       </property>
+       <property name="defaultDropAction">
+        <enum>Qt::MoveAction</enum>
+       </property>
+       <attribute name="headerVisible">
+        <bool>false</bool>
+       </attribute>
+      </widget>
      </item>
     </layout>
    </widget>

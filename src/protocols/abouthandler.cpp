@@ -28,9 +28,9 @@ bool AboutHandler::startRequest(const QUrl &url, ProtocolHandler::RequestOptions
         document.append("# Favourites\n");
         document.append("\n");
 
-        for (auto const &fav : kristall::favourites.getAll())
+        for (auto const &fav : kristall::favourites.allFavourites())
         {
-            document.append("=> " + fav.toString().toUtf8() + "\n");
+            document.append("=> " + fav->destination.toString().toUtf8() + "\n");
         }
 
         this->requestComplete(document, "text/gemini");

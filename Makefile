@@ -45,7 +45,6 @@ uninstall:
 	# Remove the binary
 	rm -f $(bindir)/kristall
 
-
 clean:
 	rm -rf build
 	rm -f kristall

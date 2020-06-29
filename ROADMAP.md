@@ -49,7 +49,7 @@ This document contains TODO items for planned Kristall releases as well as some 
   - [ ] Allow manually caching a file to be visited when no internet connection is 
   - [ ] Add an "offline mode" that only allowes cached files
   - [ ] New url scheme for cached sites: kristall+cache://
-  - [ ] Add window that 
+  - [ ] Add window that allows you to manage your offline files
 - [x] Folder based color scheme system
   - [x] Migrate settings-based color schemes to folder
   - [x] Define human-readable color scheme file format

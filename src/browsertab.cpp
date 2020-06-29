@@ -176,15 +176,24 @@ void BrowserTab::toggleIsFavourite()
     toggleIsFavourite(not this->ui->fav_button->isChecked());
 }
 
-void BrowserTab::toggleIsFavourite(bool isFavourite)
+void BrowserTab::toggleIsFavourite(bool shouldBeFavourite)
 {
-    if (isFavourite)
+    // isFavourite is the "new" state of the checkbox, so when it's true
+    // we yet need to add it.
+    if (shouldBeFavourite)
     {
-        kristall::favourites.add(this->current_location);
+        kristall::favourites.addUnsorted(this->current_location);
     }
     else
     {
-        kristall::favourites.remove(this->current_location);
+        auto answer = QMessageBox::question(
+            this,
+            "Kristall",
+            tr("Do you really want to remove this page from your favourites?")
+        );
+        if(answer != QMessageBox::Yes)
+            return;
+        kristall::favourites.removeUrl(this->current_location);
     }
 
     this->updateUI();
@@ -934,7 +943,7 @@ void BrowserTab::updateUI()
     this->ui->stop_button->setVisible(in_progress);
 
     this->ui->fav_button->setEnabled(this->successfully_loaded);
-    this->ui->fav_button->setChecked(kristall::favourites.contains(this->current_location));
+    this->ui->fav_button->setChecked(kristall::favourites.containsUrl(this->current_location));
 }
 
 bool BrowserTab::trySetClientCertificate(const QString &query)
