@@ -77,6 +77,9 @@ Then open `src/kristall.pro` with Qt creator to compile the project. Alternativl
 **Troubleshouting:**
 If you get an error message that `MSVCR100.dll` is missing, you may need to install the [Microsoft C++ Runtime](https://www.microsoft.com/en-us/download/details.aspx?id=14632).
 
+**Troubleshouting:**
+*QtCreator says the exe crashed when starting.* This happens when you are missing the OpenSSL dlls. Copy them from `C:\Qt\Tools\OpenSSL\Win_x64\bin\libcrypto-1_1-x64.dll` and `C:\Qt\Tools\OpenSSL\Win_x64\bin\libssl-1_1-x64.dll` to the debug/release folder of your build. Then the exe should be starting.
+
 #### Windows MSVC (not up to date)
 
 Compile OpenSSL with the following steps:  
