@@ -54,6 +54,9 @@ This document contains TODO items for planned Kristall releases as well as some 
   - [x] Migrate settings-based color schemes to folder
   - [x] Define human-readable color scheme file format
   - [ ] Add per-site scheming
+- [ ] Setup sane default fonts
+  - [ ] `Segoe UI`, `Consolas` for Windows
+  - [ ] 
 
 ## Unspecced
 - [ ] Add option: "Transient certificates survive an application reboot and are stored on disk"

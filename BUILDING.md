@@ -57,7 +57,27 @@ These notes are probably also correct for Debian (someone please verify)
 #### Notes on void linux
 - set env variable `QT_SELECT=5`
 
-#### Windows
+#### Windows (MinGW)
+Install Qt via the Qt installer. Install the following components:
+
+**Required:**
+- `Qt/Qt 5.15.0/MinGW 8.1.0 64-bit`
+- `Qt/Developer and Designer Tools/MinGW 8.1.0 64 bit`
+- `Qt/Developer and Designer Tools/OpenSSL 64-bit binaries`
+**Optional:**
+- `Qt/Developer and Designer Tools/Qt Creator 4.12.3 CDB Debugger Support`
+- `Qt/Developer and Designer Tools/Debugging Tools for Windows`
+- `Qt/Developer and Designer Tools/Qt Creator 4.12.3 CDB Debugger Support`
+- `Qt/Developer and Designer Tools/OpenSSL source code`
+
+If you didn't istall Qt to `C:\Qt`, you have to adjust the paths in `src/kristall.pro` for the `win32-g++` adjustments to the path you used.
+
+Then open `src/kristall.pro` with Qt creator to compile the project. Alternativly you can use `ci\build-and-deploy.bat`, but note that this script tries to deploy the file to `random-projects.net`, so this will fail in the end.
+
+**Troubleshouting:**
+If you get an error message that `MSVCR100.dll` is missing, you may need to install the [Microsoft C++ Runtime](https://www.microsoft.com/en-us/download/details.aspx?id=14632).
+
+#### Windows MSVC (not up to date)
 
 Compile OpenSSL with the following steps:  
 - Install [Perl](https://www.perl.org/get.html) (either ActiveState or Strawberry)
