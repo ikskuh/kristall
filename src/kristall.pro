@@ -16,7 +16,7 @@ DEFINES += KRISTALL_VERSION="\"$(shell cd $$PWD; git describe --tags)\""
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-LIBS += -lcrypto
+!win32: LIBS += -lcrypto
 
 # We need iconv on non-linux platforms
 !linux: LIBS += -liconv
@@ -29,6 +29,7 @@ QMAKE_CXXFLAGS += -std=c++17
 CONFIG += c++17
 
 win32-msvc {
+    # message("Use windows/msvc build")
     QMAKE_CFLAGS -= -Wno-unused-parameter
     QMAKE_CXXFLAGS -= -Wno-unused-parameter
 
@@ -37,6 +38,13 @@ win32-msvc {
     LIBS -= -lcrypto
     LIBS += "C:\Program Files\OpenSSL\lib\libcrypto.lib"
     INCLUDEPATH += "C:\Program Files\OpenSSL\include"
+}
+
+win32-g++ {
+    # message("Use windows/mingw build")
+    INCLUDEPATH += $$quote("C:\Qt\Tools\OpenSSL\Win_x64\include")
+    LIBS += -L$$quote(C:\Qt\Tools\OpenSSL\Win_x64\lib)
+    LIBS += -llibcrypto
 }
 
 android: include(/home/felix/projects/android-hass/android-sdk/android_openssl/openssl.pri)
