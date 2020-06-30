@@ -1,12 +1,8 @@
 FROM ubuntu:18.04
 
 RUN apt-get update
-RUN apt-get install -y git
-RUN apt-get install -y qt5-default qt5-qmake qtmultimedia5-dev
-RUN apt-get install -y libqt5svg5-dev
-RUN apt-get install -y libssl-dev make g++
-RUN apt-get install -y wget
-RUN apt-get install -y fuse
+RUN apt-get install -y git wget fuse qttools5-dev-tools
+RUN apt-get install -y qt5-default qt5-qmake qtmultimedia5-dev libqt5svg5-dev libssl-dev make g++
 
 RUN wget -O /usr/local/bin/linuxdeploy https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-$(uname -m).AppImage
 RUN chmod +x /usr/local/bin/linuxdeploy
@@ -19,7 +15,5 @@ RUN file $(which linuxdeployqt)
 VOLUME /artifacts
 
 ENTRYPOINT /compile.sh
-
-RUN apt-get install -y qttools5-dev-tools
 
 COPY compile.sh /compile.sh

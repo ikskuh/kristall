@@ -1,7 +1,8 @@
 version: '3'
 services:
   builder:
-    image: "kristall-ci:1.0"
+#   image: "kristall-ci:1.0"
+    build: .
     volumes:
       - ./output:/artifacts
     devices:
