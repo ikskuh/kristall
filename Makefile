@@ -11,13 +11,14 @@ INSTALL_DATA=$(INSTALL) -m 644
 # Directories into which to install the various files
 bindir=$(DESTDIR)$(PREFIX)/bin
 sharedir=$(DESTDIR)$(PREFIX)/share
+QMAKE := /usr/bin/qmake-qt5
 
 kristall: build/kristall
 	cp build/kristall $@
 
 build/kristall: src/*
 	mkdir -p build
-	cd build && qmake ../src/kristall.pro && $(MAKE) $(MAKEFLAGS)
+	cd build && $(QMAKE) ../src/kristall.pro && $(MAKE) $(MAKEFLAGS)
 
 install: kristall
 	# Create target directories
