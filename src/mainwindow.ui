@@ -274,7 +274,10 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Backward</string>
+    <string>Back</string>
+   </property>
+   <property name="toolTip">
+    <string>Back</string>
    </property>
    <property name="shortcut">
     <string>Alt+Left</string>
@@ -286,7 +289,10 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Foreward</string>
+    <string>Forward</string>
+   </property>
+   <property name="toolTip">
+    <string>Forward</string>
    </property>
    <property name="shortcut">
     <string>Alt+Right</string>
