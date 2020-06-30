@@ -29,7 +29,10 @@ CD "%ROOT% || GOTO ERR
 
 ECHO Creating package...
 DEL /Q kristall-nightly.zip || GOTO ERR
-.\7z\7za.exe a kristall-nightly.zip %DEPLOY% || GOTO ERR
+.\tools\7za.exe a kristall-nightly.zip %DEPLOY% || GOTO ERR
+
+ECHO "Deploying package to server..."
+.\tools\pscp -scp -batch -P 22 -i "C:\Secret\ci.ppk" -v -noagent -hostkey 0e:b4:f0:35:ee:69:78:5f:13:c1:ca:bc:06:d3:29:1c  kristall-nightly.zip kristall-ci@kristall.random-projects.net:.
 
 EXIT /B 0
 
