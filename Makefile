@@ -11,14 +11,19 @@ INSTALL_DATA=$(INSTALL) -Dm 644
 # Directories into which to install the various files
 bindir=$(DESTDIR)$(PREFIX)/bin
 sharedir=$(DESTDIR)$(PREFIX)/share
-QMAKE := /usr/bin/qmake-qt5
+
+# Default Qmake Command For Ubuntu (and probably other Debian) distributions
+
+QMAKE_COMMAND := qmake
+# For Fedora 32 and similar distributions, use the next line instead of the above.
+# QMAKE_COMMAND := /usr/bin/qmake-qt5
 
 kristall: build/kristall
 	cp build/kristall $@
 
 build/kristall: src/*
 	mkdir -p build
-	cd build && $(QMAKE) ../src/kristall.pro && $(MAKE) $(MAKEFLAGS)
+	cd build && $(QMAKE_COMMAND) ../src/kristall.pro && $(MAKE) $(MAKEFLAGS)
 
 install: kristall
 	# Install icons
