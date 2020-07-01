@@ -47,6 +47,23 @@ Unsupported Versions: 16.04
 
 These notes are probably also correct for Debian (someone please verify)
 
+#### Notes for Fedora 32 (and probably other recent versions)
+In the small `Makefile` mentioned above, comment out the line:
+
+* `QMAKE_COMMAND := qmake`
+
+And uncomment the line:
+* `# QMAKE_COMMAND := /usr/bin/qmake-qt5`
+
+This is because Fedora has a different naming scheme for the qmake executable. 
+
+- Key required packages
+    - `qt5-qtbase`
+    - `qt5-qtbase-devel`
+	- `ccache-3.7.7-1.fc32.x86_64`
+	- `make`
+	- And the packages they depend on
+
 #### Notes for Manjaro/Arch
 - Required packages
   - `qt5-base`
