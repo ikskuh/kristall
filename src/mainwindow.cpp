@@ -99,6 +99,8 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new, bool load_default)
         tab->navigateTo(QUrl("about:blank"), BrowserTab::DontPush);
     }
 
+    tab->focusUrlBar();
+
     return tab;
 }
 
