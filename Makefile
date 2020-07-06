@@ -21,7 +21,7 @@ QMAKE_COMMAND := qmake
 UNAME := $(shell uname)
 # Homebrew on macOS does not link Qt5 into the system path.
 ifeq ($(UNAME),Darwin)
-	HOMEBREW_PATH=export PATH="$(PATH):/usr/local/opt/qt/bin"
+	HOMEBREW_PATH=export PATH="$(PATH):/usr/local/opt/qt/bin";
 endif
 
 kristall: build/kristall
@@ -29,7 +29,7 @@ kristall: build/kristall
 
 build/kristall: src/*
 	mkdir -p build
-	cd build; $(HOMEBREW_PATH); $(QMAKE_COMMAND) ../src/kristall.pro && $(MAKE) $(MAKEFLAGS)
+	cd build; $(HOMEBREW_PATH) $(QMAKE_COMMAND) ../src/kristall.pro && $(MAKE) $(MAKEFLAGS)
 
 install: kristall
 	# Install icons
