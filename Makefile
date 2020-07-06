@@ -18,12 +18,18 @@ QMAKE_COMMAND := qmake
 # For Fedora 32 and similar distributions, use the next line instead of the above.
 # QMAKE_COMMAND := /usr/bin/qmake-qt5
 
+UNAME := $(shell uname)
+# Homebrew on macOS does not link Qt5 into the system path.
+ifeq ($(UNAME),Darwin)
+	HOMEBREW_PATH=export PATH="$(PATH):/usr/local/opt/qt/bin"
+endif
+
 kristall: build/kristall
 	cp build/kristall $@
 
 build/kristall: src/*
 	mkdir -p build
-	cd build && $(QMAKE_COMMAND) ../src/kristall.pro && $(MAKE) $(MAKEFLAGS)
+	cd build; $(HOMEBREW_PATH); $(QMAKE_COMMAND) ../src/kristall.pro && $(MAKE) $(MAKEFLAGS)
 
 install: kristall
 	# Install icons
