@@ -47,6 +47,17 @@ win32-g++ {
     LIBS += -llibcrypto
 }
 
+macx {
+    # Homebrew include paths
+    INCLUDEPATH += /usr/local/opt/qt/include
+    LIBS += -L/usr/local/opt/qt/lib
+    
+    INCLUDEPATH += /usr/local/opt/openssl/include
+    LIBS += -L/usr/local/opt/openssl/lib
+    
+    ICON = icons/AppIcon.icns
+}
+
 android: include(/home/felix/projects/android-hass/android-sdk/android_openssl/openssl.pri)
 
 # android {
