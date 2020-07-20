@@ -6,11 +6,12 @@ INSTALL?=install
 # Run to install the actual binary
 INSTALL_PROGRAM=$(INSTALL) -Dm 755
 # Run to install application data, with differing permissions
-INSTALL_DATA=$(INSTALL) -Dm 644
+INSTALL_DATA=$(INSTALL) -m 644
 
 # Directories into which to install the various files
 bindir=$(DESTDIR)$(PREFIX)/bin
 sharedir=$(DESTDIR)$(PREFIX)/share
+MAKEDIR=makedir -p
 
 kristall: build/kristall
 	cp build/kristall $@
@@ -20,7 +21,16 @@ build/kristall: src/*
 	cd build && qmake ../src/kristall.pro && $(MAKE) $(MAKEFLAGS)
 
 install: kristall
-	# Install icons
+	# Prepare directories
+	$(MAKEDIR) $(sharedir)/icons/hicolor/scalable/apps/
+	$(MAKEDIR) $(sharedir)/icons/hicolor/16x16/apps/
+	$(MAKEDIR) $(sharedir)/icons/hicolor/32x32/apps/
+	$(MAKEDIR) $(sharedir)/icons/hicolor/64x64/apps/
+	$(MAKEDIR) $(sharedir)/icons/hicolor/128x128/apps/
+	$(MAKEDIR) $(sharedir)/applications/
+	$(MAKEDIR) $(bindir)
+  
+	# Install files
 	$(INSTALL_DATA) src/icons/kristall.svg $(sharedir)/icons/hicolor/scalable/apps/net.random-projects.kristall.svg
 	$(INSTALL_DATA) src/icons/kristall-16.png $(sharedir)/icons/hicolor/16x16/apps/net.random-projects.kristall.png
 	$(INSTALL_DATA) src/icons/kristall-32.png $(sharedir)/icons/hicolor/32x32/apps/net.random-projects.kristall.png

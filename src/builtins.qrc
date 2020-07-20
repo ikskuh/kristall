@@ -77,5 +77,6 @@
         <file>icons/light/objects/volume-on.svg</file>
         <file>icons/light/index.theme</file>
         <file>about/style-display.gemini</file>
+        <file>favourites.init</file>
     </qresource>
 </RCC>
