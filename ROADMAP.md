@@ -5,6 +5,7 @@ This document contains TODO items for planned Kristall releases as well as some 
 ## 0.4 - The colorful release
 - [x] Implement dual-colored icon theme
 - [ ] Improve UX
+  - [ ] Make download limit configurable (default: 100MB)
   - [x] Fix all tab-indices
   - [x] Provide text search function
   - [ ] auto-highlighting/following outline
@@ -57,6 +58,9 @@ This document contains TODO items for planned Kristall releases as well as some 
 - [ ] Setup sane default fonts
   - [ ] `Segoe UI`, `Consolas` for Windows
   - [ ] 
+- [ ] Add support for "Downloads" folder/list
+  - [ ] Download unknown mime types to `Downloads`
+  - [ ] Redirect large files to `Dowloads`
 
 ## Unspecced
 - [ ] Add option: "Transient certificates survive an application reboot and are stored on disk"

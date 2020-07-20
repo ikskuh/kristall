@@ -73,3 +73,8 @@ See [src/about/updates.gemini](src/about/updates.gemini)
 ## Roadmap
 
 See [ROADMAP.md](ROADMAP.md)
+
+## License
+
+Kristall is released under the GPLv3 or (at your option) any later version.
+[See LICENCE as well](LICENCE)
