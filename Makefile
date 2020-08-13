@@ -11,7 +11,7 @@ INSTALL_DATA=$(INSTALL) -m 644
 # Directories into which to install the various files
 bindir=$(DESTDIR)$(PREFIX)/bin
 sharedir=$(DESTDIR)$(PREFIX)/share
-MAKEDIR=makedir -p
+MAKEDIR=mkdir -p
 
 # Default Qmake Command For Ubuntu (and probably other Debian) distributions
 
