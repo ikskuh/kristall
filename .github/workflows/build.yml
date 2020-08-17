@@ -33,7 +33,7 @@ jobs:
         target: 'desktop'
         arch: 'win64_mingw81'
         install-deps: 'true'
-        tools: 'tools_openssl_x64 qt.tools.openssl.win_x64'
+        tools: 'tools_openssl_x64 qt.tools.openssl.win_x64 '
     - name: build and deploy
       run: ./build-and-deploy.bat
       working-directory: ./ci/
