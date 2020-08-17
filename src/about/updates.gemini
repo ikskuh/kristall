@@ -2,8 +2,15 @@
 
 ## 0.4 - Improved user experience
 * Basic Emoji rendering support using OpenMoji
-* 
-* 
+* Improved favourites: Adds grouping and custom names
+* Adds support for text/kristall-theme mime to preview/install kristall themes via the browser surface
+* Adds Ctrl-F search function
+* Mouse middle now opens links in new tabs
+* Ctrl + mouse left opens links in new tabs
+* Mouse middle now closes tabs when clicking them
+* Improved settings system with folder-based approach
+* Document styles are now saved as files which are exchangeable
+* Adds colored icons to dark/light theme so it has improved contrast
 
 ## 0.3 - TLS and security
 * Adds support for transient client certificates
