@@ -22,18 +22,19 @@ jobs:
     - name: make
       run: make
 
-  build_windows:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: MasterQ32/install-qt-action@master
-      with:
-        version: '5.15.0'
-        host: 'windows'
-        target: 'desktop'
-        arch: 'win64_mingw81'
-        install-deps: 'true'
-        tools: 'tools_openssl_x64 qt.tools.openssl.win_x64 '
-    - name: build and deploy
-      run: ./build-and-deploy.bat
-      working-directory: ./ci/
+# Disabled until both aqinstall and install-qt-action support the fixes…
+#  build_windows:
+#    runs-on: windows-latest
+#    steps:
+#    - uses: actions/checkout@v2
+#    - uses: MasterQ32/install-qt-action@master
+#      with:
+#        version: '5.15.0'
+#        host: 'windows'
+#        target: 'desktop'
+#        arch: 'win64_mingw81'
+#        install-deps: 'true'
+#        tools: 'tools_openssl_x64 qt.tools.openssl.win_x64;tools_openssl_src qt.tools.openssl'
+#    - name: build and deploy
+#      run: ./build-and-deploy.bat
+#      working-directory: ./ci/
