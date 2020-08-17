@@ -12,7 +12,11 @@ SslTrustEditor::SslTrustEditor(QWidget *parent) :
     this->ui->trust_level->addItem("Trust everything", QVariant::fromValue<int>(SslTrust::TrustEverything));
     this->ui->trust_level->addItem("Manually verify fingerprints", QVariant::fromValue<int>(SslTrust::TrustNoOne));
 
-    this->ui->trusted_hosts->setModel(&this->current_trust.trusted_hosts);
+
+    auto sort_model =new QSortFilterProxyModel(this);
+    sort_model ->setDynamicSortFilter(true);
+    sort_model ->setSourceModel(&this->current_trust.trusted_hosts);
+    this->ui->trusted_hosts->setModel(sort_model );
 
     this->ui->trusted_hosts->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     this->ui->trusted_hosts->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);

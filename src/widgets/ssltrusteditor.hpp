@@ -2,6 +2,7 @@
 #define SSLTRUSTEDITOR_HPP
 
 #include <QWidget>
+#include <QSortFilterProxyModel>
 
 #include "ssltrust.hpp"
 
