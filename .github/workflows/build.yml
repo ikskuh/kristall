@@ -33,6 +33,7 @@ jobs:
         target: 'desktop'
         arch: 'win64_mingw81'
         install-deps: 'true'
+        extra: 'tool tools_openssl'
     - name: build and deploy
       run: ./build-and-deploy.bat
       working-directory: ./ci/
