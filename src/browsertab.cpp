@@ -1135,6 +1135,18 @@ void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint &pos)
         menu.addSeparator();
     }
 
+    QAction * back = menu.addAction("Back");
+    connect(back, &QAction::triggered, [this]() {
+        this->on_back_button_clicked();
+    });
+
+    QAction * forward = menu.addAction("Forward");
+    connect(forward, &QAction::triggered, [this]() {
+        this->on_forward_button_clicked();
+    });
+
+    menu.addSeparator();
+
     connect(menu.addAction("Select all"), &QAction::triggered, [this]() {
         this->ui->text_browser->selectAll();
     });
