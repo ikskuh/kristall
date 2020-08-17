@@ -12,7 +12,7 @@
 * Document styles are now saved as files which are exchangeable
 * Adds colored icons to dark/light theme so it has improved contrast
 * New action: "View/Show document source" will display the raw data of the document in a small separate window
-
+* Change: Makes TLS editor columns sortable
 
 ## 0.3 - TLS and security
 * Adds support for transient client certificates

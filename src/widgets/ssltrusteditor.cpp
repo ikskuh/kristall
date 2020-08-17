@@ -12,7 +12,6 @@ SslTrustEditor::SslTrustEditor(QWidget *parent) :
     this->ui->trust_level->addItem("Trust everything", QVariant::fromValue<int>(SslTrust::TrustEverything));
     this->ui->trust_level->addItem("Manually verify fingerprints", QVariant::fromValue<int>(SslTrust::TrustNoOne));
 
-
     auto sort_model =new QSortFilterProxyModel(this);
     sort_model ->setDynamicSortFilter(true);
     sort_model ->setSourceModel(&this->current_trust.trusted_hosts);
