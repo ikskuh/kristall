@@ -27,10 +27,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: jurplel/install-qt-action@v2
-      version: 5.15.0
-      host: windows
-      target: desktop
-      arch: win64_mingw81
+      version: '5.15.0'
+      host: 'windows'
+      target: 'desktop'
+      arch: 'win64_mingw81'
       install-deps: 'true'
     - name: build and deploy
       run: ./build-and-deploy.bat
