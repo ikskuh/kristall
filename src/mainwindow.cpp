@@ -62,7 +62,9 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
         for(QAction * act : this->ui->menuView->actions())
         {
             auto * dock = qvariant_cast<QDockWidget*>(act->data());
-            act->setChecked(dock->isVisible());
+            if(dock != nullptr) {
+                act->setChecked(dock->isVisible());
+            }
         }
     });
 
@@ -455,4 +457,12 @@ void MainWindow::on_actionManage_Certificates_triggered()
     kristall::identities = dialog.identitySet();
 
     kristall::saveSettings();
+}
+
+void MainWindow::on_actionShow_document_source_triggered()
+{
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if(tab != nullptr) {
+        tab->openSourceView();
+    }
 }

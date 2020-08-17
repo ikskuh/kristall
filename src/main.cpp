@@ -78,7 +78,7 @@ static void addEmojiSubstitutions()
     {
         auto current = QFont::substitutes(family);
         current << emojiFonts;
-        QFont::insertSubstitutions(family, current);
+        // TODO: QFont::insertSubstitutions(family, current);
     }
 }
 

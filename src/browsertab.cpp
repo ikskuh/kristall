@@ -39,6 +39,11 @@
 #include <QShortcut>
 #include <QKeySequence>
 
+#include <QPlainTextEdit>
+#include <QVBoxLayout>
+#include <QDialogButtonBox>
+#include <QPushButton>
+
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
 
@@ -213,6 +218,38 @@ void BrowserTab::focusSearchBar()
     this->ui->search_bar->setVisible(true);
     this->ui->search_box->setFocus();
     this->ui->search_box->selectAll();
+}
+
+void BrowserTab::openSourceView()
+{
+    QFont monospace_font("monospace");
+    monospace_font.setStyleHint(QFont::Monospace);
+
+    auto dialog = std::make_unique<QDialog>(this);
+    dialog->setWindowTitle(QString("Source of %0").arg(this->current_location.toString()));
+
+    auto layout = new QVBoxLayout(dialog.get());
+    dialog->setLayout(layout);
+
+    auto hint = new QLabel(dialog.get());
+    hint->setText(QString("Mime type: %0").arg(current_mime.toString()));
+    layout->addWidget(hint);
+
+    auto text = new QPlainTextEdit(dialog.get());
+    text->setPlainText(QString::fromUtf8(current_buffer));
+    text->setReadOnly(true);
+    text->setFont(monospace_font);
+    text->setWordWrapMode(QTextOption::NoWrap);
+    layout->addWidget(text);
+
+    auto buttons = new QDialogButtonBox(dialog.get());
+    buttons->setStandardButtons(QDialogButtonBox::Ok);
+    layout->addWidget(buttons);
+
+    connect(buttons->button(QDialogButtonBox::Ok), &QPushButton::pressed, dialog.get(), &QDialog::accept);
+
+    dialog->resize(640, 480);
+    dialog->exec();
 }
 
 void BrowserTab::on_url_bar_returnPressed()

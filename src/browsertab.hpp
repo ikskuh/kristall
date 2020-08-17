@@ -71,6 +71,8 @@ public:
 
     void focusSearchBar();
 
+    void openSourceView();
+
 signals:
     void titleChanged(QString const & title);
     void locationChanged(QUrl const & url);

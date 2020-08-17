@@ -75,6 +75,8 @@ private slots:
 
     void on_actionManage_Certificates_triggered();
 
+    void on_actionShow_document_source_triggered();
+
 private: // slots
 
     void on_tab_fileLoaded(DocumentStats const & stats);
