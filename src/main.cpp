@@ -7,6 +7,7 @@
 #include <QCommandLineParser>
 #include <QDebug>
 #include <QStandardPaths>
+#include <QFontDatabase>
 #include <cassert>
 
 ProtocolSetup       kristall::protocols;
@@ -50,6 +51,36 @@ static QDir derive_dir(QDir const & parent, QString subdir)
     return child;
 }
 
+static void addEmojiSubstitutions()
+{
+    QFontDatabase db;
+
+    auto const families = db.families();
+
+    // Provide OpenMoji font for a safe fallback
+    QFontDatabase::addApplicationFont(":/fonts/OpenMoji-Color.ttf");
+    QFontDatabase::addApplicationFont(":/fonts/NotoColorEmoji.ttf");
+
+    QStringList emojiFonts = {
+        // Use system fonts on windows/mac
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+
+        // Provide common fonts as a fallback:
+        // "Noto Color Emoji", // this font seems to replace a lot of text characters?
+        // "JoyPixels", // this font seems to replace a lot of text characters?
+
+        // Built-in font fallback
+        "OpenMoji",
+    };
+
+    for(auto const & family: families)
+    {
+        auto current = QFont::substitutes(family);
+        current << emojiFonts;
+        QFont::insertSubstitutions(family, current);
+    }
+}
 
 
 int main(int argc, char *argv[])
@@ -60,6 +91,8 @@ int main(int argc, char *argv[])
     ::app = &app;
 
     kristall::clipboard = app.clipboard();
+
+    addEmojiSubstitutions();
 
     QCommandLineParser cli_parser;
     cli_parser.addVersionOption();
@@ -260,7 +293,6 @@ int main(int argc, char *argv[])
         w.restoreState(app_settings.value("state").toByteArray());
     }
     app_settings.endGroup();
-
 
     w.show();
 

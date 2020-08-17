@@ -1,5 +1,10 @@
 # Kristall Changelog
 
+## 0.4 - Improved user experience
+* Basic Emoji rendering support using OpenMoji
+* 
+* 
+
 ## 0.3 - TLS and security
 * Adds support for transient client certificates
 * Adds support for permanent client certificates

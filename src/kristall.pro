@@ -51,10 +51,10 @@ macx {
     # Homebrew include paths
     INCLUDEPATH += /usr/local/opt/qt/include
     LIBS += -L/usr/local/opt/qt/lib
-    
+
     INCLUDEPATH += /usr/local/opt/openssl/include
     LIBS += -L/usr/local/opt/openssl/lib
-    
+
     ICON = icons/AppIcon.icns
 }
 
@@ -177,6 +177,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+  ./fonts.qrc \
   ../lib/BreezeStyleSheets/breeze.qrc \
   builtins.qrc \
   icons.qrc

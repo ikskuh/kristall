@@ -97,6 +97,7 @@ void GopherClient::on_finished()
 {
     if(not was_cancelled)
     {
+        this->on_readRead();
         emit this->requestComplete(this->body, mime);
         was_cancelled = true;
     }

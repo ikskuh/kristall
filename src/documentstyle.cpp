@@ -265,7 +265,7 @@ bool DocumentStyle::load(QSettings &settings)
             margin = settings.value("margins").toDouble();
             theme = Theme(settings.value("theme").toInt());
         }
-        return true;
+        break;
     }
     case 1: {
         theme = Theme(settings.value("theme", int(theme)).toInt());
@@ -318,10 +318,32 @@ bool DocumentStyle::load(QSettings &settings)
             settings.endGroup();
         }
 
-        return true;
     }
+    default:
+        return false;
     }
-    return false;
+
+
+
+    // Patch font lists to allow improved emoji display:
+
+    QStringList emojiFonts = { "Apple Color Emoji", "Segoe UI Emoji", "Twitter Color Emoji", "Noto Color Emoji", "JoyPixels" };
+
+    QFont::insertSubstitutions(h1_font.family(), emojiFonts);
+    QFont::insertSubstitutions(h2_font.family(), emojiFonts);
+    QFont::insertSubstitutions(h3_font.family(), emojiFonts);
+    QFont::insertSubstitutions(standard_font.family(), emojiFonts);
+    QFont::insertSubstitutions(preformatted_font.family(), emojiFonts);
+
+    // from docs:
+    // > After substituting a font, you must trigger the updating of the font by destroying and re-creating all QFont objects.
+    h1_font.fromString(h1_font.toString());
+    h2_font.fromString(h2_font.toString());
+    h3_font.fromString(h3_font.toString());
+    standard_font.fromString(standard_font.toString());
+    preformatted_font.fromString(preformatted_font.toString());
+
+    return true;
 }
 
 DocumentStyle DocumentStyle::derive(const QUrl &url) const

@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>fonts/OpenMoji-Color.ttf</file>
+        <file>fonts/NotoColorEmoji.ttf</file>
+    </qresource>
+</RCC>
