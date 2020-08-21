@@ -87,6 +87,10 @@ bool GeminiClient::cancelRequest()
         this->socket.disconnectFromHost();
         this->buffer.clear();
         this->body.clear();
+        if (socket.state() != QTcpSocket::UnconnectedState)
+        {
+            socket.disconnectFromHost();
+        }
         this->socket.waitForDisconnected(500);
         this->socket.close();
         bool success = not isInProgress();

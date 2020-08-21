@@ -64,6 +64,11 @@ bool GopherClient::isInProgress() const
 bool GopherClient::cancelRequest()
 {
     was_cancelled = true;
+    if (socket.state() != QTcpSocket::UnconnectedState)
+    {
+        socket.disconnectFromHost();
+        socket.waitForDisconnected(1500);
+    }
     socket.close();
     body.clear();
     return true;
