@@ -49,6 +49,11 @@ bool FingerClient::isInProgress() const
 bool FingerClient::cancelRequest()
 {
     was_cancelled = true;
+    if (socket.state() != QTcpSocket::UnconnectedState)
+    {
+        socket.disconnectFromHost();
+        this->socket.waitForDisconnected(500);
+    }
     socket.close();
     body.clear();
     return true;
