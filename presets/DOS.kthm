@@ -1,0 +1,34 @@
+[General]
+name=DOS
+version=1
+theme=0
+background_color=#00008b
+blockquote_color=#000000
+margins=55
+
+[Standard]
+font="PxPlus IBM VGA9,16,-1,5,50,0,0,0,0,0,Regular"
+color=#d3d3d3
+
+[Preformatted]
+font="PxPlus IBM VGA9,16,-1,5,50,0,0,0,0,0,Regular"
+color=#ffffff
+
+[H1]
+font="PxPlus IBM VGA9,16,-1,5,50,0,0,0,0,0,Regular"
+color=#ffff00
+
+[H2]
+font="PxPlus IBM VGA9,16,-1,5,50,0,0,0,0,0,Regular"
+color=#00ff00
+
+[H3]
+font="PxPlus IBM VGA9,16,-1,5,50,0,0,0,0,0,Regular"
+color=#ffffff
+
+[Link]
+color_internal=#00ffff
+color_external=#00ffff
+color_cross_scheme=#00ffff
+internal_prefix="\x2192 "
+external_prefix="\x21d2 "
