@@ -469,7 +469,7 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
 
     auto doc_style = kristall::document_style.derive(this->current_location);
 
-    this->ui->text_browser->setStyleSheet(QString("QTextBrowser { background-color: %1; }").arg(doc_style.background_color.name()));
+    this->ui->text_browser->setStyleSheet(QString("QTextBrowser { background-color: %1; color: %2; }").arg(doc_style.background_color.name(), doc_style.standard_color.name()));
 
     bool plaintext_only = (kristall::options.text_display == GenericSettings::PlainText);
 
