@@ -118,9 +118,10 @@ Compile OpenSSL with the following steps:
 
 Use QtCreator to build `./src/kristall.pro` with default settings.
 
-#### MacOS X
+#### macOS
 
-Use the `Makefile` to build `build/kristall` instead of the default target. There is currently no auto-recognition of MacOS (where qmake will output a `kristall.app` file), so you have to be a bit more manual.
+1. Run `brew install qt openssl` to install the `qt` and `openssl` packages with [Homebrew](https://brew.sh/).
+2. Run `make build/kristall` to build `kristall.app` in the `build` directory.
 
 #### Haiku
 
@@ -141,6 +142,10 @@ The provided desktop file can be installed into the local system
 cp Kristall.desktop ~/.local/share/applications/kristall.desktop
 update-desktop-database ~/.local/share/applications
 ```
+
+### macOS
+
+Copy `kristall.app` from the `build` directory to `/Applications`.
 
 ### Haiku
 
