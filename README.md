@@ -37,7 +37,7 @@ A high-quality visual cross-platform gemini browser.
   - FreeBSD
   - NetBSD
   - OpenBSD
-  - MacOS X
+  - macOS
   - Haiku
 
 ## Screenshots
