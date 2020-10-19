@@ -26,7 +26,7 @@ QMAKE_CXXFLAGS += -Wno-unused-parameter -Werror=return-type
 
 # Enable C++17
 QMAKE_CXXFLAGS += -std=c++17
-CONFIG += c++17
+CONFIG += c++17 debug
 
 win32-msvc {
     # message("Use windows/msvc build")
@@ -89,6 +89,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     renderers/markdownrenderer.cpp \
+    renderers/renderhelpers.cpp \
     renderers/textstyleinstance.cpp \
     widgets/browsertabbar.cpp \
     widgets/browsertabwidget.cpp \
