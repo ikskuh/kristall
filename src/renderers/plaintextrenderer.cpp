@@ -1,7 +1,11 @@
-#include "plaintextrenderer.hpp"
 
+#include "plaintextrenderer.hpp"
+#include "renderhelpers.hpp"
+#include <QByteArray>
 #include <QTextImageFormat>
 #include <QTextCursor>
+#include <QTextDocument>
+#include <memory>
 
 std::unique_ptr<QTextDocument> PlainTextRenderer::render(const QByteArray &input, const DocumentStyle &style)
 {
@@ -13,7 +17,7 @@ std::unique_ptr<QTextDocument> PlainTextRenderer::render(const QByteArray &input
     result->setDocumentMargin(style.margin);
 
     QTextCursor cursor { result.get() };
-    cursor.insertText(QString::fromUtf8(input), standard);
+    RenderEscapeCodes(input, standard, cursor);
 
     return result;
 }

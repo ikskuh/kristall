@@ -1,4 +1,5 @@
 #include "gophermaprenderer.hpp"
+#include "renderhelpers.hpp"
 #include <cassert>
 #include <QTextList>
 #include <QTextBlock>
@@ -139,7 +140,8 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
 
         if (type == 'i')
         {
-            cursor.insertText(title + "\n", standard);
+            const QString escapeRenderInput = title + "\n";
+            RenderEscapeCodes(escapeRenderInput.toUtf8(), standard, cursor);
         }
         else
         {
