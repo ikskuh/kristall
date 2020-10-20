@@ -115,8 +115,8 @@ void setColor(QTextCharFormat& format, unsigned char n, bool bg=false)
     else
     {
         // grayscale pallete.
-        const unsigned char g = 8 + ((255-n)*10);
-        setFgColor(format, g, g, g);
+        unsigned char g = (n - 232) * 10 + 8;
+        bg ? setBgColor(format, g, g, g) : setFgColor(format, g, g, g);
     }
 }
 
