@@ -26,7 +26,7 @@ QMAKE_CXXFLAGS += -Wno-unused-parameter -Werror=return-type
 
 # Enable C++17
 QMAKE_CXXFLAGS += -std=c++17
-CONFIG += c++17 debug
+CONFIG += c++17
 
 win32-msvc {
     # message("Use windows/msvc build")
