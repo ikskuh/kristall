@@ -3,7 +3,6 @@
 #include "textstyleinstance.hpp"
 
 #include <cmark.h>
-#include <node.h>
 #include <cassert>
 
 #include <QDebug>
@@ -76,11 +75,11 @@ struct RenderState
     }
 };
 
-static void renderNode(RenderState &state, cmark_node const &node, QTextCharFormat current_format);
+static void renderNode(RenderState &state, cmark_node &node, QTextCharFormat current_format);
 
-static void renderChildren(RenderState &state, cmark_node const & node, QTextCharFormat current_format)
+static void renderChildren(RenderState &state, cmark_node & node, QTextCharFormat current_format)
 {
-    for (auto child = node.first_child; child != nullptr; child = child->next)
+    for (auto child = cmark_node_first_child(&node); child != nullptr; child = cmark_node_next(child))
     {
         renderNode(state, *child, current_format);
     }
@@ -97,16 +96,17 @@ static void renderChildren(RenderState &state, cmark_node const & node, QTextCha
 * * CMARK_NODE_HTML_INLINE
 */
 
-static QString extractNodeText(cmark_node const &node)
+static QString extractNodeText(cmark_node &node)
 {
-    return QString::fromUtf8((char const*)node.data, node.len);
+    const char *data = cmark_node_get_literal(&node);
+    return QString::fromUtf8(data, strlen(data));
 }
 
-static void renderNode(RenderState &state, cmark_node const & node, QTextCharFormat current_format)
+static void renderNode(RenderState &state, cmark_node & node, QTextCharFormat current_format)
 {
     auto & cursor = state.cursor;
 
-    switch (node.type)
+    switch (cmark_node_get_type(&node))
     {
     case CMARK_NODE_DOCUMENT:
     {
@@ -132,7 +132,7 @@ static void renderNode(RenderState &state, cmark_node const & node, QTextCharFor
     {
         auto fmt = cursor.blockFormat();
 
-        if(node.as.list.list_type == CMARK_BULLET_LIST) {
+        if(cmark_node_get_list_type(&node) == CMARK_BULLET_LIST) {
             cursor.insertList(QTextListFormat::ListDisc);
         } else {
             cursor.insertList(QTextListFormat::ListDecimal);
@@ -185,7 +185,7 @@ static void renderNode(RenderState &state, cmark_node const & node, QTextCharFor
     {
         QTextCharFormat fmt = current_format;
         state.emitNewBlock();
-        switch(node.as.heading.level) {
+        switch(cmark_node_get_heading_level(&node)) {
         case 1: fmt = state.text_style.standard_h1; break;
         case 2: fmt = state.text_style.standard_h2; break;
         case 3: fmt = state.text_style.standard_h3; break;
@@ -193,10 +193,10 @@ static void renderNode(RenderState &state, cmark_node const & node, QTextCharFor
         case 5: fmt = state.text_style.standard_h3; break;
         case 6: fmt = state.text_style.standard_h3; break;
 
-        default: qDebug() << "heading" << node.as.heading.level; break;
+        default: qDebug() << "heading" << cmark_node_get_heading_level(&node); break;
         }
 
-        switch(node.as.heading.level) {
+        switch(cmark_node_get_heading_level(&node)) {
         case 1: state.outline->appendH1("Unknown H1", QString { }); break;
         case 2: state.outline->appendH2("Unknown H2", QString { }); break;
         case 3: state.outline->appendH3("Unknown H3", QString { }); break;
@@ -259,7 +259,7 @@ static void renderNode(RenderState &state, cmark_node const & node, QTextCharFor
     }
     case CMARK_NODE_LINK:
     {
-        QUrl absolute_url = QString::fromUtf8((char*)node.as.link.url);
+        QUrl absolute_url = QString::fromUtf8(cmark_node_get_url(&node));
         if(absolute_url.isRelative()) {
             absolute_url = state.root_url.resolved(absolute_url);
         }
