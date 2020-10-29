@@ -196,10 +196,11 @@ static void renderNode(RenderState &state, cmark_node & node, QTextCharFormat cu
         default: qDebug() << "heading" << cmark_node_get_heading_level(&node); break;
         }
 
+	auto text = cmark_node_get_literal(cmark_node_first_child(&node));
         switch(cmark_node_get_heading_level(&node)) {
-        case 1: state.outline->appendH1("Unknown H1", QString { }); break;
-        case 2: state.outline->appendH2("Unknown H2", QString { }); break;
-        case 3: state.outline->appendH3("Unknown H3", QString { }); break;
+        case 1: state.outline->appendH1(text, QString { }); break;
+        case 2: state.outline->appendH2(text, QString { }); break;
+        case 3: state.outline->appendH3(text, QString { }); break;
         }
 
         renderChildren(state, node, fmt);
