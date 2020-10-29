@@ -618,7 +618,7 @@ File Size: %2
     this->updateUI();
 }
 
-void BrowserTab::on_inputRequired(const QString &query)
+void BrowserTab::on_inputRequired(const QString &query, const bool is_sensitive)
 {
     this->network_timeout_timer.stop();
 
@@ -626,6 +626,7 @@ void BrowserTab::on_inputRequired(const QString &query)
 
     dialog.setInputMode(QInputDialog::TextInput);
     dialog.setLabelText(query);
+    if (is_sensitive) dialog.setTextEchoMode(QLineEdit::Password);
 
     while(true)
     {

@@ -116,7 +116,7 @@ private: // network slots
     void on_requestProgress(qint64 transferred);
     void on_requestComplete(QByteArray const & data, QString const & mime);
     void on_redirected(QUrl const & uri, bool is_permanent);
-    void on_inputRequired(QString const & user_query);
+    void on_inputRequired(QString const & user_query, bool is_sensitive);
     void on_networkError(ProtocolHandler::NetworkError error, QString const & reason);
     void on_certificateRequired(QString const & info);
     void on_hostCertificateLoaded(QSslCertificate const & cert);
