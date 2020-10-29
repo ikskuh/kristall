@@ -54,7 +54,7 @@ signals:
     void redirected(QUrl const & uri, bool is_permanent);
 
     //! The server needs some information from the user to process this query.
-    void inputRequired(QString const & user_query);
+    void inputRequired(QString const & user_query, bool is_sensitive);
 
     //! There was an error while processing the request
     void networkError(NetworkError error, QString const & reason);
