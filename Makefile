@@ -28,6 +28,7 @@ endif
 kristall: build/kristall
 	cp build/kristall $@
 
+.PHONY: build/kristall
 build/kristall: src/*
 	mkdir -p build
 	cd build; $(HOMEBREW_PATH) $(QMAKE_COMMAND) ../src/kristall.pro && $(MAKE) $(MAKEFLAGS)
