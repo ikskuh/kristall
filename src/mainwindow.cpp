@@ -73,6 +73,22 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
         connect(sc, &QShortcut::activated, this, &MainWindow::on_focus_inputbar);
     }
 
+    {
+        std::string prefix = "Alt+";
+        for (char tab = '0'; tab <= '9'; ++tab) {
+	  std::string shortcut = prefix + tab;
+          QShortcut * sc = new QShortcut(QKeySequence(shortcut.c_str()), this);
+          connect(sc, &QShortcut::activated, this,
+	  	[this, tab](){
+		  // 1-9 goes from the first to the n-th tab, 0 goes to the last one
+		  this->ui->browser_tabs->
+		    setCurrentIndex((tab == '0' ?
+				     this->ui->browser_tabs->count()
+				    : tab-'0') - 1);
+		});
+      }
+    }
+
     this->ui->favourites_view->setContextMenuPolicy(Qt::CustomContextMenu);
     this->ui->history_view->setContextMenuPolicy(Qt::CustomContextMenu);
 }
