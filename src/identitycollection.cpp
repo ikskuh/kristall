@@ -34,7 +34,6 @@ IdentityCollection::IdentityCollection(const IdentityCollection &other)
         root.children.emplace_back(std::move(dst_group));
     }
 
-
     relayout();
 }
 

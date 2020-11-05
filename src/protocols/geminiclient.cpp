@@ -156,7 +156,7 @@ void GeminiClient::socketReadyRead()
                 body.append(response.data() + i + 1, response.size() - i - 1);
 
                 // "XY " <META> <CR> <LF>
-                if(buffer.size() <= 5) {
+                if(buffer.size() < 4) { // we allow an empty <META>
                     socket.close();
                     qDebug() << buffer;
                     emit networkError(ProtocolViolation, "Line is too short for valid protocol");
