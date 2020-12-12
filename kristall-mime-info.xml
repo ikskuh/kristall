@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="text/gemini">
+    <comment>Gemini document</comment>
+    <sub-class-of type="text/plain"/>
+    <glob pattern="*.gemini"/>
+    <glob pattern="*.gmi"/>
+  </mime-type>
+  <mime-type type="text/x-kristall-theme">
+    <comment>Kristall theme file</comment>
+    <sub-class-of type="text/plain"/>
+    <glob pattern="*.kthm"/>
+  </mime-type>
+</mime-info>
