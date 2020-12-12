@@ -41,6 +41,7 @@ install: kristall
 	$(MAKEDIR) $(sharedir)/icons/hicolor/64x64/apps/
 	$(MAKEDIR) $(sharedir)/icons/hicolor/128x128/apps/
 	$(MAKEDIR) $(sharedir)/applications/
+	$(MAKEDIR) $(sharedir)/mime/packages/
 	$(MAKEDIR) $(bindir)
   
 	# Install files
@@ -50,6 +51,7 @@ install: kristall
 	$(INSTALL_DATA) src/icons/kristall-64.png $(sharedir)/icons/hicolor/64x64/apps/net.random-projects.kristall.png
 	$(INSTALL_DATA) src/icons/kristall-128.png $(sharedir)/icons/hicolor/128x128/apps/net.random-projects.kristall.png
 	$(INSTALL_DATA) Kristall.desktop $(sharedir)/applications/Kristall.desktop
+	$(INSTALL_DATA) kristall-mime-info.xml $(sharedir)/mime/packages/kristall.xml
 	$(INSTALL_PROGRAM) kristall $(bindir)/kristall
 
 uninstall:
