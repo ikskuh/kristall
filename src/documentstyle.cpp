@@ -420,6 +420,7 @@ QString DocumentStyle::toStyleSheet() const
     css += QString("h1  { color: %2; %1 }\n").arg(encodeCssFont (h1_font)).arg(h1_color.name());
     css += QString("h2  { color: %2; %1 }\n").arg(encodeCssFont (h2_font)).arg(h2_color.name());
     css += QString("h3  { color: %2; %1 }\n").arg(encodeCssFont (h3_font)).arg(h3_color.name());
+    css += QString("blockquote { background: %1 }\n").arg(blockquote_color.name());
 
     // qDebug() << "CSS → " << css;
     return css;
