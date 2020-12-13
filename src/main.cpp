@@ -274,6 +274,13 @@ int main(int argc, char *argv[])
     if(urls.size() > 0) {
         for(auto url_str : urls) {
             QUrl url { url_str };
+            if (url.isRelative()) {
+                if (QFile::exists(url_str)) {
+                    url = QUrl::fromLocalFile(QFileInfo(url_str).absoluteFilePath());
+                } else {
+                    url = QUrl("gemini://" + url_str);
+                }
+            }
             if(url.isValid()) {
                 w.addNewTab(false, url);
             } else {
