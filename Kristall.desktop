@@ -7,4 +7,4 @@ Icon=net.random-projects.kristall
 Exec=kristall %u
 Terminal=false
 Type=Application
-MimeType=x-scheme-handler/gemini;x-scheme-handler/gopher;x-scheme-handler/finger;
+MimeType=x-scheme-handler/gemini;x-scheme-handler/gopher;x-scheme-handler/finger;text/gemini;text/markdown;text/x-kristall-theme;
