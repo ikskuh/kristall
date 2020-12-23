@@ -60,9 +60,12 @@ This is because Fedora has a different naming scheme for the qmake executable.
 - Key required packages
     - `qt5-qtbase`
     - `qt5-qtbase-devel`
-	- `ccache-3.7.7-1.fc32.x86_64`
-	- `make`
-	- And the packages they depend on
+    - `qt5-qtmultimedia-devel`
+    - `qt5-qtsvg-devel`
+    - `ccache-3.7.7-1.fc32.x86_64`
+    - `make`
+    - `openssl-devel`
+    - And the packages they depend on
 
 #### Notes for Manjaro/Arch
 - Required packages
