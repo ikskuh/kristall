@@ -43,12 +43,10 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
 
     for(QDockWidget * dock : findChildren<QDockWidget *>())
     {
-        QAction * act = this->ui->menuView ->addAction(dock->windowTitle());
-        act->setCheckable(true);
-        act->setChecked(dock->isVisible());
-        act->setData(QVariant::fromValue(dock));
+        QAction * act = dock->toggleViewAction();
+        act->setShortcut(dock->property("_shortcut").toString());
         // act->setIcon(dock->windowIcon());
-        connect(act, QOverload<bool>::of(&QAction::triggered), dock, &QDockWidget::setVisible);
+        this->ui->menuView->addAction(act);
     }
 
     connect(this->ui->menuNavigation, &QMenu::aboutToShow, [this]() {

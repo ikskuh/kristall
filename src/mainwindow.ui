@@ -64,6 +64,9 @@
    <property name="windowTitle">
     <string>Document Outline</string>
    </property>
+   <property name="_shortcut" stdset="0">
+    <string>Ctrl+M</string>
+   </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
@@ -101,6 +104,9 @@
    </property>
    <property name="windowTitle">
     <string>Bookmarks</string>
+   </property>
+   <property name="_shortcut" stdset="0">
+    <string>Ctrl+B</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -142,6 +148,9 @@
    </property>
    <property name="windowTitle">
     <string>History</string>
+   </property>
+   <property name="_shortcut" stdset="0">
+    <string>Ctrl+H</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -357,7 +366,7 @@
     <string>Go to home</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+H</string>
+    <string>Alt+Home</string>
    </property>
   </action>
   <action name="actionHelp">
