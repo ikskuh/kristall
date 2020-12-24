@@ -13,7 +13,7 @@ This document contains TODO items for planned Kristall releases as well as some 
   - [ ] Add maximum text width option
   - [ ] Remember scroll position for navigating back
   - [x] Ctrl-Leftclick for "open in new tab"
-  - [ ] Selecting theme in settings dialog is now instant-change
+  - [x] Selecting theme in settings dialog is now instant-change
 - [x] Replace Qt markdown with standalone markdown renderer
   - [x] Enable basic markdown theming
   - [ ] Extent theming to support H4…H6, emph/bold text
@@ -37,12 +37,12 @@ This document contains TODO items for planned Kristall releases as well as some 
   - [ ] Allow users to gather a list of "visited pages"
   - [ ] Make default protocol configurable
 - [x] Ctrl-F search in documents
-- [ ] Add "view source" option to show original document
+- [x] Add "view source" option to show original document
 - [ ] Implement graphic fingerprint display instead of hex-based one
 - [x] `<krixano>` xq, I have a feature request for Kristall - the ability to middle click a tab to close it.
 - [x] `<krixano>` Also, middle clicking links to open them in new tab
 - [ ] Support "offline files"
-  - [ ] Allow manually caching a file to be visited when no internet connection is 
+  - [ ] Allow manually caching a file to be visited when no internet connection is
   - [ ] Add an "offline mode" that only allowes cached files
   - [ ] New url scheme for cached sites: kristall+cache://
   - [ ] Add window that allows you to manage your offline files
@@ -52,7 +52,7 @@ This document contains TODO items for planned Kristall releases as well as some 
   - [ ] Add per-site scheming
 - [ ] Setup sane default fonts
   - [ ] `Segoe UI`, `Consolas` for Windows
-  - [ ] 
+  - [ ]
 - [ ] Add support for "Downloads" folder/list
   - [ ] Download unknown mime types to `Downloads`
   - [ ] Redirect large files to `Dowloads`
@@ -71,7 +71,7 @@ This document contains TODO items for planned Kristall releases as well as some 
 - [ ] Explicitly don't support data:// urls
 
 ## Bugs
-  
+
 > <styan> xq: When using torsocks(1) on kristall QNetworkInterface complains loudly about not being permitted to create an IPv6 socket..
 
 MAC needs different default font:
