@@ -35,7 +35,6 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
 
     std::unique_ptr<GeminiDocument> result = std::make_unique<GeminiDocument>();
     result->setDocumentMargin(themed_style.margin);
-    result->background_color = themed_style.background_color;
     result->setIndentWidth(20);
 
     bool emit_fancy_text = kristall::options.enable_text_decoration;
@@ -295,8 +294,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
     return result;
 }
 
-GeminiDocument::GeminiDocument(QObject *parent) : QTextDocument(parent),
-                                                  background_color(0x00, 0x00, 0x00)
+GeminiDocument::GeminiDocument(QObject *parent) : QTextDocument(parent)
 {
 }
 
