@@ -252,15 +252,16 @@ void SettingsDialog::reloadStylePreview()
     QUrl url { QUrl(QString("about://%1/foobar").arg(host)) };
 
     DocumentOutlineModel outline;
+    auto doc_style = current_style.derive(url);
     auto doc = GeminiRenderer::render(
         document,
         url,
-        current_style.derive(url),
+        doc_style,
         outline
     );
 
-    ui->style_preview->setStyleSheet(QString("QTextBrowser { background-color: %1; }")
-                                     .arg(doc->background_color.name()));
+    ui->style_preview->setStyleSheet(QString("QTextBrowser { background-color: %1; color: %2; }")
+                                     .arg(doc_style.background_color.name(), doc_style.standard_color.name()));
     ui->style_preview->setDocument(doc.get());
     preview_document = std::move(doc);
 }

@@ -539,7 +539,8 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
             preview_style,
             this->outline);
 
-        this->ui->text_browser->setStyleSheet(QString("QTextBrowser { background-color: %1; }").arg(preview_style.background_color.name()));
+        this->ui->text_browser->setStyleSheet(QString("QTextBrowser { background-color: %1; color: %2; }")
+            .arg(preview_style.background_color.name(), preview_style.standard_color.name()));
     }
     else if (not plaintext_only and mime.is("text","markdown"))
     {
