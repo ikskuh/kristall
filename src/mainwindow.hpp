@@ -32,6 +32,8 @@ public:
 
     void setUrlPreview(QUrl const & url);
 
+    void viewPageSource();
+
 private slots:
     void on_browser_tabs_currentChanged(int index);
 

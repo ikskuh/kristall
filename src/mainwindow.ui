@@ -392,7 +392,7 @@
   </action>
   <action name="actionShow_document_source">
    <property name="text">
-    <string>Show document source</string>
+    <string>View document source</string>
    </property>
   </action>
  </widget>
