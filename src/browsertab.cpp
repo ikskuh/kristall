@@ -1192,9 +1192,17 @@ void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint &pos)
     menu.addSeparator();
 
     QAction * copy = menu.addAction("Copy to clipboard");
-    copy->setShortcut(QKeySequence("Ctrl-C"));
+    copy->setShortcut(QKeySequence("Ctrl+C"));
     connect(copy, &QAction::triggered, [this]() {
         this->ui->text_browser->copy();
+    });
+
+    menu.addSeparator();
+
+    QAction * viewsrc = menu.addAction("View document source");
+    viewsrc->setShortcut(QKeySequence("Ctrl+U"));
+    connect(viewsrc, &QAction::triggered, [this]() {
+        mainWindow->viewPageSource();
     });
 
     menu.exec(ui->text_browser->mapToGlobal(pos));

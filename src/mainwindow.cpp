@@ -143,6 +143,14 @@ void MainWindow::setUrlPreview(const QUrl &url)
     }
 }
 
+void MainWindow::viewPageSource()
+{
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if(tab != nullptr) {
+        tab->openSourceView();
+    }
+}
+
 void MainWindow::on_browser_tabs_currentChanged(int index)
 {
     if(index >= 0) {
@@ -477,8 +485,5 @@ void MainWindow::on_actionManage_Certificates_triggered()
 
 void MainWindow::on_actionShow_document_source_triggered()
 {
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
-    if(tab != nullptr) {
-        tab->openSourceView();
-    }
+    this->viewPageSource();
 }
