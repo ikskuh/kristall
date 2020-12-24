@@ -17,8 +17,6 @@ class GeminiDocument :
 public:
     explicit GeminiDocument(QObject * parent = nullptr);
     ~GeminiDocument() override;
-
-    QColor background_color;
 };
 
 struct GeminiRenderer
