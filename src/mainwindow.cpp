@@ -163,6 +163,11 @@ void MainWindow::on_browser_tabs_currentChanged(int index)
             this->ui->history_view->setModel(&tab->history);
 
             this->setFileStatus(tab->current_stats);
+
+            if (tab->needs_rerender)
+            {
+                tab->rerenderPage();
+            }
         } else {
             this->ui->outline_view->setModel(nullptr);
             this->ui->history_view->setModel(nullptr);
@@ -252,6 +257,17 @@ void MainWindow::on_actionSettings_triggered()
     kristall::saveSettings();
 
     kristall::setTheme(kristall::options.theme);
+
+    // Flag open tabs for re-render so theme
+    // changes are instantly applied.
+    for (int i = 0; i < this->ui->browser_tabs->count(); ++i)
+    {
+        qobject_cast<BrowserTab*>(this->ui->browser_tabs->widget(i))
+            ->needs_rerender = true;
+    }
+    // Re-render the currently-open tab if we have one.
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if (tab) tab->rerenderPage();
 }
 
 void MainWindow::on_actionNew_Tab_triggered()
