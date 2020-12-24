@@ -73,6 +73,10 @@ public:
 
     void openSourceView();
 
+    void renderPage(const QByteArray & data, const MimeType & mime);
+
+    void rerenderPage();
+
 signals:
     void titleChanged(QString const & title);
     void locationChanged(QUrl const & url);
@@ -183,6 +187,8 @@ public:
     QTimer network_timeout_timer;
 
     QTextCursor current_search_position;
+
+    bool needs_rerender;
 };
 
 #endif // BROWSERTAB_HPP

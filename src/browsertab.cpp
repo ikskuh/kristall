@@ -447,8 +447,23 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
         }
     }
 
+    renderPage(data, mime);
+
+    QString title = this->current_location.toString();
+    emit this->titleChanged(title);
+
+    this->current_stats.file_size = ref_data.size();
+    this->current_stats.mime_type = mime;
+    this->current_stats.loading_time = this->timer.elapsed();
+    emit this->fileLoaded(this->current_stats);
+
+    this->successfully_loaded = true;
+}
+
+void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
+{
     this->current_mime = mime;
-    this->current_buffer = ref_data;
+    this->current_buffer = data;
 
     this->graphics_scene.clear();
     this->ui->text_browser->setText("");
@@ -574,7 +589,7 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
     else if (mime.is("video") or mime.is("audio"))
     {
         doc_type = Media;
-        this->ui->media_browser->setMedia(data, this->current_location, mime_text);
+        this->ui->media_browser->setMedia(data, this->current_location, mime.type);
     }
     else
     {
@@ -590,7 +605,7 @@ Info:
 MIME Type: %1
 File Size: %2
 )md")
-                                   .arg(mime_text)
+                                   .arg(mime.type)
                                    .arg(IoUtil::size_human(data.size())));
     }
 
@@ -603,19 +618,16 @@ File Size: %2
     this->ui->text_browser->setDocument(document.get());
     this->current_document = std::move(document);
 
+    this->needs_rerender = false;
+
     emit this->locationChanged(this->current_location);
 
-    QString title = this->current_location.toString();
-    emit this->titleChanged(title);
-
-    this->current_stats.file_size = ref_data.size();
-    this->current_stats.mime_type = mime;
-    this->current_stats.loading_time = this->timer.elapsed();
-    emit this->fileLoaded(this->current_stats);
-
-    this->successfully_loaded = true;
-
     this->updateUI();
+}
+
+void BrowserTab::rerenderPage()
+{
+    this->renderPage(this->current_buffer, this->current_mime);
 }
 
 void BrowserTab::on_inputRequired(const QString &query, const bool is_sensitive)
