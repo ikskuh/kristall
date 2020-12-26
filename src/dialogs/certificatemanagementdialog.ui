@@ -55,8 +55,7 @@
             <string>Create...</string>
            </property>
            <property name="icon">
-            <iconset theme="create-new">
-             <normaloff>.</normaloff>.</iconset>
+            <iconset theme="document-new"/>
            </property>
           </widget>
          </item>
@@ -69,8 +68,7 @@
             <string>Import...</string>
            </property>
            <property name="icon">
-            <iconset theme="save-import">
-             <normaloff>.</normaloff>.</iconset>
+            <iconset theme="document-import"/>
            </property>
           </widget>
          </item>
@@ -99,8 +97,7 @@
             <string>Export...</string>
            </property>
            <property name="icon">
-            <iconset theme="save-export">
-             <normaloff>.</normaloff>.</iconset>
+            <iconset theme="document-export"/>
            </property>
           </widget>
          </item>
@@ -116,8 +113,7 @@
             <string>Delete</string>
            </property>
            <property name="icon">
-            <iconset theme="delete-alert">
-             <normaloff>.</normaloff>.</iconset>
+            <iconset theme="edit-delete"/>
            </property>
           </widget>
          </item>

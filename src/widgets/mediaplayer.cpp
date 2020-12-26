@@ -80,7 +80,8 @@ void MediaPlayer::on_media_positionChanged(qint64 pos)
 
 void MediaPlayer::on_media_playbackChanged(QMediaPlayer::State status)
 {
-    this->ui->playpause_button->setIcon(
-        (status == QMediaPlayer::PlayingState) ? QIcon::fromTheme("pause") : QIcon::fromTheme("play")
+    this->ui->playpause_button->setIcon((status == QMediaPlayer::PlayingState)
+        ? QIcon::fromTheme("media-playback-pause")
+        : QIcon::fromTheme("media-playback-start")
     );
 }

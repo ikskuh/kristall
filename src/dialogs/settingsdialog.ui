@@ -722,8 +722,7 @@
               <string>...</string>
              </property>
              <property name="icon">
-              <iconset theme="create-new">
-               <normaloff>.</normaloff>.</iconset>
+              <iconset theme="document-new"/>
              </property>
             </widget>
            </item>
@@ -736,8 +735,7 @@
               <string>...</string>
              </property>
              <property name="icon">
-              <iconset theme="save">
-               <normaloff>.</normaloff>.</iconset>
+              <iconset theme="document-save"/>
              </property>
             </widget>
            </item>
@@ -767,8 +765,7 @@
               <string>...</string>
              </property>
              <property name="icon">
-              <iconset theme="save-import">
-               <normaloff>.</normaloff>.</iconset>
+              <iconset theme="document-import"/>
              </property>
             </widget>
            </item>
@@ -781,8 +778,7 @@
               <string>...</string>
              </property>
              <property name="icon">
-              <iconset theme="save-export">
-               <normaloff>.</normaloff>.</iconset>
+              <iconset theme="document-export"/>
              </property>
             </widget>
            </item>
@@ -848,8 +844,7 @@
      </widget>
      <widget class="QWidget" name="gem_trust_page">
       <attribute name="icon">
-       <iconset theme="certificate">
-        <normaloff>.</normaloff>.</iconset>
+       <iconset theme="view-certificate"/>
       </attribute>
       <attribute name="title">
        <string>Gemini TLS</string>
@@ -862,8 +857,7 @@
      </widget>
      <widget class="QWidget" name="https_trust">
       <attribute name="icon">
-       <iconset theme="certificate">
-        <normaloff>.</normaloff>.</iconset>
+       <iconset theme="view-certificate"/>
       </attribute>
       <attribute name="title">
        <string>HTTPS TLS</string>

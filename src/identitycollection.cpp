@@ -402,7 +402,7 @@ QVariant IdentityCollection::data(const QModelIndex &index, int role) const
         switch(item->type) {
         case Node::Root: return QVariant { };
         case Node::Group: return QIcon::fromTheme("folder");
-        case Node::Identity: return QIcon::fromTheme("certificate");
+        case Node::Identity: return QIcon::fromTheme("view-certificate");
         default: return QVariant { };
         }
     }

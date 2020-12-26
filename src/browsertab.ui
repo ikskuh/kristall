@@ -43,8 +43,7 @@
         <string>Back</string>
        </property>
        <property name="icon">
-        <iconset theme="navigate-back">
-         <normaloff>.</normaloff>.</iconset>
+        <iconset theme="go-previous"/>
        </property>
       </widget>
      </item>
@@ -60,8 +59,7 @@
         <string>Forward</string>
        </property>
        <property name="icon">
-        <iconset theme="navigate-forward">
-         <normaloff>.</normaloff>.</iconset>
+        <iconset theme="go-next"/>
        </property>
       </widget>
      </item>
@@ -94,8 +92,7 @@
         <string>Reload</string>
        </property>
        <property name="icon">
-        <iconset theme="refresh">
-         <normaloff>.</normaloff>.</iconset>
+        <iconset theme="view-refresh"/>
        </property>
       </widget>
      </item>
@@ -223,7 +220,7 @@ p, li { white-space: pre-wrap; }
          <string>Previous</string>
         </property>
         <property name="icon">
-         <iconset theme="search-previous"/>
+         <iconset theme="go-up-search"/>
         </property>
        </widget>
       </item>
@@ -236,7 +233,7 @@ p, li { white-space: pre-wrap; }
          <string>Next</string>
         </property>
         <property name="icon">
-         <iconset theme="search-next"/>
+         <iconset theme="go-down-search"/>
         </property>
        </widget>
       </item>

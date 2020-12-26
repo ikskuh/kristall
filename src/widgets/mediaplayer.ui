@@ -28,7 +28,7 @@
         <string>...</string>
        </property>
        <property name="icon">
-        <iconset theme="play"/>
+        <iconset theme="media-playback-start"/>
        </property>
       </widget>
      </item>
@@ -58,7 +58,7 @@
         <string>...</string>
        </property>
        <property name="icon">
-        <iconset theme="volume-on"/>
+        <iconset theme="audio-volume-high"/>
        </property>
        <property name="checkable">
         <bool>true</bool>
