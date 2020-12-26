@@ -447,6 +447,7 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
         }
     }
 
+    this->successfully_loaded = true;
     renderPage(data, mime);
 
     QString title = this->current_location.toString();
@@ -456,8 +457,6 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
     this->current_stats.mime_type = mime;
     this->current_stats.loading_time = this->timer.elapsed();
     emit this->fileLoaded(this->current_stats);
-
-    this->successfully_loaded = true;
 }
 
 void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
