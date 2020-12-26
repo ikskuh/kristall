@@ -197,7 +197,10 @@ void BrowserTab::toggleIsFavourite(bool shouldBeFavourite)
             tr("Do you really want to remove this page from your favourites?")
         );
         if(answer != QMessageBox::Yes)
+        {
+            this->updateUI();
             return;
+        }
         kristall::favourites.removeUrl(this->current_location);
     }
 
