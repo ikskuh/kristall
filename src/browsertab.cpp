@@ -668,11 +668,18 @@ void BrowserTab::on_inputRequired(const QString &query, const bool is_sensitive)
     }
 }
 
-void BrowserTab::on_redirected(const QUrl &uri, bool is_permanent)
+void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
 {
     Q_UNUSED(is_permanent);
 
     this->network_timeout_timer.stop();
+
+    // #79: Handle non-full url redirects
+    if (uri.isRelative())
+    {
+        uri.setScheme(current_location.scheme());
+        uri.setHost(current_location.host());
+    }
 
     if (redirection_count >= kristall::options.max_redirections)
     {

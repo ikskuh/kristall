@@ -406,6 +406,9 @@
    <property name="text">
     <string>View document source</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+U</string>
+   </property>
   </action>
  </widget>
  <customwidgets>
