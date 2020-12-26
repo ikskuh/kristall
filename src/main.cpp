@@ -407,7 +407,7 @@ void kristall::setTheme(Theme theme)
     if(theme == Theme::os_default)
     {
         app->setStyleSheet("");
-        QIcon::setThemeName("light");
+        QIcon::setThemeName("");
     }
     if(theme == Theme::light)
     {
