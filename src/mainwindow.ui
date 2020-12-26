@@ -234,8 +234,7 @@
   </widget>
   <action name="actionAbout">
    <property name="icon">
-    <iconset theme="info">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="help-about"/>
    </property>
    <property name="text">
     <string>About...</string>
@@ -284,8 +283,7 @@
   </action>
   <action name="actionBackward">
    <property name="icon">
-    <iconset theme="navigate-back">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="go-previous"/>
    </property>
    <property name="text">
     <string>Back</string>
@@ -299,8 +297,7 @@
   </action>
   <action name="actionForward">
    <property name="icon">
-    <iconset theme="navigate-forward">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="go-next"/>
    </property>
    <property name="text">
     <string>Forward</string>
@@ -314,8 +311,7 @@
   </action>
   <action name="actionRefresh">
    <property name="icon">
-    <iconset theme="refresh">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="view-refresh"/>
    </property>
    <property name="text">
     <string>Refresh</string>
@@ -335,8 +331,7 @@
   </action>
   <action name="actionSave_as">
    <property name="icon">
-    <iconset theme="save">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="document-save-as"/>
    </property>
    <property name="text">
     <string>Save as...</string>
@@ -362,8 +357,7 @@
   </action>
   <action name="actionGo_to_home">
    <property name="icon">
-    <iconset theme="home">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="go-home"/>
    </property>
    <property name="text">
     <string>Go to home</string>
@@ -395,8 +389,7 @@
   </action>
   <action name="actionManage_Certificates">
    <property name="icon">
-    <iconset theme="certificate">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="view-certificate"/>
    </property>
    <property name="text">
     <string>Manage Certificates…</string>

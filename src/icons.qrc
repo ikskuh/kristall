@@ -17,25 +17,25 @@
         <file>icons/gopher/telnet.svg</file>
         <file>icons/gopher/text.svg</file>
         <file>icons/light/actions/close.svg</file>
-        <file>icons/light/actions/delete-alert.svg</file>
-        <file>icons/light/actions/navigate-back.svg</file>
-        <file>icons/light/actions/navigate-forward.svg</file>
-        <file>icons/light/actions/pause.svg</file>
-        <file>icons/light/actions/play.svg</file>
-        <file>icons/light/actions/refresh.svg</file>
-        <file>icons/light/actions/save-export.svg</file>
-        <file>icons/light/actions/save-import.svg</file>
-        <file>icons/light/actions/save.svg</file>
-        <file>icons/light/objects/certificate.svg</file>
+        <file>icons/light/actions/edit-delete.svg</file>
+        <file>icons/light/actions/go-previous.svg</file>
+        <file>icons/light/actions/go-next.svg</file>
+        <file>icons/light/actions/media-playback-pause.svg</file>
+        <file>icons/light/actions/media-playback-start.svg</file>
+        <file>icons/light/actions/view-refresh.svg</file>
+        <file>icons/light/actions/document-export.svg</file>
+        <file>icons/light/actions/document-import.svg</file>
+        <file>icons/light/actions/document-save.svg</file>
+        <file>icons/light/objects/view-certificate.svg</file>
         <file>icons/light/objects/folder.svg</file>
         <file>icons/light/objects/font.svg</file>
-        <file>icons/light/objects/home.svg</file>
-        <file>icons/light/objects/info.svg</file>
+        <file>icons/light/objects/go-home.svg</file>
+        <file>icons/light/objects/help-about.svg</file>
         <file>icons/light/objects/menu.svg</file>
         <file>icons/light/objects/palette.svg</file>
         <file>icons/light/objects/settings.svg</file>
-        <file>icons/light/objects/volume-on.svg</file>
-        <file>icons/light/objects/volume-off.svg</file>
+        <file>icons/light/objects/audio-volume-high.svg</file>
+        <file>icons/light/objects/audio-volume-muted.svg</file>
         <file>icons/light/index.theme</file>
         <file>icons/kristall-128.png</file>
         <file>icons/kristall-16.png</file>
@@ -48,38 +48,38 @@
         <file>icons/light/objects/bookmarks.svg</file>
         <file>icons/light/objects/history.svg</file>
         <file>icons/light/objects/table-of-contents.svg</file>
-        <file>icons/light/actions/create-new.svg</file>
+        <file>icons/light/actions/document-new.svg</file>
         <file>icons/dark/actions/close.svg</file>
-        <file>icons/dark/actions/create-new.svg</file>
-        <file>icons/dark/actions/delete-alert.svg</file>
-        <file>icons/dark/actions/navigate-back.svg</file>
-        <file>icons/dark/actions/navigate-forward.svg</file>
-        <file>icons/dark/actions/pause.svg</file>
-        <file>icons/dark/actions/play.svg</file>
-        <file>icons/dark/actions/refresh.svg</file>
-        <file>icons/dark/actions/save-export.svg</file>
-        <file>icons/dark/actions/save-import.svg</file>
-        <file>icons/dark/actions/save.svg</file>
+        <file>icons/dark/actions/document-new.svg</file>
+        <file>icons/dark/actions/edit-delete.svg</file>
+        <file>icons/dark/actions/go-previous.svg</file>
+        <file>icons/dark/actions/go-next.svg</file>
+        <file>icons/dark/actions/media-playback-pause.svg</file>
+        <file>icons/dark/actions/media-playback-start.svg</file>
+        <file>icons/dark/actions/view-refresh.svg</file>
+        <file>icons/dark/actions/document-export.svg</file>
+        <file>icons/dark/actions/document-import.svg</file>
+        <file>icons/dark/actions/document-save.svg</file>
         <file>icons/dark/objects/bookmarks.svg</file>
-        <file>icons/dark/objects/certificate.svg</file>
+        <file>icons/dark/objects/view-certificate.svg</file>
         <file>icons/dark/objects/changelog.svg</file>
         <file>icons/dark/objects/folder.svg</file>
         <file>icons/dark/objects/font.svg</file>
         <file>icons/dark/objects/help.svg</file>
         <file>icons/dark/objects/history.svg</file>
-        <file>icons/dark/objects/home.svg</file>
-        <file>icons/dark/objects/info.svg</file>
+        <file>icons/dark/objects/go-home.svg</file>
+        <file>icons/dark/objects/help-about.svg</file>
         <file>icons/dark/objects/menu.svg</file>
         <file>icons/dark/objects/palette.svg</file>
         <file>icons/dark/objects/settings.svg</file>
         <file>icons/dark/objects/table-of-contents.svg</file>
-        <file>icons/dark/objects/volume-off.svg</file>
-        <file>icons/dark/objects/volume-on.svg</file>
+        <file>icons/dark/objects/audio-volume-muted.svg</file>
+        <file>icons/dark/objects/audio-volume-high.svg</file>
         <file>icons/dark/index.theme</file>
         <file>icons/update-themes.sh</file>
-        <file>icons/dark/actions/search-next.svg</file>
-        <file>icons/dark/actions/search-previous.svg</file>
-        <file>icons/light/actions/search-next.svg</file>
-        <file>icons/light/actions/search-previous.svg</file>
+        <file>icons/dark/actions/go-down-search.svg</file>
+        <file>icons/dark/actions/go-up-search.svg</file>
+        <file>icons/light/actions/go-down-search.svg</file>
+        <file>icons/light/actions/go-up-search.svg</file>
     </qresource>
 </RCC>

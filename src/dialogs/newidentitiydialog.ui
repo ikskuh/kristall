@@ -14,8 +14,7 @@
    <string>Create new certificate</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/icons/certificate.svg</normaloff>:/icons/certificate.svg</iconset>
+   <iconset theme="view-certificate"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
