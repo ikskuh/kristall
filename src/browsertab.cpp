@@ -532,6 +532,8 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
                 {
                     QString title = b[0];
                     this->page_title = title;
+
+                    // TODO: Escape HTML sequences in title (such as &mdash;)
                 }
             }
         }
