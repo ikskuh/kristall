@@ -14,6 +14,10 @@ signals:
 public:
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
+    void focusInEvent(QFocusEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+private:
+    bool selectall_flag;
 };
 
 #endif // SEARCHBAR_HPP
