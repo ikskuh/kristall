@@ -149,6 +149,17 @@ void MainWindow::viewPageSource()
     }
 }
 
+void MainWindow::updateWindowTitle()
+{
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if (tab == nullptr || tab->page_title.isEmpty())
+    {
+        this->setWindowTitle("Kristall");
+        return;
+    }
+    this->setWindowTitle(QString("%0 - %1").arg(tab->page_title, "Kristall"));
+}
+
 void MainWindow::on_browser_tabs_currentChanged(int index)
 {
     if(index >= 0) {
@@ -176,6 +187,7 @@ void MainWindow::on_browser_tabs_currentChanged(int index)
         this->ui->history_view->setModel(nullptr);
         this->setFileStatus(DocumentStats { });
     }
+    updateWindowTitle();
 }
 
 //void MainWindow::on_favourites_view_doubleClicked(const QModelIndex &index)
@@ -205,6 +217,11 @@ void MainWindow::on_tab_titleChanged(const QString &title)
        int index = this->ui->browser_tabs->indexOf(tab);
        assert(index >= 0);
        this->ui->browser_tabs->setTabText(index, title);
+
+       if (tab == this->ui->browser_tabs->currentWidget())
+       {
+            updateWindowTitle();
+       }
    }
 }
 
