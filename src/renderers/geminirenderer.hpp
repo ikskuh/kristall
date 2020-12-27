@@ -32,7 +32,8 @@ struct GeminiRenderer
         QByteArray const & input,
         QUrl const & root_url,
         DocumentStyle const & style,
-        DocumentOutlineModel & outline
+        DocumentOutlineModel & outline,
+        QString* const page_title = nullptr
     );
 };
 

@@ -29,7 +29,8 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
         const QByteArray &input,
         QUrl const &root_url,
         DocumentStyle const & themed_style,
-        DocumentOutlineModel &outline)
+        DocumentOutlineModel &outline,
+        QString* const page_title)
 {
     TextStyleInstance text_style { themed_style };
 
@@ -154,6 +155,12 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
 
                 cursor.insertText(heading + "\n", fmt);
                 outline.appendH1(heading, id);
+
+                // Use first heading as the page's title.
+                if (page_title != nullptr && page_title->isEmpty())
+                {
+                    *page_title = heading;
+                }
             }
             else if (line.startsWith("=>"))
             {
