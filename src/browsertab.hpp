@@ -77,6 +77,8 @@ public:
 
     void rerenderPage();
 
+    void updatePageTitle();
+
 signals:
     void titleChanged(QString const & title);
     void locationChanged(QUrl const & url);
@@ -189,6 +191,8 @@ public:
     QTextCursor current_search_position;
 
     bool needs_rerender;
+
+    QString page_title;
 };
 
 #endif // BROWSERTAB_HPP

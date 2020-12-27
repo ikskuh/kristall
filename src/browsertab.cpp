@@ -451,10 +451,11 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
     }
 
     this->successfully_loaded = true;
+    this->page_title = "";
+
     renderPage(data, mime);
 
-    QString title = this->current_location.toString();
-    emit this->titleChanged(title);
+    this->updatePageTitle();
 
     this->current_stats.file_size = ref_data.size();
     this->current_stats.mime_type = mime;
@@ -496,7 +497,8 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
             data,
             this->current_location,
             doc_style,
-            this->outline);
+            this->outline,
+            &this->page_title);
     }
     else if (not plaintext_only and mime.is("text","gophermap"))
     {
@@ -512,7 +514,27 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
         document->setDefaultFont(doc_style.standard_font);
         document->setDefaultStyleSheet(doc_style.toStyleSheet());
         document->setDocumentMargin(doc_style.margin);
-        document->setHtml(QString::fromUtf8(data));
+        QString page_html = QString::fromUtf8(data);
+        document->setHtml(page_html);
+
+        // Find page title in HTML
+        // Split so we only look in the <head>
+        QStringList head = page_html.split("</head>", Qt::KeepEmptyParts, Qt::CaseInsensitive);
+        if (head[0] != page_html)
+        {
+            // Split at first title tag.
+            QStringList a = head[0].split("<title>", Qt::KeepEmptyParts, Qt::CaseInsensitive);
+            if (a[0] != head[0])
+            {
+                // Split at second tag.
+                QStringList b = a[1].split("</title>", Qt::KeepEmptyParts, Qt::CaseInsensitive);
+                if (b[0] != a[1])
+                {
+                    QString title = b[0];
+                    this->page_title = title;
+                }
+            }
+        }
     }
     else if (not plaintext_only and mime.is("text","x-kristall-theme"))
     {
@@ -632,6 +654,19 @@ void BrowserTab::rerenderPage()
 {
     this->renderPage(this->current_buffer, this->current_mime);
 }
+
+void BrowserTab::updatePageTitle()
+{
+    if (page_title.isEmpty())
+    {
+        page_title = this->current_location.toString();
+    }
+
+    // TODO: Shorten lengthy titles?
+
+    emit this->titleChanged(this->page_title);
+}
+
 
 void BrowserTab::on_inputRequired(const QString &query, const bool is_sensitive)
 {
