@@ -30,3 +30,25 @@ void SearchBar::keyReleaseEvent(QKeyEvent *event)
         QLineEdit::keyReleaseEvent(event);
     }
 }
+
+void SearchBar::focusInEvent(QFocusEvent *event)
+{
+    QLineEdit::focusInEvent(event);
+
+    // Allows only one "select all" on mouse release
+    // until next focus event.
+    this->selectall_flag = (event->reason() == Qt::MouseFocusReason);
+}
+
+void SearchBar::mouseReleaseEvent(QMouseEvent *event)
+{
+    QLineEdit::mouseReleaseEvent(event);
+
+    // Select all text if the bar was just focused and
+    // user did not select anything.
+    if (this->selectall_flag && QLineEdit::selectionLength() < 1)
+    {
+        QLineEdit::selectAll();
+    }
+    this->selectall_flag = false;
+}
