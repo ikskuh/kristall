@@ -530,10 +530,9 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
                 QStringList b = a[1].split("</title>", Qt::KeepEmptyParts, Qt::CaseInsensitive);
                 if (b[0] != a[1])
                 {
-                    QString title = b[0];
-                    this->page_title = title;
-
-                    // TODO: Escape HTML sequences in title (such as &mdash;)
+                    QTextDocument title;
+                    title.setHtml(b[0]);
+                    this->page_title = title.toPlainText();
                 }
             }
         }
