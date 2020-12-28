@@ -1139,7 +1139,7 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
             this,
             "Kristall",
             tr("Your client certificate has a host filter enabled and this site does not match the host filter.\r\nNew URL: %1\r\nHost Filter: %2\r\nDo you want to keep the certificate enabled?")
-                .arg(url.toString(QUrl::FullyEncoded))
+                .arg(url.toString(QUrl::FullyEncoded | QUrl::RemoveFragment))
                 .arg(this->current_identity.host_filter),
             QMessageBox::Yes | QMessageBox::No,
             QMessageBox::No
@@ -1181,7 +1181,7 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
 
     this->network_timeout_timer.start(kristall::options.network_timeout);
 
-    return this->current_handler->startRequest(url, options);
+    return this->current_handler->startRequest(url.adjusted(QUrl::RemoveFragment), options);
 }
 
 bool BrowserTab::enableClientCertificate(const CryptoIdentity &ident)
