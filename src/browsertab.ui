@@ -75,8 +75,7 @@
         <string>Stop</string>
        </property>
        <property name="icon">
-        <iconset theme="close">
-         <normaloff>.</normaloff>.</iconset>
+        <iconset theme="process-stop"/>
        </property>
       </widget>
      </item>
@@ -246,7 +245,7 @@ p, li { white-space: pre-wrap; }
          <string>Hide</string>
         </property>
         <property name="icon">
-         <iconset theme="close"/>
+         <iconset theme="window-close"/>
         </property>
        </widget>
       </item>
