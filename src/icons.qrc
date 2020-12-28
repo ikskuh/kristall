@@ -16,7 +16,8 @@
         <file>icons/gopher/sound.svg</file>
         <file>icons/gopher/telnet.svg</file>
         <file>icons/gopher/text.svg</file>
-        <file>icons/light/actions/close.svg</file>
+        <file>icons/light/actions/window-close.svg</file>
+        <file>icons/light/actions/process-stop.svg</file>
         <file>icons/light/actions/edit-delete.svg</file>
         <file>icons/light/actions/go-previous.svg</file>
         <file>icons/light/actions/go-next.svg</file>
@@ -49,7 +50,8 @@
         <file>icons/light/objects/history.svg</file>
         <file>icons/light/objects/table-of-contents.svg</file>
         <file>icons/light/actions/document-new.svg</file>
-        <file>icons/dark/actions/close.svg</file>
+        <file>icons/dark/actions/window-close.svg</file>
+        <file>icons/dark/actions/process-stop.svg</file>
         <file>icons/dark/actions/document-new.svg</file>
         <file>icons/dark/actions/edit-delete.svg</file>
         <file>icons/dark/actions/go-previous.svg</file>

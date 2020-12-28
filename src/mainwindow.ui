@@ -242,8 +242,7 @@
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset theme="close">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="application-exit"/>
    </property>
    <property name="text">
     <string>Quit</string>
@@ -262,8 +261,7 @@
   </action>
   <action name="actionClose_Tab">
    <property name="icon">
-    <iconset theme="close">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="window-close"/>
    </property>
    <property name="text">
     <string>Close Tab</string>
