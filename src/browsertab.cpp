@@ -518,7 +518,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
         // Strip inline styles from page, so they don't
         // conflict with user styles.
         QString page_html = QString::fromUtf8(data);
-        page_html.replace(QRegularExpression("<style>([^<]*)</style>"), "");
+        page_html.replace(QRegularExpression("<style.*?>[\\S\\s]*?</style.*?>", QRegularExpression::CaseInsensitiveOption), "");
         document->setHtml(page_html);
 
         // Find page title in HTML
