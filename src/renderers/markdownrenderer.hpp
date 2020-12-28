@@ -22,7 +22,8 @@ struct MarkdownRenderer
         QByteArray const & input,
         QUrl const & root_url,
         DocumentStyle const & style,
-        DocumentOutlineModel & outline
+        DocumentOutlineModel & outline,
+        QString & page_title
     );
 };
 

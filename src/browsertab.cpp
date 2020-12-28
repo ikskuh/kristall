@@ -573,7 +573,8 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
             data,
             this->current_location,
             doc_style,
-            this->outline);
+            this->outline,
+            this->page_title);
     }
     else if (mime.is("text"))
     {
