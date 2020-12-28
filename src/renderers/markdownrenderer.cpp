@@ -75,13 +75,13 @@ struct RenderState
     }
 };
 
-static void renderNode(RenderState &state, cmark_node &node, QTextCharFormat current_format, QString &page_title);
+static void renderNode(RenderState &state, cmark_node &node, QTextCharFormat current_format, QString &page_title, int listIndent = 1);
 
-static void renderChildren(RenderState &state, cmark_node & node, QTextCharFormat current_format, QString &page_title)
+static void renderChildren(RenderState &state, cmark_node & node, QTextCharFormat current_format, QString &page_title, int listIndent = 1)
 {
     for (auto child = cmark_node_first_child(&node); child != nullptr; child = cmark_node_next(child))
     {
-        renderNode(state, *child, current_format, page_title);
+        renderNode(state, *child, current_format, page_title, listIndent);
     }
 }
 
@@ -102,7 +102,7 @@ static QString extractNodeText(cmark_node &node)
     return QString::fromUtf8(data, strlen(data));
 }
 
-static void renderNode(RenderState &state, cmark_node & node, QTextCharFormat current_format, QString &page_title)
+static void renderNode(RenderState &state, cmark_node & node, QTextCharFormat current_format, QString &page_title, int listIndent)
 {
     auto & cursor = state.cursor;
 
@@ -131,15 +131,18 @@ static void renderNode(RenderState &state, cmark_node & node, QTextCharFormat cu
     case CMARK_NODE_LIST:
     {
         auto fmt = cursor.blockFormat();
+        QTextListFormat listFormat;
+        listFormat.setIndent(listIndent++);
 
         if(cmark_node_get_list_type(&node) == CMARK_BULLET_LIST) {
-            cursor.insertList(QTextListFormat::ListDisc);
+            listFormat.setStyle(QTextListFormat::ListDisc);
         } else {
-            cursor.insertList(QTextListFormat::ListDecimal);
+            listFormat.setStyle(QTextListFormat::ListDecimal);
         }
+        cursor.insertList(listFormat);
 
         state.suppress_next_block = true;
-        renderChildren(state, node, current_format, page_title);
+        renderChildren(state, node, current_format, page_title, listIndent);
 
         state.emitNewBlock();
         state.suppress_next_block = true;
@@ -148,7 +151,7 @@ static void renderNode(RenderState &state, cmark_node & node, QTextCharFormat cu
     }
     case CMARK_NODE_ITEM:
     {
-        renderChildren(state, node, current_format, page_title);
+        renderChildren(state, node, current_format, page_title, listIndent);
         break;
     }
     case CMARK_NODE_CODE_BLOCK:
