@@ -1038,6 +1038,8 @@ void BrowserTab::updateUI()
     this->ui->back_button->setEnabled(history.oneBackward(current_history_index).isValid());
     this->ui->forward_button->setEnabled(history.oneForward(current_history_index).isValid());
 
+    this->ui->home_button->setVisible(kristall::options.enable_home_btn);
+
     bool in_progress = (this->current_handler != nullptr) and this->current_handler->isInProgress();
 
     this->ui->refresh_button->setVisible(not in_progress);

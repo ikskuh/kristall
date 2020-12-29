@@ -96,6 +96,22 @@
       </widget>
      </item>
      <item>
+      <widget class="QToolButton" name="home_button">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="toolTip">
+        <string>Kristall Home Page</string>
+       </property>
+       <property name="text">
+        <string>Home</string>
+       </property>
+       <property name="icon">
+        <iconset theme="go-home"/>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="SearchBar" name="url_bar">
        <property name="placeholderText">
         <string>gemini://</string>

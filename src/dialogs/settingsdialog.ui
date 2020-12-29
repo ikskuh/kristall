@@ -285,6 +285,20 @@
          </property>
         </widget>
        </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="label_29">
+         <property name="text">
+          <string>Additional toolbar buttons</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1">
+        <widget class="QCheckBox" name="enable_home_btn">
+         <property name="text">
+          <string>Home</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="style_tab">
@@ -910,6 +924,7 @@
   <tabstop>max_redirects</tabstop>
   <tabstop>redirection_mode</tabstop>
   <tabstop>network_timeout</tabstop>
+  <tabstop>enable_home_btn</tabstop>
   <tabstop>bg_change_color</tabstop>
   <tabstop>style_preview</tabstop>
   <tabstop>std_change_font</tabstop>

@@ -45,6 +45,9 @@ struct GenericSettings
     // 5 seconds network timeout
     int network_timeout = 5000;
 
+    // Additional toolbar items
+    bool enable_home_btn = false;
+
     void load(QSettings & settings);
     void save(QSettings & settings) const;
 };
