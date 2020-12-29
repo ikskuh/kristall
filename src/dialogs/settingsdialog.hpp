@@ -120,6 +120,8 @@ private slots:
 
     void on_network_timeout_valueChanged(int arg1);
 
+    void on_enable_home_btn_clicked(bool arg1);
+
 private:
     void reloadStylePreview();
 

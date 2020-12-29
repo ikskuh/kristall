@@ -230,6 +230,8 @@ void SettingsDialog::setOptions(const GenericSettings &options)
     }
 
     this->ui->network_timeout->setValue(this->current_options.network_timeout);
+
+    this->ui->enable_home_btn->setChecked(this->current_options.enable_home_btn);
 }
 
 GenericSettings SettingsDialog::options() const
@@ -621,4 +623,9 @@ void SettingsDialog::on_max_redirects_valueChanged(int max_redirections)
 void SettingsDialog::on_network_timeout_valueChanged(int timeout)
 {
     this->current_options.network_timeout = timeout;
+}
+
+void SettingsDialog::on_enable_home_btn_clicked(bool checked)
+{
+    this->current_options.enable_home_btn = checked;
 }

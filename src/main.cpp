@@ -344,6 +344,8 @@ void GenericSettings::load(QSettings &settings)
 
     max_redirections = settings.value("max_redirections", 5).toInt();
     redirection_policy = RedirectionWarning(settings.value("redirection_policy ", WarnOnHostChange).toInt());
+
+    enable_home_btn = settings.value("enable_home_btn", false).toBool();
 }
 
 void GenericSettings::save(QSettings &settings) const
@@ -364,6 +366,7 @@ void GenericSettings::save(QSettings &settings) const
     settings.setValue("max_redirections", max_redirections);
     settings.setValue("redirection_policy", int(redirection_policy));
     settings.setValue("network_timeout", network_timeout);
+    settings.setValue("enable_home_btn", enable_home_btn);
 }
 
 
