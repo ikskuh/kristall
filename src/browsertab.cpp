@@ -1012,6 +1012,11 @@ void BrowserTab::on_stop_button_clicked()
     this->updateUI();
 }
 
+void BrowserTab::on_home_button_clicked()
+{
+    this->navigateTo(QUrl(kristall::options.start_page), BrowserTab::PushImmediate);
+}
+
 void BrowserTab::on_requestProgress(qint64 transferred)
 {
     this->current_stats.file_size = transferred;
