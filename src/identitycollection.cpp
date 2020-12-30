@@ -106,7 +106,7 @@ void IdentityCollection::load(QSettings &settings)
             id->identity.certificate = QSslCertificate::fromData(
                 settings.value("certificate").toByteArray(),
                 QSsl::Der
-            ).first();
+            ).constFirst();
 
             id->identity.private_key = QSslKey(
                 settings.value("private_key").toByteArray(),

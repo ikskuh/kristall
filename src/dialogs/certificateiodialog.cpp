@@ -72,7 +72,7 @@ void CertificateIoDialog::on_select_certificate_file_button_clicked()
     if(dialog.exec() != QDialog::Accepted)
         return;
 
-    this->ui->certificate_file_name->setText(dialog.selectedFiles().first());
+    this->ui->certificate_file_name->setText(dialog.selectedFiles().constFirst());
 
     this->updateUI();
 }
@@ -88,7 +88,7 @@ void CertificateIoDialog::on_select_key_file_button_clicked()
     if(dialog.exec() != QDialog::Accepted)
         return;
 
-    this->ui->key_file_name->setText(dialog.selectedFiles().first());
+    this->ui->key_file_name->setText(dialog.selectedFiles().constFirst());
 
     this->updateUI();
 }

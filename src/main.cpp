@@ -272,7 +272,7 @@ int main(int argc, char *argv[])
 
     auto urls = cli_parser.positionalArguments();
     if(urls.size() > 0) {
-        for(auto url_str : urls) {
+        for(const auto &url_str : urls) {
             QUrl url { url_str };
             if (url.isRelative()) {
                 if (QFile::exists(url_str)) {

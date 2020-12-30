@@ -104,7 +104,7 @@ void TrustedHostCollection::clear()
 
 bool TrustedHostCollection::insert(const TrustedHost &host)
 {
-    for(auto const & item : items)
+    for(auto const & item : qAsConst(items))
     {
         if(item.host_name == host.host_name)
             return false;
