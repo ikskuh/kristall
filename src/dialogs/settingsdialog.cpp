@@ -218,6 +218,12 @@ void SettingsDialog::setOptions(const GenericSettings &options)
         this->ui->scheme_error->setChecked(true);
     }
 
+    if(this->current_options.show_hidden_files_in_dirs) {
+        this->ui->show_hidden_files->setChecked(true);
+    } else {
+        this->ui->hide_hidden_files->setChecked(true);
+    }
+
     this->ui->max_redirects->setValue(this->current_options.max_redirections);
 
     this->ui->redirection_mode->setCurrentIndex(0);
@@ -608,6 +614,16 @@ void SettingsDialog::on_scheme_os_default_clicked()
 void SettingsDialog::on_scheme_error_clicked()
 {
     this->current_options.use_os_scheme_handler = false;
+}
+
+void SettingsDialog::on_show_hidden_files_clicked()
+{
+    this->current_options.show_hidden_files_in_dirs = true;
+}
+
+void SettingsDialog::on_hide_hidden_files_clicked()
+{
+    this->current_options.show_hidden_files_in_dirs = false;
 }
 
 void SettingsDialog::on_redirection_mode_currentIndexChanged(int index)

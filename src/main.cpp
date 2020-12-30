@@ -342,6 +342,8 @@ void GenericSettings::load(QSettings &settings)
 
     use_os_scheme_handler = settings.value("use_os_scheme_handler", false).toBool();
 
+    show_hidden_files_in_dirs = settings.value("show_hidden_files_in_dirs", false).toBool();
+
     max_redirections = settings.value("max_redirections", 5).toInt();
     redirection_policy = RedirectionWarning(settings.value("redirection_policy ", WarnOnHostChange).toInt());
 
@@ -363,6 +365,7 @@ void GenericSettings::save(QSettings &settings) const
     settings.setValue("theme", theme_name);
     settings.setValue("gophermap_display", (gophermap_display == FormattedText) ? "rendered" : "text");
     settings.setValue("use_os_scheme_handler", use_os_scheme_handler);
+    settings.setValue("show_hidden_files_in_dirs", show_hidden_files_in_dirs);
     settings.setValue("max_redirections", max_redirections);
     settings.setValue("redirection_policy", int(redirection_policy));
     settings.setValue("network_timeout", network_timeout);

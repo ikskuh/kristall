@@ -114,6 +114,10 @@ private slots:
 
     void on_scheme_error_clicked();
 
+    void on_show_hidden_files_clicked();
+
+    void on_hide_hidden_files_clicked();
+
     void on_redirection_mode_currentIndexChanged(int index);
 
     void on_max_redirects_valueChanged(int arg1);

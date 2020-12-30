@@ -1,5 +1,7 @@
 #include "filehandler.hpp"
 
+#include "../kristall.hpp"
+
 #include <QMimeDatabase>
 #include <QUrl>
 #include <QFile>
@@ -49,14 +51,17 @@ bool FileHandler::startRequest(const QUrl &url, RequestOptions options)
         QString page;
         page += QString("# Index of %1\n").arg(url.path());
 
+        auto filters = QDir::Dirs | QDir::Files | QDir::NoDot;
+        if (kristall::options.show_hidden_files_in_dirs) filters |= QDir::Hidden;
+        dir.setFilter(filters);
+
         // Iterate over files in the directory, and add links to each.
         for (unsigned i = 0; i < dir.count(); ++i)
         {
-            // Skip '.' directory.
-            if (dir[i] == ".") continue;
-
             // Add link to page.
-            page += QString("=> file://%1 %2\n").arg(dir.filePath(dir[i]), dir[i]);
+            page += QString("=> file://%1 %2\n")
+                .arg(QUrl(dir.filePath(dir[i])).toString(QUrl::FullyEncoded),
+                dir[i]);
         }
 
         emit this->requestComplete(page.toUtf8(), "text/gemini");
