@@ -1226,7 +1226,7 @@ void BrowserTab::disableClientCertificate()
     this->current_identity = CryptoIdentity();
 }
 
-void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint &pos)
+void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint pos)
 {
     QMenu menu;
 
