@@ -276,6 +276,8 @@ void BrowserTab::on_url_bar_returnPressed()
         url = QUrl{"gemini://" + this->ui->url_bar->text()};
     }
 
+    this->ui->url_bar->clearFocus();
+
     this->navigateTo(url, PushImmediate);
 }
 
