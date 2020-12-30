@@ -261,13 +261,9 @@ void BrowserTab::on_url_bar_returnPressed()
     QString urltext = this->ui->url_bar->text().trimmed();
 
     // Expand '~' to user's home directory.
-    static const QString F_PROTO = "file://";
-    static const int F_PROTO_LEN = F_PROTO.length();
-    if (urltext.startsWith(F_PROTO) &&
-        QStringRef(&urltext, F_PROTO_LEN, 2) == "~/")
-    {
-        urltext = F_PROTO + QDir::homePath() + urltext.remove(0, F_PROTO_LEN + 1);
-    }
+    static const QString PREFIX_HOME = "file://~";
+    if (urltext.startsWith(PREFIX_HOME))
+        urltext = "file://" + QDir::homePath() + urltext.remove(0, PREFIX_HOME.length());
 
     QUrl url { urltext };
 
