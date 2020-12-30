@@ -38,6 +38,7 @@ struct GenericSettings
     TextDisplay text_display = FormattedText;
     bool enable_text_decoration = false;
     bool use_os_scheme_handler = false;
+    bool show_hidden_files_in_dirs = false;
     TextDisplay gophermap_display = FormattedText;
     int max_redirections = 5;
     RedirectionWarning redirection_policy = WarnOnHostChange;
