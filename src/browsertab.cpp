@@ -646,8 +646,7 @@ Info:
 MIME Type: %1
 File Size: %2
 )md")
-                                   .arg(mime.type)
-                                   .arg(IoUtil::size_human(data.size())));
+                                   .arg(mime.type, data.size()));
     }
 
     assert((document != nullptr) == (doc_type == Text));
@@ -1159,9 +1158,9 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
         auto answer = QMessageBox::question(
             this,
             "Kristall",
-            tr("Your client certificate has a host filter enabled and this site does not match the host filter.\r\nNew URL: %1\r\nHost Filter: %2\r\nDo you want to keep the certificate enabled?")
-                .arg(url.toString(QUrl::FullyEncoded | QUrl::RemoveFragment))
-                .arg(this->current_identity.host_filter),
+            tr("Your client certificate has a host filter enabled and this site does not match the host filter.\r\n"
+               "New URL: %1\r\nHost Filter: %2\r\nDo you want to keep the certificate enabled?")
+                .arg(url.toString(QUrl::FullyEncoded | QUrl::RemoveFragment), this->current_identity.host_filter),
             QMessageBox::Yes | QMessageBox::No,
             QMessageBox::No
         );

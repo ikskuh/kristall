@@ -249,7 +249,7 @@ void CertificateManagementDialog::on_import_cert_button_clicked()
         &cert_file,
         dialog.keyFileName().endsWith(".der") ? QSsl::Der : QSsl::Pem,
     };
-    ident.user_notes = tr("Imported from:\r\nkey: %1\r\n:cert: %2").arg(dialog.keyFileName()).arg(dialog.certificateFileName());
+    ident.user_notes = tr("Imported from:\r\nkey: %1\r\n:cert: %2").arg(dialog.keyFileName(), dialog.certificateFileName());
     ident.display_name = "Imported Certificate";
     ident.auto_enable = false;
     ident.host_filter = "";
