@@ -10,7 +10,7 @@
 
 #include "textstyleinstance.hpp"
 
-static QByteArray trim_whitespace(QByteArray items)
+static QByteArray trim_whitespace(const QByteArray &items)
 {
     int start = 0;
     while (start < items.size() and isspace(items.at(start)))

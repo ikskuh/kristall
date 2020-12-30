@@ -75,9 +75,9 @@ struct RenderState
     }
 };
 
-static void renderNode(RenderState &state, cmark_node &node, QTextCharFormat current_format, QString &page_title, int listIndent = 1);
+static void renderNode(RenderState &state, cmark_node &node, const QTextCharFormat &current_format, QString &page_title, int listIndent = 1);
 
-static void renderChildren(RenderState &state, cmark_node & node, QTextCharFormat current_format, QString &page_title, int listIndent = 1)
+static void renderChildren(RenderState &state, cmark_node & node, const QTextCharFormat &current_format, QString &page_title, int listIndent = 1)
 {
     for (auto child = cmark_node_first_child(&node); child != nullptr; child = cmark_node_next(child))
     {
@@ -102,7 +102,7 @@ static QString extractNodeText(cmark_node &node)
     return QString::fromUtf8(data, strlen(data));
 }
 
-static void renderNode(RenderState &state, cmark_node & node, QTextCharFormat current_format, QString &page_title, int listIndent)
+static void renderNode(RenderState &state, cmark_node & node, const QTextCharFormat &current_format, QString &page_title, int listIndent)
 {
     auto & cursor = state.cursor;
 

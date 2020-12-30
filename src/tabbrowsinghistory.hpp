@@ -20,9 +20,9 @@ public:
 
     QUrl get(QModelIndex const & index) const;
 
-    QModelIndex oneForward(QModelIndex index) const;
+    QModelIndex oneForward(const QModelIndex &index) const;
 
-    QModelIndex oneBackward(QModelIndex index) const;
+    QModelIndex oneBackward(const QModelIndex &index) const;
 
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

@@ -41,7 +41,7 @@ private slots:
 private:
     //! Creates an anonymous identity with a randomly chosen name that
     //! will time out on `timeout`, then accepts the dialog.
-    void acceptTemporaryWithTimeout(QDateTime timeout);
+    void acceptTemporaryWithTimeout(const QDateTime &timeout);
 
 
     void on_currentChanged(const QModelIndex &current, const QModelIndex &previous);

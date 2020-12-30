@@ -4,7 +4,7 @@
 #include <openssl/x509.h>
 #include <openssl/pem.h>
 
-CryptoIdentity CertificateHelper::createNewIdentity(const QString &common_name, QDateTime expiry_date)
+CryptoIdentity CertificateHelper::createNewIdentity(const QString &common_name, const QDateTime &expiry_date)
 {
     CryptoIdentity identity;
 

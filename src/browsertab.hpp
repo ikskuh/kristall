@@ -53,7 +53,7 @@ public:
 
     void navigateTo(QUrl const & url, PushToHistory mode);
 
-    void navigateBack(QModelIndex history_index);
+    void navigateBack(const QModelIndex &history_index);
 
     void navOneBackback();
 
