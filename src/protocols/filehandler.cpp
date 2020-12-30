@@ -4,6 +4,7 @@
 #include <QUrl>
 #include <QFile>
 #include <QFileInfo>
+#include <QDir>
 
 FileHandler::FileHandler()
 {
@@ -40,6 +41,25 @@ bool FileHandler::startRequest(const QUrl &url, RequestOptions options)
         }
 
         emit this->requestComplete(data, mime);
+    }
+    else if (QDir dir = QDir(url.path()); dir.exists())
+    {
+        // URL points to directory - we create Gemtext
+        // page which lists contents of directory.
+        QString page;
+        page += QString("# Index of %1\n").arg(url.path());
+
+        // Iterate over files in the directory, and add links to each.
+        for (unsigned i = 0; i < dir.count(); ++i)
+        {
+            // Skip '.' directory.
+            if (dir[i] == ".") continue;
+
+            // Add link to page.
+            page += QString("=> file://%1 %2\n").arg(dir.filePath(dir[i]), dir[i]);
+        }
+
+        emit this->requestComplete(page.toUtf8(), "text/gemini");
     }
     else
     {
