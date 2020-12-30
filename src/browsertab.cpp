@@ -144,7 +144,7 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
     this->updateUI();
 }
 
-void BrowserTab::navigateBack(QModelIndex history_index)
+void BrowserTab::navigateBack(const QModelIndex &history_index)
 {
     auto url = history.get(history_index);
 

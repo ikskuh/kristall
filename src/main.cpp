@@ -37,7 +37,7 @@ static QApplication * app;
 #define SSTR(X) STR(X)
 #define STR(X) #X
 
-static QDir derive_dir(QDir const & parent, QString subdir)
+static QDir derive_dir(QDir const & parent, QString const & subdir)
 {
     QDir child = parent;
     if(not child.mkpath(subdir)) {

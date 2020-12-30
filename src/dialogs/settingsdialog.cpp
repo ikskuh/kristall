@@ -105,7 +105,7 @@ void SettingsDialog::setGeminiStyle(DocumentStyle const &style)
 
     this->ui->page_margin->setValue(this->current_style.margin);
 
-    auto setFontAndColor = [this](QLabel * label, QFont font, QColor color)
+    auto setFontAndColor = [this](QLabel * label, const QFont &font, QColor color)
     {
         label->setText(formatFont(font));
         label->setStyleSheet(COLOR_STYLE

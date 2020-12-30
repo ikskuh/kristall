@@ -41,7 +41,7 @@ QUrl TabBrowsingHistory::get(const QModelIndex &index) const
         return history.at(index.row());
 }
 
-QModelIndex TabBrowsingHistory::oneForward(QModelIndex index) const
+QModelIndex TabBrowsingHistory::oneForward(const QModelIndex &index) const
 {
     if(not index.isValid())
         return QModelIndex{};
@@ -50,7 +50,7 @@ QModelIndex TabBrowsingHistory::oneForward(QModelIndex index) const
     return createIndex(index.row() + 1, index.column());
 }
 
-QModelIndex TabBrowsingHistory::oneBackward(QModelIndex index) const
+QModelIndex TabBrowsingHistory::oneBackward(const QModelIndex &index) const
 {
     if(not index.isValid())
         return QModelIndex{};

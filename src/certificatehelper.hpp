@@ -11,7 +11,7 @@ struct CertificateHelper
 
     static CryptoIdentity createNewIdentity(
             QString const & common_name,
-            QDateTime expiry_date);
+            QDateTime const & expiry_date);
 };
 
 #endif // CERTIFICATEHELPER_HPP

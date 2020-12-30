@@ -63,7 +63,7 @@ void CertificateSelectionDialog::on_use_temp_cert_48h_clicked()
     acceptTemporaryWithTimeout(QDateTime::currentDateTime().addDays(2));
 }
 
-void CertificateSelectionDialog::acceptTemporaryWithTimeout(QDateTime timeout)
+void CertificateSelectionDialog::acceptTemporaryWithTimeout(const QDateTime &timeout)
 {
     std::default_random_engine rng;
     rng.seed(QDateTime::currentDateTime().toMSecsSinceEpoch());
