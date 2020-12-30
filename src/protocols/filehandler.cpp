@@ -5,7 +5,6 @@
 #include <QMimeDatabase>
 #include <QUrl>
 #include <QFile>
-#include <QFileInfo>
 #include <QDir>
 
 FileHandler::FileHandler()
@@ -26,22 +25,9 @@ bool FileHandler::startRequest(const QUrl &url, RequestOptions options)
 
     if (file.open(QFile::ReadOnly))
     {
+        QMimeDatabase db;
+        auto mime = db.mimeTypeForUrl(url).name();
         auto data = file.readAll();
-        QString mime;
-
-        // Find mime type of file. We detect text/gemini
-        // using the file suffix.
-        QString suffix = QFileInfo(file).completeSuffix();
-        if (suffix == "gmi")
-        {
-            mime = "text/gemini";
-        }
-        else
-        {
-            QMimeDatabase db;
-            mime = db.mimeTypeForUrl(url).name();
-        }
-
         emit this->requestComplete(data, mime);
     }
     else if (QDir dir = QDir(url.path()); dir.exists())
