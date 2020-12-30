@@ -425,7 +425,7 @@ void MainWindow::on_actionHelp_triggered()
     this->addNewTab(true, QUrl("about:help"));
 }
 
-void MainWindow::on_history_view_customContextMenuRequested(const QPoint &pos)
+void MainWindow::on_history_view_customContextMenuRequested(const QPoint pos)
 {
     if(auto idx = this->ui->history_view->indexAt(pos); idx.isValid()) {
         BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
@@ -448,7 +448,7 @@ void MainWindow::on_history_view_customContextMenuRequested(const QPoint &pos)
     }
 }
 
-void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint &pos)
+void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
 {
     if(auto idx = this->ui->favourites_view->indexAt(pos); idx.isValid()) {
         if(QUrl url = kristall::favourites.getFavourite(idx).destination; url.isValid()) {

@@ -105,7 +105,7 @@ private slots:
 
     void on_home_button_clicked();
 
-    void on_text_browser_customContextMenuRequested(const QPoint &pos);
+    void on_text_browser_customContextMenuRequested(const QPoint pos);
 
     void on_enable_client_cert_button_clicked(bool checked);
 
