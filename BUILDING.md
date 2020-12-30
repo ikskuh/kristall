@@ -140,10 +140,12 @@ Use QtCreator to build `./src/kristall.pro` with default settings.
 
 ### Unix / XDG
 
-The provided desktop file can be installed into the local system
+The provided desktop file and additional mime types (along with the text/gemini) can be installed into the local system
 ```sh
 cp Kristall.desktop ~/.local/share/applications/kristall.desktop
+cp kristall-mime-info.xml ~/.local/share/mime/packages/kristall-mime-info.xml
 update-desktop-database ~/.local/share/applications
+update-mime-database ~/.local/share/mime
 ```
 
 ### macOS
