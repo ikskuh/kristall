@@ -46,7 +46,7 @@ bool AboutHandler::startRequest(const QUrl &url, ProtocolHandler::RequestOptions
             }
         }
 
-        this->requestComplete(document, "text/gemini");
+        emit this->requestComplete(document, "text/gemini");
     }
     else
     {
