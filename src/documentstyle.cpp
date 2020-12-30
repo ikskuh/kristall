@@ -414,12 +414,12 @@ QString DocumentStyle::toStyleSheet() const
 {
     QString css;
 
-    css += QString("p   { color: %2; %1 }\n").arg(encodeCssFont (standard_font)).arg(standard_color.name());
-    css += QString("a   { color: %2; %1 }\n").arg(encodeCssFont (standard_font)).arg(external_link_color.name());
-    css += QString("pre { color: %2; %1 }\n").arg(encodeCssFont (preformatted_font)).arg(preformatted_color.name());
-    css += QString("h1  { color: %2; %1 }\n").arg(encodeCssFont (h1_font)).arg(h1_color.name());
-    css += QString("h2  { color: %2; %1 }\n").arg(encodeCssFont (h2_font)).arg(h2_color.name());
-    css += QString("h3  { color: %2; %1 }\n").arg(encodeCssFont (h3_font)).arg(h3_color.name());
+    css += QString("p   { color: %2; %1 }\n").arg(encodeCssFont (standard_font), standard_color.name());
+    css += QString("a   { color: %2; %1 }\n").arg(encodeCssFont (standard_font), external_link_color.name());
+    css += QString("pre { color: %2; %1 }\n").arg(encodeCssFont (preformatted_font), preformatted_color.name());
+    css += QString("h1  { color: %2; %1 }\n").arg(encodeCssFont (h1_font), h1_color.name());
+    css += QString("h2  { color: %2; %1 }\n").arg(encodeCssFont (h2_font), h2_color.name());
+    css += QString("h3  { color: %2; %1 }\n").arg(encodeCssFont (h3_font), h3_color.name());
     css += QString("blockquote { background: %1 }\n").arg(blockquote_color.name());
 
     // qDebug() << "CSS → " << css;

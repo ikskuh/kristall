@@ -109,29 +109,23 @@ void SettingsDialog::setGeminiStyle(DocumentStyle const &style)
     {
         label->setText(formatFont(font));
         label->setStyleSheet(COLOR_STYLE
-            .arg(this->current_style.background_color.name())
-            .arg(color.name()));
+            .arg(this->current_style.background_color.name(), color.name()));
     };
 
     ui->bg_preview->setStyleSheet(COLOR_STYLE
-        .arg(this->current_style.background_color.name())
-        .arg("#FF00FF"));
+        .arg(this->current_style.background_color.name(), "#FF00FF"));
 
     ui->quote_preview->setStyleSheet(COLOR_STYLE
-        .arg(this->current_style.blockquote_color.name())
-        .arg("#FF00FF"));
+        .arg(this->current_style.blockquote_color.name(), "#FF00FF"));
 
     ui->link_local_preview->setStyleSheet(COLOR_STYLE
-        .arg(this->current_style.background_color.name())
-        .arg(this->current_style.internal_link_color.name()));
+        .arg(this->current_style.background_color.name(), this->current_style.internal_link_color.name()));
 
     ui->link_foreign_preview->setStyleSheet(COLOR_STYLE
-        .arg(this->current_style.background_color.name())
-        .arg(this->current_style.external_link_color.name()));
+        .arg(this->current_style.background_color.name(), this->current_style.external_link_color.name()));
 
     ui->link_cross_preview->setStyleSheet(COLOR_STYLE
-        .arg(this->current_style.background_color.name())
-        .arg(this->current_style.cross_scheme_link_color.name()));
+        .arg(this->current_style.background_color.name(), this->current_style.cross_scheme_link_color.name()));
 
     setFontAndColor(this->ui->std_preview, this->current_style.standard_font, this->current_style.standard_color);
     setFontAndColor(this->ui->pre_preview, this->current_style.preformatted_font, this->current_style.preformatted_color);
