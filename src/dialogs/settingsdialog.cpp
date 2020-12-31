@@ -218,6 +218,12 @@ void SettingsDialog::setOptions(const GenericSettings &options)
         this->ui->hide_hidden_files->setChecked(true);
     }
 
+    if(this->current_options.fancy_urlbar) {
+        this->ui->urlbarhl_fancy->setChecked(true);
+    } else {
+        this->ui->urlbarhl_none->setChecked(true);
+    }
+
     this->ui->max_redirects->setValue(this->current_options.max_redirections);
 
     this->ui->redirection_mode->setCurrentIndex(0);
@@ -618,6 +624,16 @@ void SettingsDialog::on_show_hidden_files_clicked()
 void SettingsDialog::on_hide_hidden_files_clicked()
 {
     this->current_options.show_hidden_files_in_dirs = false;
+}
+
+void SettingsDialog::on_urlbarhl_fancy_clicked()
+{
+    this->current_options.fancy_urlbar = true;
+}
+
+void SettingsDialog::on_urlbarhl_none_clicked()
+{
+    this->current_options.fancy_urlbar = false;
 }
 
 void SettingsDialog::on_redirection_mode_currentIndexChanged(int index)

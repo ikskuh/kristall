@@ -273,6 +273,37 @@
         </layout>
        </item>
        <item row="8" column="0">
+        <widget class="QLabel" name="label_24">
+         <property name="text">
+          <string>URL bar highlights</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <item>
+          <widget class="QRadioButton" name="urlbarhl_fancy">
+           <property name="text">
+            <string>Fancy</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">urlbarBtnGroup</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="urlbarhl_none">
+           <property name="text">
+            <string>None</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">urlbarBtnGroup</string>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="8" column="0">
         <widget class="QLabel" name="label_26">
          <property name="text">
           <string>Max. Number of Redirections</string>
@@ -954,6 +985,8 @@
   <tabstop>scheme_error</tabstop>
   <tabstop>show_hidden_files</tabstop>
   <tabstop>hide_hidden_files</tabstop>
+  <tabstop>urlbarhl_fancy</tabstop>
+  <tabstop>urlbarhl_none</tabstop>
   <tabstop>max_redirects</tabstop>
   <tabstop>redirection_mode</tabstop>
   <tabstop>network_timeout</tabstop>
