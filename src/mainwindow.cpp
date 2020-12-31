@@ -11,6 +11,7 @@
 #include <QTextStream>
 #include <QFileDialog>
 #include <QInputDialog>
+#include <QMouseEvent>
 
 #include "ioutil.hpp"
 #include "kristall.hpp"
@@ -158,6 +159,26 @@ void MainWindow::updateWindowTitle()
         return;
     }
     this->setWindowTitle(QString("%0 - %1").arg(tab->page_title, "Kristall"));
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    QMainWindow::mousePressEvent(event);
+
+    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    if (tab == nullptr) return;
+
+    // Navigate back/forward on mouse buttons 4/5
+    if (event->buttons() == Qt::ForwardButton &&
+        tab->history.oneForward(tab->current_history_index).isValid())
+    {
+        tab->navOneForward();
+    }
+    else if (event->buttons() == Qt::BackButton &&
+        tab->history.oneBackward(tab->current_history_index).isValid())
+    {
+        tab->navOneBackward();
+    }
 }
 
 void MainWindow::on_browser_tabs_currentChanged(int index)
@@ -327,7 +348,7 @@ void MainWindow::on_actionBackward_triggered()
 {
     BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
     if(tab != nullptr) {
-        tab->navOneBackback();
+        tab->navOneBackward();
     }
 }
 

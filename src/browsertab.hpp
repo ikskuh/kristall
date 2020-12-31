@@ -55,7 +55,7 @@ public:
 
     void navigateBack(const QModelIndex &history_index);
 
-    void navOneBackback();
+    void navOneBackward();
 
     void navOneForward();
 

@@ -36,6 +36,8 @@ public:
 
     void updateWindowTitle();
 
+    void mousePressEvent(QMouseEvent *event) override;
+
 private slots:
     void on_browser_tabs_currentChanged(int index);
 
