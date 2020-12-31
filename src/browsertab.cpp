@@ -1138,7 +1138,8 @@ void BrowserTab::updateUrlBarStyle()
     // or has an invalid URL.
     if (this->ui->url_bar->hasFocus() ||
         !url.isValid() ||
-        this->is_internal_location)
+        this->is_internal_location ||
+        mainWindow->settings_visible)
     {
         // Disable styling
         setLineEditTextFormat(this->ui->url_bar,

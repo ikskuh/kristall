@@ -101,6 +101,8 @@ private:
 
 public:
     QApplication * application;
+
+    bool settings_visible;
 private:
     Ui::MainWindow *ui;
 
