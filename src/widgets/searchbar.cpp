@@ -38,6 +38,15 @@ void SearchBar::focusInEvent(QFocusEvent *event)
     // Allows only one "select all" on mouse release
     // until next focus event.
     this->selectall_flag = (event->reason() == Qt::MouseFocusReason);
+
+    emit this->focused();
+}
+
+void SearchBar::focusOutEvent(QFocusEvent *event)
+{
+    QLineEdit::focusOutEvent(event);
+
+    emit this->blurred();
 }
 
 void SearchBar::mouseReleaseEvent(QMouseEvent *event)
