@@ -318,7 +318,7 @@ bool DocumentStyle::load(QSettings &settings)
             settings.endGroup();
         }
 
-    }
+    } break;
     default:
         return false;
     }
