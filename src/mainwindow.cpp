@@ -21,6 +21,7 @@
 MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     QMainWindow(parent),
     application(app),
+    settings_visible(false),
     ui(new Ui::MainWindow),
     url_status(new ElideLabel(this)),
     file_size(new QLabel(this)),
@@ -289,10 +290,22 @@ void MainWindow::on_actionSettings_triggered()
     dialog.setGeminiSslTrust(kristall::trust::gemini);
     dialog.setHttpsSslTrust(kristall::trust::https);
 
+    // We use this to disable url bar styling
+    // while we view settings, so that theme
+    // stays applied.
+    settings_visible = true;
+    this->curTab()->updateUrlBarStyle();
+
     if(dialog.exec() != QDialog::Accepted) {
         kristall::setTheme(kristall::options.theme);
+
+        settings_visible = false;
+        this->curTab()->updateUrlBarStyle();
+
         return;
     }
+
+    settings_visible = false;
 
     kristall::trust::gemini = dialog.geminiSslTrust();
     kristall::trust::https = dialog.httpsSslTrust();
@@ -309,7 +322,7 @@ void MainWindow::on_actionSettings_triggered()
     // changes are instantly applied.
     for (int i = 0; i < this->ui->browser_tabs->count(); ++i)
     {
-        BrowserTab * tab = tabAt(i);
+        BrowserTab * tab = this->tabAt(i);
         tab->needs_rerender = true;
         tab->updateUrlBarStyle();
     }
