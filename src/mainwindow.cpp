@@ -51,7 +51,7 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     }
 
     connect(this->ui->menuNavigation, &QMenu::aboutToShow, [this]() {
-        BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+        BrowserTab * tab = this->curTab();
         if(tab != nullptr) {
             ui->actionAdd_to_favourites->setChecked(kristall::favourites.containsUrl(tab->current_location));
         }
@@ -128,6 +128,17 @@ BrowserTab * MainWindow::addNewTab(bool focus_new, QUrl const & url)
     return tab;
 }
 
+BrowserTab * MainWindow::curTab() const
+{
+    // Was getting irritated writing this out all the time
+    return qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+}
+
+BrowserTab * MainWindow::tabAt(int index) const
+{
+    return qobject_cast<BrowserTab*>(this->ui->browser_tabs->widget(index));
+}
+
 void MainWindow::setUrlPreview(const QUrl &url)
 {
     if(url.isValid()) {
@@ -144,7 +155,7 @@ void MainWindow::setUrlPreview(const QUrl &url)
 
 void MainWindow::viewPageSource()
 {
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    BrowserTab * tab = this->curTab();
     if(tab != nullptr) {
         tab->openSourceView();
     }
@@ -152,7 +163,7 @@ void MainWindow::viewPageSource()
 
 void MainWindow::updateWindowTitle()
 {
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    BrowserTab * tab = this->curTab();
     if (tab == nullptr || tab->page_title.isEmpty())
     {
         this->setWindowTitle("Kristall");
@@ -165,7 +176,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 {
     QMainWindow::mousePressEvent(event);
 
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    BrowserTab * tab = this->curTab();
     if (tab == nullptr) return;
 
     // Navigate back/forward on mouse buttons 4/5
@@ -184,7 +195,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 void MainWindow::on_browser_tabs_currentChanged(int index)
 {
     if(index >= 0) {
-        BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->widget(index));
+        BrowserTab * tab = this->tabAt(index);
 
         if(tab != nullptr) {
             this->ui->outline_view->setModel(&tab->outline);
@@ -220,12 +231,12 @@ void MainWindow::on_browser_tabs_currentChanged(int index)
 
 void MainWindow::on_browser_tabs_tabCloseRequested(int index)
 {
-    delete this->ui->browser_tabs->widget(index);
+    delete tabAt(index);
 }
 
 void MainWindow::on_history_view_doubleClicked(const QModelIndex &index)
 {
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    BrowserTab * tab = this->curTab();
     if(tab != nullptr) {
         tab->navigateBack(index);
     }
@@ -239,7 +250,7 @@ void MainWindow::on_tab_titleChanged(const QString &title)
        assert(index >= 0);
        this->ui->browser_tabs->setTabText(index, title);
 
-       if (tab == this->ui->browser_tabs->currentWidget())
+       if (tab == this->curTab())
        {
             updateWindowTitle();
        }
@@ -258,7 +269,7 @@ void MainWindow::on_tab_locationChanged(const QUrl &url)
 
 void MainWindow::on_outline_view_clicked(const QModelIndex &index)
 {
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    BrowserTab * tab = this->curTab();
     if(tab != nullptr) {
 
         auto anchor = tab->outline.getAnchor(index);
@@ -298,11 +309,10 @@ void MainWindow::on_actionSettings_triggered()
     // changes are instantly applied.
     for (int i = 0; i < this->ui->browser_tabs->count(); ++i)
     {
-        qobject_cast<BrowserTab*>(this->ui->browser_tabs->widget(i))
-            ->needs_rerender = true;
+        tabAt(i)->needs_rerender = true;
     }
     // Re-render the currently-open tab if we have one.
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    BrowserTab * tab = this->curTab();
     if (tab) tab->rerenderPage();
 }
 
@@ -330,7 +340,7 @@ https://github.com/MasterQ32/Kristall)about"
 
 void MainWindow::on_actionClose_Tab_triggered()
 {
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    BrowserTab * tab = this->curTab();
     if(tab != nullptr) {
         delete tab;
     }
@@ -338,7 +348,7 @@ void MainWindow::on_actionClose_Tab_triggered()
 
 void MainWindow::on_actionForward_triggered()
 {
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    BrowserTab * tab = this->curTab();
     if(tab != nullptr) {
         tab->navOneForward();
     }
@@ -346,7 +356,7 @@ void MainWindow::on_actionForward_triggered()
 
 void MainWindow::on_actionBackward_triggered()
 {
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    BrowserTab * tab = this->curTab();
     if(tab != nullptr) {
         tab->navOneBackward();
     }
@@ -354,7 +364,7 @@ void MainWindow::on_actionBackward_triggered()
 
 void MainWindow::on_actionRefresh_triggered()
 {
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    BrowserTab * tab = this->curTab();
     if(tab != nullptr) {
         tab->reloadPage();
     }
@@ -380,7 +390,7 @@ void MainWindow::setFileStatus(const DocumentStats &stats)
 
 void MainWindow::on_actionSave_as_triggered()
 {
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    BrowserTab * tab = this->curTab();
     if(tab != nullptr) {
         QFileDialog dialog { this };
         dialog.setAcceptMode(QFileDialog::AcceptSave);
@@ -406,7 +416,7 @@ void MainWindow::on_actionSave_as_triggered()
 
 void MainWindow::on_actionGo_to_home_triggered()
 {
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    BrowserTab * tab = this->curTab();
     if(tab != nullptr) {
         tab->navigateTo(QUrl(kristall::options.start_page), BrowserTab::PushImmediate);
     }
@@ -414,7 +424,7 @@ void MainWindow::on_actionGo_to_home_triggered()
 
 void MainWindow::on_actionAdd_to_favourites_triggered()
 {
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    BrowserTab * tab = this->curTab();
     if(tab != nullptr) {
         tab->toggleIsFavourite();
     }
@@ -435,7 +445,7 @@ void MainWindow::on_tab_fileLoaded(DocumentStats const & stats)
 
 void MainWindow::on_focus_inputbar()
 {
-    BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+    BrowserTab * tab = this->curTab();
     if(tab != nullptr) {
         tab->focusUrlBar();
     }
@@ -449,7 +459,7 @@ void MainWindow::on_actionHelp_triggered()
 void MainWindow::on_history_view_customContextMenuRequested(const QPoint pos)
 {
     if(auto idx = this->ui->history_view->indexAt(pos); idx.isValid()) {
-        BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+        BrowserTab * tab = this->curTab();
         if(tab != nullptr) {
             if(QUrl url = tab->history.get(idx); url.isValid()) {
                 QMenu menu;
@@ -475,7 +485,7 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
         if(QUrl url = kristall::favourites.getFavourite(idx).destination; url.isValid()) {
             QMenu menu;
 
-            BrowserTab * tab = qobject_cast<BrowserTab*>(this->ui->browser_tabs->currentWidget());
+            BrowserTab * tab = this->curTab();
             if(tab != nullptr) {
                 connect(menu.addAction("Open here"), &QAction::triggered, [tab, url]() {
                     tab->navigateTo(url, BrowserTab::PushImmediate);
