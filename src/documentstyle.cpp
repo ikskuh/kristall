@@ -329,10 +329,19 @@ bool DocumentStyle::load(QSettings &settings)
 
     QStringList emojiFonts = { "Apple Color Emoji", "Segoe UI Emoji", "Twitter Color Emoji", "Noto Color Emoji", "JoyPixels" };
 
+    emojiFonts.prepend(h1_font.family());
     QFont::insertSubstitutions(h1_font.family(), emojiFonts);
+
+    emojiFonts[0] = h2_font.family();
     QFont::insertSubstitutions(h2_font.family(), emojiFonts);
+
+    emojiFonts[0] = h3_font.family();
     QFont::insertSubstitutions(h3_font.family(), emojiFonts);
+
+    emojiFonts[0] = standard_font.family();
     QFont::insertSubstitutions(standard_font.family(), emojiFonts);
+
+    emojiFonts[0] = preformatted_font.family();
     QFont::insertSubstitutions(preformatted_font.family(), emojiFonts);
 
     // from docs:
