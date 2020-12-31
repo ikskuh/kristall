@@ -632,21 +632,46 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
         doc_type = Media;
         this->ui->media_browser->setMedia(data, this->current_location, mime.type);
     }
-    else
+    else if (plaintext_only)
     {
         document = std::make_unique<QTextDocument>();
         document->setDefaultFont(doc_style.standard_font);
         document->setDefaultStyleSheet(doc_style.toStyleSheet());
 
-        document->setPlainText(QString(R"md(You accessed an unsupported media type!
+        QString plain_data = QString(
+            "Unsupported Media Type!\n"
+            "\n"
+            "Kristall cannot display the requested document\n"
+            "To view this media, use the File menu to save it to your local drive, then open the saved file in another program that can display the document for you.\n\n"
+            "Details:\n"
+            "- MIME type: %1/%2\n"
+            "- Size: %3\n"
+        ).arg(mime.type, mime.subtype, IoUtil::size_human(data.size()));
 
-Use the *File* menu to save the file to your local disk or navigate somewhere else. I cannot display this for you. ☹
+        document->setPlainText(plain_data);
+    }
+    else
+    {
+        QString page_data = QString(
+            "# Unsupported Media Type!\n"
+            "\n"
+            "Kristall cannot display the requested document.\n"
+            "\n"
+            "> To view this media, use the File menu to save it to your local drive, then open the saved file in another program that can display the document for you.\n"
+            "\n"
+            "```\n"
+            "Details:\n"
+            "- MIME type: %1/%2\n"
+            "- Size: %3\n"
+            "```\n"
+        ).arg(mime.type, mime.subtype, IoUtil::size_human(data.size()));
 
-Info:
-MIME Type: %1
-File Size: %2
-)md")
-                                   .arg(mime.type, data.size()));
+        document = GeminiRenderer::render(
+            page_data.toUtf8(),
+            this->current_location,
+            doc_style,
+            this->outline,
+            &this->page_title);
     }
 
     assert((document != nullptr) == (doc_type == Text));
