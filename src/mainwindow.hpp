@@ -29,6 +29,8 @@ public:
 
     BrowserTab * addEmptyTab(bool focus_new, bool load_default);
     BrowserTab * addNewTab(bool focus_new, QUrl const & url);
+    BrowserTab * curTab() const;
+    BrowserTab * tabAt(int index) const;
 
     void setUrlPreview(QUrl const & url);
 
