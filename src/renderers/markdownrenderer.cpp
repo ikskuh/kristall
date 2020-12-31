@@ -304,6 +304,7 @@ static void renderNode(RenderState &state, cmark_node & node, const QTextCharFor
         qDebug() << "CMARK_NODE_IMAGE";
         break;
     }
+    default: break;
     }
 }
 

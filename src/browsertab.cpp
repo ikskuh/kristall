@@ -900,7 +900,7 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new
                         QInputDialog input { this };
                         input.setInputMode(QInputDialog::TextInput);
                         input.setLabelText(tr("This style has no embedded name. Please enter a name for the preset:"));
-                        input.setTextValue(this->current_location.fileName().split(".", QString::SkipEmptyParts).first());
+                        input.setTextValue(this->current_location.fileName().split(".", Qt::SkipEmptyParts).first());
 
                         if(input.exec() != QDialog::Accepted)
                             return;
