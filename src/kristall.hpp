@@ -39,6 +39,7 @@ struct GenericSettings
     bool enable_text_decoration = false;
     bool use_os_scheme_handler = false;
     bool show_hidden_files_in_dirs = false;
+    bool fancy_urlbar = true;
     TextDisplay gophermap_display = FormattedText;
     int max_redirections = 5;
     RedirectionWarning redirection_policy = WarnOnHostChange;

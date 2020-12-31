@@ -1136,7 +1136,8 @@ void BrowserTab::updateUrlBarStyle()
     // Set all text to default colour if url bar
     // is focused, is at an internal location (like about:...),
     // or has an invalid URL.
-    if (this->ui->url_bar->hasFocus() ||
+    if (!kristall::options.fancy_urlbar ||
+        this->ui->url_bar->hasFocus() ||
         !url.isValid() ||
         this->is_internal_location ||
         mainWindow->settings_visible)
