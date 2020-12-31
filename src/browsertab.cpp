@@ -155,7 +155,7 @@ void BrowserTab::navigateBack(const QModelIndex &history_index)
     }
 }
 
-void BrowserTab::navOneBackback()
+void BrowserTab::navOneBackward()
 {
     navigateBack(history.oneBackward(current_history_index));
 }
@@ -1039,7 +1039,7 @@ void BrowserTab::on_requestProgress(qint64 transferred)
 
 void BrowserTab::on_back_button_clicked()
 {
-    navOneBackback();
+    navOneBackward();
 }
 
 void BrowserTab::on_forward_button_clicked()
