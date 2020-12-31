@@ -47,7 +47,7 @@ bool WebClient::startRequest(const QUrl &url, RequestOptions options)
     }
 
     // request.setMaximumRedirectsAllowed(5);
-    request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, false);
+    request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::ManualRedirectPolicy);
     request.setSslConfiguration(ssl_config);
 
     this->manager.clearAccessCache();

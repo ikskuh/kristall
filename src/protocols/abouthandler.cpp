@@ -34,7 +34,7 @@ bool AboutHandler::startRequest(const QUrl &url, ProtocolHandler::RequestOptions
             if(current_group != fav.first) {
 
                 document.append("\n");
-                document.append(QString("## %1\n").arg(fav.first));
+                document.append(QString("## %1\n").arg(fav.first).toUtf8());
 
                 current_group = fav.first;
             }
