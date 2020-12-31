@@ -1146,22 +1146,23 @@ void BrowserTab::updateUrlBarStyle()
         return;
     }
 
-    // Styling enabled: hostname of the URL is highlighted
-    // (i.e default colour), the rest is in grey-ish colour
+    // Styling enabled: 'authority' (hostname, port, etc) of
+    // the URL is highlighted (i.e default colour),
+    // the rest is in grey-ish colour
     //
     // Example:
     //
-    // gemini://an.example.com/index.gmi
+    // gemini://an.example.com:1965/index.gmi
     // ^-------^
-    //   grey   ^------------^
-    //             default
-    //                        ^--------^
-    //                           grey
+    //   grey   ^-----------------^
+    //               default
+    //                             ^--------^
+    //                                grey
 
     QList<QTextLayout::FormatRange> formats;
 
     // We only need to create one style, which is the
-    // non-hostname colour text (grey-ish, we use the theme's
+    // non-authority colour text (grey-ish, we use the theme's
     // placeholder text colour for this).
     // The rest of the text is in default theme foreground colour.
     QTextCharFormat f;
@@ -1179,7 +1180,8 @@ void BrowserTab::updateUrlBarStyle()
     if (url.scheme() != "file" && !url.path().isEmpty())
     {
         QTextLayout::FormatRange fr_right;
-        fr_right.start = fr_left.length + url.host().length();
+
+        fr_right.start = fr_left.length + url.authority().length();
         fr_right.length = url.path().length();
         fr_right.format = f;
         formats.append(fr_right);
