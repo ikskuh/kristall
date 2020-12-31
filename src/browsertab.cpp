@@ -529,6 +529,10 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
         // conflict with user styles.
         QString page_html = QString::fromUtf8(data);
         page_html.replace(QRegularExpression("<style.*?>[\\S\\s]*?</style.*?>", QRegularExpression::CaseInsensitiveOption), "");
+
+        // Strip bgcolor attribute from body. These can screw up user styles too.
+        page_html.replace(QRegularExpression("<body.*bgcolor.*>", QRegularExpression::CaseInsensitiveOption), "<body>");
+
         document->setHtml(page_html);
 
         // Find page title in HTML
