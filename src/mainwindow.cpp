@@ -309,7 +309,9 @@ void MainWindow::on_actionSettings_triggered()
     // changes are instantly applied.
     for (int i = 0; i < this->ui->browser_tabs->count(); ++i)
     {
-        tabAt(i)->needs_rerender = true;
+        BrowserTab * tab = tabAt(i);
+        tab->needs_rerender = true;
+        tab->updateUrlBarStyle();
     }
     // Re-render the currently-open tab if we have one.
     BrowserTab * tab = this->curTab();

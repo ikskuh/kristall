@@ -279,7 +279,17 @@ void BrowserTab::on_url_bar_returnPressed()
 
 void BrowserTab::on_url_bar_escapePressed()
 {
-    this->ui->url_bar->setText(this->current_location.toString(QUrl::FullyEncoded));
+    this->setUrlBarText(this->current_location.toString(QUrl::FullyEncoded));
+}
+
+void BrowserTab::on_url_bar_focused()
+{
+    this->updateUrlBarStyle();
+}
+
+void BrowserTab::on_url_bar_blurred()
+{
+    this->updateUrlBarStyle();
 }
 
 void BrowserTab::on_refresh_button_clicked()
@@ -466,6 +476,8 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
     renderPage(data, mime);
 
     this->updatePageTitle();
+
+    this->updateUrlBarStyle();
 
     this->current_stats.file_size = ref_data.size();
     this->current_stats.mime_type = mime;
@@ -822,7 +834,7 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
         {
             redirection_count += 1;
             this->current_location = uri;
-            this->ui->url_bar->setText(uri.toString());
+            this->setUrlBarText(uri.toString(QUrl::FullyEncoded));
         }
         else
         {
@@ -1092,6 +1104,91 @@ void BrowserTab::updateUI()
     this->ui->fav_button->setChecked(kristall::favourites.containsUrl(this->current_location));
 }
 
+void BrowserTab::setUrlBarText(const QString & text)
+{
+    this->ui->url_bar->setText(text);
+    this->updateUrlBarStyle();
+}
+
+void BrowserTab::updateUrlBarStyle()
+{
+    // https://stackoverflow.com/a/14424003
+    static const auto setLineEditTextFormat =
+        [](QLineEdit* l, const QList<QTextLayout::FormatRange>& f)
+    {
+        if (!l) return;
+
+        QList<QInputMethodEvent::Attribute> attr;
+        foreach (const QTextLayout::FormatRange& fr, f)
+        {
+            attr.append(QInputMethodEvent::Attribute(
+                QInputMethodEvent::TextFormat,
+                fr.start - l->cursorPosition(),
+                fr.length,
+                fr.format));
+        }
+        QInputMethodEvent event(QString(), attr);
+        QCoreApplication::sendEvent(l, &event);
+    };
+
+    QUrl url { this->ui->url_bar->text().trimmed() };
+
+    // Set all text to default colour if url bar
+    // is focused, is at an internal location (like about:...),
+    // or has an invalid URL.
+    if (this->ui->url_bar->hasFocus() ||
+        !url.isValid() ||
+        this->is_internal_location)
+    {
+        // Disable styling
+        setLineEditTextFormat(this->ui->url_bar,
+            QList<QTextLayout::FormatRange>());
+        return;
+    }
+
+    // Styling enabled: hostname of the URL is highlighted
+    // (i.e default colour), the rest is in grey-ish colour
+    //
+    // Example:
+    //
+    // gemini://an.example.com/index.gmi
+    // ^-------^
+    //   grey   ^------------^
+    //             default
+    //                        ^--------^
+    //                           grey
+
+    QList<QTextLayout::FormatRange> formats;
+
+    // We only need to create one style, which is the
+    // non-hostname colour text (grey-ish, we use the theme's
+    // placeholder text colour for this).
+    // The rest of the text is in default theme foreground colour.
+    QTextCharFormat f;
+    f.setForeground(mainWindow->palette().color(QPalette::PlaceholderText));
+
+
+    // Create format range for left-side of URL
+    QTextLayout::FormatRange fr_left;
+    fr_left.start = 0;
+    fr_left.length = url.scheme().length() + strlen("://");
+    fr_left.format = f;
+    formats.append(fr_left);
+
+    // Create format range for right-side of URL (if we have one)
+    if (url.scheme() != "file" && !url.path().isEmpty())
+    {
+        QTextLayout::FormatRange fr_right;
+        fr_right.start = fr_left.length + url.host().length();
+        fr_right.length = url.path().length();
+        fr_right.format = f;
+        formats.append(fr_right);
+    }
+
+    // Finally, apply the colour formatting.
+    setLineEditTextFormat(this->ui->url_bar, formats);
+}
+
 bool BrowserTab::trySetClientCertificate(const QString &query)
 {
     CertificateSelectionDialog dialog{this};
@@ -1226,7 +1323,7 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
 
     this->is_internal_location = (url.scheme() == "about");
     this->current_location = url;
-    this->ui->url_bar->setText(url.toString(QUrl::FormattingOptions(QUrl::FullyEncoded)));
+    this->setUrlBarText(url.toString(QUrl::FormattingOptions(QUrl::FullyEncoded)));
 
     this->network_timeout_timer.start(kristall::options.network_timeout);
 

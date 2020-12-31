@@ -79,6 +79,10 @@ public:
 
     void updatePageTitle();
 
+    void setUrlBarText(const QString & text);
+
+    void updateUrlBarStyle();
+
 signals:
     void titleChanged(QString const & title);
     void locationChanged(QUrl const & url);
@@ -88,6 +92,10 @@ private slots:
     void on_url_bar_returnPressed();
 
     void on_url_bar_escapePressed();
+
+    void on_url_bar_focused();
+
+    void on_url_bar_blurred();
 
     void on_refresh_button_clicked();
 
