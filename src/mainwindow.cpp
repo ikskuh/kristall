@@ -291,21 +291,21 @@ void MainWindow::on_actionSettings_triggered()
     dialog.setHttpsSslTrust(kristall::trust::https);
 
     // We use this to disable url bar styling
-    // while we view settings, so that theme
-    // stays applied.
-    settings_visible = true;
-    this->curTab()->updateUrlBarStyle();
+    // while we view Settings dialog, so that the URL bar
+    // doesn't look weird after changing theme.
+    static const auto update_url_style = [this](bool vis) {
+        this->settings_visible = vis;
+        if (this->curTab()) this->curTab()->updateUrlBarStyle();
+    };
+    update_url_style(true);
 
     if(dialog.exec() != QDialog::Accepted) {
         kristall::setTheme(kristall::options.theme);
-
-        settings_visible = false;
-        this->curTab()->updateUrlBarStyle();
-
+        update_url_style(false);
         return;
     }
 
-    settings_visible = false;
+    update_url_style(false);
 
     kristall::trust::gemini = dialog.geminiSslTrust();
     kristall::trust::https = dialog.httpsSslTrust();
