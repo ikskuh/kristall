@@ -19,6 +19,12 @@ enum class Theme : int
     dark = 1,
 };
 
+enum class UIDensity : int
+{
+    compact = 0,
+    classic = 1
+};
+
 struct GenericSettings
 {
     enum TextDisplay {
@@ -35,6 +41,7 @@ struct GenericSettings
 
     QString start_page = "about:favourites";
     Theme theme = Theme::light;
+    UIDensity ui_density = UIDensity::compact;
     TextDisplay text_display = FormattedText;
     bool enable_text_decoration = false;
     bool use_os_scheme_handler = false;
@@ -103,6 +110,8 @@ namespace kristall
     void saveSettings();
 
     void setTheme(Theme theme);
+
+    void setUiDensity(UIDensity density, bool previewing);
 }
 
 #endif // KRISTALL_HPP

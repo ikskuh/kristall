@@ -27,6 +27,8 @@ class BrowserTab;
 
 class MainWindow;
 
+enum class UIDensity : int;
+
 struct DocumentStats
 {
     int loading_time = 0; // in ms
@@ -82,6 +84,8 @@ public:
     void setUrlBarText(const QString & text);
 
     void updateUrlBarStyle();
+
+    void setUiDensity(UIDensity density);
 
 signals:
     void titleChanged(QString const & title);

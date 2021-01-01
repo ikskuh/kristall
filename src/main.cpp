@@ -33,6 +33,7 @@ QString toFingerprintString(QSslCertificate const & certificate)
 
 static QSettings * app_settings_ptr;
 static QApplication * app;
+static MainWindow * main_window = nullptr;
 
 #define SSTR(X) STR(X)
 #define STR(X) #X
@@ -269,6 +270,7 @@ int main(int argc, char *argv[])
     kristall::setTheme(kristall::options.theme);
 
     MainWindow w(&app);
+    main_window = &w;
 
     auto urls = cli_parser.positionalArguments();
     if(urls.size() > 0) {
@@ -335,6 +337,12 @@ void GenericSettings::load(QSettings &settings)
     else
         theme = Theme::os_default;
 
+    QString density = settings.value("ui_density", "compact").toString();
+    if(density == "compact")
+        ui_density = UIDensity::compact;
+    else if (density == "classic")
+        ui_density = UIDensity::classic;
+
     if(settings.value("gophermap_display", "rendered").toString() == "rendered")
         gophermap_display = FormattedText;
     else
@@ -363,8 +371,15 @@ void GenericSettings::save(QSettings &settings) const
     case Theme::light:      theme_name = "light"; break;
     case Theme::os_default: theme_name = "os_default"; break;
     }
-
     settings.setValue("theme", theme_name);
+
+    QString density = "compact";
+    switch(ui_density) {
+    case UIDensity::compact: density = "compact"; break;
+    case UIDensity::classic: density = "classic"; break;
+    }
+    settings.setValue("ui_density", density);
+
     settings.setValue("gophermap_display", (gophermap_display == FormattedText) ? "rendered" : "text");
     settings.setValue("use_os_scheme_handler", use_os_scheme_handler);
     settings.setValue("show_hidden_files_in_dirs", show_hidden_files_in_dirs);
@@ -436,4 +451,11 @@ void kristall::setTheme(Theme theme)
 
         QIcon::setThemeName("dark");
     }
+}
+
+void kristall::setUiDensity(UIDensity density, bool previewing)
+{
+    assert(app != nullptr);
+    assert(main_window != nullptr);
+    main_window->setUiDensity(density, previewing);
 }
