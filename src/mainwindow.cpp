@@ -109,6 +109,7 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new, bool load_default)
 
     if(focus_new) {
         this->ui->browser_tabs->setCurrentIndex(index);
+        tab->focusUrlBar();
     }
 
     if(load_default) {
@@ -116,8 +117,6 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new, bool load_default)
     } else {
         tab->navigateTo(QUrl("about:blank"), BrowserTab::DontPush);
     }
-
-    tab->focusUrlBar();
 
     return tab;
 }
