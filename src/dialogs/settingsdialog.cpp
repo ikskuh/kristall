@@ -34,6 +34,10 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     this->ui->ui_theme->addItem(tr("Light"), QVariant::fromValue<int>(int(Theme::light)));
     this->ui->ui_theme->addItem(tr("Dark"), QVariant::fromValue<int>(int(Theme::dark)));
 
+    this->ui->ui_density->clear();
+    this->ui->ui_density->addItem(tr("Compact"), QVariant::fromValue<int>(int(UIDensity::compact)));
+    this->ui->ui_density->addItem(tr("Classic"), QVariant::fromValue<int>(int(UIDensity::classic)));
+
     setGeminiStyle(DocumentStyle { });
 
     this->predefined_styles.clear();
@@ -182,6 +186,14 @@ void SettingsDialog::setOptions(const GenericSettings &options)
     for(int i = 0; i < this->ui->ui_theme->count(); i++) {
         if(this->ui->ui_theme->itemData(i).toInt() == int(options.theme)) {
             this->ui->ui_theme->setCurrentIndex(i);
+            break;
+        }
+    }
+
+    this->ui->ui_density->setCurrentIndex(0);
+    for(int i = 0; i < this->ui->ui_density->count(); ++i) {
+        if (this->ui->ui_density->itemData(i).toInt() == int(options.ui_density)) {
+            this->ui->ui_density->setCurrentIndex(i);
             break;
         }
     }
@@ -574,6 +586,13 @@ void SettingsDialog::on_ui_theme_currentIndexChanged(int index)
     this->current_options.theme = Theme(this->ui->ui_theme->itemData(index).toInt());
 
     kristall::setTheme(this->current_options.theme);
+}
+
+void SettingsDialog::on_ui_density_currentIndexChanged(int index)
+{
+    this->current_options.ui_density = UIDensity(this->ui->ui_density->itemData(index).toInt());
+
+    kristall::setUiDensity(this->current_options.ui_density, true);
 }
 
 void SettingsDialog::on_fancypants_on_clicked()

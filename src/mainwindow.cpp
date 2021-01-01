@@ -173,6 +173,24 @@ void MainWindow::updateWindowTitle()
     this->setWindowTitle(QString("%0 - %1").arg(tab->page_title, "Kristall"));
 }
 
+void MainWindow::setUiDensity(UIDensity density, bool previewing)
+{
+    // If we are previewing, we only update the current tab.
+    // If not, we update all tabs as it means user accepted the settings
+    // dialog.
+
+    if (previewing)
+    {
+        if (!this->curTab()) return;
+        this->curTab()->setUiDensity(density);
+    }
+    else
+    {
+        for (int i = 0; i < this->ui->browser_tabs->count(); ++i)
+            this->tabAt(i)->setUiDensity(density);
+    }
+}
+
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
     QMainWindow::mousePressEvent(event);
@@ -301,6 +319,7 @@ void MainWindow::on_actionSettings_triggered()
 
     if(dialog.exec() != QDialog::Accepted) {
         kristall::setTheme(kristall::options.theme);
+        this->setUiDensity(kristall::options.ui_density, false);
         update_url_style(false);
         return;
     }
@@ -317,6 +336,7 @@ void MainWindow::on_actionSettings_triggered()
     kristall::saveSettings();
 
     kristall::setTheme(kristall::options.theme);
+    this->setUiDensity(kristall::options.ui_density, false);
 
     // Flag open tabs for re-render so theme
     // changes are instantly applied.

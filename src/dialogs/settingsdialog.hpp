@@ -98,6 +98,8 @@ private slots:
 
     void on_ui_theme_currentIndexChanged(int index);
 
+    void on_ui_density_currentIndexChanged(int index);
+
     void on_fancypants_on_clicked();
 
     void on_fancypants_off_clicked();

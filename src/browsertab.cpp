@@ -59,6 +59,8 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
 {
     ui->setupUi(this);
 
+    this->setUiDensity(kristall::options.ui_density);
+
     addProtocolHandler<GeminiClient>();
     addProtocolHandler<FingerClient>();
     addProtocolHandler<GopherClient>();
@@ -1197,6 +1199,24 @@ void BrowserTab::updateUrlBarStyle()
 
     // Finally, apply the colour formatting.
     setLineEditTextFormat(this->ui->url_bar, formats);
+}
+
+void BrowserTab::setUiDensity(UIDensity density)
+{
+    switch (density)
+    {
+    case UIDensity::compact:
+    {
+        this->ui->layout_main->setContentsMargins(0, 0, 0, 0);
+        this->ui->layout_toolbar->setContentsMargins(8, 0, 8, 0);
+    } break;
+
+    case UIDensity::classic:
+    {
+        this->ui->layout_main->setContentsMargins(0, 9, 0, 9);
+        this->ui->layout_toolbar->setContentsMargins(18, 9, 18, 9);
+    } break;
+    }
 }
 
 bool BrowserTab::trySetClientCertificate(const QString &query)

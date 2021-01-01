@@ -19,6 +19,8 @@ QT_END_NAMESPACE
 
 class BrowserTab;
 
+enum class UIDensity : int;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -37,6 +39,8 @@ public:
     void viewPageSource();
 
     void updateWindowTitle();
+
+    void setUiDensity(UIDensity density, bool previewing);
 
     void mousePressEvent(QMouseEvent *event) override;
 
