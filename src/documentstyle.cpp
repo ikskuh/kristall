@@ -152,6 +152,13 @@ DocumentStyle::DocumentStyle() : theme(Fixed),
     h3_font.setFamily("sans");
     h3_font.setBold(true);
     h3_font.setPointSizeF(12.0);
+
+    this->cookie = []() {
+        QByteArray arr(8, ' ');
+        for(auto & b : arr)
+            b = rand();
+        return arr.toBase64();
+    }();
 }
 
 QString DocumentStyle::createFileNameFromName(const QString &src, int index)
@@ -323,33 +330,48 @@ bool DocumentStyle::load(QSettings &settings)
         return false;
     }
 
-
-
-    // Patch font lists to allow improved emoji display:
-
-    QStringList emojiFonts = { "Apple Color Emoji", "Segoe UI Emoji", "Twitter Color Emoji", "Noto Color Emoji", "JoyPixels" };
-
-    QFont::insertSubstitutions(h1_font.family(), emojiFonts);
-    QFont::insertSubstitutions(h2_font.family(), emojiFonts);
-    QFont::insertSubstitutions(h3_font.family(), emojiFonts);
-    QFont::insertSubstitutions(standard_font.family(), emojiFonts);
-    QFont::insertSubstitutions(preformatted_font.family(), emojiFonts);
-
-    // from docs:
-    // > After substituting a font, you must trigger the updating of the font by destroying and re-creating all QFont objects.
-    h1_font.fromString(h1_font.toString());
-    h2_font.fromString(h2_font.toString());
-    h3_font.fromString(h3_font.toString());
-    standard_font.fromString(standard_font.toString());
-    preformatted_font.fromString(preformatted_font.toString());
-
     return true;
 }
 
 DocumentStyle DocumentStyle::derive(const QUrl &url) const
 {
+    DocumentStyle themed = *this;
+
+    // Patch font lists to allow improved emoji display:
+    // Now this is a bit tricky to get right:
+    // 1. We need a list of fonts that provide emojis. This is `emojiFonts`
+    // 2. We need our own unique font name (This is "Kristall XX" + cookie)
+    // 3. We need to substitutions for that unique random name so Qt will look up missing symbols
+    // 4. We MUST NOT use a system font name as we would replace the user interface font (which we don't want to touch)
+
+    static QStringList emojiFonts = {
+        "<PLACEHOLDER>",
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Twitter Color Emoji",
+        "Noto Color Emoji",
+        "JoyPixels",
+    };
+
+    auto const patchup_font = [this](QFont & font, QString custom_family)
+    {
+        emojiFonts.front() = font.family();
+        QFont::insertSubstitutions(custom_family + cookie, emojiFonts);
+        font.setFamily(custom_family + cookie);
+
+        // from docs:
+        // > After substituting a font, you must trigger the updating of the font by destroying and re-creating all QFont objects.
+        font.fromString(font.toString());
+    };
+
+    patchup_font(themed.h1_font, "Kristall H1");
+    patchup_font(themed.h2_font, "Kristall H2");
+    patchup_font(themed.h3_font, "Kristall H3");
+    patchup_font(themed.standard_font, "Kristall Standard");
+    patchup_font(themed.preformatted_font, "Kristall Monospace");
+
     if (this->theme == Fixed)
-        return *this;
+        return themed;
 
     QByteArray hash = QCryptographicHash::hash(url.host().toUtf8(), QCryptographicHash::Md5);
 
@@ -361,7 +383,6 @@ DocumentStyle DocumentStyle::derive(const QUrl &url) const
     float saturation = items[2] / 255.0;
 
     double tmp;
-    DocumentStyle themed = *this;
     switch (this->theme)
     {
     case AutoDarkTheme:

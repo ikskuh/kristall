@@ -21,6 +21,11 @@ struct DocumentStyle
 
     Theme theme;
 
+    //! This is only a runtime value that is used to create
+    //! unique font names in `derive()`.
+    //! This is a terrible hack
+    QString cookie;
+
     QFont standard_font;
     QFont h1_font;
     QFont h2_font;
