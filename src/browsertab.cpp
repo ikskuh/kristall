@@ -706,6 +706,8 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
     emit this->locationChanged(this->current_location);
 
     this->updateUI();
+
+    this->updateUrlBarStyle();
 }
 
 void BrowserTab::rerenderPage()
@@ -1141,8 +1143,7 @@ void BrowserTab::updateUrlBarStyle()
     if (!kristall::options.fancy_urlbar ||
         this->ui->url_bar->hasFocus() ||
         !url.isValid() ||
-        this->is_internal_location ||
-        mainWindow->settings_visible)
+        this->is_internal_location)
     {
         // Disable styling
         if (!this->no_url_style)
