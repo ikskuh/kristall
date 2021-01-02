@@ -1177,7 +1177,7 @@ void BrowserTab::updateUrlBarStyle()
     // placeholder text colour for this).
     // The rest of the text is in default theme foreground colour.
     QTextCharFormat f;
-    f.setForeground(mainWindow->palette().color(QPalette::PlaceholderText));
+    f.setForeground(mainWindow->palette().color(QPalette::Mid));
 
     // Create format range for left-side of URL
     QTextLayout::FormatRange fr_left;
