@@ -173,6 +173,16 @@ bool FavouriteCollection::addFavourite(const QString &group_name, const Favourit
     return true;
 }
 
+void FavouriteCollection::editFavouriteTitle(const QModelIndex &index, const QString &title)
+{
+    this->getMutableFavourite(index)->title = title;
+}
+
+void FavouriteCollection::editFavouriteDest(const QModelIndex &index, const QUrl &url)
+{
+    this->getMutableFavourite(index)->destination = url;
+}
+
 Favourite FavouriteCollection::getFavourite(const QModelIndex &index) const
 {
     if (!index.isValid())
@@ -317,12 +327,12 @@ bool FavouriteCollection::containsUrl(const QUrl &url) const
     return false;
 }
 
-bool FavouriteCollection::addUnsorted(const QUrl &url)
+bool FavouriteCollection::addUnsorted(const QUrl &url, const QString &t)
 {
     if(containsUrl(url))
         return false;
     return addFavourite(tr("Unsorted"), Favourite {
-        QString { },
+        t,
         url,
     });
 }
@@ -331,10 +341,17 @@ bool FavouriteCollection::removeUrl(const QUrl &url)
 {
     for(auto const & group : this->root.children)
     {
-        for(auto it = group->children.begin(); it != group->children.end(); it++)
+        size_t index = 0;
+        for(auto it = group->children.begin(); it != group->children.end(); ++it, ++index)
         {
-            if(it->get()->as<FavouriteNode>().favourite.destination == url) {
+            auto & fav = it->get()->as<FavouriteNode>();
+            if(fav.favourite.destination == url) {
+                beginRemoveRows(QModelIndex { }, index, index + 1);
+
                 group->children.erase(it);
+
+                endRemoveRows();
+
                 return true;
             }
         }
@@ -470,7 +487,7 @@ Qt::ItemFlags FavouriteCollection::flags(const QModelIndex &index) const
     Node const *item = static_cast<Node const*>(index.internalPointer());
     switch(item->type) {
     case Node::Favourite:
-        return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled | Qt::ItemIsEditable;
+        return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled;
     case Node::Group:
         return QAbstractItemModel::flags(index) | Qt::ItemIsDropEnabled | Qt::ItemIsEditable;
     default:

@@ -108,13 +108,16 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new, bool load_default)
 
     if(focus_new) {
         this->ui->browser_tabs->setCurrentIndex(index);
-        tab->focusUrlBar();
     }
 
     if(load_default) {
         tab->navigateTo(QUrl(kristall::options.start_page), BrowserTab::PushImmediate);
     } else {
         tab->navigateTo(QUrl("about:blank"), BrowserTab::DontPush);
+    }
+
+    if(focus_new) {
+        tab->focusUrlBar();
     }
 
     return tab;
@@ -239,12 +242,12 @@ void MainWindow::on_browser_tabs_currentChanged(int index)
     updateWindowTitle();
 }
 
-//void MainWindow::on_favourites_view_doubleClicked(const QModelIndex &index)
-//{
-//    if(auto url = kristall::favourites.getFavourite(index).destination; url.isValid()) {
-//        this->addNewTab(true, url);
-//    }
-//}
+void MainWindow::on_favourites_view_doubleClicked(const QModelIndex &index)
+{
+    if(auto url = kristall::favourites.getFavourite(index).destination; url.isValid()) {
+        this->addNewTab(true, url);
+    }
+}
 
 void MainWindow::on_browser_tabs_tabCloseRequested(int index)
 {
@@ -513,6 +516,34 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
 
             connect(menu.addAction("Open in new tab"), &QAction::triggered, [this, url]() {
                 addNewTab(true, url);
+            });
+
+            menu.addSeparator();
+
+            connect(menu.addAction("Rename"), &QAction::triggered, [this, idx]() {
+                QInputDialog dialog { this };
+
+                dialog.setInputMode(QInputDialog::TextInput);
+                dialog.setLabelText(tr("New name of this favourite:"));
+                dialog.setTextValue(kristall::favourites.getFavourite(idx).getTitle());
+
+                if (dialog.exec() != QDialog::Accepted)
+                    return;
+
+                kristall::favourites.editFavouriteTitle(idx, dialog.textValue());
+            });
+
+            connect(menu.addAction("Relocate"), &QAction::triggered, [this, idx]() {
+                QInputDialog dialog { this };
+
+                dialog.setInputMode(QInputDialog::TextInput);
+                dialog.setLabelText(tr("Enter new location of this favourite:"));
+                dialog.setTextValue(kristall::favourites.getFavourite(idx).destination.toString(QUrl::FullyEncoded));
+
+                if (dialog.exec() != QDialog::Accepted)
+                    return;
+
+                kristall::favourites.editFavouriteDest(idx, QUrl(dialog.textValue()));
             });
 
             menu.addSeparator();

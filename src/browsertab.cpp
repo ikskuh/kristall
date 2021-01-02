@@ -190,7 +190,7 @@ void BrowserTab::toggleIsFavourite(bool shouldBeFavourite)
     // we yet need to add it.
     if (shouldBeFavourite)
     {
-        kristall::favourites.addUnsorted(this->current_location);
+        kristall::favourites.addUnsorted(this->current_location, this->page_title);
     }
     else
     {
@@ -1191,7 +1191,7 @@ void BrowserTab::updateUrlBarStyle()
         QTextLayout::FormatRange fr_right;
 
         fr_right.start = fr_left.length + url.authority().length();
-        fr_right.length = url.path().length();
+        fr_right.length = url.toString(QUrl::FullyEncoded).length() - fr_right.start;
         fr_right.format = f;
         formats.append(fr_right);
     }

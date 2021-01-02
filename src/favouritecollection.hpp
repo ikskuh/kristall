@@ -77,6 +77,10 @@ public:
 
     bool addFavourite(QString const & group, Favourite const & fav);
 
+    void editFavouriteTitle(const QModelIndex &index, const QString &title);
+
+    void editFavouriteDest(const QModelIndex & index, const QUrl & url);
+
     Favourite getFavourite(QModelIndex const & index) const;
 
     Favourite * getMutableFavourite(QModelIndex const & index);
@@ -98,7 +102,7 @@ public:
 
     bool containsUrl(QUrl const & url) const;
 
-    bool addUnsorted(QUrl const & url);
+    bool addUnsorted(QUrl const & url, QString const & title);
 
     bool removeUrl(QUrl const & url);
 

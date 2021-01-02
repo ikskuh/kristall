@@ -83,6 +83,8 @@ private slots:
 
     void on_favourites_view_customContextMenuRequested(const QPoint pos);
 
+    void on_favourites_view_doubleClicked(const QModelIndex &index);
+
     void on_actionChangelog_triggered();
 
     void on_actionManage_Certificates_triggered();
