@@ -428,12 +428,17 @@ void kristall::saveSettings()
 void kristall::setTheme(Theme theme)
 {
     assert(app != nullptr);
+
     if(theme == Theme::os_default)
     {
         app->setStyleSheet("");
         QIcon::setThemeName("");
+
+        // Use "mid" colour for our URL bar dim colour:
+        kristall::options.fancy_urlbar_dim_colour
+            = app->palette().color(QPalette::Mid);
     }
-    if(theme == Theme::light)
+    else if(theme == Theme::light)
     {
         QFile file(":/light.qss");
         file.open(QFile::ReadOnly | QFile::Text);
@@ -441,6 +446,8 @@ void kristall::setTheme(Theme theme)
         app->setStyleSheet(stream.readAll());
 
         QIcon::setThemeName("light");
+
+        kristall::options.fancy_urlbar_dim_colour = QColor(128, 128, 128, 255);
     }
     else if(theme == Theme::dark)
     {
@@ -450,6 +457,8 @@ void kristall::setTheme(Theme theme)
         app->setStyleSheet(stream.readAll());
 
         QIcon::setThemeName("dark");
+
+        kristall::options.fancy_urlbar_dim_colour = QColor(150, 150, 150, 255);
     }
 }
 

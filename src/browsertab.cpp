@@ -1115,7 +1115,7 @@ void BrowserTab::setUrlBarText(const QString & text)
 void BrowserTab::updateUrlBarStyle()
 {
     // https://stackoverflow.com/a/14424003
-    static const auto setLineEditTextFormat =
+    const auto setLineEditTextFormat =
         [](QLineEdit* l, const QList<QTextLayout::FormatRange>& f)
     {
         if (!l) return;
@@ -1138,7 +1138,6 @@ void BrowserTab::updateUrlBarStyle()
     // Set all text to default colour if url bar
     // is focused, is at an internal location (like about:...),
     // or has an invalid URL.
-    static bool no_style = false;
     if (!kristall::options.fancy_urlbar ||
         this->ui->url_bar->hasFocus() ||
         !url.isValid() ||
@@ -1146,16 +1145,16 @@ void BrowserTab::updateUrlBarStyle()
         mainWindow->settings_visible)
     {
         // Disable styling
-        if (!no_style)
+        if (!this->no_url_style)
         {
             setLineEditTextFormat(this->ui->url_bar,
                 QList<QTextLayout::FormatRange>());
-            no_style = true;
+            this->no_url_style = true;
         }
         return;
     }
 
-    no_style = false;
+    this->no_url_style = false;
 
     // Styling enabled: 'authority' (hostname, port, etc) of
     // the URL is highlighted (i.e default colour),
@@ -1173,11 +1172,10 @@ void BrowserTab::updateUrlBarStyle()
     QList<QTextLayout::FormatRange> formats;
 
     // We only need to create one style, which is the
-    // non-authority colour text (grey-ish, we use the theme's
-    // placeholder text colour for this).
+    // non-authority colour text (grey-ish, determined by theme in kristall:setTheme)
     // The rest of the text is in default theme foreground colour.
     QTextCharFormat f;
-    f.setForeground(mainWindow->palette().color(QPalette::Mid));
+    f.setForeground(kristall::options.fancy_urlbar_dim_colour);
 
     // Create format range for left-side of URL
     QTextLayout::FormatRange fr_left;

@@ -47,6 +47,10 @@ struct GenericSettings
     bool use_os_scheme_handler = false;
     bool show_hidden_files_in_dirs = false;
     bool fancy_urlbar = true;
+
+    // This is set automatically
+    QColor fancy_urlbar_dim_colour;
+
     TextDisplay gophermap_display = FormattedText;
     int max_redirections = 5;
     RedirectionWarning redirection_policy = WarnOnHostChange;

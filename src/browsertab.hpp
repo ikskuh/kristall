@@ -207,6 +207,8 @@ public:
     bool needs_rerender;
 
     QString page_title;
+
+    bool no_url_style = false;
 };
 
 #endif // BROWSERTAB_HPP
