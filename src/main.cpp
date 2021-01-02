@@ -460,6 +460,9 @@ void kristall::setTheme(Theme theme)
 
         kristall::options.fancy_urlbar_dim_colour = QColor(150, 150, 150, 255);
     }
+
+    if (main_window && main_window->curTab())
+        main_window->curTab()->updateUrlBarStyle();
 }
 
 void kristall::setUiDensity(UIDensity density, bool previewing)
