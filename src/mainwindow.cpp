@@ -112,12 +112,9 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new, bool load_default)
 
     if(load_default) {
         tab->navigateTo(QUrl(kristall::options.start_page), BrowserTab::PushImmediate);
+        tab->focusUrlBar();
     } else {
         tab->navigateTo(QUrl("about:blank"), BrowserTab::DontPush);
-    }
-
-    if(focus_new) {
-        tab->focusUrlBar();
     }
 
     return tab;
