@@ -47,7 +47,7 @@
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
-
+#include <QRegularExpression>
 #include <iconv.h>
 
 BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
@@ -551,15 +551,15 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
 
         // Find page title in HTML
         // Split so we only look in the <head>
-        QStringList head = page_html.split("</head>", Qt::KeepEmptyParts, Qt::CaseInsensitive);
+        QStringList head = page_html.split("</head>", QString::KeepEmptyParts, Qt::CaseInsensitive);
         if (head[0] != page_html)
         {
             // Split at first title tag.
-            QStringList a = head[0].split("<title>", Qt::KeepEmptyParts, Qt::CaseInsensitive);
+            QStringList a = head[0].split("<title>", QString::KeepEmptyParts, Qt::CaseInsensitive);
             if (a[0] != head[0])
             {
                 // Split at second tag.
-                QStringList b = a[1].split("</title>", Qt::KeepEmptyParts, Qt::CaseInsensitive);
+                QStringList b = a[1].split("</title>", QString::KeepEmptyParts, Qt::CaseInsensitive);
                 if (b[0] != a[1])
                 {
                     QTextDocument title;
@@ -943,7 +943,7 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new
                         QInputDialog input { this };
                         input.setInputMode(QInputDialog::TextInput);
                         input.setLabelText(tr("This style has no embedded name. Please enter a name for the preset:"));
-                        input.setTextValue(this->current_location.fileName().split(".", Qt::SkipEmptyParts).first());
+                        input.setTextValue(this->current_location.fileName().split(".", QString::SkipEmptyParts).first());
 
                         if(input.exec() != QDialog::Accepted)
                             return;
