@@ -55,7 +55,7 @@ void SearchBar::mouseReleaseEvent(QMouseEvent *event)
 
     // Select all text if the bar was just focused and
     // user did not select anything.
-    if (this->selectall_flag && QLineEdit::selectionLength() < 1)
+    if (this->selectall_flag && selectionStart() == -1)
     {
         QLineEdit::selectAll();
     }
