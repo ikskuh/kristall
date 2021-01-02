@@ -66,7 +66,12 @@ android: include(/home/felix/projects/android-hass/android-sdk/android_openssl/o
 # }
 
 
-include($$PWD/../lib/cmark/cmark.pri)
+external-cmark {
+    CONFIG += link_pkgconfig
+    PKGCONFIG += libcmark
+} else {
+    include($$PWD/../lib/cmark/cmark.pri)
+}
 
 INCLUDEPATH += $$PWD/../lib/luis-l-gist/
 DEPENDPATH += $$PWD/../lib/luis-l-gist/
