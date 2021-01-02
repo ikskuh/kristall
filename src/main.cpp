@@ -432,7 +432,14 @@ void kristall::setTheme(Theme theme)
     if(theme == Theme::os_default)
     {
         app->setStyleSheet("");
+
+        // For Linux we use standard icon set,
+        // for Windows & Mac we need to include our own icons.
+#if defined Q_OS_WIN32 || defined Q_OS_DARWIN
+        QIcon::setThemeName("light");
+#else
         QIcon::setThemeName("");
+#endif
 
         // Use "mid" colour for our URL bar dim colour:
         kristall::options.fancy_urlbar_dim_colour
