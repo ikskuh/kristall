@@ -4,7 +4,7 @@ Here you can find build instructions for Kristall.
 
 ## Requirements
 
-- Latest Qt5 version with `widgets` and `network` modules
+- Qt 5.9 or higher with `widgets` and `network` modules
 
 ## Build
 
