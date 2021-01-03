@@ -14,7 +14,9 @@ struct DocumentStyle
         AutoLightTheme = 2
     };
 
-    DocumentStyle();
+    DocumentStyle(bool do_init = true);
+
+    void initialiseDefaultFonts();
 
     //! Calculates a filtered/legal file name with all non-allowed chars escaped
     static QString createFileNameFromName(QString const & src, int index);

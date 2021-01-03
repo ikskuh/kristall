@@ -1,4 +1,5 @@
 #include "documentstyle.hpp"
+#include "kristall.hpp"
 #include <cassert>
 #include <QDebug>
 #include <QString>
@@ -115,7 +116,7 @@ static QString encodeCssFont (const QFont& refFont)
     return cssFontStr;
 }
 
-DocumentStyle::DocumentStyle() : theme(Fixed),
+DocumentStyle::DocumentStyle(bool do_init) : theme(Fixed),
     standard_font(),
     h1_font(),
     h2_font(),
@@ -135,21 +136,41 @@ DocumentStyle::DocumentStyle() : theme(Fixed),
     external_link_prefix("⇒ "),
     margin(55.0)
 {
-    preformatted_font.setFamily("monospace");
+    if (do_init) this->initialiseDefaultFonts();
+}
+
+void DocumentStyle::initialiseDefaultFonts()
+{
+    // Setup default fonts
+#ifdef Q_OS_WIN32
+    // Windows
+    static const QString FONT_NORMAL = "Segoe UI";
+    static const QString FONT_MONO = "Consolas";
+//#elif defined Q_OS_DARWIN
+    // Mac (No idea what they use)
+    // static const QString FONT_NORMAL = "???";
+    // static const QString FONT_MONO = "???";
+#else
+    // Ganoo slash linooks
+    static const QString FONT_NORMAL = kristall::default_font_family;
+    static const QString FONT_MONO = kristall::default_font_family_fixed;
+#endif
+
+    preformatted_font.setFamily(FONT_MONO);
     preformatted_font.setPointSizeF(10.0);
 
-    standard_font.setFamily("sans");
+    standard_font.setFamily(FONT_NORMAL);
     standard_font.setPointSizeF(10.0);
 
-    h1_font.setFamily("sans");
+    h1_font.setFamily(FONT_NORMAL);
     h1_font.setBold(true);
     h1_font.setPointSizeF(20.0);
 
-    h2_font.setFamily("sans");
+    h2_font.setFamily(FONT_NORMAL);
     h2_font.setBold(true);
     h2_font.setPointSizeF(15.0);
 
-    h3_font.setFamily("sans");
+    h3_font.setFamily(FONT_NORMAL);
     h3_font.setBold(true);
     h3_font.setPointSizeF(12.0);
 
