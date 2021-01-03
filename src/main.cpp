@@ -18,7 +18,9 @@ SslTrust            kristall::trust::gemini;
 SslTrust            kristall::trust::https;
 FavouriteCollection kristall::favourites;
 GenericSettings     kristall::options;
-DocumentStyle       kristall::document_style;
+DocumentStyle       kristall::document_style(false);
+QString             kristall::default_font_family;
+QString             kristall::default_font_family_fixed;
 
 QDir kristall::dirs::config_root;
 QDir kristall::dirs::cache_root;
@@ -90,6 +92,13 @@ int main(int argc, char *argv[])
     app.setApplicationVersion(SSTR(KRISTALL_VERSION));
 
     ::app = &app;
+
+    {
+        // Initialise default fonts
+        kristall::default_font_family = QFontDatabase::systemFont(QFontDatabase::GeneralFont).family();
+        kristall::default_font_family_fixed = QFontInfo(QFont("monospace")).family();
+        kristall::document_style.initialiseDefaultFonts();
+    }
 
     kristall::clipboard = app.clipboard();
 

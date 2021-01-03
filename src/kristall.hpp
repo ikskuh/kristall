@@ -116,6 +116,8 @@ namespace kristall
     void setTheme(Theme theme);
 
     void setUiDensity(UIDensity density, bool previewing);
+
+    extern QString default_font_family, default_font_family_fixed;
 }
 
 #endif // KRISTALL_HPP
