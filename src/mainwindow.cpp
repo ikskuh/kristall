@@ -209,6 +209,40 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     }
 }
 
+std::shared_ptr<CachedPage> MainWindow::cacheFind(QString const &url)
+{
+    if (this->page_cache.find(url) != this->page_cache.end())
+    {
+        return page_cache[url];
+    }
+    return nullptr;
+}
+
+bool MainWindow::cacheContains(const QUrl &url) const
+{
+    QString urlstr = url.toString(QUrl::FullyEncoded | QUrl::RemoveFragment);
+    return this->page_cache.find(urlstr) != this->page_cache.end();
+}
+
+void MainWindow::cachePage(const QUrl &url, const QByteArray &body, const MimeType &mime)
+{
+    QString urlstr = url.toString(QUrl::FullyEncoded | QUrl::RemoveFragment);
+    if (this->page_cache.find(urlstr) != this->page_cache.end())
+    {
+        qDebug() << "Updating cached page";
+        auto pg = this->page_cache[urlstr];
+        pg->body = body;
+        pg->mime = mime;
+        return;
+    }
+
+    this->page_cache[urlstr] = std::make_shared<CachedPage>(url, body, mime);
+
+    qDebug() << "Cached page : " << url;
+
+    return;
+}
+
 void MainWindow::on_browser_tabs_currentChanged(int index)
 {
     if(index >= 0) {

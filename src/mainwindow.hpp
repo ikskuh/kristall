@@ -21,6 +21,24 @@ class BrowserTab;
 
 enum class UIDensity : int;
 
+struct CachedPage
+{
+    QUrl url;
+
+    QByteArray body;
+
+    MimeType mime;
+
+    // TODO: last scroll position
+
+    // also: maybe compress page contents? May test
+    // to see if it's worth it
+
+    CachedPage(const QUrl &url, const QByteArray &body, const MimeType &mime)
+        : url(url), body(body), mime(mime)
+    {}
+};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -43,6 +61,12 @@ public:
     void setUiDensity(UIDensity density, bool previewing);
 
     void mousePressEvent(QMouseEvent *event) override;
+
+    std::shared_ptr<CachedPage> cacheFind(QString const &url);
+
+    bool cacheContains(QUrl const & url) const;
+
+    void cachePage(QUrl const & url, QByteArray const & body, MimeType const & mime);
 
 private slots:
     void on_browser_tabs_currentChanged(int index);
@@ -115,5 +139,8 @@ private:
     QLabel * file_size;
     QLabel * file_mime;
     QLabel * load_time;
+
+    // This is where we store our current in-memory cache.
+    std::unordered_map<QString, std::shared_ptr<CachedPage>> page_cache;
 };
 #endif // MAINWINDOW_HPP
