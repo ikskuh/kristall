@@ -166,6 +166,8 @@ private:
 
     bool startRequest(QUrl const & url, ProtocolHandler::RequestOptions options);
 
+    void updateMouseCursor(bool waiting);
+
     bool enableClientCertificate(CryptoIdentity const & ident);
     void disableClientCertificate();
 public:
