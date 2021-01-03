@@ -442,8 +442,9 @@ void kristall::setTheme(Theme theme)
 #endif
 
         // Use "mid" colour for our URL bar dim colour:
-        kristall::options.fancy_urlbar_dim_colour
-            = app->palette().color(QPalette::Mid);
+        QColor col = app->palette().color(QPalette::WindowText);
+        col.setAlpha(150);
+        kristall::options.fancy_urlbar_dim_colour = std::move(col);
     }
     else if(theme == Theme::light)
     {
