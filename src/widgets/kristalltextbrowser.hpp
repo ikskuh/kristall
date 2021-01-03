@@ -12,6 +12,10 @@ public:
 
     void mouseReleaseEvent(QMouseEvent * event) override;
 
+    void mouseMoveEvent(QMouseEvent * event) override;
+
+    void setDefaultCursor(QCursor const & shape);
+
 signals:
     void anchorClicked(QUrl const &, bool open_in_new_tab);
 
@@ -20,6 +24,7 @@ private: // slots
 
 private:
     bool signal_new_tab = false;
+    QCursor wanted_cursor;
 };
 
 #endif // KRISTALLTEXTBROWSER_HPP

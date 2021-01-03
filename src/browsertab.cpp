@@ -485,6 +485,8 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
     this->current_stats.mime_type = mime;
     this->current_stats.loading_time = this->timer.elapsed();
     emit this->fileLoaded(this->current_stats);
+
+    this->updateMouseCursor(false);
 }
 
 void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
@@ -1263,6 +1265,8 @@ void BrowserTab::addProtocolHandler(std::unique_ptr<ProtocolHandler> &&handler)
 
 bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions options)
 {
+    this->updateMouseCursor(true);
+
     this->current_server_certificate = QSslCertificate { };
 
     this->current_handler = nullptr;
@@ -1357,6 +1361,14 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
     this->network_timeout_timer.start(kristall::options.network_timeout);
 
     return this->current_handler->startRequest(url.adjusted(QUrl::RemoveFragment), options);
+}
+
+void BrowserTab::updateMouseCursor(bool waiting)
+{
+    if (waiting)
+        this->ui->text_browser->setDefaultCursor(Qt::BusyCursor);
+    else
+        this->ui->text_browser->setDefaultCursor(Qt::ArrowCursor);
 }
 
 bool BrowserTab::enableClientCertificate(const CryptoIdentity &ident)
