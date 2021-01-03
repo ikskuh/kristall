@@ -53,7 +53,7 @@ public:
     explicit BrowserTab(MainWindow * mainWindow);
     ~BrowserTab();
 
-    void navigateTo(QUrl const & url, PushToHistory mode);
+    void navigateTo(QUrl const & url, PushToHistory mode, bool no_read_cache = false);
 
     void navigateBack(const QModelIndex &history_index);
 
@@ -135,6 +135,7 @@ private: // network slots
 
     void on_requestProgress(qint64 transferred);
     void on_requestComplete(QByteArray const & data, QString const & mime);
+    void on_requestCompleteMime(QByteArray const & data, MimeType const & mime);
     void on_redirected(QUrl uri, bool is_permanent);
     void on_inputRequired(QString const & user_query, bool is_sensitive);
     void on_networkError(ProtocolHandler::NetworkError error, QString const & reason);
@@ -164,7 +165,7 @@ private:
         this->addProtocolHandler(std::make_unique<T>());
     }
 
-    bool startRequest(QUrl const & url, ProtocolHandler::RequestOptions options);
+    bool startRequest(QUrl const & url, ProtocolHandler::RequestOptions options, bool no_read_cache = false);
 
     void updateMouseCursor(bool waiting);
 
@@ -211,6 +212,8 @@ public:
     QString page_title;
 
     bool no_url_style = false;
+
+    bool was_read_from_cache = false;
 };
 
 #endif // BROWSERTAB_HPP

@@ -125,7 +125,7 @@ BrowserTab::~BrowserTab()
     delete ui;
 }
 
-void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
+void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode, bool no_read_cache)
 {
     if (kristall::protocols.isSchemeSupported(url.scheme()) != ProtocolSetup::Enabled)
     {
@@ -143,7 +143,7 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode)
     this->successfully_loaded = false;
     this->timer.start();
 
-    if(not this->startRequest(url, ProtocolHandler::Default)) {
+    if(not this->startRequest(url, ProtocolHandler::Default, no_read_cache)) {
         QMessageBox::critical(this, "Kristall", QString("Failed to execute request to %1").arg(url.toString()));
         return;
     }
@@ -185,7 +185,7 @@ void BrowserTab::scrollToAnchor(QString const &anchor)
 void BrowserTab::reloadPage()
 {
     if (current_location.isValid())
-        this->navigateTo(this->current_location, DontPush);
+        this->navigateTo(this->current_location, DontPush, true);
 }
 
 void BrowserTab::focusUrlBar()
@@ -418,11 +418,16 @@ static QByteArray convertToUtf8(QByteArray const & input, QString const & charSe
 
 void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &mime_text)
 {
+    MimeType mime = MimeParser::parse(mime_text);
+    this->on_requestCompleteMime(ref_data, mime);
+}
+
+void BrowserTab::on_requestCompleteMime(const QByteArray &ref_data, const MimeType &mime)
+{
+    QByteArray data;
+
     this->ui->media_browser->stopPlaying();
     this->network_timeout_timer.stop();
-
-    QByteArray data = ref_data;
-    MimeType mime = MimeParser::parse(mime_text);
 
     qDebug() << "Loaded" << ref_data.length() << "bytes of type" << mime.type << "/" << mime.subtype;
 //    for(auto & key : mime.parameters.keys()) {
@@ -449,6 +454,10 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
             }
         }
     }
+    else
+    {
+        data = ref_data;
+    }
 
     this->successfully_loaded = true;
     this->page_title = "";
@@ -465,6 +474,14 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &m
     emit this->fileLoaded(this->current_stats);
 
     this->updateMouseCursor(false);
+
+    // Finally, put file in cache if we are not in an internal
+    // location. Don't cache if we read this page from cache.
+    if (!this->is_internal_location &&
+        !this->was_read_from_cache)
+    {
+        this->mainWindow->cachePage(this->current_location, data, mime);
+    }
 }
 
 void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
@@ -1248,11 +1265,13 @@ void BrowserTab::addProtocolHandler(std::unique_ptr<ProtocolHandler> &&handler)
     this->protocol_handlers.emplace_back(std::move(handler));
 }
 
-bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions options)
+bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions options, bool no_read_cache)
 {
     this->updateMouseCursor(true);
 
     this->current_server_certificate = QSslCertificate { };
+
+    this->was_read_from_cache = false;
 
     this->current_handler = nullptr;
     for(auto & ptr : this->protocol_handlers)
@@ -1339,13 +1358,34 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
     if(not try_enable_certificate())
         return false;
 
-    this->is_internal_location = (url.scheme() == "about");
+    QString urlstr = url.toString(QUrl::FullyEncoded);
+
+    this->is_internal_location = (url.scheme() == "about" || url.scheme() == "file");
     this->current_location = url;
-    this->setUrlBarText(url.toString(QUrl::FormattingOptions(QUrl::FullyEncoded)));
+    this->setUrlBarText(urlstr);
 
     this->network_timeout_timer.start(kristall::options.network_timeout);
 
-    return this->current_handler->startRequest(url.adjusted(QUrl::RemoveFragment), options);
+    const auto req = [this, &url, &options]()
+    {
+        return this->current_handler->startRequest(url.adjusted(QUrl::RemoveFragment), options);
+    };
+
+    if (no_read_cache) return req();
+
+    // Check if we have the page in our cache.
+    urlstr = url.toString(QUrl::FullyEncoded | QUrl::RemoveFragment);
+    if (std::shared_ptr<CachedPage> pg = mainWindow->cacheFind(urlstr); pg != nullptr)
+    {
+        qDebug() << "Reading page from cache";
+        this->was_read_from_cache = true;
+        this->on_requestCompleteMime(pg->body, pg->mime);
+        return true;
+    }
+    else
+    {
+        return req();
+    }
 }
 
 void BrowserTab::updateMouseCursor(bool waiting)
