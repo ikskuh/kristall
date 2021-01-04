@@ -449,7 +449,7 @@ void MainWindow::on_actionAdd_to_favourites_triggered()
 {
     BrowserTab * tab = this->curTab();
     if(tab != nullptr) {
-        tab->addToFavouritesPopup();
+        tab->showFavouritesPopup();
     }
 }
 
