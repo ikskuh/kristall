@@ -188,37 +188,6 @@ void BrowserTab::reloadPage()
         this->navigateTo(this->current_location, DontPush);
 }
 
-void BrowserTab::toggleIsFavourite()
-{
-    toggleIsFavourite(not this->ui->fav_button->isChecked());
-}
-
-void BrowserTab::toggleIsFavourite(bool shouldBeFavourite)
-{
-    // isFavourite is the "new" state of the checkbox, so when it's true
-    // we yet need to add it.
-    if (shouldBeFavourite)
-    {
-        kristall::favourites.addUnsorted(this->current_location, this->page_title);
-    }
-    else
-    {
-        auto answer = QMessageBox::question(
-            this,
-            "Kristall",
-            tr("Do you really want to remove this page from your favourites?")
-        );
-        if(answer != QMessageBox::Yes)
-        {
-            this->updateUI();
-            return;
-        }
-        kristall::favourites.removeUrl(this->current_location);
-    }
-
-    this->updateUI();
-}
-
 void BrowserTab::focusUrlBar()
 {
     this->ui->url_bar->setFocus(Qt::ShortcutFocusReason);
@@ -873,7 +842,7 @@ void BrowserTab::pushToHistory(const QUrl &url)
     this->updateUI();
 }
 
-void BrowserTab::addToFavouritesPopup()
+void BrowserTab::showFavouritesPopup()
 {
     // We add it to favourites immediately.
     kristall::favourites.addUnsorted(this->current_location, this->page_title);
@@ -895,7 +864,7 @@ void BrowserTab::addToFavouritesPopup()
 
 void BrowserTab::on_fav_button_clicked()
 {
-    this->addToFavouritesPopup();
+    this->showFavouritesPopup();
 }
 
 void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new_tab)

@@ -65,10 +65,6 @@ public:
 
     void reloadPage();
 
-    void toggleIsFavourite();
-
-    void toggleIsFavourite(bool isFavourite);
-
     void focusUrlBar();
 
     void focusSearchBar();
@@ -83,7 +79,7 @@ public:
 
     void refreshFavButton();
 
-    void addToFavouritesPopup();
+    void showFavouritesPopup();
 
     void setUrlBarText(const QString & text);
 
