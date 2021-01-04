@@ -81,6 +81,10 @@ public:
 
     void updatePageTitle();
 
+    void refreshFavButton();
+
+    void addToFavouritesPopup();
+
     void setUrlBarText(const QString & text);
 
     void updateUrlBarStyle();

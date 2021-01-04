@@ -226,6 +226,10 @@ void MainWindow::on_browser_tabs_currentChanged(int index)
             {
                 tab->rerenderPage();
             }
+            else
+            {
+                tab->refreshFavButton();
+            }
         } else {
             this->ui->outline_view->setModel(nullptr);
             this->ui->history_view->setModel(nullptr);
@@ -445,7 +449,7 @@ void MainWindow::on_actionAdd_to_favourites_triggered()
 {
     BrowserTab * tab = this->curTab();
     if(tab != nullptr) {
-        tab->toggleIsFavourite();
+        tab->addToFavouritesPopup();
     }
 }
 

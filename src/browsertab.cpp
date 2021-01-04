@@ -21,6 +21,7 @@
 
 #include "ioutil.hpp"
 #include "kristall.hpp"
+#include "widgets/favouritepopup.hpp"
 
 #include <cassert>
 #include <QTabWidget>
@@ -109,6 +110,14 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
         QShortcut * sc = new QShortcut(QKeySequence("Escape"), this->ui->search_bar);
         connect(sc, &QShortcut::activated, this, &BrowserTab::on_close_search_clicked);
     }
+
+    FavouritePopup * popup_menu = new FavouritePopup(this->ui->fav_button, this);
+    connect(popup_menu, &FavouritePopup::unfavourited, this, [this]() {
+        this->ui->fav_button->setChecked(false);
+        kristall::favourites.removeUrl(this->current_location);
+    });
+    this->ui->fav_button->setPopupMode(QToolButton::DelayedPopup);
+    this->ui->fav_button->setMenu(popup_menu);
 }
 
 BrowserTab::~BrowserTab()
@@ -862,9 +871,29 @@ void BrowserTab::pushToHistory(const QUrl &url)
     this->updateUI();
 }
 
+void BrowserTab::addToFavouritesPopup()
+{
+    // We add it to favourites immediately.
+    kristall::favourites.addUnsorted(this->current_location, this->page_title);
+
+    // Show menu, this will block thread
+    this->ui->fav_button->setChecked(true);
+    FavouritePopup *popup = static_cast<FavouritePopup*>(this->ui->fav_button->menu());
+    popup->fav_title->setText(
+        kristall::favourites.getFavourite(this->current_location).title
+    );
+    popup->setFocus(Qt::PopupFocusReason);
+    popup->fav_title->setFocus(Qt::PopupFocusReason);
+    popup->fav_title->selectAll();
+    this->ui->fav_button->showMenu();
+
+    // Update the favourites entry with what user inputted into menu
+    kristall::favourites.editFavouriteTitle(this->current_location, popup->fav_title->text());
+}
+
 void BrowserTab::on_fav_button_clicked()
 {
-    toggleIsFavourite(this->ui->fav_button->isChecked());
+    this->addToFavouritesPopup();
 }
 
 void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new_tab)
@@ -1104,6 +1133,11 @@ void BrowserTab::updateUI()
     this->ui->refresh_button->setVisible(not in_progress);
     this->ui->stop_button->setVisible(in_progress);
 
+    this->refreshFavButton();
+}
+
+void BrowserTab::refreshFavButton()
+{
     this->ui->fav_button->setEnabled(this->successfully_loaded);
     this->ui->fav_button->setChecked(kristall::favourites.containsUrl(this->current_location));
 }

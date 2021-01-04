@@ -113,7 +113,8 @@ SOURCES += \
     trustedhostcollection.cpp \
     widgets/elidelabel.cpp \
     widgets/searchbar.cpp \
-    widgets/ssltrusteditor.cpp
+    widgets/ssltrusteditor.cpp \
+    widgets/favouritepopup.cpp
 
 HEADERS += \
     ../lib/luis-l-gist/interactiveview.hpp \
@@ -156,7 +157,8 @@ HEADERS += \
     trustedhostcollection.hpp \
     widgets/elidelabel.hpp \
     widgets/searchbar.hpp \
-    widgets/ssltrusteditor.hpp
+    widgets/ssltrusteditor.hpp \
+    widgets/favouritepopup.hpp
 
 FORMS += \
   browsertab.ui \
