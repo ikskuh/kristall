@@ -529,25 +529,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
 
         document->setHtml(page_html);
 
-        // Find page title in HTML
-        // Split so we only look in the <head>
-        QStringList head = page_html.split("</head>", QString::KeepEmptyParts, Qt::CaseInsensitive);
-        if (head[0] != page_html)
-        {
-            // Split at first title tag.
-            QStringList a = head[0].split("<title>", QString::KeepEmptyParts, Qt::CaseInsensitive);
-            if (a[0] != head[0])
-            {
-                // Split at second tag.
-                QStringList b = a[1].split("</title>", QString::KeepEmptyParts, Qt::CaseInsensitive);
-                if (b[0] != a[1])
-                {
-                    QTextDocument title;
-                    title.setHtml(b[0]);
-                    this->page_title = title.toPlainText();
-                }
-            }
-        }
+        page_title = document->metaInformation(QTextDocument::DocumentTitle);
     }
     else if (not plaintext_only and mime.is("text","x-kristall-theme"))
     {
