@@ -37,7 +37,8 @@ void KristallTextBrowser::mouseMoveEvent(QMouseEvent *event)
     // because QTextBrowser for some reason resets viewport cursor
     // to ArrowCursor after we hover over links
     const QCursor& cur = this->viewport()->cursor();
-    if (cur != this->wanted_cursor && cur != Qt::PointingHandCursor)
+    if (cur.shape() != this->wanted_cursor.shape() &&
+        cur.shape() != Qt::PointingHandCursor)
     {
         this->viewport()->setCursor(wanted_cursor);
     }
