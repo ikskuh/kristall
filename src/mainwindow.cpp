@@ -269,7 +269,9 @@ void MainWindow::on_tab_titleChanged(const QString &title)
    if(tab != nullptr) {
        int index = this->ui->browser_tabs->indexOf(tab);
        assert(index >= 0);
-       this->ui->browser_tabs->setTabText(index, title);
+
+       QString escapedTitle = title;
+       this->ui->browser_tabs->setTabText(index, escapedTitle.replace("&", "&&"));
 
        if (tab == this->curTab())
        {
