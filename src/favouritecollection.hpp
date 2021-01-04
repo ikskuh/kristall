@@ -78,8 +78,11 @@ public:
     bool addFavourite(QString const & group, Favourite const & fav);
 
     void editFavouriteTitle(const QModelIndex &index, const QString &title);
+    bool editFavouriteTitle(const QUrl &url, const QString &new_title);
 
     void editFavouriteDest(const QModelIndex & index, const QUrl & url);
+
+    Favourite getFavourite(const QUrl &url) const;
 
     Favourite getFavourite(QModelIndex const & index) const;
 

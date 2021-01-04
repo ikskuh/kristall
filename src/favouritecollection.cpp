@@ -178,9 +178,40 @@ void FavouriteCollection::editFavouriteTitle(const QModelIndex &index, const QSt
     this->getMutableFavourite(index)->title = title;
 }
 
+bool FavouriteCollection::editFavouriteTitle(const QUrl &url, const QString &new_title)
+{
+    for(auto const & group : this->root.children)
+    {
+        for(auto const & ident : group->children)
+        {
+            FavouriteNode* node = &ident->as<FavouriteNode>();
+            if(node->favourite.destination == url)
+            {
+                node->favourite.title = new_title;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 void FavouriteCollection::editFavouriteDest(const QModelIndex &index, const QUrl &url)
 {
     this->getMutableFavourite(index)->destination = url;
+}
+
+Favourite FavouriteCollection::getFavourite(const QUrl &url) const
+{
+    for(auto const & group : this->root.children)
+    {
+        for(auto const & ident : group->children)
+        {
+            FavouriteNode* node = &ident->as<FavouriteNode>();
+            if(node->favourite.destination == url)
+                return node->favourite;
+        }
+    }
+    return Favourite();
 }
 
 Favourite FavouriteCollection::getFavourite(const QModelIndex &index) const
