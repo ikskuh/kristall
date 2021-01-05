@@ -142,7 +142,7 @@ void TrustedHostCollection::remove(const QModelIndex &index)
         return;
     if(index.row() < 0 or index.row() >= items.size())
         return;
-    beginRemoveRows(QModelIndex{}, index.row(), index.row() + 1);
+    beginRemoveRows(QModelIndex{}, index.row(), index.row());
     items.removeAt(index.row());
     endRemoveRows();
 }

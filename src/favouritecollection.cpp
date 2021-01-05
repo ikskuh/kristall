@@ -619,10 +619,10 @@ bool FavouriteCollection::dropMimeData(const QMimeData *data, Qt::DropAction act
         auto & insert_list = item->as<GroupNode>().children;
 
         if((row < 0) or (size_t(row) >= insert_list.size())) {
-            beginInsertRows(parent, insert_list.size(), insert_list.size() + 1);
+            beginInsertRows(parent, insert_list.size(), insert_list.size());
             insert_list.emplace_back(std::move(node));
         } else {
-            beginInsertRows(parent, row, row + 1);
+            beginInsertRows(parent, row, row);
             insert_list.emplace(insert_list.begin() + size_t(row), std::move(node));
         }
         endInsertRows();
