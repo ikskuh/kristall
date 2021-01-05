@@ -196,7 +196,7 @@ QString DocumentStyle::createFileNameFromName(const QString &src, int index)
             result.append('-');
         }
         else {
-            result.append(QString("").arg(c.unicode()));
+            result.append(QString::number(c.unicode()));
         }
     }
 
