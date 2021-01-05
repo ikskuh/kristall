@@ -119,7 +119,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="fav_button">
+      <widget class="FavouriteButton" name="fav_button">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -291,6 +291,11 @@ p, li { white-space: pre-wrap; }
    <class>KristallTextBrowser</class>
    <extends>QTextBrowser</extends>
    <header>widgets/kristalltextbrowser.hpp</header>
+  </customwidget>
+  <customwidget>
+   <class>FavouriteButton</class>
+   <extends>QToolButton</extends>
+   <header>widgets/favouritebutton.hpp</header>
   </customwidget>
  </customwidgets>
  <resources>

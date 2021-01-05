@@ -119,7 +119,8 @@ SOURCES += \
     widgets/elidelabel.cpp \
     widgets/searchbar.cpp \
     widgets/ssltrusteditor.cpp \
-    widgets/favouritepopup.cpp
+    widgets/favouritepopup.cpp \
+    widgets/favouritebutton.cpp
 
 HEADERS += \
     ../lib/luis-l-gist/interactiveview.hpp \
@@ -163,7 +164,8 @@ HEADERS += \
     widgets/elidelabel.hpp \
     widgets/searchbar.hpp \
     widgets/ssltrusteditor.hpp \
-    widgets/favouritepopup.hpp
+    widgets/favouritepopup.hpp \
+    widgets/favouritebutton.hpp
 
 FORMS += \
   browsertab.ui \
