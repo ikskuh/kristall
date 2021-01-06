@@ -40,6 +40,7 @@
 #include <QShortcut>
 #include <QKeySequence>
 #include <QDir>
+#include <QScrollBar>
 
 #include <QPlainTextEdit>
 #include <QVBoxLayout>
@@ -84,6 +85,8 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
 #endif
 
     this->ui->text_browser->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    this->ui->text_browser->verticalScrollBar()->setTracking(true);
 
     connect(this->ui->url_bar, &SearchBar::escapePressed, this, &BrowserTab::on_url_bar_escapePressed);
 
@@ -137,6 +140,14 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode, bool no_read_ca
     {
         QMessageBox::warning(this, "Kristall", "Failed to cancel running request!");
         return;
+    }
+
+    // If this page is in cache, update the scroll position
+    QString urlstr = this->current_location.toString(QUrl::FullyEncoded | QUrl::RemoveFragment);
+    if (std::shared_ptr<CachedPage> pg = mainWindow->cacheFind(urlstr); pg != nullptr)
+    {
+        pg->scroll_pos = this->ui->text_browser->verticalScrollBar()->value();
+        qDebug() << "SETTING TO " << pg->scroll_pos;
     }
 
     this->redirection_count = 0;
@@ -474,16 +485,6 @@ void BrowserTab::on_requestCompleteMime(const QByteArray &ref_data, const MimeTy
     emit this->fileLoaded(this->current_stats);
 
     this->updateMouseCursor(false);
-
-    // Finally, put file in cache if we are not in an internal
-    // location. Don't cache if we read this page from cache.
-    // We also do not cache if user has a client certificate enabled.
-    if (!this->is_internal_location &&
-        !this->was_read_from_cache &&
-        !this->current_identity.isValid())
-    {
-        this->mainWindow->cachePage(this->current_location, data, mime);
-    }
 }
 
 void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
@@ -513,6 +514,9 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
     this->ui->text_browser->setStyleSheet(QString("QTextBrowser { background-color: %1; color: %2; }").arg(doc_style.background_color.name(), doc_style.standard_color.name()));
 
     bool plaintext_only = (kristall::options.text_display == GenericSettings::PlainText);
+
+    // Only cache text pages
+    bool will_cache = true;
 
     if (not plaintext_only and mime.is("text", "gemini"))
     {
@@ -579,6 +583,8 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
 
         this->ui->text_browser->setStyleSheet(QString("QTextBrowser { background-color: %1; color: %2; }")
             .arg(preview_style.background_color.name(), preview_style.standard_color.name()));
+
+        will_cache = false;
     }
     else if (not plaintext_only and mime.is("text","markdown"))
     {
@@ -625,11 +631,15 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
         invoker->deleteLater();
 
         this->ui->graphics_browser->fitInView(graphics_scene.sceneRect(), Qt::KeepAspectRatio);
+
+        will_cache = false;
     }
     else if (mime.is("video") or mime.is("audio"))
     {
         doc_type = Media;
         this->ui->media_browser->setMedia(data, this->current_location, mime.type);
+
+        will_cache = false;
     }
     else if (plaintext_only)
     {
@@ -648,6 +658,8 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
         ).arg(mime.type, mime.subtype, IoUtil::size_human(data.size()));
 
         document->setPlainText(plain_data);
+
+        will_cache = false;
     }
     else
     {
@@ -671,6 +683,8 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
             doc_style,
             this->outline,
             &this->page_title);
+
+        will_cache = false;
     }
 
     assert((document != nullptr) == (doc_type == Text));
@@ -689,6 +703,16 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
     this->updateUI();
 
     this->updateUrlBarStyle();
+
+    // Put file in cache if we are not in an internal
+    // location. Don't cache if we read this page from cache.
+    // We also do not cache if user has a client certificate enabled.
+    if (!this->is_internal_location &&
+        !this->was_read_from_cache &&
+        !this->current_identity.isValid())
+    {
+        this->mainWindow->cachePage(this->current_location, data, mime);
+    }
 }
 
 void BrowserTab::rerenderPage()
@@ -1384,6 +1408,13 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
         qDebug() << "Reading page from cache";
         this->was_read_from_cache = true;
         this->on_requestCompleteMime(pg->body, pg->mime);
+
+        // Move scrollbar to cached position
+        if (pg->scroll_pos != -1)
+            this->ui->text_browser->verticalScrollBar()->setValue(pg->scroll_pos);
+
+        qDebug() << "SCROLL" << pg->scroll_pos;
+
         return true;
     }
     else
