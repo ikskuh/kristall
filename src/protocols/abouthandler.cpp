@@ -66,7 +66,7 @@ bool AboutHandler::startRequest(const QUrl &url, ProtocolHandler::RequestOptions
             "In-memory cache usage:\n"
             "* %1 used\n"
             "* %2 pages in cache\n")
-            .arg(IoUtil::size_human(cache_usage), QString::number(cached_count)));
+            .arg(IoUtil::size_human(cache_usage), QString::number(cached_count)).toUtf8());
 
         emit this->requestComplete(document, "text/gemini");
     }

@@ -4,8 +4,27 @@
 #include "mimeparser.hpp"
 #include <memory>
 #include <unordered_map>
+
 #include <QUrl>
+#include <QString>
 #include <QByteArray>
+#include <QtGlobal>
+
+// Need a QString hash implementation for Qt versions below 5.14
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+#include <QHash>
+namespace std
+{
+    template<>
+    struct hash<QString>
+    {
+        std::size_t operator()(const QString& s) const noexcept
+        {
+            return (size_t)qHash(s);
+        }
+    };
+}
+#endif
 
 struct CachedPage
 {
