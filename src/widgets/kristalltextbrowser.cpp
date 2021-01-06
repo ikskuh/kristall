@@ -28,10 +28,32 @@ void KristallTextBrowser::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
+void KristallTextBrowser::on_anchorClicked(const QUrl &url)
+{
+    emit this->anchorClicked(url, this->signal_new_tab);
+}
+
+
 void KristallTextBrowser::mouseMoveEvent(QMouseEvent *event)
 {
     QTextBrowser::mouseMoveEvent(event);
+    this->updateCursor();
+}
 
+void KristallTextBrowser::setDefaultCursor(const QCursor &cur)
+{
+    this->wanted_cursor = cur;
+    this->updateCursor();
+}
+
+void KristallTextBrowser::focusInEvent(QFocusEvent *event)
+{
+    QTextBrowser::focusInEvent(event);
+    this->updateCursor();
+}
+
+void KristallTextBrowser::updateCursor()
+{
     // This slight hack allows us to set the "default" cursor,
     // (i.e when not hovering over links) We need to do this
     // because QTextBrowser for some reason resets viewport cursor
@@ -42,14 +64,4 @@ void KristallTextBrowser::mouseMoveEvent(QMouseEvent *event)
     {
         this->viewport()->setCursor(wanted_cursor);
     }
-}
-
-void KristallTextBrowser::on_anchorClicked(const QUrl &url)
-{
-    emit this->anchorClicked(url, this->signal_new_tab);
-}
-
-void KristallTextBrowser::setDefaultCursor(const QCursor &cur)
-{
-    this->wanted_cursor = cur;
 }

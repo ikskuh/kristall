@@ -14,6 +14,8 @@ public:
 
     void mouseMoveEvent(QMouseEvent * event) override;
 
+    void focusInEvent(QFocusEvent * event) override;
+
     void setDefaultCursor(QCursor const & shape);
 
 signals:
@@ -21,6 +23,9 @@ signals:
 
 private: // slots
     void on_anchorClicked(QUrl const & url);
+
+private:
+    void updateCursor();
 
 private:
     bool signal_new_tab = false;
