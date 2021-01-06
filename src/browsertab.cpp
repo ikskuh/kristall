@@ -128,7 +128,7 @@ BrowserTab::~BrowserTab()
     delete ui;
 }
 
-void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode, bool no_cache_read)
+void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode, RequestFlags flags)
 {
     if (kristall::protocols.isSchemeSupported(url.scheme()) != ProtocolSetup::Enabled)
     {
@@ -152,7 +152,7 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode, bool no_cache_r
     this->successfully_loaded = false;
     this->timer.start();
 
-    if(not this->startRequest(url, ProtocolHandler::Default, no_cache_read)) {
+    if(not this->startRequest(url, ProtocolHandler::Default, flags)) {
         QMessageBox::critical(this, "Kristall", QString("Failed to execute request to %1").arg(url.toString()));
         return;
     }
@@ -171,7 +171,7 @@ void BrowserTab::navigateBack(const QModelIndex &history_index)
     if (url.isValid())
     {
         current_history_index = history_index;
-        navigateTo(url, DontPush);
+        navigateTo(url, DontPush, RequestFlags::NavigatedBackOrForward);
     }
 }
 
@@ -194,7 +194,7 @@ void BrowserTab::scrollToAnchor(QString const &anchor)
 void BrowserTab::reloadPage()
 {
     if (current_location.isValid())
-        this->navigateTo(this->current_location, DontPush, true);
+        this->navigateTo(this->current_location, DontPush, RequestFlags::DontReadFromCache);
 }
 
 void BrowserTab::focusUrlBar()
@@ -1297,7 +1297,7 @@ void BrowserTab::addProtocolHandler(std::unique_ptr<ProtocolHandler> &&handler)
     this->protocol_handlers.emplace_back(std::move(handler));
 }
 
-bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions options, bool no_cache_read)
+bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions options, RequestFlags flags)
 {
     this->updateMouseCursor(true);
 
@@ -1403,8 +1403,11 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
         return this->current_handler->startRequest(url.adjusted(QUrl::RemoveFragment), options);
     };
 
-    if (no_cache_read || this->current_identity.isValid())
+    if ((flags & RequestFlags::DontReadFromCache) ||
+        this->current_identity.isValid())
+    {
         return req();
+    }
 
     // Check if we have the page in our cache.
     if (auto pg = kristall::cache.find(url); pg != nullptr)
@@ -1414,7 +1417,8 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
         this->on_requestComplete(pg->body, pg->mime);
 
         // Move scrollbar to cached position
-        if (pg->scroll_pos != -1)
+        if ((flags & RequestFlags::NavigatedBackOrForward) &&
+            pg->scroll_pos != -1)
             this->ui->text_browser->verticalScrollBar()->setValue(pg->scroll_pos);
 
         return true;
