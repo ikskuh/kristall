@@ -51,13 +51,16 @@ class CacheHandler
 public:
     void push(QUrl const & url, QByteArray const & body, MimeType const & mime);
 
-    std::shared_ptr<CachedPage> find(QString const &url);
     std::shared_ptr<CachedPage> find(QUrl const &url);
 
-    bool contains(QString const & url) const;
     bool contains(QUrl const & url) const;
 
     CacheMap const& getPages() const;
+
+private:
+    std::shared_ptr<CachedPage> find(QString const &url);
+
+    bool contains(QString const & url) const;
 
 private:
     // In-memory cache storage.

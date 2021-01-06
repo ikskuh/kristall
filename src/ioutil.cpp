@@ -34,3 +34,18 @@ QString IoUtil::size_human(qint64 size)
     }
     return QString().setNum(num,'f',2)+" "+unit;
 }
+
+QUrl IoUtil::uniformUrl(QUrl url)
+{
+    // We have to manually strip the root path slash
+    // since StripTrailingSlash doesn't strip it for some reason.
+    if (url.path() == "/") url.setPath(QString { });
+
+    // This will strip slashes from non-root paths
+    return url.adjusted(QUrl::RemoveFragment | QUrl::StripTrailingSlash);
+}
+
+QString IoUtil::uniformUrlString(QUrl url)
+{
+    return IoUtil::uniformUrl(url).toString(QUrl::FullyEncoded);
+}
