@@ -5,7 +5,6 @@
 #include <QLabel>
 #include <QSettings>
 
-
 #include "favouritecollection.hpp"
 #include "renderers/geminirenderer.hpp"
 
@@ -20,24 +19,6 @@ QT_END_NAMESPACE
 class BrowserTab;
 
 enum class UIDensity : int;
-
-struct CachedPage
-{
-    QUrl url;
-
-    QByteArray body;
-
-    MimeType mime;
-
-    int scroll_pos;
-
-    // also: maybe compress page contents? May test
-    // to see if it's worth it
-
-    CachedPage(const QUrl &url, const QByteArray &body, const MimeType &mime)
-        : url(url), body(body), mime(mime), scroll_pos(-1)
-    {}
-};
 
 class MainWindow : public QMainWindow
 {
@@ -61,12 +42,6 @@ public:
     void setUiDensity(UIDensity density, bool previewing);
 
     void mousePressEvent(QMouseEvent *event) override;
-
-    std::shared_ptr<CachedPage> cacheFind(QString const &url);
-
-    bool cacheContains(QUrl const & url) const;
-
-    void cachePage(QUrl const & url, QByteArray const & body, MimeType const & mime);
 
 private slots:
     void on_browser_tabs_currentChanged(int index);
@@ -139,8 +114,5 @@ private:
     QLabel * file_size;
     QLabel * file_mime;
     QLabel * load_time;
-
-    // This is where we store our current in-memory cache.
-    std::unordered_map<QString, std::shared_ptr<CachedPage>> page_cache;
 };
 #endif // MAINWINDOW_HPP
