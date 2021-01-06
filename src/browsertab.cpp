@@ -128,7 +128,7 @@ BrowserTab::~BrowserTab()
     delete ui;
 }
 
-void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode, bool no_read_cache)
+void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode, bool no_cache_read)
 {
     if (kristall::protocols.isSchemeSupported(url.scheme()) != ProtocolSetup::Enabled)
     {
@@ -142,19 +142,17 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode, bool no_read_ca
         return;
     }
 
-    // If this page is in cache, update the scroll position
-    QString urlstr = this->current_location.toString(QUrl::FullyEncoded | QUrl::RemoveFragment);
-    if (std::shared_ptr<CachedPage> pg = mainWindow->cacheFind(urlstr); pg != nullptr)
+    // If this page is in cache, store the scroll position
+    if (auto pg = kristall::cache.find(this->current_location); pg != nullptr)
     {
         pg->scroll_pos = this->ui->text_browser->verticalScrollBar()->value();
-        qDebug() << "SETTING TO " << pg->scroll_pos;
     }
 
     this->redirection_count = 0;
     this->successfully_loaded = false;
     this->timer.start();
 
-    if(not this->startRequest(url, ProtocolHandler::Default, no_read_cache)) {
+    if(not this->startRequest(url, ProtocolHandler::Default, no_cache_read)) {
         QMessageBox::critical(this, "Kristall", QString("Failed to execute request to %1").arg(url.toString()));
         return;
     }
@@ -430,10 +428,10 @@ static QByteArray convertToUtf8(QByteArray const & input, QString const & charSe
 void BrowserTab::on_requestComplete(const QByteArray &ref_data, const QString &mime_text)
 {
     MimeType mime = MimeParser::parse(mime_text);
-    this->on_requestCompleteMime(ref_data, mime);
+    this->on_requestComplete(ref_data, mime);
 }
 
-void BrowserTab::on_requestCompleteMime(const QByteArray &ref_data, const MimeType &mime)
+void BrowserTab::on_requestComplete(const QByteArray &ref_data, const MimeType &mime)
 {
     QByteArray data;
 
@@ -553,6 +551,11 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
         document->setHtml(page_html);
 
         page_title = document->metaInformation(QTextDocument::DocumentTitle);
+
+        // For now we don't cache HTML pages, because they will most
+        // of the time clog up the cache.
+        // TODO: preference for this? protocol-specific cache limits?
+        will_cache = false;
     }
     else if (not plaintext_only and mime.is("text","x-kristall-theme"))
     {
@@ -707,11 +710,12 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
     // Put file in cache if we are not in an internal
     // location. Don't cache if we read this page from cache.
     // We also do not cache if user has a client certificate enabled.
-    if (!this->is_internal_location &&
+    if (will_cache &&
+        !this->is_internal_location &&
         !this->was_read_from_cache &&
         !this->current_identity.isValid())
     {
-        this->mainWindow->cachePage(this->current_location, data, mime);
+        kristall::cache.push(this->current_location, data, mime);
     }
 }
 
@@ -1282,7 +1286,8 @@ void BrowserTab::resetClientCertificate()
 void BrowserTab::addProtocolHandler(std::unique_ptr<ProtocolHandler> &&handler)
 {
     connect(handler.get(), &ProtocolHandler::requestProgress, this, &BrowserTab::on_requestProgress);
-    connect(handler.get(), &ProtocolHandler::requestComplete, this, &BrowserTab::on_requestComplete);
+    connect(handler.get(), &ProtocolHandler::requestComplete, this,
+        qOverload<QByteArray const &, QString const &>(&BrowserTab::on_requestComplete));
     connect(handler.get(), &ProtocolHandler::redirected, this, &BrowserTab::on_redirected);
     connect(handler.get(), &ProtocolHandler::inputRequired, this, &BrowserTab::on_inputRequired);
     connect(handler.get(), &ProtocolHandler::networkError, this, &BrowserTab::on_networkError);
@@ -1292,7 +1297,7 @@ void BrowserTab::addProtocolHandler(std::unique_ptr<ProtocolHandler> &&handler)
     this->protocol_handlers.emplace_back(std::move(handler));
 }
 
-bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions options, bool no_read_cache)
+bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions options, bool no_cache_read)
 {
     this->updateMouseCursor(true);
 
@@ -1398,22 +1403,19 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
         return this->current_handler->startRequest(url.adjusted(QUrl::RemoveFragment), options);
     };
 
-    if (no_read_cache || this->current_identity.isValid())
+    if (no_cache_read || this->current_identity.isValid())
         return req();
 
     // Check if we have the page in our cache.
-    urlstr = url.toString(QUrl::FullyEncoded | QUrl::RemoveFragment);
-    if (std::shared_ptr<CachedPage> pg = mainWindow->cacheFind(urlstr); pg != nullptr)
+    if (auto pg = kristall::cache.find(url); pg != nullptr)
     {
         qDebug() << "Reading page from cache";
         this->was_read_from_cache = true;
-        this->on_requestCompleteMime(pg->body, pg->mime);
+        this->on_requestComplete(pg->body, pg->mime);
 
         // Move scrollbar to cached position
         if (pg->scroll_pos != -1)
             this->ui->text_browser->verticalScrollBar()->setValue(pg->scroll_pos);
-
-        qDebug() << "SCROLL" << pg->scroll_pos;
 
         return true;
     }

@@ -19,6 +19,7 @@ SslTrust            kristall::trust::https;
 FavouriteCollection kristall::favourites;
 GenericSettings     kristall::options;
 DocumentStyle       kristall::document_style(false);
+CacheHandler        kristall::cache;
 QString             kristall::default_font_family;
 QString             kristall::default_font_family_fixed;
 

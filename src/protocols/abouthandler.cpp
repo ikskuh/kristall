@@ -1,5 +1,6 @@
 #include "abouthandler.hpp"
 #include "kristall.hpp"
+#include "ioutil.hpp"
 
 #include <QUrl>
 #include <QFile>
@@ -45,6 +46,27 @@ bool AboutHandler::startRequest(const QUrl &url, ProtocolHandler::RequestOptions
                 document.append("=> " + fav.second->destination.toString().toUtf8() + " " + fav.second->title.toUtf8() + "\n");
             }
         }
+
+        emit this->requestComplete(document, "text/gemini");
+    }
+    else if (url.path() == "cache")
+    {
+        QByteArray document;
+        document.append("# Cache information\n");
+
+        auto& cache = kristall::cache.getPages();
+        long unsigned cache_usage = 0;
+        int cached_count = 0;
+        for (auto it = cache.begin(); it != cache.end(); ++it, ++cached_count)
+        {
+            cache_usage += (long unsigned)it->second->body.size();
+        }
+
+        document.append(QString(
+            "In-memory cache usage:\n"
+            "* %1 used\n"
+            "* %2 pages in cache\n")
+            .arg(IoUtil::size_human(cache_usage), QString::number(cached_count)));
 
         emit this->requestComplete(document, "text/gemini");
     }

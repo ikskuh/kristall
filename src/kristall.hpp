@@ -11,6 +11,7 @@
 #include "favouritecollection.hpp"
 #include "protocolsetup.hpp"
 #include "documentstyle.hpp"
+#include "cachehandler.hpp"
 
 enum class Theme : int
 {
@@ -91,6 +92,8 @@ namespace kristall
     extern GenericSettings options;
 
     extern DocumentStyle document_style;
+
+    extern CacheHandler cache;
 
     namespace trust {
         extern SslTrust gemini;
