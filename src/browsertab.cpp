@@ -477,8 +477,10 @@ void BrowserTab::on_requestCompleteMime(const QByteArray &ref_data, const MimeTy
 
     // Finally, put file in cache if we are not in an internal
     // location. Don't cache if we read this page from cache.
+    // We also do not cache if user has a client certificate enabled.
     if (!this->is_internal_location &&
-        !this->was_read_from_cache)
+        !this->was_read_from_cache &&
+        !this->current_identity.isValid())
     {
         this->mainWindow->cachePage(this->current_location, data, mime);
     }
@@ -828,6 +830,7 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
 
 void BrowserTab::setErrorMessage(const QString &msg)
 {
+    this->is_internal_location = true;
     this->on_requestComplete(
         QString("An error happened:\r\n%0").arg(msg).toUtf8(),
         "text/plain charset=utf-8");
@@ -1371,7 +1374,8 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
         return this->current_handler->startRequest(url.adjusted(QUrl::RemoveFragment), options);
     };
 
-    if (no_read_cache) return req();
+    if (no_read_cache || this->current_identity.isValid())
+        return req();
 
     // Check if we have the page in our cache.
     urlstr = url.toString(QUrl::FullyEncoded | QUrl::RemoveFragment);
