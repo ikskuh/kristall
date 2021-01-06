@@ -29,13 +29,13 @@ struct CachedPage
 
     MimeType mime;
 
-    // TODO: last scroll position
+    int scroll_pos;
 
     // also: maybe compress page contents? May test
     // to see if it's worth it
 
     CachedPage(const QUrl &url, const QByteArray &body, const MimeType &mime)
-        : url(url), body(body), mime(mime)
+        : url(url), body(body), mime(mime), scroll_pos(-1)
     {}
 };
 
