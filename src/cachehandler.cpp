@@ -1,11 +1,13 @@
 #include "cachehandler.hpp"
 #include "kristall.hpp"
+#include "ioutil.hpp"
 
 #include <QDebug>
 
-void CacheHandler::push(const QUrl &url, const QByteArray &body, const MimeType &mime)
+void CacheHandler::push(const QUrl &u, const QByteArray &body, const MimeType &mime)
 {
-    QString urlstr = url.toString(QUrl::FullyEncoded | QUrl::RemoveFragment);
+    QUrl url = IoUtil::uniformUrl(u);
+    QString urlstr = url.toString(QUrl::FullyEncoded);;
 
     if (this->page_cache.find(urlstr) != this->page_cache.end())
     {
@@ -34,7 +36,7 @@ std::shared_ptr<CachedPage> CacheHandler::find(const QString &url)
 
 std::shared_ptr<CachedPage> CacheHandler::find(const QUrl &url)
 {
-    return this->find(url.toString(QUrl::FullyEncoded | QUrl::RemoveFragment));
+    return this->find(IoUtil::uniformUrlString(url));
 }
 
 bool CacheHandler::contains(const QString &url) const
@@ -44,7 +46,7 @@ bool CacheHandler::contains(const QString &url) const
 
 bool CacheHandler::contains(const QUrl &url) const
 {
-    return this->contains(url.toString(QUrl::FullyEncoded | QUrl::RemoveFragment));
+    return this->contains(IoUtil::uniformUrlString(url));
 }
 
 CacheMap const& CacheHandler::getPages() const

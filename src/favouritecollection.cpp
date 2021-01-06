@@ -1,4 +1,5 @@
 #include "favouritecollection.hpp"
+#include "ioutil.hpp"
 
 #include <cassert>
 #include <QDebug>
@@ -98,7 +99,7 @@ void FavouriteCollection::load(QSettings &settings)
             auto fav = std::make_unique<FavouriteNode>();
 
             fav->favourite.title = settings.value("title").toString();
-            fav->favourite.destination = settings.value("url").toUrl();
+            fav->favourite.destination = IoUtil::uniformUrl(settings.value("url").toUrl());
 
             group->children.emplace_back(std::move(fav));
         }
@@ -178,8 +179,9 @@ void FavouriteCollection::editFavouriteTitle(const QModelIndex &index, const QSt
     this->getMutableFavourite(index)->title = title;
 }
 
-bool FavouriteCollection::editFavouriteTitle(const QUrl &url, const QString &new_title)
+bool FavouriteCollection::editFavouriteTitle(const QUrl &u, const QString &new_title)
 {
+    QUrl url = IoUtil::uniformUrl(u);
     for(auto const & group : this->root.children)
     {
         for(auto const & ident : group->children)
@@ -197,11 +199,12 @@ bool FavouriteCollection::editFavouriteTitle(const QUrl &url, const QString &new
 
 void FavouriteCollection::editFavouriteDest(const QModelIndex &index, const QUrl &url)
 {
-    this->getMutableFavourite(index)->destination = url;
+    this->getMutableFavourite(index)->destination = IoUtil::uniformUrl(url);
 }
 
-Favourite FavouriteCollection::getFavourite(const QUrl &url) const
+Favourite FavouriteCollection::getFavourite(const QUrl &u) const
 {
+    QUrl url = IoUtil::uniformUrl(u);
     for(auto const & group : this->root.children)
     {
         for(auto const & ident : group->children)
@@ -345,8 +348,9 @@ QVector<QPair<QString, Favourite const *>> FavouriteCollection::allFavourites() 
     return identities;
 }
 
-bool FavouriteCollection::containsUrl(const QUrl &url) const
+bool FavouriteCollection::containsUrl(const QUrl &u) const
 {
+    QUrl url = IoUtil::uniformUrl(u);
     for(auto const & group : this->root.children)
     {
         for(auto const & ident : group->children)
@@ -364,12 +368,13 @@ bool FavouriteCollection::addUnsorted(const QUrl &url, const QString &t)
         return false;
     return addFavourite(tr("Unsorted"), Favourite {
         t,
-        url,
+        IoUtil::uniformUrl(url),
     });
 }
 
-bool FavouriteCollection::removeUrl(const QUrl &url)
+bool FavouriteCollection::removeUrl(const QUrl &u)
 {
+    QUrl url = IoUtil::uniformUrl(u);
     for(auto const & group : this->root.children)
     {
         size_t index = 0;
