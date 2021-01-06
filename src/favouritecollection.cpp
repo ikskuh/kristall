@@ -99,7 +99,7 @@ void FavouriteCollection::load(QSettings &settings)
             auto fav = std::make_unique<FavouriteNode>();
 
             fav->favourite.title = settings.value("title").toString();
-            fav->favourite.destination = IoUtil::uniformUrl(settings.value("url").toUrl());
+            fav->favourite.destination = settings.value("url").toUrl();
 
             group->children.emplace_back(std::move(fav));
         }
@@ -187,7 +187,7 @@ bool FavouriteCollection::editFavouriteTitle(const QUrl &u, const QString &new_t
         for(auto const & ident : group->children)
         {
             FavouriteNode* node = &ident->as<FavouriteNode>();
-            if(node->favourite.destination == url)
+            if(IoUtil::uniformUrl(node->favourite.destination) == url)
             {
                 node->favourite.title = new_title;
                 return true;
@@ -199,7 +199,7 @@ bool FavouriteCollection::editFavouriteTitle(const QUrl &u, const QString &new_t
 
 void FavouriteCollection::editFavouriteDest(const QModelIndex &index, const QUrl &url)
 {
-    this->getMutableFavourite(index)->destination = IoUtil::uniformUrl(url);
+    this->getMutableFavourite(index)->destination = url;
 }
 
 Favourite FavouriteCollection::getFavourite(const QUrl &u) const
@@ -210,7 +210,7 @@ Favourite FavouriteCollection::getFavourite(const QUrl &u) const
         for(auto const & ident : group->children)
         {
             FavouriteNode* node = &ident->as<FavouriteNode>();
-            if(node->favourite.destination == url)
+            if(IoUtil::uniformUrl(node->favourite.destination) == url)
                 return node->favourite;
         }
     }
@@ -355,7 +355,7 @@ bool FavouriteCollection::containsUrl(const QUrl &u) const
     {
         for(auto const & ident : group->children)
         {
-            if(ident->as<FavouriteNode>().favourite.destination == url)
+            if(IoUtil::uniformUrl(ident->as<FavouriteNode>().favourite.destination) == url)
                 return true;
         }
     }
@@ -368,7 +368,7 @@ bool FavouriteCollection::addUnsorted(const QUrl &url, const QString &t)
         return false;
     return addFavourite(tr("Unsorted"), Favourite {
         t,
-        IoUtil::uniformUrl(url),
+        url,
     });
 }
 
@@ -381,7 +381,7 @@ bool FavouriteCollection::removeUrl(const QUrl &u)
         for(auto it = group->children.begin(); it != group->children.end(); ++it, ++index)
         {
             auto & fav = it->get()->as<FavouriteNode>();
-            if(fav.favourite.destination == url) {
+            if(IoUtil::uniformUrl(fav.favourite.destination) == url) {
                 beginRemoveRows(QModelIndex { }, index, index + 1);
 
                 group->children.erase(it);

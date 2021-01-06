@@ -18,7 +18,7 @@ void CacheHandler::push(const QUrl &u, const QByteArray &body, const MimeType &m
         return;
     }
 
-    this->page_cache[urlstr] = std::make_shared<CachedPage>(url, body, mime);
+    this->page_cache[urlstr] = std::make_shared<CachedPage>(u, body, mime);
 
     qDebug() << "Pushed page to cache: " << url;
 
