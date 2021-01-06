@@ -40,6 +40,19 @@ struct DocumentStats
     }
 };
 
+enum RequestFlags : int
+{
+    None = 0,
+
+    // Forces request to be made to server
+    // instead of reading from cache.
+    DontReadFromCache = 1,
+
+    // If the user navigated back/forward
+    // (i.e if using back/forward buttons in toolbar)
+    NavigatedBackOrForward = 2,
+};
+
 class BrowserTab : public QWidget
 {
     Q_OBJECT
@@ -53,7 +66,7 @@ public:
     explicit BrowserTab(MainWindow * mainWindow);
     ~BrowserTab();
 
-    void navigateTo(QUrl const & url, PushToHistory mode, bool no_cache_read = false);
+    void navigateTo(QUrl const & url, PushToHistory mode, RequestFlags flags = RequestFlags::None);
 
     void navigateBack(const QModelIndex &history_index);
 
@@ -165,7 +178,7 @@ private:
         this->addProtocolHandler(std::make_unique<T>());
     }
 
-    bool startRequest(QUrl const & url, ProtocolHandler::RequestOptions options, bool no_cache_read = false);
+    bool startRequest(QUrl const & url, ProtocolHandler::RequestOptions options, RequestFlags flags = RequestFlags::None);
 
     void updateMouseCursor(bool waiting);
 
