@@ -102,6 +102,10 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
         connect(sc, &QShortcut::activated, this, &BrowserTab::on_focusSearchbar);
     }
     {
+        QShortcut * sc = new QShortcut(QKeySequence("Ctrl+R"), this);
+        connect(sc, &QShortcut::activated, this, &BrowserTab::on_refresh_button_clicked);
+    }
+    {
         QShortcut * sc = new QShortcut(QKeySequence("F3"), this);
         connect(sc, &QShortcut::activated, this, &BrowserTab::on_search_next_clicked);
     }
