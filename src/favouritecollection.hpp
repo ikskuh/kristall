@@ -75,6 +75,8 @@ public:
 
     bool addGroup(QString const & group);
 
+    bool renameGroup(QString const & old_name, QString const & new_name);
+
     bool addFavourite(QString const & group, Favourite const & fav);
 
     void editFavouriteTitle(const QModelIndex &index, const QString &title);
@@ -101,6 +103,7 @@ public:
 
     bool canDeleteGroup(QString const & group_name);
     bool deleteGroup(QString const & group_name);
+    bool deleteGroupRecursive(QString const & group_name);
 
     //! Returns a list of non-mutable references to all contained favourites.
     //! Note that the group will change in-order, so all favourites for group a

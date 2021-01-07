@@ -538,19 +538,6 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
 
             menu.addSeparator();
 
-            connect(menu.addAction("Rename"), &QAction::triggered, [this, idx]() {
-                QInputDialog dialog { this };
-
-                dialog.setInputMode(QInputDialog::TextInput);
-                dialog.setLabelText(tr("New name of this favourite:"));
-                dialog.setTextValue(kristall::favourites.getFavourite(idx).getTitle());
-
-                if (dialog.exec() != QDialog::Accepted)
-                    return;
-
-                kristall::favourites.editFavouriteTitle(idx, dialog.textValue());
-            });
-
             connect(menu.addAction("Relocate"), &QAction::triggered, [this, idx]() {
                 QInputDialog dialog { this };
 
@@ -564,6 +551,19 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
                 kristall::favourites.editFavouriteDest(idx, QUrl(dialog.textValue()));
             });
 
+            connect(menu.addAction("Rename"), &QAction::triggered, [this, idx]() {
+                QInputDialog dialog { this };
+
+                dialog.setInputMode(QInputDialog::TextInput);
+                dialog.setLabelText(tr("New name of this favourite:"));
+                dialog.setTextValue(kristall::favourites.getFavourite(idx).getTitle());
+
+                if (dialog.exec() != QDialog::Accepted)
+                    return;
+
+                kristall::favourites.editFavouriteTitle(idx, dialog.textValue());
+            });
+
             menu.addSeparator();
 
             connect(menu.addAction("Delete"), &QAction::triggered, [idx]() {
@@ -573,7 +573,39 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
             menu.exec(this->ui->favourites_view->mapToGlobal(pos));
         }
         else if(QString group = kristall::favourites.group(idx); not group.isEmpty()) {
-            qDebug() << group;
+            QMenu menu;
+
+            connect(menu.addAction("Rename group"), &QAction::triggered, [this, group]() {
+                QInputDialog dialog { this };
+
+                dialog.setInputMode(QInputDialog::TextInput);
+                dialog.setLabelText(tr("New name of this group:"));
+                dialog.setTextValue(group);
+
+                if (dialog.exec() != QDialog::Accepted)
+                    return;
+
+                if (!kristall::favourites.renameGroup(group, dialog.textValue()))
+                    QMessageBox::information(this, "Kristall", "Rename failed: group name already in use.");
+            });
+
+            menu.addSeparator();
+
+            connect(menu.addAction("Delete group"), &QAction::triggered, [this, idx]() {
+                if (QMessageBox::question(
+                    this,
+                    "Kristall",
+                    "Are you sure you want to delete this Favourite Group?\n"
+                    "All favourites in this group will be lost.\n\n"
+                    "This action cannot be undone!"
+                ) != QMessageBox::Yes)
+                {
+                    return;
+                }
+                kristall::favourites.deleteGroupRecursive(kristall::favourites.group(idx));
+            });
+
+            menu.exec(this->ui->favourites_view->mapToGlobal(pos));
         }
     }
     else {
