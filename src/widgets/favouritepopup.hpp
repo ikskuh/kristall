@@ -4,6 +4,7 @@
 #include <QMenu>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QComboBox>
 
 class QToolButton;
 
@@ -22,6 +23,8 @@ signals:
 
     void unfavourited();
 
+    void newGroupClicked();
+
 private:
     void confirmPressed();
 
@@ -30,7 +33,10 @@ private:
 
 public:
     QLineEdit *fav_title;
+    QComboBox *fav_group;
     QPushButton *confirm_btn;
+
+    bool is_ready;
 
 };
 

@@ -82,11 +82,15 @@ public:
 
     void editFavouriteDest(const QModelIndex & index, const QUrl & url);
 
+    bool editFavouriteGroup(const QUrl &url, const QString &group_name);
+
     Favourite getFavourite(const QUrl &url) const;
 
     Favourite getFavourite(QModelIndex const & index) const;
 
     Favourite * getMutableFavourite(QModelIndex const & index);
+
+    QString groupForFavourite(QUrl const & url) const;
 
     QStringList groups() const;
 

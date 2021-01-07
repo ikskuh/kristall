@@ -189,6 +189,21 @@ void MainWindow::setUiDensity(UIDensity density, bool previewing)
     }
 }
 
+QString MainWindow::newGroupDialog()
+{
+    QInputDialog dialog { this };
+
+    dialog.setInputMode(QInputDialog::TextInput);
+    dialog.setLabelText(tr("Enter name of the new group:"));
+
+    if(dialog.exec() != QDialog::Accepted)
+        return QString { };
+
+    kristall::favourites.addGroup(dialog.textValue());
+
+    return dialog.textValue();
+}
+
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
     QMainWindow::mousePressEvent(event);
@@ -565,15 +580,7 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
         QMenu menu;
 
         connect(menu.addAction("Create new group..."), &QAction::triggered, [this]() {
-            QInputDialog dialog { this };
-
-            dialog.setInputMode(QInputDialog::TextInput);
-            dialog.setLabelText(tr("Enter name of the new group:"));
-
-            if(dialog.exec() != QDialog::Accepted)
-                return;
-
-            kristall::favourites.addGroup(dialog.textValue());
+            this->newGroupDialog();
         });
 
         menu.exec(this->ui->favourites_view->mapToGlobal(pos));

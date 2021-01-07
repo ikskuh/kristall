@@ -114,13 +114,45 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
         connect(sc, &QShortcut::activated, this, &BrowserTab::on_close_search_clicked);
     }
 
-    FavouritePopup * popup_menu = new FavouritePopup(this->ui->fav_button, this);
-    connect(popup_menu, &FavouritePopup::unfavourited, this, [this]() {
+    FavouritePopup * popup = new FavouritePopup(this->ui->fav_button, this);
+    connect(popup, &FavouritePopup::unfavourited, this, [this]() {
         this->ui->fav_button->setChecked(false);
         kristall::favourites.removeUrl(this->current_location);
     });
     this->ui->fav_button->setPopupMode(QToolButton::DelayedPopup);
-    this->ui->fav_button->setMenu(popup_menu);
+    this->ui->fav_button->setMenu(popup);
+
+    connect(popup, &FavouritePopup::newGroupClicked, this, [this, popup]() {
+        // Dialog to create new group
+        QString v = this->mainWindow->newGroupDialog();
+
+        // Update combobox
+        popup->fav_group->clear();
+        QStringList groups = kristall::favourites.groups();
+        for (int i = 0; i < groups.length(); ++i)
+        {
+            popup->fav_group->addItem(groups[i]);
+
+            // Select this group if it is current one
+            if (!v.isEmpty() && groups[i] == v)
+            {
+                popup->fav_group->setCurrentIndex(i);
+            }
+        }
+
+        // Show the menu again
+        this->ui->fav_button->showMenu();
+    });
+
+    connect(popup->fav_group, QOverload<int>::of(&QComboBox::currentIndexChanged),
+        [this, popup](int index)
+    {
+        if (!popup->is_ready || index == -1) return;
+
+        // Change favourite's current group
+        kristall::favourites.editFavouriteGroup(this->current_location,
+            popup->fav_group->currentText());
+    });
 }
 
 BrowserTab::~BrowserTab()
@@ -877,15 +909,40 @@ void BrowserTab::showFavouritesPopup()
     // We add it to favourites immediately.
     kristall::favourites.addUnsorted(this->current_location, this->page_title);
 
-    // Show menu, this will block thread
+    const Favourite fav = kristall::favourites.getFavourite(this->current_location);
+
     this->ui->fav_button->setChecked(true);
     FavouritePopup *popup = static_cast<FavouritePopup*>(this->ui->fav_button->menu());
-    popup->fav_title->setText(
-        kristall::favourites.getFavourite(this->current_location).title
-    );
+
+    // Prepare menu:
+
+    popup->is_ready = false;
+    {
+        // Setup the group combobox
+        popup->fav_group->setCurrentIndex(-1);
+        popup->fav_group->clear();
+        QStringList groups = kristall::favourites.groups();
+        for (int i = 0; i < groups.length(); ++i)
+        {
+            popup->fav_group->addItem(groups[i]);
+
+            // Set combobox index to current group
+            if (groups[i] == kristall::favourites.groupForFavourite(fav.destination))
+            {
+                popup->fav_group->setCurrentIndex(i);
+            }
+        }
+    }
+    popup->fav_title->setText(fav.title.isEmpty()
+        ? fav.destination.toString(QUrl::FullyEncoded)
+        : fav.title);
     popup->setFocus(Qt::PopupFocusReason);
     popup->fav_title->setFocus(Qt::PopupFocusReason);
     popup->fav_title->selectAll();
+
+    popup->is_ready = true;
+
+    // Show menu, this will block thread
     this->ui->fav_button->showMenu();
 
     // Update the favourites entry with what user inputted into menu
