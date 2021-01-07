@@ -154,6 +154,31 @@ bool FavouriteCollection::addGroup(const QString &group_name)
     return internalAddGroup(group_name, group);
 }
 
+bool FavouriteCollection::renameGroup(const QString &old_name, const QString &new_name)
+{
+    GroupNode * to_set = nullptr;
+    for (auto const & grp : root.children)
+    {
+        auto * g = static_cast<GroupNode*>(grp.get());
+        if (g->title == old_name)
+        {
+            to_set = g;
+        }
+        if (g->title == new_name)
+        {
+            return false;
+        }
+    }
+
+    if (to_set)
+    {
+        to_set->title = new_name;
+        return true;
+    }
+
+    return false;
+}
+
 bool FavouriteCollection::addFavourite(const QString &group_name, const Favourite &fav)
 {
     GroupNode * group;
@@ -366,6 +391,31 @@ bool FavouriteCollection::deleteGroup(const QString &group_name)
 
             root.children.erase(it);
 
+            endRemoveRows();
+
+            return true;
+        }
+    }
+    return false;
+}
+
+bool FavouriteCollection::deleteGroupRecursive(const QString &group_name)
+{
+    size_t index = 0;
+    for (auto it = root.children.begin(); it != root.children.end(); ++it, ++index)
+    {
+        auto & group = it->get()->as<GroupNode>();
+        if (group.title == group_name)
+        {
+            // Delete group children
+            auto group_idx = this->index(index, 0);
+            beginRemoveRows(group_idx, 0, group.children.size());
+            group.children.clear();
+            endRemoveRows();
+
+            // Delete the group
+            beginRemoveRows(QModelIndex { }, index, index + 1);
+            root.children.erase(it);
             endRemoveRows();
 
             return true;
