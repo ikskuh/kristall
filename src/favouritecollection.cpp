@@ -150,6 +150,15 @@ void FavouriteCollection::save(QSettings &settings) const
 
 bool FavouriteCollection::addGroup(const QString &group_name)
 {
+    // Check if group already exists
+    for (auto const & grp : root.children)
+    {
+        if (static_cast<GroupNode*>(grp.get())->title == group_name)
+        {
+            return false;
+        }
+    }
+
     GroupNode * group;
     return internalAddGroup(group_name, group);
 }
