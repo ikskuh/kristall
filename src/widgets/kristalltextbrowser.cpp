@@ -1,6 +1,8 @@
 #include "kristalltextbrowser.hpp"
 
 #include <QMouseEvent>
+#include <QScroller>
+#include <QTouchDevice>
 
 KristallTextBrowser::KristallTextBrowser(QWidget *parent) :
     QTextBrowser(parent)
@@ -8,7 +10,11 @@ KristallTextBrowser::KristallTextBrowser(QWidget *parent) :
     connect(this, &QTextBrowser::anchorClicked, this, &KristallTextBrowser::on_anchorClicked);
 
     // Enable touch scrolling
-    this->viewport()->setAttribute(Qt::WA_AcceptTouchEvents);
+    if (QTouchDevice::devices().length() > 0)
+    {
+        this->viewport()->setAttribute(Qt::WA_AcceptTouchEvents);
+        QScroller::grabGesture(this, QScroller::LeftMouseButtonGesture);
+    }
 }
 
 void KristallTextBrowser::mouseReleaseEvent(QMouseEvent *event)
