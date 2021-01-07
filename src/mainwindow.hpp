@@ -41,6 +41,8 @@ public:
 
     void setUiDensity(UIDensity density, bool previewing);
 
+    QString newGroupDialog();
+
     void mousePressEvent(QMouseEvent *event) override;
 
 private slots:

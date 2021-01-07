@@ -202,6 +202,36 @@ void FavouriteCollection::editFavouriteDest(const QModelIndex &index, const QUrl
     this->getMutableFavourite(index)->destination = url;
 }
 
+bool FavouriteCollection::editFavouriteGroup(const QUrl &u, const QString &group_name)
+{
+    // Find and erase favourite node
+    QUrl url = IoUtil::uniformUrl(u);
+    for (auto const & group : this->root.children)
+    {
+        size_t index = 0;
+        for (auto it = group->children.begin(); it != group->children.end(); it++, index++)
+        {
+            auto& fav = it->get()->as<FavouriteNode>();
+            if(IoUtil::uniformUrl(fav.favourite.destination) == url)
+            {
+                Favourite f = Favourite {
+                    fav.favourite.title,
+                    fav.favourite.destination
+                };
+
+                beginRemoveRows(this->index(fav.parent->index, 0), index, index + 1);
+                group->children.erase(it);
+                endRemoveRows();
+                this->relayout();
+
+                this->addFavourite(group_name, f);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 Favourite FavouriteCollection::getFavourite(const QUrl &u) const
 {
     QUrl url = IoUtil::uniformUrl(u);
@@ -247,6 +277,20 @@ Favourite * FavouriteCollection::getMutableFavourite(const QModelIndex &index)
     default:
         return nullptr;
     }
+}
+
+QString FavouriteCollection::groupForFavourite(const QUrl &url) const
+{
+    for (auto const & group : this->root.children)
+    {
+        for (auto const & ident : group->children)
+        {
+            FavouriteNode* node = &ident->as<FavouriteNode>();
+            if (node->favourite.destination == url)
+                return node->parent->as<GroupNode>().title;
+        }
+    }
+    return QString { };
 }
 
 QStringList FavouriteCollection::groups() const

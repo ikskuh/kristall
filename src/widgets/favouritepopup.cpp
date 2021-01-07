@@ -2,6 +2,7 @@
 
 #include <QToolButton>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QGridLayout>
 #include <QLabel>
 #include <QKeyEvent>
@@ -9,6 +10,8 @@
 FavouritePopup::FavouritePopup(QToolButton *button, QWidget *parent)
     : QMenu(parent), b(button)
 {
+    this->is_ready = false;
+
     auto parent_layout = new QVBoxLayout();
     parent_layout->setContentsMargins(8, 8, 8, 8);
 
@@ -19,6 +22,24 @@ FavouritePopup::FavouritePopup(QToolButton *button, QWidget *parent)
     this->fav_title = new QLineEdit();
     layout->addWidget(title_lab, 0, 0);
     layout->addWidget(this->fav_title, 0, 1);
+
+    // Group
+    auto group_lab = new QLabel("Group:");
+    layout->addWidget(group_lab);
+    {
+        this->fav_group = new QComboBox();
+
+        auto new_group = new QToolButton();
+        new_group->setIcon(QIcon::fromTheme("document-new"));
+        connect(new_group, &QPushButton::clicked, this, [this]() {
+            emit this->newGroupClicked();
+        });
+
+        auto group_lay = new QHBoxLayout();
+        group_lay->addWidget(this->fav_group);
+        group_lay->addWidget(new_group);
+        layout->addLayout(group_lay, 1, 1);
+    }
 
     // Unfavourite
     auto unfav_btn = new QPushButton("Unfavourite");
@@ -38,7 +59,7 @@ FavouritePopup::FavouritePopup(QToolButton *button, QWidget *parent)
     parent_layout->addLayout(layout);
 
     this->setLayout(parent_layout);
-    this->setMinimumWidth(250);
+    this->setMinimumWidth(350);
 }
 
 void FavouritePopup::confirmPressed()

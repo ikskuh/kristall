@@ -103,7 +103,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="windowTitle">
-    <string>Bookmarks</string>
+    <string>Favourites</string>
    </property>
    <property name="_shortcut" stdset="0">
     <string>Ctrl+B</string>
