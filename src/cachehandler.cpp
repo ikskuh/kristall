@@ -15,12 +15,10 @@ void CacheHandler::push(const QUrl &u, const QByteArray &body, const MimeType &m
     }
 
     // Pop cached items until we are below the cache limit
-    // TODO
-    //if ((bodysize + this->size()) > (kristall::options.cache_limit * 1024 * 1024))
-    //while ((bodysize + this->size()) > (kristall::options.cache_limit * 1024 * 1024))
-    //{
-    //    qDebug() << "cache: adding item will exceed cache limit";
-    //}
+    while ((bodysize + this->size()) > (kristall::options.cache_limit * 1024))
+    {
+        this->popOldest();
+    }
 
     QUrl url = IoUtil::uniformUrl(u);
     QString urlstr = url.toString(QUrl::FullyEncoded);;
@@ -105,4 +103,33 @@ void CacheHandler::clean()
 CacheMap const& CacheHandler::getPages() const
 {
     return this->page_cache;
+}
+
+void CacheHandler::popOldest()
+{
+    if (this->page_cache.size() == 0)
+    {
+        return;
+    }
+
+    // This will iterate over the cache map,
+    // find the key with the oldest timestamp,
+    // and erase it from the map.
+    //
+    // (TODO: make this more efficient somehow?)
+
+    QDateTime oldest = QDateTime::currentDateTime();
+    QString oldest_key;
+    for (auto it = this->page_cache.begin(); it != this->page_cache.end(); ++it)
+    {
+        if (it->second->time_cached < oldest)
+        {
+            oldest = it->second->time_cached;
+            oldest_key = it->first;
+        }
+    }
+
+    // Erase it from the map
+    qDebug() << "cache: popping " << oldest_key;
+    this->page_cache.erase(oldest_key);
 }

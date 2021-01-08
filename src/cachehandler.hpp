@@ -48,7 +48,7 @@ struct CachedPage
     {}
 };
 
-// TODO: move away from the 'unordered_map' type?
+// Maybe unordered_map isn't the best type for this?
 typedef std::unordered_map<QString, std::shared_ptr<CachedPage>> CacheMap;
 
 class CacheHandler
@@ -70,6 +70,8 @@ private:
     std::shared_ptr<CachedPage> find(QString const &url);
 
     bool contains(QString const & url);
+
+    void popOldest();
 
 private:
     // In-memory cache storage.
