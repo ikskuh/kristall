@@ -1553,6 +1553,16 @@ void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint pos)
         });
         forward->setEnabled(history.oneForward(current_history_index).isValid());
 
+        if (this->current_handler && this->current_handler->isInProgress()) {
+            menu.addAction(QIcon::fromTheme("process-stop"), tr("Stop"), [this]() {
+                this->on_stop_button_clicked();
+            });
+        } else {
+            menu.addAction(QIcon::fromTheme("view-refresh"), tr("Refresh"), [this]() {
+                this->on_refresh_button_clicked();
+            });
+        }
+
         menu.addSeparator();
     } else {
         menu.addAction("Copy to clipboard", [this]() {
