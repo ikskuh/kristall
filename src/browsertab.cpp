@@ -1552,16 +1552,14 @@ void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint pos)
 
     menu.addSeparator();
 
+    if (ui->text_browser->textCursor().hasSelection()) {
+        menu.addAction("Copy to clipboard", [this]() {
+            this->ui->text_browser->copy();
+        }, QKeySequence("Ctrl+C"));
+    }
+
     connect(menu.addAction("Select all"), &QAction::triggered, [this]() {
         this->ui->text_browser->selectAll();
-    });
-
-    menu.addSeparator();
-
-    QAction * copy = menu.addAction("Copy to clipboard");
-    copy->setShortcut(QKeySequence("Ctrl+C"));
-    connect(copy, &QAction::triggered, [this]() {
-        this->ui->text_browser->copy();
     });
 
     menu.addSeparator();
