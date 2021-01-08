@@ -63,9 +63,9 @@ struct GenericSettings
     bool enable_home_btn = false;
 
     // In-memory caching
-    int cache_limit = 100;
-    int cache_threshold = 50;
-    int cache_life = 10;
+    int cache_limit = 1000;
+    int cache_threshold = 125;
+    int cache_life = 15;
 
     void load(QSettings & settings);
     void save(QSettings & settings) const;

@@ -587,11 +587,6 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
         document->setHtml(page_html);
 
         page_title = document->metaInformation(QTextDocument::DocumentTitle);
-
-        // For now we don't cache HTML pages, because they will most
-        // of the time clog up the cache.
-        // TODO: preference for this? protocol-specific cache limits?
-        will_cache = false;
     }
     else if (not plaintext_only and mime.is("text","x-kristall-theme"))
     {

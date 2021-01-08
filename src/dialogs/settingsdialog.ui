@@ -385,13 +385,13 @@
        <item row="14" column="1">
         <widget class="QSpinBox" name="cache_limit">
          <property name="suffix">
-          <string> MiB</string>
+          <string> KiB</string>
          </property>
          <property name="minimum">
           <number>0</number>
          </property>
          <property name="maximum">
-          <number>4000</number>
+          <number>4000000</number>
          </property>
         </widget>
        </item>

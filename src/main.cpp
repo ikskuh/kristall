@@ -369,8 +369,8 @@ void GenericSettings::load(QSettings &settings)
 
     enable_home_btn = settings.value("enable_home_btn", false).toBool();
 
-    cache_limit = settings.value("cache_limit", 100).toInt();
-    cache_threshold = settings.value("cache_threshold", 200).toInt();
+    cache_limit = settings.value("cache_limit", 1000).toInt();
+    cache_threshold = settings.value("cache_threshold", 125).toInt();
     cache_life = settings.value("cache_life", 15).toInt();
 }
 
