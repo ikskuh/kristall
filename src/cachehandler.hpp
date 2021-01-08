@@ -9,6 +9,7 @@
 #include <QString>
 #include <QByteArray>
 #include <QtGlobal>
+#include <QDateTime>
 
 // Need a QString hash implementation for Qt versions below 5.14
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
@@ -36,14 +37,18 @@ struct CachedPage
 
     int scroll_pos;
 
+    QDateTime time_cached;
+
     // also: maybe compress page contents? May test
     // to see if it's worth it
 
-    CachedPage(const QUrl &url, const QByteArray &body, const MimeType &mime)
-        : url(url), body(body), mime(mime), scroll_pos(-1)
+    CachedPage(const QUrl &url, const QByteArray &body,
+        const MimeType &mime, const QDateTime &cached)
+        : url(url), body(body), mime(mime), scroll_pos(-1), time_cached(cached)
     {}
 };
 
+// TODO: move away from the 'unordered_map' type?
 typedef std::unordered_map<QString, std::shared_ptr<CachedPage>> CacheMap;
 
 class CacheHandler
@@ -53,14 +58,18 @@ public:
 
     std::shared_ptr<CachedPage> find(QUrl const &url);
 
-    bool contains(QUrl const & url) const;
+    bool contains(QUrl const & url);
+
+    int size();
+
+    void clean();
 
     CacheMap const& getPages() const;
 
 private:
     std::shared_ptr<CachedPage> find(QString const &url);
 
-    bool contains(QString const & url) const;
+    bool contains(QString const & url);
 
 private:
     // In-memory cache storage.

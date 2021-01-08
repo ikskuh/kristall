@@ -371,6 +371,79 @@
          </property>
         </widget>
        </item>
+
+       <item row="14" column="0">
+        <widget class="QLabel" name="label_30">
+         <property name="text">
+          <string>Total cache size limit</string>
+         </property>
+         <property name="toolTip">
+          <string>The total amount of memory that can be occupied by cached items. Set to zero to disable in-memory caching.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="14" column="1">
+        <widget class="QSpinBox" name="cache_limit">
+         <property name="suffix">
+          <string> MiB</string>
+         </property>
+         <property name="minimum">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <number>4000</number>
+         </property>
+        </widget>
+       </item>
+
+       <item row="15" column="0">
+        <widget class="QLabel" name="label_31">
+         <property name="text">
+          <string>Cached item size threshold</string>
+         </property>
+         <property name="toolTip">
+          <string>Items which are below this threshold are cached in memory. Any above are simply discarded.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="1">
+        <widget class="QSpinBox" name="cache_threshold">
+         <property name="suffix">
+          <string> KiB</string>
+         </property>
+         <property name="minimum">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <number>102400</number>
+         </property>
+        </widget>
+       </item>
+
+       <item row="16" column="0">
+        <widget class="QLabel" name="label_31">
+         <property name="text">
+          <string>Cached item life</string>
+         </property>
+         <property name="toolTip">
+          <string>How long cached items last before they are expired and require a reload.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="16" column="1">
+        <widget class="QSpinBox" name="cache_life">
+         <property name="suffix">
+          <string> minutes</string>
+         </property>
+         <property name="minimum">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <number>8760</number>
+         </property>
+        </widget>
+       </item>
+
       </layout>
      </widget>
      <widget class="QWidget" name="style_tab">

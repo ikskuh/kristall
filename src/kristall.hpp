@@ -62,6 +62,11 @@ struct GenericSettings
     // Additional toolbar items
     bool enable_home_btn = false;
 
+    // In-memory caching
+    int cache_limit = 100;
+    int cache_threshold = 50;
+    int cache_life = 10;
+
     void load(QSettings & settings);
     void save(QSettings & settings) const;
 };
