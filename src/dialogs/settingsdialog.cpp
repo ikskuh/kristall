@@ -250,6 +250,10 @@ void SettingsDialog::setOptions(const GenericSettings &options)
     this->ui->network_timeout->setValue(this->current_options.network_timeout);
 
     this->ui->enable_home_btn->setChecked(this->current_options.enable_home_btn);
+
+    this->ui->cache_limit->setValue(this->current_options.cache_limit);
+    this->ui->cache_threshold->setValue(this->current_options.cache_threshold);
+    this->ui->cache_life->setValue(this->current_options.cache_life);
 }
 
 GenericSettings SettingsDialog::options() const
@@ -660,8 +664,7 @@ void SettingsDialog::on_redirection_mode_currentIndexChanged(int index)
     this->current_options.redirection_policy = GenericSettings::RedirectionWarning(this->ui->redirection_mode->itemData(index).toInt());
 }
 
-void SettingsDialog::on_max_redirects_valueChanged(int max_redirections)
-{
+void SettingsDialog::on_max_redirects_valueChanged(int max_redirections) {
     this->current_options.max_redirections = max_redirections;
 }
 
@@ -673,4 +676,19 @@ void SettingsDialog::on_network_timeout_valueChanged(int timeout)
 void SettingsDialog::on_enable_home_btn_clicked(bool checked)
 {
     this->current_options.enable_home_btn = checked;
+}
+
+void SettingsDialog::on_cache_limit_valueChanged(int limit)
+{
+    this->current_options.cache_limit = limit;
+}
+
+void SettingsDialog::on_cache_threshold_valueChanged(int thres)
+{
+    this->current_options.cache_threshold = thres;
+}
+
+void SettingsDialog::on_cache_life_valueChanged(int life)
+{
+    this->current_options.cache_life = life;
 }

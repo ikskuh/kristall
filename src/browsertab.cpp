@@ -1471,6 +1471,7 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
     }
 
     // Check if we have the page in our cache.
+    kristall::cache.clean();
     if (auto pg = kristall::cache.find(url); pg != nullptr)
     {
         qDebug() << "Reading page from cache";

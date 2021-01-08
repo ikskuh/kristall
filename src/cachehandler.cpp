@@ -6,21 +6,39 @@
 
 void CacheHandler::push(const QUrl &u, const QByteArray &body, const MimeType &mime)
 {
+    // Skip if this item is above the cached item size threshold
+    int bodysize = body.size();
+    if (bodysize > (kristall::options.cache_threshold * 1024))
+    {
+        qDebug() << "cache: item exceeds threshold (" << IoUtil::size_human(body.size()) << ")";
+        return;
+    }
+
+    // Pop cached items until we are below the cache limit
+    // TODO
+    //if ((bodysize + this->size()) > (kristall::options.cache_limit * 1024 * 1024))
+    //while ((bodysize + this->size()) > (kristall::options.cache_limit * 1024 * 1024))
+    //{
+    //    qDebug() << "cache: adding item will exceed cache limit";
+    //}
+
     QUrl url = IoUtil::uniformUrl(u);
     QString urlstr = url.toString(QUrl::FullyEncoded);;
 
     if (this->page_cache.find(urlstr) != this->page_cache.end())
     {
-        qDebug() << "Updating cached page";
+        qDebug() << "cache: updating page";
         auto pg = this->page_cache[urlstr];
         pg->body = body;
         pg->mime = mime;
+        pg->time_cached = QDateTime::currentDateTime();
         return;
     }
 
-    this->page_cache[urlstr] = std::make_shared<CachedPage>(u, body, mime);
+    this->page_cache[urlstr] = std::make_shared<CachedPage>(
+        u, body, mime, QDateTime::currentDateTime());
 
-    qDebug() << "Pushed page to cache: " << url;
+    qDebug() << "cache: pushing url " << url;
 
     return;
 }
@@ -29,7 +47,7 @@ std::shared_ptr<CachedPage> CacheHandler::find(const QString &url)
 {
     if (this->page_cache.find(url) != this->page_cache.end())
     {
-        return page_cache[url];
+        return this->page_cache[url];
     }
     return nullptr;
 }
@@ -39,14 +57,49 @@ std::shared_ptr<CachedPage> CacheHandler::find(const QUrl &url)
     return this->find(IoUtil::uniformUrlString(url));
 }
 
-bool CacheHandler::contains(const QString &url) const
+bool CacheHandler::contains(const QString &url)
 {
     return this->page_cache.find(url) != this->page_cache.end();
 }
 
-bool CacheHandler::contains(const QUrl &url) const
+bool CacheHandler::contains(const QUrl &url)
 {
     return this->contains(IoUtil::uniformUrlString(url));
+}
+
+int CacheHandler::size()
+{
+    int s = 0;
+
+    for (auto& i : this->page_cache)
+        s += i.second->body.size();
+
+    return s;
+}
+
+// Clears expired pages out of cache
+void CacheHandler::clean()
+{
+    // Find list of keys to delete
+    std::vector<QString> vec;
+    for (auto&& i : this->page_cache)
+    {
+        if (QDateTime::currentDateTime() > i.second->time_cached
+            .addSecs(kristall::options.cache_life * 60))
+        {
+            vec.emplace_back(std::move(i.first));
+        }
+    }
+
+    // Delete them
+    int count = 0;
+    for (auto&& key : vec)
+    {
+        this->page_cache.erase(key);
+        ++count;
+    }
+
+    if (count) qDebug() << "cache: cleaned " << count << " expired pages out of cache";
 }
 
 CacheMap const& CacheHandler::getPages() const
