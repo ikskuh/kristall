@@ -1542,17 +1542,17 @@ void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint pos)
         menu.addSeparator();
     }
 
-    menu.addAction(QIcon::fromTheme("go-previous"), tr("Back"), [this]() {
-        this->on_back_button_clicked();
-    });
+    if (!ui->text_browser->textCursor().hasSelection()) {
+        menu.addAction(QIcon::fromTheme("go-previous"), tr("Back"), [this]() {
+            this->on_back_button_clicked();
+        });
 
-    menu.addAction(QIcon::fromTheme("go-next"), tr("Forward"), [this]() {
-        this->on_forward_button_clicked();
-    });
+        menu.addAction(QIcon::fromTheme("go-next"), tr("Forward"), [this]() {
+            this->on_forward_button_clicked();
+        });
 
-    menu.addSeparator();
-
-    if (ui->text_browser->textCursor().hasSelection()) {
+        menu.addSeparator();
+    } else {
         menu.addAction("Copy to clipboard", [this]() {
             this->ui->text_browser->copy();
         }, QKeySequence("Ctrl+C"));
