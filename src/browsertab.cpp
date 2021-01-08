@@ -1543,13 +1543,15 @@ void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint pos)
     }
 
     if (!ui->text_browser->textCursor().hasSelection()) {
-        menu.addAction(QIcon::fromTheme("go-previous"), tr("Back"), [this]() {
+        QAction * back = menu.addAction(QIcon::fromTheme("go-previous"), tr("Back"), [this]() {
             this->on_back_button_clicked();
         });
+        back->setEnabled(history.oneBackward(current_history_index).isValid());
 
-        menu.addAction(QIcon::fromTheme("go-next"), tr("Forward"), [this]() {
+        QAction * forward = menu.addAction(QIcon::fromTheme("go-next"), tr("Forward"), [this]() {
             this->on_forward_button_clicked();
         });
+        forward->setEnabled(history.oneForward(current_history_index).isValid());
 
         menu.addSeparator();
     } else {
