@@ -1,5 +1,6 @@
 #include "fingerclient.hpp"
 #include "ioutil.hpp"
+#include "kristall.hpp"
 
 FingerClient::FingerClient() : ProtocolHandler(nullptr)
 {
@@ -12,6 +13,11 @@ FingerClient::FingerClient() : ProtocolHandler(nullptr)
 #else
     connect(&socket, QOverload<QAbstractSocket::SocketError>::of(&QTcpSocket::error), this, &FingerClient::on_socketError);
 #endif
+
+    connect(&socket, &QAbstractSocket::hostFound, this, [this]() {
+        emit this->requestStateChange(RequestState::HostFound);
+    });
+    emit this->requestStateChange(RequestState::None);
 }
 
 FingerClient::~FingerClient()
@@ -64,6 +70,8 @@ void FingerClient::on_connected()
     auto blob = (requested_user + "\r\n").toUtf8();
 
     IoUtil::writeAll(socket, blob);
+
+    emit this->requestStateChange(RequestState::Connected);
 }
 
 void FingerClient::on_readRead()
@@ -80,6 +88,8 @@ void FingerClient::on_finished()
         was_cancelled = true;
     }
     body.clear();
+
+    emit this->requestStateChange(RequestState::None);
 }
 
 void FingerClient::on_socketError(QAbstractSocket::SocketError error_code)

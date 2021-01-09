@@ -1,5 +1,6 @@
 #include "gopherclient.hpp"
 #include "ioutil.hpp"
+#include "kristall.hpp"
 
 GopherClient::GopherClient(QObject *parent) : ProtocolHandler(parent)
 {
@@ -12,6 +13,11 @@ GopherClient::GopherClient(QObject *parent) : ProtocolHandler(parent)
 #else
     connect(&socket, QOverload<QAbstractSocket::SocketError>::of(&QTcpSocket::error), this, &GopherClient::on_socketError);
 #endif
+
+    connect(&socket, &QAbstractSocket::hostFound, this, [this]() {
+        emit this->requestStateChange(RequestState::HostFound);
+    });
+    emit this->requestStateChange(RequestState::None);
 }
 
 GopherClient::~GopherClient()
@@ -33,6 +39,8 @@ bool GopherClient::startRequest(const QUrl &url, RequestOptions options)
 
     if(url.scheme() != "gopher")
         return false;
+
+    emit this->requestStateChange(RequestState::Started);
 
     // Second char on the URL path denotes the Gopher type
     // See https://tools.ietf.org/html/rfc4266
@@ -79,6 +87,8 @@ void GopherClient::on_connected()
     auto blob = (requested_url.path().mid(2) + "\r\n").toUtf8();
 
     IoUtil::writeAll(socket, blob);
+
+    emit this->requestStateChange(RequestState::Connected);
 }
 
 void GopherClient::on_readRead()
@@ -107,6 +117,8 @@ void GopherClient::on_finished()
         was_cancelled = true;
     }
     body.clear();
+
+    emit this->requestStateChange(RequestState::None);
 }
 
 void GopherClient::on_socketError(QAbstractSocket::SocketError error_code)

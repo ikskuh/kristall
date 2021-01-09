@@ -105,6 +105,7 @@ signals:
     void titleChanged(QString const & title);
     void locationChanged(QUrl const & url);
     void fileLoaded(DocumentStats const & stats);
+    void requestStateChanged(RequestState state);
 
 private slots:
     void on_url_bar_returnPressed();
@@ -228,6 +229,8 @@ public:
     bool no_url_style = false;
 
     bool was_read_from_cache = false;
+
+    RequestState request_state;
 };
 
 #endif // BROWSERTAB_HPP

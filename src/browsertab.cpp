@@ -520,6 +520,9 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const MimeType &
     emit this->fileLoaded(this->current_stats);
 
     this->updateMouseCursor(false);
+
+    emit this->requestStateChanged(RequestState::None);
+    this->request_state = RequestState::None;
 }
 
 void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
@@ -1355,6 +1358,10 @@ void BrowserTab::addProtocolHandler(std::unique_ptr<ProtocolHandler> &&handler)
     connect(handler.get(), &ProtocolHandler::requestProgress, this, &BrowserTab::on_requestProgress);
     connect(handler.get(), &ProtocolHandler::requestComplete, this,
         qOverload<QByteArray const &, QString const &>(&BrowserTab::on_requestComplete));
+    connect(handler.get(), &ProtocolHandler::requestStateChange, this, [this](RequestState state) {
+        emit this->requestStateChanged(state);
+        this->request_state = state;
+    });
     connect(handler.get(), &ProtocolHandler::redirected, this, &BrowserTab::on_redirected);
     connect(handler.get(), &ProtocolHandler::inputRequired, this, &BrowserTab::on_inputRequired);
     connect(handler.get(), &ProtocolHandler::networkError, this, &BrowserTab::on_networkError);
