@@ -516,6 +516,7 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const MimeType &
     this->current_stats.file_size = ref_data.size();
     this->current_stats.mime_type = mime;
     this->current_stats.loading_time = this->timer.elapsed();
+    this->current_stats.loaded_from_cache = was_read_from_cache;
     emit this->fileLoaded(this->current_stats);
 
     this->updateMouseCursor(false);
@@ -1171,6 +1172,7 @@ void BrowserTab::on_requestProgress(qint64 transferred)
     this->current_stats.file_size = transferred;
     this->current_stats.mime_type = MimeType { };
     this->current_stats.loading_time = this->timer.elapsed();
+    this->current_stats.loaded_from_cache = false;
     emit this->fileLoaded(this->current_stats);
 
     this->network_timeout_timer.stop();

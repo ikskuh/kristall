@@ -24,6 +24,7 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     ui(new Ui::MainWindow),
     url_status(new ElideLabel(this)),
     file_size(new QLabel(this)),
+    file_cached(new QLabel(this)),
     file_mime(new QLabel(this)),
     load_time(new QLabel(this))
 {
@@ -32,6 +33,7 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     this->url_status->setElideMode(Qt::ElideMiddle);
 
     this->statusBar()->addWidget(this->url_status);
+    this->statusBar()->addPermanentWidget(this->file_cached);
     this->statusBar()->addPermanentWidget(this->file_mime);
     this->statusBar()->addPermanentWidget(this->file_size);
     this->statusBar()->addPermanentWidget(this->load_time);
@@ -419,10 +421,12 @@ void MainWindow::setFileStatus(const DocumentStats &stats)
 {
     if(stats.isValid()) {
         this->file_size->setText(IoUtil::size_human(stats.file_size));
-        this->file_mime->setText(stats.mime_type.toString());
+        this->file_cached->setText(stats.loaded_from_cache ? "(cached)" : "");
+        this->file_mime->setText(stats.mime_type.toString(false));
         this->load_time->setText(QString("%1 ms").arg(stats.loading_time));
     } else {
         this->file_size->setText("");
+        this->file_cached->setText("");
         this->file_mime->setText("");
         this->load_time->setText("");
     }

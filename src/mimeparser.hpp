@@ -19,7 +19,7 @@ struct MimeType
         return not type.isEmpty();
     }
 
-    QString toString() const;
+    QString toString(bool full = true) const;
 };
 
 struct MimeParser

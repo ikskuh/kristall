@@ -20,18 +20,23 @@ QString MimeType::parameter(const QString &param_name, QString const & default_v
     return val;
 }
 
-QString MimeType::toString() const
+QString MimeType::toString(bool full) const
 {
     if(isValid()) {
         QString result = type;
         if(not subtype.isEmpty())
             result += "/" + subtype;
-        for(auto const & key : parameters.keys()) {
-            result += "; ";
-            result += key;
-            result += "=";
-            result += parameters[key];
+
+        if (full)
+        {
+            for(auto const & key : parameters.keys()) {
+                result += "; ";
+                result += key;
+                result += "=";
+                result += parameters[key];
+            }
         }
+
         return result;
     } else {
         return QString { };

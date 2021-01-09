@@ -114,6 +114,7 @@ private:
 
     ElideLabel * url_status;
     QLabel * file_size;
+    QLabel * file_cached;
     QLabel * file_mime;
     QLabel * load_time;
 };

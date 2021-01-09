@@ -34,6 +34,7 @@ struct DocumentStats
     int loading_time = 0; // in ms
     MimeType mime_type;
     qint64 file_size = 0;
+    bool loaded_from_cache = false;
 
     bool isValid() const {
         return mime_type.isValid();
