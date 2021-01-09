@@ -9,6 +9,8 @@ WebClient::WebClient() :
     current_reply(nullptr)
 {
     manager.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
+
+    emit this->requestStateChange(RequestState::None);
 }
 
 WebClient::~WebClient()
@@ -28,6 +30,8 @@ bool WebClient::startRequest(const QUrl &url, RequestOptions options)
 
     if(this->current_reply != nullptr)
         return true;
+
+    emit this->requestStateChange(RequestState::StartedWeb);
 
     this->options = options;
     this->body.clear();
@@ -101,6 +105,8 @@ void WebClient::on_data()
 
 void WebClient::on_finished()
 {
+    emit this->requestStateChange(RequestState::None);
+
     emit this->hostCertificateLoaded(this->current_reply->sslConfiguration().peerCertificate());
 
     auto * const reply = this->current_reply;

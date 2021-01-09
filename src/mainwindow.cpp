@@ -105,6 +105,7 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new, bool load_default)
 
     connect(tab, &BrowserTab::titleChanged, this, &MainWindow::on_tab_titleChanged);
     connect(tab, &BrowserTab::fileLoaded, this, &MainWindow::on_tab_fileLoaded);
+    connect(tab, &BrowserTab::requestStateChanged, this, &MainWindow::on_tab_requestStateChanged);
 
     int index = this->ui->browser_tabs->addTab(tab, "Page");
 
@@ -147,11 +148,47 @@ void MainWindow::setUrlPreview(const QUrl &url)
         if(str.length() > 300) {
             str = str.mid(0, 300) + "...";
         }
+        this->previewing_url = true;
         this->url_status->setText(str);
+        return;
     }
-    else {
-        this->url_status->setText("");
+
+    this->previewing_url = false;
+    this->url_status->setText(this->request_status);
+}
+
+void MainWindow::setRequestState(RequestState state)
+{
+    switch (state)
+    {
+    case RequestState::Started:
+    {
+        this->request_status = "Looking up...";
+    } break;
+
+    case RequestState::StartedWeb:
+    {
+        this->request_status = "Loading webpage...";
+    } break;
+
+    case RequestState::HostFound:
+    {
+        this->request_status = "Connecting...";
+    } break;
+
+    case RequestState::Connected:
+    {
+        this->request_status = "Downloading...";
+    } break;
+
+    default:
+    {
+        this->request_status = "";
+    } break;
     }
+
+    if (!this->previewing_url)
+        this->url_status->setText(this->request_status);
 }
 
 void MainWindow::viewPageSource()
@@ -247,15 +284,19 @@ void MainWindow::on_browser_tabs_currentChanged(int index)
             {
                 tab->refreshFavButton();
             }
+
+            this->setRequestState(tab->request_state);
         } else {
             this->ui->outline_view->setModel(nullptr);
             this->ui->history_view->setModel(nullptr);
             this->setFileStatus(DocumentStats { });
+            this->setRequestState(RequestState::None);
         }
     } else {
         this->ui->outline_view->setModel(nullptr);
         this->ui->history_view->setModel(nullptr);
         this->setFileStatus(DocumentStats { });
+        this->setRequestState(RequestState::None);
     }
     updateWindowTitle();
 }
@@ -483,6 +524,18 @@ void MainWindow::on_tab_fileLoaded(DocumentStats const & stats)
         if(index == this->ui->browser_tabs->currentIndex()) {
             setFileStatus(stats);
             this->ui->outline_view->expandAll();
+        }
+    }
+}
+
+void MainWindow::on_tab_requestStateChanged(RequestState state)
+{
+    auto * tab = qobject_cast<BrowserTab*>(sender());
+    if(tab != nullptr) {
+        int index = this->ui->browser_tabs->indexOf(tab);
+        assert(index >= 0);
+        if(index == this->ui->browser_tabs->currentIndex()) {
+            setRequestState(state);
         }
     }
 }

@@ -20,6 +20,8 @@ class BrowserTab;
 
 enum class UIDensity : int;
 
+enum class RequestState : int;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -96,6 +98,8 @@ private: // slots
 
     void on_tab_fileLoaded(DocumentStats const & stats);
 
+    void on_tab_requestStateChanged(RequestState state);
+
     void on_tab_titleChanged(QString const & title);
 
     void on_tab_locationChanged(QUrl const & url);
@@ -105,6 +109,8 @@ private: // slots
 
 private:
     void setFileStatus(DocumentStats const & stats);
+
+    void setRequestState(RequestState state);
 
 public:
     QApplication * application;
@@ -117,5 +123,8 @@ private:
     QLabel * file_cached;
     QLabel * file_mime;
     QLabel * load_time;
+
+    QString request_status;
+    bool previewing_url = false;
 };
 #endif // MAINWINDOW_HPP

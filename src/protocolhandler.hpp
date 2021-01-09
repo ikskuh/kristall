@@ -6,6 +6,8 @@
 #include <QObject>
 #include <QAbstractSocket>
 
+enum class RequestState : int;
+
 class ProtocolHandler : public QObject
 {
     Q_OBJECT
@@ -49,6 +51,9 @@ signals:
 
     //! The request completed with the given data and mime type
     void requestComplete(QByteArray const & data, QString const & mime);
+
+    //! The state of the request has changed
+    void requestStateChange(RequestState state);
 
     //! Server redirected us to another URL
     void redirected(QUrl const & uri, bool is_permanent);

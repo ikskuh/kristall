@@ -19,6 +19,18 @@ GeminiClient::GeminiClient() : ProtocolHandler(nullptr)
 #else
     connect(&socket, QOverload<QAbstractSocket::SocketError>::of(&QTcpSocket::error), this, &GeminiClient::socketError);
 #endif
+
+    // States
+    connect(&socket, &QAbstractSocket::hostFound, this, [this]() {
+        emit this->requestStateChange(RequestState::HostFound);
+    });
+    connect(&socket, &QAbstractSocket::connected, this, [this]() {
+        emit this->requestStateChange(RequestState::Connected);
+    });
+    connect(&socket, &QAbstractSocket::disconnected, this, [this]() {
+        emit this->requestStateChange(RequestState::None);
+    });
+    emit this->requestStateChange(RequestState::None);
 }
 
 GeminiClient::~GeminiClient()
@@ -44,6 +56,8 @@ bool GeminiClient::startRequest(const QUrl &url, RequestOptions options)
         if(not socket.waitForDisconnected(1500))
             return false;
     }
+
+    emit this->requestStateChange(RequestState::Started);
 
     this->is_error_state = false;
 

@@ -26,6 +26,16 @@ enum class UIDensity : int
     classic = 1
 };
 
+enum class RequestState : int
+{
+    None = 0,
+    Started = 1,
+    HostFound = 2,
+    Connected = 3,
+
+    StartedWeb = 255,
+};
+
 struct GenericSettings
 {
     enum TextDisplay {
