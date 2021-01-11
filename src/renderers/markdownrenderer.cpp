@@ -268,6 +268,7 @@ static void renderNode(RenderState &state, cmark_node & node, const QTextCharFor
         renderChildren(state, node, fmt, page_title);
         break;
     }
+    case CMARK_NODE_IMAGE:
     case CMARK_NODE_LINK:
     {
         QUrl absolute_url = QString::fromUtf8(cmark_node_get_url(&node));
@@ -297,11 +298,6 @@ static void renderNode(RenderState &state, cmark_node & node, const QTextCharFor
         fmt.setAnchorHref(absolute_url.toString(QUrl::FullyEncoded));
         renderChildren(state, node, fmt, page_title);
         cursor.insertText(suffix, fmt);
-        break;
-    }
-    case CMARK_NODE_IMAGE:
-    {
-        qDebug() << "CMARK_NODE_IMAGE";
         break;
     }
     default: break;
