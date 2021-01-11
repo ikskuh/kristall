@@ -17,6 +17,7 @@ public:
     bool canGoForward() const;
 
     QModelIndex pushUrl(QModelIndex const & position, QUrl const & url);
+    void replaceUrl(size_t const position, QUrl const & url);
 
     QUrl get(QModelIndex const & index) const;
 
