@@ -556,20 +556,11 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
     // Only cache text pages
     bool will_cache = true;
 
-    // We always give trailing slashes to the renderers
-    // since QUrl.resolve will not create absolute URLs properly
-    // without them.
-    QUrl cur_url = current_location;
-    if (cur_url.path().isEmpty())
-        cur_url.setPath("/");
-    else if (cur_url.path()[cur_url.path().length() - 1] != "/")
-        cur_url.setPath(cur_url.path() + "/");
-
     if (not plaintext_only and mime.is("text", "gemini"))
     {
         document = GeminiRenderer::render(
             data,
-            cur_url,
+            this->current_location,
             doc_style,
             this->outline,
             &this->page_title);
@@ -578,7 +569,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
     {
         document = GophermapRenderer::render(
             data,
-            cur_url,
+            this->current_location,
             doc_style);
     }
     else if (not plaintext_only and mime.is("text","html"))
@@ -624,7 +615,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
 
         document = GeminiRenderer::render(
             src.readAll(),
-            cur_url,
+            this->current_location,
             preview_style,
             this->outline);
 
@@ -637,7 +628,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
     {
         document = MarkdownRenderer::render(
             data,
-            cur_url,
+            this->current_location,
             doc_style,
             this->outline,
             this->page_title);
@@ -684,7 +675,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
     else if (mime.is("video") or mime.is("audio"))
     {
         doc_type = Media;
-        this->ui->media_browser->setMedia(data, cur_url, mime.type);
+        this->ui->media_browser->setMedia(data, this->current_location, mime.type);
 
         will_cache = false;
     }
@@ -726,7 +717,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
 
         document = GeminiRenderer::render(
             page_data.toUtf8(),
-            cur_url,
+            this->current_location,
             doc_style,
             this->outline,
             &this->page_title);
