@@ -883,6 +883,7 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
             redirection_count += 1;
             this->current_location = uri;
             this->setUrlBarText(uri.toString(QUrl::FullyEncoded));
+            this->history.replaceUrl(this->current_history_index.row(), uri);
         }
         else
         {

@@ -30,6 +30,11 @@ QModelIndex TabBrowsingHistory::pushUrl(QModelIndex const & position, const QUrl
     return this->createIndex(this->history.size() - 1, 0);
 }
 
+void TabBrowsingHistory::replaceUrl(size_t const position, QUrl const & url)
+{
+    this->history.replace(position, url);
+}
+
 QUrl TabBrowsingHistory::get(const QModelIndex &index) const
 {
     if(not index.isValid())
