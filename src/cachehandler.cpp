@@ -4,7 +4,7 @@
 
 #include <QDebug>
 
-void CacheHandler::push(const QUrl &u, const QByteArray &body, const MimeType &mime)
+void CacheHandler::push(const QUrl &url, const QByteArray &body, const MimeType &mime)
 {
     // Skip if this item is above the cached item size threshold
     int bodysize = body.size();
@@ -20,8 +20,7 @@ void CacheHandler::push(const QUrl &u, const QByteArray &body, const MimeType &m
         this->popOldest();
     }
 
-    QUrl url = IoUtil::uniformUrl(u);
-    QString urlstr = url.toString(QUrl::FullyEncoded);;
+    QString urlstr = url.toString(QUrl::FullyEncoded | QUrl::RemoveFragment);
 
     if (this->page_cache.find(urlstr) != this->page_cache.end())
     {
@@ -34,7 +33,7 @@ void CacheHandler::push(const QUrl &u, const QByteArray &body, const MimeType &m
     }
 
     this->page_cache[urlstr] = std::make_shared<CachedPage>(
-        u, body, mime, QDateTime::currentDateTime());
+        url, body, mime, QDateTime::currentDateTime());
 
     qDebug() << "cache: pushing url " << url;
 
@@ -52,7 +51,7 @@ std::shared_ptr<CachedPage> CacheHandler::find(const QString &url)
 
 std::shared_ptr<CachedPage> CacheHandler::find(const QUrl &url)
 {
-    return this->find(IoUtil::uniformUrlString(url));
+    return this->find(url.toString(QUrl::FullyEncoded | QUrl::RemoveFragment));
 }
 
 bool CacheHandler::contains(const QString &url)
@@ -62,7 +61,7 @@ bool CacheHandler::contains(const QString &url)
 
 bool CacheHandler::contains(const QUrl &url)
 {
-    return this->contains(IoUtil::uniformUrlString(url));
+    return this->contains(url.toString(QUrl::FullyEncoded | QUrl::RemoveFragment));
 }
 
 int CacheHandler::size()
