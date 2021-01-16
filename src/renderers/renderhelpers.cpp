@@ -120,10 +120,10 @@ void setColor(QTextCharFormat& format, unsigned char n, bool bg=false)
     }
 }
 
-QString parseNumber(const QString& input, QString::iterator& it)
+QString parseNumber(const QString& input, QString::const_iterator& it)
 {
     QString result;
-    while (it != input.end())
+    while (it != input.cend())
     {
         const auto currentCharacter = *it;
         if (!currentCharacter.isNumber()) break;
@@ -136,13 +136,13 @@ QString parseNumber(const QString& input, QString::iterator& it)
 void parseSGR(
     std::vector<unsigned char>& args,
     const QString& input,
-    QString::iterator& it,
+    QString::const_iterator& it,
     QTextCharFormat& format,
     const QTextCharFormat& defaultFormat,
     QTextCursor& cursor)
 {
     if (args.empty()) return;
-    for (auto it = args.begin(); it != args.end(); ++it)
+    for (auto it = args.cbegin(); it != args.cend(); ++it)
     {
         const auto arg = *it;
         switch(arg)
@@ -266,7 +266,7 @@ void parseSGR(
     }
 }
 
-std::vector<unsigned char> parseNumericArguments(const QString& input, QString::iterator& it)
+std::vector<unsigned char> parseNumericArguments(const QString& input, QString::const_iterator& it)
 {
     std::vector<unsigned char> result;
     while (it != input.end())
@@ -292,14 +292,14 @@ std::vector<unsigned char> parseNumericArguments(const QString& input, QString::
 
 void parseCSI(
     const QString& input,
-    QString::iterator& it,
+    QString::const_iterator& it,
     QTextCharFormat& format,
     const QTextCharFormat& defaultFormat,
     QTextCursor& cursor)
 {
     std::vector<unsigned char> numericArguments = parseNumericArguments(input, it);
     char numericArgument = numericArguments.empty() ? 1 : numericArguments[0];
-    if (it != input.end())
+    if (it != input.cend())
     {
         const auto code = (*it).unicode();
         switch(code)
@@ -374,7 +374,7 @@ void RenderEscapeCodes(const QByteArray &input, const QTextCharFormat& format, Q
     auto textFormat = format;
     const auto tokens = input.split(escapeString);
     const auto inputString = QString::fromUtf8(input);
-    for (QString::iterator it = const_cast<QString::iterator>(inputString.begin()); it != inputString.end(); ++it)
+    for (QString::const_iterator it = inputString.cbegin(); it != inputString.cend(); ++it)
     {
         const auto currentCharacter = *it;;
         if (currentCharacter == escapeString)
