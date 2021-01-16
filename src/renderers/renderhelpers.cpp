@@ -74,28 +74,28 @@ void setColor(QTextCharFormat& format, unsigned char n, bool bg=false)
         /// @TODO these should probably be configurable.
         switch (n)
         {
-            case 0: // black
+            case 8: // black
                 bg ? setBgColor(format, 0x55, 0x55, 0x55) : setBgColor(format, 0x55, 0x55, 0x55);
                 break;
-            case 1: // red
+            case 9: // red
                 bg ? setBgColor(format, 0xFF, 0x55, 0x55) : setBgColor(format, 0xFF, 0x55, 0x55);
                 break;
-            case 2: // green
+            case 10: // green
                 bg ? setBgColor(format, 0x55, 0xFF, 0x55) : setBgColor(format, 0x55, 0xFF, 0x55);
                 break;
-            case 3: // yellow
+            case 11: // yellow
                 bg ? setBgColor(format, 0xFF, 0xFF, 0x55) : setBgColor(format, 0xFF, 0xFF, 0x55);
                 break;
-            case 4: // blue
+            case 12: // blue
                 bg ? setBgColor(format, 0x55, 0x55, 0xFF) : setBgColor(format, 0x55, 0x55, 0xFF);
                 break;
-            case 5: // magenta
+            case 13: // magenta
                 bg ? setBgColor(format, 0xFF, 0x55, 0xFF) : setBgColor(format, 0xFF, 0x55, 0xFF);
                 break;
-            case 6: // cyan
+            case 14: // cyan
                 bg ? setBgColor(format, 0x55, 0xFF, 0xFF) : setBgColor(format, 0x55, 0xFF, 0xFF);
                 break;
-            case 7: // white
+            case 15: // white
                 bg ? setBgColor(format, 0xFF, 0xFF, 0xFF) : setBgColor(format, 0xFF, 0xFF, 0xFF);
                 break;
         }
