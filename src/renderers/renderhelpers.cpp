@@ -20,85 +20,37 @@
 static constexpr const char escapeString = '\033';
 bool inverted{false};
 
-void setFgColor(QTextCharFormat& format, int r, int g, int b)
-{
-    auto col = format.foreground();
-    col.setColor(QColor(r,g,b));
-    format.setForeground(col);
-}
-
-void setBgColor(QTextCharFormat& format, int r, int g, int b)
-{
-    auto col = format.background();
-    col.setColor(QColor(r,g,b));
-    format.setBackground(col);
-}
-
 void setColor(QTextCharFormat& format, unsigned char n, bool bg=false)
 {
-    if (n < 8)
+    QColor color;
+
+    if (n < 16)
     {
-        // The normal pre-defined typical 8 colors.
+        // The normal pre-defined typical 16 colors.
         /// @TODO these should probably be configurable.
-        switch (n)
-        {
-            case 0: // black
-                bg ? setBgColor(format, 0, 0, 0) : setBgColor(format, 0, 0, 0);
-                break;
-            case 1: // red
-                bg ? setBgColor(format, 0xAA, 0, 0) : setBgColor(format, 0xAA, 0, 0);
-                break;
-            case 2: // green
-                bg ? setBgColor(format, 0, 0xAA, 0) : setBgColor(format, 0, 0xAA, 0);
-                break;
-            case 3: // yellow
-                bg ? setBgColor(format, 0xAA, 0xAA, 0) : setBgColor(format, 0xAA, 0xAA, 0);
-                break;
-            case 4: // blue
-                bg ? setBgColor(format, 0, 0, 0xAA) : setBgColor(format, 0, 0, 0xAA);
-                break;
-            case 5: // magenta
-                bg ? setBgColor(format, 0xAA, 0, 0xAA) : setBgColor(format, 0xAA, 0, 0xAA);
-                break;
-            case 6: // cyan
-                bg ? setBgColor(format, 0, 0xAA, 0xAA) : setBgColor(format, 0, 0xAA, 0xAA);
-                break;
-            case 7: // white
-                bg ? setBgColor(format, 0xAA, 0xAA, 0xAA) : setBgColor(format, 0xAA, 0xAA, 0xAA);
-                break;
-        }
-    }
-    else if (n < 16)
-    {
-        // bold/intense? versions of the normal 8 colors.
-        /// @TODO these should probably be configurable.
-        switch (n)
-        {
-            case 8: // black
-                bg ? setBgColor(format, 0x55, 0x55, 0x55) : setBgColor(format, 0x55, 0x55, 0x55);
-                break;
-            case 9: // red
-                bg ? setBgColor(format, 0xFF, 0x55, 0x55) : setBgColor(format, 0xFF, 0x55, 0x55);
-                break;
-            case 10: // green
-                bg ? setBgColor(format, 0x55, 0xFF, 0x55) : setBgColor(format, 0x55, 0xFF, 0x55);
-                break;
-            case 11: // yellow
-                bg ? setBgColor(format, 0xFF, 0xFF, 0x55) : setBgColor(format, 0xFF, 0xFF, 0x55);
-                break;
-            case 12: // blue
-                bg ? setBgColor(format, 0x55, 0x55, 0xFF) : setBgColor(format, 0x55, 0x55, 0xFF);
-                break;
-            case 13: // magenta
-                bg ? setBgColor(format, 0xFF, 0x55, 0xFF) : setBgColor(format, 0xFF, 0x55, 0xFF);
-                break;
-            case 14: // cyan
-                bg ? setBgColor(format, 0x55, 0xFF, 0xFF) : setBgColor(format, 0x55, 0xFF, 0xFF);
-                break;
-            case 15: // white
-                bg ? setBgColor(format, 0xFF, 0xFF, 0xFF) : setBgColor(format, 0xFF, 0xFF, 0xFF);
-                break;
-        }
+        static const Qt::GlobalColor colorcodes[] = {
+            // The normal pre-defined typical 8 colors.
+            Qt::black,
+            Qt::darkRed,
+            Qt::darkGreen,
+            Qt::darkYellow,
+            Qt::darkBlue,
+            Qt::darkMagenta,
+            Qt::darkCyan,
+            Qt::lightGray,
+
+            // bold/intense? versions of the normal 8 colors.
+            Qt::gray,
+            Qt::red,
+            Qt::green,
+            Qt::yellow,
+            Qt::blue,
+            Qt::magenta,
+            Qt::cyan,
+            Qt::white
+        };
+
+        color = QColor(colorcodes[n]);
     }
     else if (n < 232)
     {
@@ -110,14 +62,19 @@ void setColor(QTextCharFormat& format, unsigned char n, bool bg=false)
         unsigned int index_B = ((n - 16) % 6);
         unsigned char b = index_B > 0 ? 55 + index_B * 40 : 0;
 
-        bg ? setBgColor(format, r, g, b) : setFgColor(format, r, g, b);
+        color = QColor(r, g, b);
     }
     else
     {
         // grayscale pallete.
         unsigned char g = (n - 232) * 10 + 8;
-        bg ? setBgColor(format, g, g, g) : setFgColor(format, g, g, g);
+        color = QColor(g, g, g);
     }
+
+    if (bg)
+        format.setBackground(color);
+    else
+        format.setForeground(color);
 }
 
 QString parseNumber(const QString& input, QString::const_iterator& it)
@@ -225,7 +182,7 @@ void parseSGR(
                             const auto green = *it;
                             ++it;
                             const auto blue = *it;
-                            setFgColor(format, red, green, blue);
+                            format.setForeground(QColor(red, green, blue));
                         }
                     }
                 }
@@ -254,7 +211,7 @@ void parseSGR(
                             const auto green = *it;
                             ++it;
                             const auto blue = *it;
-                            setBgColor(format, red, green, blue);
+                            format.setBackground(QColor(red, green, blue));
                         }
                     }
                 }
