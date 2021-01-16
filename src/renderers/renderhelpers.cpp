@@ -219,6 +219,18 @@ void parseSGR(
             case 49: // Default background color.
                 format.setBackground(defaultFormat.background());
                 break;
+            default:
+                // foreground, background and their bright equivalents
+                if (arg >= 30 && arg < 38)
+                    setColor(format, arg - 30);
+                else if (arg >= 40 && arg < 48)
+                    setColor(format, arg - 40, true);
+                else if (arg >= 90 && arg < 98)
+                    setColor(format, arg - 90 + 8);
+                else if (arg >= 100 && arg < 108)
+                    setColor(format, arg - 100 + 8, true);
+
+                break;
         }
     }
 }
