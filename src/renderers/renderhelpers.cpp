@@ -101,28 +101,44 @@ void parseSGR(
     if (args.empty()) return;
     for (auto it = args.cbegin(); it != args.cend(); ++it)
     {
+        /// @TODO A whole bunch of unimplemented SGR codes are unimplemented 
+        ///       yet (eg: blink or font switching)
+        enum {
+            Reset = 0, Bold, Light, Italic, Underline,
+            Reverse = 7,
+
+            // some implementations interpret 21 as Bold off
+            DoubleUnderline = 21, NormalWeight, ItalicOff, UnderlineOff,
+            ReverseOff = 27,
+            StrikeOutOff = 29,
+
+            // 30-37 and 40-47 color codes are handled in the default case
+            SetForeground = 38,
+            DefaultForeground = 39,
+            SetBackground = 48,
+            DefaultBackground = 49,
+        };
+
         const auto arg = *it;
         switch(arg)
         {
-            /// @TODO A whole bunch of unimplemented SGR codes are unimplemented 
-            ///       yet (eg: blink or font switching)
-            case 0: // Reset.
+            case Reset:
                 format = defaultFormat;
                 break;
-            case 1: // Bold.
+            case Bold:
                 format.setFontWeight(QFont::Bold);
                 break;
-            case 2: // Light.
+            case Light:
                 format.setFontWeight(QFont::Light);
                 break;
-            case 3: // Italic.
+            case Italic:
                 format.setFontItalic(true);
                 break;
-            case 4: // Underline.
+            case Underline:
                 /// @TODO Underline style should be configurable?
                 format.setUnderlineStyle(QTextCharFormat::SingleUnderline);
                 break;
-            case 7: // Reverse video (invert).
+            case Reverse:
                 if (!inverted)
                 {
                     const auto fg = format.foreground();
@@ -132,19 +148,19 @@ void parseSGR(
                     inverted = true;
                 }
                 break;
-            case 21: // Double underline (or bold off?)
+            case DoubleUnderline:
                 format.setUnderlineStyle(QTextCharFormat::WaveUnderline);
                 break;
-            case 22: // Normal weight.
+            case NormalWeight:
                 format.setFontWeight(QFont::Normal);
                 break;
-            case 23: // Not italic.
+            case ItalicOff:
                 format.setFontItalic(false);
                 break;
-            case 24: // Not underlined.
+            case UnderlineOff:
                 format.setFontUnderline(QTextCharFormat::NoUnderline);
                 break;
-            case 27: // Not inverted.
+            case ReverseOff:
                 if (inverted)
                 {
                     const auto fg = format.foreground();
@@ -154,10 +170,10 @@ void parseSGR(
                     inverted = false;
                 }
                 break;
-            case 29: // Not crossed out.
+            case StrikeOutOff:
                 format.setFontStrikeOut(false);
                 break;
-            case 38: // Set foreground (RGB)
+            case SetForeground:
                 if (args.size() > 2)
                 {
                     ++it;
@@ -187,10 +203,10 @@ void parseSGR(
                     }
                 }
                 break;
-            case 39: // Default foreground color.
+            case DefaultForeground:
                 format.setForeground(defaultFormat.foreground());
                 break;
-            case 48: // Set background (RGB)
+            case SetBackground:
                 if (args.size() > 2)
                 {
                     ++it;
@@ -216,7 +232,7 @@ void parseSGR(
                     }
                 }
                 break;
-            case 49: // Default background color.
+            case DefaultBackground:
                 format.setBackground(defaultFormat.background());
                 break;
             default:
