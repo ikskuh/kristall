@@ -280,10 +280,6 @@ static void renderNode(RenderState &state, cmark_node & node, const QTextCharFor
         {
             fmt = state.text_style.standard_link;
         }
-        else
-        {
-            fmt = state.text_style.external_link;
-        }
 
         QString suffix = "";
         if (absolute_url.scheme() != state.root_url.scheme())
