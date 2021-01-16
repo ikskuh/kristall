@@ -865,7 +865,7 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
             ).arg(uri.host());
         }
 
-        if(is_cross_protocol or is_cross_host)
+        if (!question.isEmpty())
         {
             auto answer = QMessageBox::question(
                 this,
