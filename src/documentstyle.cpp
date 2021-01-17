@@ -134,7 +134,11 @@ DocumentStyle::DocumentStyle(bool do_init) : theme(Fixed),
     cross_scheme_link_color(0x09, 0x60, 0xa7),
     internal_link_prefix("→ "),
     external_link_prefix("⇒ "),
-    margin(55.0)
+    margin(55.0),
+    ansi_colors({"black", "darkred", "darkgreen", "darkgoldenrod",
+        "darkblue", "darkmagenta", "darkcyan", "lightgray",
+        "gray", "red", "green", "goldenrod",
+        "lightblue", "magenta", "cyan", "white"})
 {
     if (do_init) this->initialiseDefaultFonts();
 }
@@ -216,6 +220,8 @@ bool DocumentStyle::save(QSettings &settings) const
     settings.setValue("blockquote_color", blockquote_color.name());
 
     settings.setValue("margins", margin);
+
+    settings.setValue("ansi_colors", ansi_colors);
 
     {
         settings.beginGroup("Standard");
@@ -302,6 +308,12 @@ bool DocumentStyle::load(QSettings &settings)
         blockquote_color = QColor { settings.value("blockquote_color", blockquote_color.name()).toString() };
 
         margin = settings.value("margins", 55).toInt();
+
+        QStringList default_colors = {"black", "darkred", "darkgreen", "darkgoldenrod",
+            "darkblue", "darkmagenta", "darkcyan", "lightgray",
+            "gray", "red", "green", "goldenrod",
+            "lightblue", "magenta", "cyan", "white"};
+        ansi_colors = settings.value("ansi_colors", default_colors).toStringList();
 
         {
             settings.beginGroup("Standard");
