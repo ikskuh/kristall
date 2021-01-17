@@ -51,6 +51,8 @@ struct DocumentStyle
 
     double margin;
 
+    QStringList ansi_colors;
+
     bool save(QSettings & settings) const;
     bool load(QSettings & settings);
 

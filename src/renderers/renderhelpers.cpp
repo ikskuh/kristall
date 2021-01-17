@@ -9,6 +9,7 @@
  *       https://en.wikipedia.org/wiki/VT52#Escape_sequences
  */
 #include "renderhelpers.hpp"
+#include "kristall.hpp"
 
 #include <QByteArray>
 #include <QString>
@@ -27,30 +28,7 @@ void setColor(QTextCharFormat& format, unsigned char n, bool bg=false)
     if (n < 16)
     {
         // The normal pre-defined typical 16 colors.
-        /// @TODO these should probably be configurable.
-        static const Qt::GlobalColor colorcodes[] = {
-            // The normal pre-defined typical 8 colors.
-            Qt::black,
-            Qt::darkRed,
-            Qt::darkGreen,
-            Qt::darkYellow,
-            Qt::darkBlue,
-            Qt::darkMagenta,
-            Qt::darkCyan,
-            Qt::lightGray,
-
-            // bold/intense? versions of the normal 8 colors.
-            Qt::gray,
-            Qt::red,
-            Qt::green,
-            Qt::yellow,
-            Qt::blue,
-            Qt::magenta,
-            Qt::cyan,
-            Qt::white
-        };
-
-        color = QColor(colorcodes[n]);
+        color = QColor(kristall::document_style.ansi_colors[n]);
     }
     else if (n < 232)
     {
