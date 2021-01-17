@@ -324,8 +324,6 @@ void parseCSI(
                 }
                 break;
             case 'm': // SGR
-                // CSI m is treated as CSI 0 m. (and thus, SGR 0 m)
-                if (numericArguments.size() == 1) numericArguments.insert(numericArguments.begin(), 0);
                 parseSGR(numericArguments, input, it, format, defaultFormat, cursor);
                 break;
             default:
