@@ -164,10 +164,6 @@ void parseSGR(
                     {
                         ++it;
                         const auto colNum = *it;
-                        if (colNum == 124)
-                        {
-                            setColor(format, colNum);
-                        }
                         setColor(format, colNum);
                     }
                     else if (colMode == 2)
