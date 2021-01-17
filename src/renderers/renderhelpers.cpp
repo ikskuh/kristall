@@ -106,6 +106,7 @@ void parseSGR(
         enum {
             Reset = 0, Bold, Light, Italic, Underline,
             Reverse = 7,
+            StrikeOut = 9,
 
             // some implementations interpret 21 as Bold off
             DoubleUnderline = 21, NormalWeight, ItalicOff, UnderlineOff,
@@ -147,6 +148,9 @@ void parseSGR(
                     format.setBackground(fg);
                     inverted = true;
                 }
+                break;
+            case StrikeOut:
+                format.setFontStrikeOut(true);
                 break;
             case DoubleUnderline:
                 format.setUnderlineStyle(QTextCharFormat::WaveUnderline);
