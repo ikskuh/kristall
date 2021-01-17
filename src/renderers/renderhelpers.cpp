@@ -158,12 +158,10 @@ void parseSGR(
             case SetForeground:
                 if (args.size() > 2)
                 {
-                    ++it;
-                    const auto colMode = *it;
+                    const auto colMode = *++it;
                     if (colMode == 5)
                     {
-                        ++it;
-                        const auto colNum = *it;
+                        const auto colNum = *++it;
                         setColor(format, colNum);
                     }
                     else if (colMode == 2)
@@ -172,10 +170,8 @@ void parseSGR(
                         if (args.size() >= 4)
                         {
                             const auto red = *it;
-                            ++it;
-                            const auto green = *it;
-                            ++it;
-                            const auto blue = *it;
+                            const auto green = *++it;
+                            const auto blue = *++it;
                             format.setForeground(QColor(red, green, blue));
                         }
                     }
@@ -187,12 +183,10 @@ void parseSGR(
             case SetBackground:
                 if (args.size() > 2)
                 {
-                    ++it;
-                    const auto colMode = *it;
+                    const auto colMode = *++it;
                     if (colMode == 5)
                     {
-                        ++it;
-                        const auto colNum = *it;
+                        const auto colNum = *++it;
                         setColor(format, colNum, true);
                     }
                     else if (colMode == 2)
@@ -201,10 +195,8 @@ void parseSGR(
                         if (args.size() >= 4)
                         {
                             const auto red = *it;
-                            ++it;
-                            const auto green = *it;
-                            ++it;
-                            const auto blue = *it;
+                            const auto green = *++it;
+                            const auto blue = *++it;
                             format.setBackground(QColor(red, green, blue));
                         }
                     }
