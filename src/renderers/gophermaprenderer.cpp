@@ -176,6 +176,7 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
             else
             {
                 QTextImageFormat icon_fmt;
+                icon_fmt.setFont(themed_style.preformatted_font);
                 icon_fmt.setName(QString("gopher/%1").arg(icon));
                 icon_fmt.setVerticalAlignment(QTextImageFormat::AlignTop);
 
