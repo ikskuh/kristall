@@ -4,13 +4,14 @@
 
 ElideLabel::ElideLabel(QWidget* parent)
     : QLabel(parent)
+    , m_elideMode(Qt::ElideNone)
 {
-    m_elideMode = Qt::ElideNone;
 }
 
-ElideLabel::ElideLabel(const QString &text, QWidget* parent) : QLabel(text, parent)
+ElideLabel::ElideLabel(const QString &text, QWidget* parent)
+    : QLabel(text, parent)
+    , m_elideMode(Qt::ElideNone)
 {
-    m_elideMode = Qt::ElideNone;
 }
 
 ElideLabel::~ElideLabel()
