@@ -365,13 +365,23 @@
         </widget>
        </item>
        <item row="13" column="1">
-        <widget class="QCheckBox" name="enable_home_btn">
-         <property name="text">
-          <string>Home</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_99">
+         <item>
+          <widget class="QCheckBox" name="enable_home_btn">
+           <property name="text">
+            <string>Home</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="enable_newtab_btn">
+           <property name="text">
+            <string>New tab</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
-
        <item row="14" column="0">
         <widget class="QLabel" name="label_30">
          <property name="text">
@@ -1075,6 +1085,7 @@
   <tabstop>redirection_mode</tabstop>
   <tabstop>network_timeout</tabstop>
   <tabstop>enable_home_btn</tabstop>
+  <tabstop>enable_newtab_btn</tabstop>
   <tabstop>bg_change_color</tabstop>
   <tabstop>style_preview</tabstop>
   <tabstop>std_change_font</tabstop>

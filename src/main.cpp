@@ -368,6 +368,7 @@ void GenericSettings::load(QSettings &settings)
     redirection_policy = RedirectionWarning(settings.value("redirection_policy ", WarnOnHostChange).toInt());
 
     enable_home_btn = settings.value("enable_home_btn", false).toBool();
+    enable_newtab_btn = settings.value("enable_newtab_btn", true).toBool();
 
     cache_limit = settings.value("cache_limit", 1000).toInt();
     cache_threshold = settings.value("cache_threshold", 125).toInt();
@@ -402,6 +403,7 @@ void GenericSettings::save(QSettings &settings) const
     settings.setValue("redirection_policy", int(redirection_policy));
     settings.setValue("network_timeout", network_timeout);
     settings.setValue("enable_home_btn", enable_home_btn);
+    settings.setValue("enable_newtab_btn", enable_newtab_btn);
 
     settings.setValue("cache_limit", cache_limit);
     settings.setValue("cache_threshold", cache_threshold);

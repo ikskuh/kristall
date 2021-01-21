@@ -71,6 +71,7 @@ struct GenericSettings
 
     // Additional toolbar items
     bool enable_home_btn = false;
+    bool enable_newtab_btn = true;
 
     // In-memory caching
     int cache_limit = 1000;

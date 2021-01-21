@@ -402,6 +402,10 @@ void MainWindow::on_actionSettings_triggered()
     // Re-render the currently-open tab if we have one.
     BrowserTab * tab = this->curTab();
     if (tab) tab->rerenderPage();
+
+    // Update new-tab button visibility.
+    this->ui->browser_tabs->tab_bar->new_tab_btn
+        ->setVisible(kristall::options.enable_newtab_btn);
 }
 
 void MainWindow::on_actionNew_Tab_triggered()
