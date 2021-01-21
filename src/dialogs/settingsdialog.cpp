@@ -250,6 +250,7 @@ void SettingsDialog::setOptions(const GenericSettings &options)
     this->ui->network_timeout->setValue(this->current_options.network_timeout);
 
     this->ui->enable_home_btn->setChecked(this->current_options.enable_home_btn);
+    this->ui->enable_newtab_btn->setChecked(this->current_options.enable_newtab_btn);
 
     this->ui->cache_limit->setValue(this->current_options.cache_limit);
     this->ui->cache_threshold->setValue(this->current_options.cache_threshold);
@@ -676,6 +677,11 @@ void SettingsDialog::on_network_timeout_valueChanged(int timeout)
 void SettingsDialog::on_enable_home_btn_clicked(bool checked)
 {
     this->current_options.enable_home_btn = checked;
+}
+
+void SettingsDialog::on_enable_newtab_btn_clicked(bool checked)
+{
+    this->current_options.enable_newtab_btn = checked;
 }
 
 void SettingsDialog::on_cache_limit_valueChanged(int limit)

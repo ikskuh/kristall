@@ -132,6 +132,8 @@ private slots:
 
     void on_enable_home_btn_clicked(bool arg1);
 
+    void on_enable_newtab_btn_clicked(bool arg1);
+
     void on_cache_limit_valueChanged(int limit);
 
     void on_cache_threshold_valueChanged(int thres);

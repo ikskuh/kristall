@@ -22,8 +22,8 @@ signals:
 private:
     void moveNewTabButton();
 
-private:
-    QPushButton *newTabBtn;
+public:
+    QPushButton *new_tab_btn;
 };
 
 #endif // BROWSERTABS_HPP
