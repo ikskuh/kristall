@@ -15,6 +15,7 @@
 
 #include "ioutil.hpp"
 #include "kristall.hpp"
+#include "widgets/browsertabbar.hpp"
 
 #include "dialogs/certificatemanagementdialog.hpp"
 
@@ -92,6 +93,10 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
 
     this->ui->favourites_view->setContextMenuPolicy(Qt::CustomContextMenu);
     this->ui->history_view->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    connect(this->ui->browser_tabs->tab_bar, &BrowserTabBar::on_newTabClicked, this, [this]() {
+        this->addEmptyTab(true, true);
+    });
 }
 
 MainWindow::~MainWindow()

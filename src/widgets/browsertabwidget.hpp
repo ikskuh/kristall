@@ -2,6 +2,7 @@
 #define BROWSERTABWIDGET_HPP
 
 #include <QTabWidget>
+#include "browsertabbar.hpp"
 
 class BrowserTabWidget : public QTabWidget
 {
@@ -9,8 +10,8 @@ class BrowserTabWidget : public QTabWidget
 public:
     explicit BrowserTabWidget(QWidget *parent = nullptr);
 
-signals:
-
+public:
+    BrowserTabBar *tab_bar;
 };
 
 #endif // BROWSERTABWIDGET_HPP
