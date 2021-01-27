@@ -91,6 +91,34 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
       }
     }
 
+    {
+        QShortcut * sc = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageDown), this);
+        connect(sc, &QShortcut::activated, this, [this](){
+           int i = this->ui->browser_tabs->currentIndex();
+
+           if (i + 1 >= this->ui->browser_tabs->count())
+               i = 0;
+           else
+               i++;
+
+           this->ui->browser_tabs->setCurrentIndex(i);
+        });
+    }
+
+    {
+        QShortcut * sc = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageUp), this);
+        connect(sc, &QShortcut::activated, this, [this](){
+           int i = this->ui->browser_tabs->currentIndex();
+
+           if (!i)
+               i = this->ui->browser_tabs->count() - 1;
+           else
+               i--;
+
+           this->ui->browser_tabs->setCurrentIndex(i);
+        });
+    }
+
     this->ui->favourites_view->setContextMenuPolicy(Qt::CustomContextMenu);
     this->ui->history_view->setContextMenuPolicy(Qt::CustomContextMenu);
 
