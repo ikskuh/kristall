@@ -194,5 +194,8 @@ RESOURCES += \
   builtins.qrc \
   icons.qrc
 
+# Embed icon resource on Windows platforms
+win32:RC_ICONS += ./icons/kristall.ico
+
 DISTFILES += \
   gophertypes.txt
