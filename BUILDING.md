@@ -29,9 +29,9 @@ make
 - Kristall can't be used with LibreSSL, but requires OpenSSL (probably because of Qt)
 - Required packages
   - `qt5`
-<tiwesdaeg> xq: I just built kristall on a new freebsd install. 
-<tiwesdaeg> all I needed to do was install the git and qt5 packages
-
+  - `make`
+  - `git` - optional, for cloning from CLI
+ - Aditionally, the following must be exported for qmake: `export QMAKESPEC=freebsd-clang`
 #### Notes for Ubuntu
 Supported Versions: 18.04, 20.04
 Unsupported Versions: 16.04
