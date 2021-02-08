@@ -1537,12 +1537,23 @@ void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint pos)
         if (real_url.isRelative())
             real_url = this->current_location.resolved(real_url);
 
-        connect(menu.addAction("Follow link…"), &QAction::triggered, [this, real_url]() {
-            this->navigateTo(real_url, PushImmediate);
+        connect(menu.addAction("Open in new tab"), &QAction::triggered, [this, real_url]() {
+            mainWindow->addNewTab(false, real_url);
         });
 
-        connect(menu.addAction("Open in new tab…"), &QAction::triggered, [this, real_url]() {
-            mainWindow->addNewTab(false, real_url);
+        // "open in default browser" for HTTP/S links
+        if (real_url.scheme().startsWith("http", Qt::CaseInsensitive)) {
+            connect(menu.addAction("Open with external web browser"), &QAction::triggered, [this, real_url]() {
+                if (!QDesktopServices::openUrl(real_url))
+                {
+                    QMessageBox::warning(this, "Kristall",
+                        QString("Failed to start system URL handler for\r\n%1").arg(real_url.toString()));
+                }
+            });
+        }
+
+        connect(menu.addAction("Follow link"), &QAction::triggered, [this, real_url]() {
+            this->navigateTo(real_url, PushImmediate);
         });
 
         connect(menu.addAction("Copy link"), &QAction::triggered, [real_url]() {
