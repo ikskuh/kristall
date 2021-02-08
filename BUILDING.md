@@ -31,7 +31,7 @@ make
   - `qt5`
   - `make`
   - `git` - optional, for cloning from CLI
- - Aditionally, the following must be exported for qmake: `export QMAKESPEC=freebsd-clang`
+ - Additionally, the following must be exported for qmake: `export QMAKESPEC=freebsd-clang`
 #### Notes for Ubuntu
 Supported Versions: 18.04, 20.04
 Unsupported Versions: 16.04
