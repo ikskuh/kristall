@@ -106,12 +106,16 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
         connect(sc, &QShortcut::activated, this, &BrowserTab::on_refresh_button_clicked);
     }
     {
-        QShortcut * sc = new QShortcut(QKeySequence("F3"), this);
-        connect(sc, &QShortcut::activated, this, &BrowserTab::on_search_next_clicked);
+        QShortcut * sc0 = new QShortcut(QKeySequence("Return"), this),
+            *sc1 = new QShortcut(QKeySequence("F3"), this);
+        connect(sc0, &QShortcut::activated, this, &BrowserTab::on_search_next_clicked);
+        connect(sc1, &QShortcut::activated, this, &BrowserTab::on_search_next_clicked);
     }
     {
-        QShortcut * sc = new QShortcut(QKeySequence("Shift+F3"), this);
-        connect(sc, &QShortcut::activated, this, &BrowserTab::on_search_previous_clicked);
+        QShortcut * sc0 = new QShortcut(QKeySequence("Shift+Return"), this),
+            *sc1 = new QShortcut(QKeySequence("Shift+F3"), this);
+        connect(sc0, &QShortcut::activated, this, &BrowserTab::on_search_previous_clicked);
+        connect(sc1, &QShortcut::activated, this, &BrowserTab::on_search_previous_clicked);
     }
     {
         QShortcut * sc = new QShortcut(QKeySequence("Escape"), this->ui->search_bar);
