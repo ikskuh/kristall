@@ -227,7 +227,7 @@ p, li { white-space: pre-wrap; }
        <number>0</number>
       </property>
       <item>
-       <widget class="QLineEdit" name="search_box"/>
+       <widget class="SearchBox" name="search_box"/>
       </item>
       <item>
        <widget class="QToolButton" name="search_previous">
@@ -296,6 +296,11 @@ p, li { white-space: pre-wrap; }
    <class>FavouriteButton</class>
    <extends>QToolButton</extends>
    <header>widgets/favouritebutton.hpp</header>
+  </customwidget>
+  <customwidget>
+   <class>SearchBox</class>
+   <extends>QLineEdit</extends>
+   <header>widgets/searchbox.hpp</header>
   </customwidget>
  </customwidgets>
  <resources>
