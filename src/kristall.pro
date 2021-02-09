@@ -121,7 +121,8 @@ SOURCES += \
     widgets/ssltrusteditor.cpp \
     widgets/favouritepopup.cpp \
     widgets/favouritebutton.cpp \
-    cachehandler.cpp
+    cachehandler.cpp \
+    widgets/searchbox.cpp
 
 HEADERS += \
     ../lib/luis-l-gist/interactiveview.hpp \
@@ -167,7 +168,8 @@ HEADERS += \
     widgets/ssltrusteditor.hpp \
     widgets/favouritepopup.hpp \
     widgets/favouritebutton.hpp \
-    cachehandler.hpp
+    cachehandler.hpp \
+    widgets/searchbox.hpp
 
 FORMS += \
   browsertab.ui \

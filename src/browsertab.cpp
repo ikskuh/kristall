@@ -22,6 +22,7 @@
 #include "ioutil.hpp"
 #include "kristall.hpp"
 #include "widgets/favouritepopup.hpp"
+#include "widgets/searchbox.hpp"
 
 #include <cassert>
 #include <QTabWidget>
@@ -106,16 +107,8 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
         connect(sc, &QShortcut::activated, this, &BrowserTab::on_refresh_button_clicked);
     }
     {
-        QShortcut * sc0 = new QShortcut(QKeySequence("Return"), this),
-            *sc1 = new QShortcut(QKeySequence("F3"), this);
-        connect(sc0, &QShortcut::activated, this, &BrowserTab::on_search_next_clicked);
-        connect(sc1, &QShortcut::activated, this, &BrowserTab::on_search_next_clicked);
-    }
-    {
-        QShortcut * sc0 = new QShortcut(QKeySequence("Shift+Return"), this),
-            *sc1 = new QShortcut(QKeySequence("Shift+F3"), this);
-        connect(sc0, &QShortcut::activated, this, &BrowserTab::on_search_previous_clicked);
-        connect(sc1, &QShortcut::activated, this, &BrowserTab::on_search_previous_clicked);
+        connect(this->ui->search_box, &SearchBox::searchNext, this, &BrowserTab::on_search_next_clicked);
+        connect(this->ui->search_box, &SearchBox::searchPrev, this, &BrowserTab::on_search_previous_clicked);
     }
     {
         QShortcut * sc = new QShortcut(QKeySequence("Escape"), this->ui->search_bar);
@@ -1635,12 +1628,22 @@ void BrowserTab::on_search_box_returnPressed()
 
 void BrowserTab::on_search_next_clicked()
 {
-    this->ui->text_browser->find(this->ui->search_box->text());
+    if (!this->ui->text_browser->find(this->ui->search_box->text()))
+    {
+        // Wrap search
+        this->ui->text_browser->moveCursor(QTextCursor::Start);
+        this->ui->text_browser->find(this->ui->search_box->text());
+    }
 }
 
 void BrowserTab::on_search_previous_clicked()
 {
-    this->ui->text_browser->find(this->ui->search_box->text(), QTextDocument::FindBackward);
+    if (!this->ui->text_browser->find(this->ui->search_box->text(), QTextDocument::FindBackward))
+    {
+        // Wrap search
+        this->ui->text_browser->moveCursor(QTextCursor::End);
+        this->ui->text_browser->find(this->ui->search_box->text(), QTextDocument::FindBackward);
+    }
 }
 
 void BrowserTab::on_close_search_clicked()
