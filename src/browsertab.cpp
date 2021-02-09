@@ -1628,7 +1628,8 @@ void BrowserTab::on_search_box_returnPressed()
 
 void BrowserTab::on_search_next_clicked()
 {
-    if (!this->ui->text_browser->find(this->ui->search_box->text()))
+    if (!this->ui->text_browser->find(this->ui->search_box->text()) &&
+        this->current_buffer.contains(this->ui->search_box->text().toUtf8()))
     {
         // Wrap search
         this->ui->text_browser->moveCursor(QTextCursor::Start);
@@ -1638,7 +1639,8 @@ void BrowserTab::on_search_next_clicked()
 
 void BrowserTab::on_search_previous_clicked()
 {
-    if (!this->ui->text_browser->find(this->ui->search_box->text(), QTextDocument::FindBackward))
+    if (!this->ui->text_browser->find(this->ui->search_box->text(), QTextDocument::FindBackward) &&
+        this->current_buffer.contains(this->ui->search_box->text().toUtf8()))
     {
         // Wrap search
         this->ui->text_browser->moveCursor(QTextCursor::End);
