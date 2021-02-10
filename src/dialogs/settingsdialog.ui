@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>850</width>
+    <width>1100</width>
     <height>650</height>
    </rect>
   </property>
@@ -877,7 +877,166 @@
            </property>
           </widget>
          </item>
+         <item row="14" column="0">
+          <widget class="QLabel" name="label_25">
+           <property name="text">
+            <string>Other options</string>
+           </property>
+          </widget>
+         </item>
          <item row="14" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_98">
+           <item>
+            <widget class="QCheckBox" name="enable_justify_text">
+             <property name="text">
+              <string>Justify text</string>
+             </property>
+             <property name="toolTip">
+              <string>Justify text on the page, instead of left-aligning it.</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="15" column="0">
+          <widget class="QLabel" name="label_35">
+           <property name="text">
+            <string>Line height (paragraph)</string>
+           </property>
+          </widget>
+         </item>
+         <item row="15" column="1">
+          <widget class="QDoubleSpinBox" name="line_height_p">
+           <property name="suffix">
+            <string> px</string>
+           </property>
+           <property name="decimals">
+            <number>0</number>
+           </property>
+           <property name="maximum">
+            <double>30</double>
+           </property>
+          </widget>
+         </item>
+         <item row="16" column="0">
+          <widget class="QLabel" name="label_36">
+           <property name="text">
+            <string>Line height (header)</string>
+           </property>
+          </widget>
+         </item>
+         <item row="16" column="1">
+          <widget class="QDoubleSpinBox" name="line_height_h">
+           <property name="suffix">
+            <string> px</string>
+           </property>
+           <property name="decimals">
+            <number>0</number>
+           </property>
+           <property name="maximum">
+            <double>30</double>
+           </property>
+          </widget>
+         </item>
+
+         <item row="17" column="0">
+          <widget class="QLabel" name="label_37">
+           <property name="text">
+            <string>Indentation</string>
+           </property>
+          </widget>
+         </item>
+         <item row="17" column="1">
+          <layout class="QHBoxLayout" name="indent_container">
+
+           <item>
+            <widget class="QLabel" name="label_96">
+             <property name="text">
+              <string>Par:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="indent_p">
+             <property name="value">
+              <number>1</number>
+             </property>
+             <property name="minimum">
+              <number>0</number>
+             </property>
+             <property name="maximum">
+              <number>7</number>
+             </property>
+            </widget>
+           </item>
+
+           <item>
+            <widget class="QLabel" name="label_94">
+             <property name="text">
+              <string>Hea:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="indent_h">
+             <property name="value">
+              <number>0</number>
+             </property>
+             <property name="minimum">
+              <number>0</number>
+             </property>
+             <property name="maximum">
+              <number>7</number>
+             </property>
+            </widget>
+           </item>
+
+           <item>
+            <widget class="QLabel" name="label_95">
+             <property name="text">
+              <string>Quo:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="indent_bq">
+             <property name="value">
+              <number>2</number>
+             </property>
+             <property name="minimum">
+              <number>0</number>
+             </property>
+             <property name="maximum">
+              <number>7</number>
+             </property>
+            </widget>
+           </item>
+
+           <item>
+            <widget class="QLabel" name="label_93">
+             <property name="text">
+              <string>Lst:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="indent_l">
+             <property name="value">
+              <number>2</number>
+             </property>
+             <property name="minimum">
+              <number>0</number>
+             </property>
+             <property name="maximum">
+              <number>7</number>
+             </property>
+            </widget>
+           </item>
+
+          </layout>
+         </item>
+
+         <item row="18" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
             <widget class="QComboBox" name="presets"/>
@@ -953,7 +1112,7 @@
            </item>
           </layout>
          </item>
-         <item row="14" column="0">
+         <item row="18" column="0">
           <widget class="QLabel" name="label_17">
            <property name="text">
             <string>Presets</string>
@@ -1106,6 +1265,13 @@
   <tabstop>quote_change_color</tabstop>
   <tabstop>auto_theme</tabstop>
   <tabstop>page_margin</tabstop>
+  <tabstop>enable_justify_text</tabstop>
+  <tabstop>line_height_p</tabstop>
+  <tabstop>line_height_h</tabstop>
+  <tabstop>indent_p</tabstop>
+  <tabstop>indent_h</tabstop>
+  <tabstop>indent_bq</tabstop>
+  <tabstop>indent_l</tabstop>
   <tabstop>presets</tabstop>
   <tabstop>preset_new</tabstop>
   <tabstop>preset_save</tabstop>

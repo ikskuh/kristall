@@ -78,6 +78,17 @@ private slots:
 
     void on_page_margin_valueChanged(double arg1);
 
+    void on_enable_justify_text_clicked(bool arg1);
+
+    void on_line_height_p_valueChanged(double arg1);
+
+    void on_line_height_h_valueChanged(double arg1);
+
+    void on_indent_bq_valueChanged(int value);
+    void on_indent_p_valueChanged(int value);
+    void on_indent_h_valueChanged(int value);
+    void on_indent_l_valueChanged(int value);
+
     void on_presets_currentIndexChanged(int index);
 
     void on_preset_new_clicked();
