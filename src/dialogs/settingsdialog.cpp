@@ -107,7 +107,20 @@ void SettingsDialog::setGeminiStyle(DocumentStyle const &style)
 
     this->ui->auto_theme->setCurrentIndex(this->current_style.theme);
 
+    this->ui->link_local_prefix->setText(this->current_style.internal_link_prefix);
+    this->ui->link_foreign_prefix->setText(this->current_style.external_link_prefix);
+
     this->ui->page_margin->setValue(this->current_style.margin);
+
+    this->ui->enable_justify_text->setChecked(this->current_style.justify_text);
+
+    this->ui->line_height_p->setValue(this->current_style.line_height_p);
+    this->ui->line_height_h->setValue(this->current_style.line_height_h);
+
+    this->ui->indent_bq->setValue(this->current_style.indent_bq);
+    this->ui->indent_p->setValue(this->current_style.indent_p);
+    this->ui->indent_h->setValue(this->current_style.indent_h);
+    this->ui->indent_l->setValue(this->current_style.indent_l);
 
     auto setFontAndColor = [this](QLabel * label, const QFont &font, QColor color)
     {
@@ -419,6 +432,49 @@ void SettingsDialog::on_page_margin_valueChanged(double value)
     this->current_style.margin = value;
     this->reloadStylePreview();
 }
+
+void SettingsDialog::on_enable_justify_text_clicked(bool checked)
+{
+    this->current_style.justify_text = checked;
+    this->reloadStylePreview();
+}
+
+void SettingsDialog::on_line_height_p_valueChanged(double value)
+{
+    this->current_style.line_height_p = value;
+    this->reloadStylePreview();
+}
+
+void SettingsDialog::on_line_height_h_valueChanged(double value)
+{
+    this->current_style.line_height_h = value;
+    this->reloadStylePreview();
+}
+
+void SettingsDialog::on_indent_bq_valueChanged(int value)
+{
+    this->current_style.indent_bq = value;
+    this->reloadStylePreview();
+}
+
+void SettingsDialog::on_indent_h_valueChanged(int value)
+{
+    this->current_style.indent_h = value;
+    this->reloadStylePreview();
+}
+
+void SettingsDialog::on_indent_p_valueChanged(int value)
+{
+    this->current_style.indent_p = value;
+    this->reloadStylePreview();
+}
+
+void SettingsDialog::on_indent_l_valueChanged(int value)
+{
+    this->current_style.indent_l = value;
+    this->reloadStylePreview();
+}
+
 
 void SettingsDialog::on_presets_currentIndexChanged(int index)
 {

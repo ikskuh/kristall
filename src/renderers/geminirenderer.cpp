@@ -77,9 +77,8 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
             {
                 if (current_list == nullptr)
                 {
-                    cursor.setBlockFormat(text_style.list_format);
                     cursor.deletePreviousChar();
-                    current_list = cursor.insertList(QTextListFormat::ListDisc);
+                    current_list = cursor.insertList(text_style.list_format);
                 }
                 else
                 {

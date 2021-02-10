@@ -22,7 +22,7 @@ struct TextStyleInstance
     QTextBlockFormat block_quote_format;
     QTextBlockFormat heading_format;
     QTextBlockFormat link_format;
-    QTextBlockFormat list_format;
+    QTextListFormat list_format;
 
     explicit TextStyleInstance(DocumentStyle const & style);
 };

@@ -138,7 +138,11 @@ DocumentStyle::DocumentStyle(bool do_init) : theme(Fixed),
     ansi_colors({"black", "darkred", "darkgreen", "darkgoldenrod",
         "darkblue", "darkmagenta", "darkcyan", "lightgray",
         "gray", "red", "green", "goldenrod",
-        "lightblue", "magenta", "cyan", "white"})
+        "lightblue", "magenta", "cyan", "white"}),
+    justify_text(true),
+    line_height_p(5.0),
+    line_height_h(0.0),
+    indent_bq(2), indent_p(1), indent_h(0), indent_l(2)
 {
     if (do_init) this->initialiseDefaultFonts();
 }
@@ -265,6 +269,19 @@ bool DocumentStyle::save(QSettings &settings) const
 
         settings.endGroup();
     }
+    {
+        settings.beginGroup("Formatting");
+
+        settings.setValue("justify_text", justify_text);
+        settings.setValue("line_height_p", line_height_p);
+        settings.setValue("line_height_h", line_height_h);
+        settings.setValue("indent_bq", indent_bq);
+        settings.setValue("indent_p", indent_p);
+        settings.setValue("indent_h", indent_h);
+        settings.setValue("indent_l", indent_l);
+
+        settings.endGroup();
+    }
 
     return true;
 }
@@ -354,6 +371,19 @@ bool DocumentStyle::load(QSettings &settings)
 
             internal_link_prefix = settings.value("internal_prefix", internal_link_prefix).toString();
             external_link_prefix = settings.value("external_prefix", external_link_prefix).toString();
+
+            settings.endGroup();
+        }
+        {
+            settings.beginGroup("Formatting");
+
+            justify_text = settings.value("justify_text", justify_text).toBool();
+            line_height_p = settings.value("line_height_p", line_height_p).toDouble();
+            line_height_h = settings.value("line_height_h", line_height_h).toDouble();
+            indent_bq = settings.value("indent_bq", indent_bq).toInt();
+            indent_p = settings.value("indent_p", indent_p).toInt();
+            indent_h = settings.value("indent_h", indent_h).toInt();
+            indent_l = settings.value("indent_l", indent_l).toInt();
 
             settings.endGroup();
         }

@@ -28,24 +28,30 @@ TextStyleInstance::TextStyleInstance(DocumentStyle const & themed_style)
 
   preformatted_format.setNonBreakableLines(true);
 
-  block_quote_format.setIndent(2);
+  block_quote_format.setIndent(themed_style.indent_bq);
   block_quote_format.setBackground(themed_style.blockquote_color);
 
   // Other alignments
-  standard_format.setAlignment(Qt::AlignJustify);
-  standard_format.setLineHeight(5, QTextBlockFormat::LineDistanceHeight);
-  standard_format.setIndent(1);
+  auto align = themed_style.justify_text ? Qt::AlignJustify : Qt::AlignLeft;
 
-  link_format.setLineHeight(5, QTextBlockFormat::LineDistanceHeight);
+  standard_format.setAlignment(align);
+  standard_format.setLineHeight(themed_style.line_height_p,
+    QTextBlockFormat::LineDistanceHeight);
+  standard_format.setIndent(themed_style.indent_p);
 
-  block_quote_format.setAlignment(Qt::AlignJustify);
-  block_quote_format.setLineHeight(5, QTextBlockFormat::LineDistanceHeight);
+  link_format.setLineHeight(themed_style.line_height_p,
+    QTextBlockFormat::LineDistanceHeight);
 
-  list_format.setAlignment(Qt::AlignJustify);
-  list_format.setLineHeight(5, QTextBlockFormat::LineDistanceHeight);
-  list_format.setIndent(2);
+  block_quote_format.setAlignment(align);
+  block_quote_format.setLineHeight(themed_style.line_height_p,
+    QTextBlockFormat::LineDistanceHeight);
 
-  preformatted_format.setIndent(1);
+  list_format.setStyle(QTextListFormat::ListDisc);
+  list_format.setIndent(themed_style.indent_l);
 
-  heading_format.setLineHeight(0, QTextBlockFormat::LineDistanceHeight);
+  preformatted_format.setIndent(themed_style.indent_p);
+
+  heading_format.setLineHeight(themed_style.line_height_h,
+    QTextBlockFormat::LineDistanceHeight);
+  heading_format.setIndent(themed_style.indent_h);
 }

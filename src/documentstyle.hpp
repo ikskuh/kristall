@@ -53,6 +53,11 @@ struct DocumentStyle
 
     QStringList ansi_colors;
 
+    bool justify_text;
+    double line_height_p;
+    double line_height_h;
+    int indent_bq, indent_p, indent_h, indent_l;
+
     bool save(QSettings & settings) const;
     bool load(QSettings & settings);
 
