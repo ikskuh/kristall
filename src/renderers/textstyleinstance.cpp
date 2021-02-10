@@ -28,6 +28,24 @@ TextStyleInstance::TextStyleInstance(DocumentStyle const & themed_style)
 
   preformatted_format.setNonBreakableLines(true);
 
-  block_quote_format.setIndent(1);
+  block_quote_format.setIndent(2);
   block_quote_format.setBackground(themed_style.blockquote_color);
+
+  // Other alignments
+  standard_format.setAlignment(Qt::AlignJustify);
+  standard_format.setLineHeight(5, QTextBlockFormat::LineDistanceHeight);
+  standard_format.setIndent(1);
+
+  link_format.setLineHeight(5, QTextBlockFormat::LineDistanceHeight);
+
+  block_quote_format.setAlignment(Qt::AlignJustify);
+  block_quote_format.setLineHeight(5, QTextBlockFormat::LineDistanceHeight);
+
+  list_format.setAlignment(Qt::AlignJustify);
+  list_format.setLineHeight(5, QTextBlockFormat::LineDistanceHeight);
+  list_format.setIndent(2);
+
+  preformatted_format.setIndent(1);
+
+  heading_format.setLineHeight(0, QTextBlockFormat::LineDistanceHeight);
 }

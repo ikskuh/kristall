@@ -77,6 +77,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
             {
                 if (current_list == nullptr)
                 {
+                    cursor.setBlockFormat(text_style.list_format);
                     cursor.deletePreviousChar();
                     current_list = cursor.insertList(QTextListFormat::ListDisc);
                 }
@@ -129,7 +130,9 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 fmt.setAnchor(true);
                 fmt.setAnchorNames(QStringList { id });
 
-                cursor.insertText(heading + "\n", fmt);
+                cursor.setBlockFormat(text_style.heading_format);
+                cursor.insertText(heading, fmt);
+                cursor.insertText("\n", text_style.standard);
                 outline.appendH3(heading, id);
             }
             else if (line.startsWith("##"))
@@ -141,7 +144,9 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 fmt.setAnchor(true);
                 fmt.setAnchorNames(QStringList { id });
 
-                cursor.insertText(heading + "\n", fmt);
+                cursor.setBlockFormat(text_style.heading_format);
+                cursor.insertText(heading, fmt);
+                cursor.insertText("\n", text_style.standard);
                 outline.appendH2(heading, id);
             }
             else if (line.startsWith("#"))
@@ -153,7 +158,9 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 fmt.setAnchor(true);
                 fmt.setAnchorNames(QStringList { id });
 
-                cursor.insertText(heading + "\n", fmt);
+                cursor.setBlockFormat(text_style.heading_format);
+                cursor.insertText(heading, fmt);
+                cursor.insertText("\n", text_style.standard);
                 outline.appendH1(heading, id);
 
                 // Use first heading as the page's title.
@@ -220,6 +227,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
 
                 fmt.setAnchor(true);
                 fmt.setAnchorHref(absolute_url.toString());
+                cursor.setBlockFormat(text_style.link_format);
                 cursor.insertText(prefix + title + suffix + "\n", fmt);
             }
             else if (line.startsWith("```"))
@@ -228,6 +236,8 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
             }
             else
             {
+                cursor.setBlockFormat(text_style.standard_format);
+
                 if(emit_fancy_text)
                 {
                     // TODO: Fix UTF-8 encoding here… Don't emit single characters but always spans!
