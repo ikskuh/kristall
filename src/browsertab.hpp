@@ -101,6 +101,8 @@ public:
 
     void setUiDensity(UIDensity density);
 
+    void updatePageMargins();
+
 signals:
     void titleChanged(QString const & title);
     void locationChanged(QUrl const & url);
@@ -186,6 +188,10 @@ private:
 
     bool enableClientCertificate(CryptoIdentity const & ident);
     void disableClientCertificate();
+
+protected:
+    void resizeEvent(QResizeEvent * event);
+
 public:
 
     Ui::BrowserTab *ui;

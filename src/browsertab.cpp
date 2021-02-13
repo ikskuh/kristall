@@ -730,6 +730,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
 
     this->ui->text_browser->setDocument(document.get());
     this->current_document = std::move(document);
+    this->updatePageMargins();
 
     this->needs_rerender = false;
 
@@ -1312,6 +1313,20 @@ void BrowserTab::setUiDensity(UIDensity density)
     }
 }
 
+void BrowserTab::updatePageMargins()
+{
+    if (!this->current_document) return;
+
+    QTextFrame *root = this->current_document->rootFrame();
+    QTextFrameFormat fmt = root->frameFormat();
+    int margin = std::max((this->width() - 900) / 2, 30);
+    fmt.setLeftMargin(margin);
+    fmt.setRightMargin(margin);
+    root->setFrameFormat(fmt);
+
+    this->ui->text_browser->setDocument(this->current_document.get());
+}
+
 bool BrowserTab::trySetClientCertificate(const QString &query)
 {
     CertificateSelectionDialog dialog{this};
@@ -1651,4 +1666,10 @@ void BrowserTab::on_search_previous_clicked()
 void BrowserTab::on_close_search_clicked()
 {
     this->ui->search_bar->setVisible(false);
+}
+
+void BrowserTab::resizeEvent(QResizeEvent * event)
+{
+    this->updatePageMargins();
+    QWidget::resizeEvent(event);
 }
