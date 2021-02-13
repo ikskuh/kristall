@@ -23,7 +23,7 @@
 static constexpr const char escapeString = '\033';
 bool inverted{false};
 
-void setColor(QTextCharFormat& format, unsigned char n, bool bg=false)
+static void setColor(QTextCharFormat& format, unsigned char n, bool bg=false)
 {
     QColor color;
 
@@ -57,7 +57,7 @@ void setColor(QTextCharFormat& format, unsigned char n, bool bg=false)
         format.setForeground(color);
 }
 
-QString parseNumber(const QString& input, QString::const_iterator& it)
+static QString parseNumber(const QString& input, QString::const_iterator& it)
 {
     QString result;
     while (it != input.cend())
@@ -70,7 +70,7 @@ QString parseNumber(const QString& input, QString::const_iterator& it)
     return result;
 }
 
-void parseSGR(
+static void parseSGR(
     std::vector<unsigned char>& args,
     const QString& input,
     QString::const_iterator& it,
@@ -223,7 +223,7 @@ void parseSGR(
     }
 }
 
-std::vector<unsigned char> parseNumericArguments(const QString& input, QString::const_iterator& it)
+static std::vector<unsigned char> parseNumericArguments(const QString& input, QString::const_iterator& it)
 {
     std::vector<unsigned char> result;
     while (it != input.end())
@@ -247,7 +247,7 @@ std::vector<unsigned char> parseNumericArguments(const QString& input, QString::
     return result;
 }
 
-void parseCSI(
+static void parseCSI(
     const QString& input,
     QString::const_iterator& it,
     QTextCharFormat& format,
@@ -324,7 +324,8 @@ void parseCSI(
     }
 }
 
-void RenderEscapeCodes(const QByteArray &input, const QTextCharFormat& format, QTextCursor& cursor)
+void renderhelpers::renderEscapeCodes(const QByteArray &input,
+    const QTextCharFormat& format, QTextCursor& cursor)
 {
     auto textFormat = format;
     const auto tokens = input.split(escapeString);

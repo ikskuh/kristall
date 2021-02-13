@@ -141,7 +141,7 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
         if (type == 'i')
         {
             const QString escapeRenderInput = title + "\n";
-            RenderEscapeCodes(escapeRenderInput.toUtf8(), standard, cursor);
+            renderhelpers::renderEscapeCodes(escapeRenderInput.toUtf8(), standard, cursor);
         }
         else
         {
