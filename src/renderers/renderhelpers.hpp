@@ -5,10 +5,10 @@
 #include <QTextCursor>
 #include <QTextDocument>
 
-void RenderEscapeCodes(const QByteArray &input, const QTextCharFormat& format, QTextCursor& cursor);
-
 namespace renderhelpers
 {
+    void renderEscapeCodes(const QByteArray &input, const QTextCharFormat& format, QTextCursor& cursor);
+
     void setPageMargins(QTextDocument *doc, int mh, int mv);
 }
 
