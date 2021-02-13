@@ -25,6 +25,8 @@ static QByteArray trim_whitespace(const QByteArray &items)
     return items.mid(start, end - start + 1);
 }
 
+static QByteArray replace_quotes(QByteArray&);
+
 std::unique_ptr<GeminiDocument> GeminiRenderer::render(
         const QByteArray &input,
         QUrl const &root_url,
@@ -55,7 +57,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
     };
 
     QList<QByteArray> lines = input.split('\n');
-    for (auto const &line : lines)
+    for (auto &line : lines)
     {
         if (verbatim)
         {
@@ -85,6 +87,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                     cursor.insertBlock();
                 }
 
+                replace_quotes(line);
                 QString item = trim_whitespace(line.mid(1));
 
                 cursor.insertText(item, text_style.standard);
@@ -108,6 +111,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 blockquote  = true;
 
                 cursor.setBlockFormat(text_style.block_quote_format);
+                replace_quotes(line);
                 cursor.insertText(trim_whitespace(line.mid(1)) + "\n", text_style.standard);
 
                 continue;
@@ -129,10 +133,11 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 fmt.setAnchor(true);
                 fmt.setAnchorNames(QStringList { id });
 
-                cursor.setBlockFormat(text_style.heading_format);
-                cursor.insertText(heading, fmt);
-                cursor.insertText("\n", text_style.standard);
                 outline.appendH3(heading, id);
+
+                cursor.setBlockFormat(text_style.heading_format);
+                cursor.insertText(replace_quotes(heading), fmt);
+                cursor.insertText("\n", text_style.standard);
             }
             else if (line.startsWith("##"))
             {
@@ -143,10 +148,11 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 fmt.setAnchor(true);
                 fmt.setAnchorNames(QStringList { id });
 
-                cursor.setBlockFormat(text_style.heading_format);
-                cursor.insertText(heading, fmt);
-                cursor.insertText("\n", text_style.standard);
                 outline.appendH2(heading, id);
+
+                cursor.setBlockFormat(text_style.heading_format);
+                cursor.insertText(replace_quotes(heading), fmt);
+                cursor.insertText("\n", text_style.standard);
             }
             else if (line.startsWith("#"))
             {
@@ -157,10 +163,11 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 fmt.setAnchor(true);
                 fmt.setAnchorNames(QStringList { id });
 
-                cursor.setBlockFormat(text_style.heading_format);
-                cursor.insertText(heading, fmt);
-                cursor.insertText("\n", text_style.standard);
                 outline.appendH1(heading, id);
+
+                cursor.setBlockFormat(text_style.heading_format);
+                cursor.insertText(replace_quotes(heading), fmt);
+                cursor.insertText("\n", text_style.standard);
 
                 // Use first heading as the page's title.
                 if (page_title != nullptr && page_title->isEmpty())
@@ -193,6 +200,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 {
                     link = trim_whitespace(part);
                     title = trim_whitespace(part);
+                    replace_quotes(title);
                 }
 
                 auto local_url = QUrl(link);
@@ -236,6 +244,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
             else
             {
                 cursor.setBlockFormat(text_style.standard_format);
+                replace_quotes(line);
 
                 if(emit_fancy_text)
                 {
@@ -316,4 +325,66 @@ GeminiDocument::GeminiDocument(QObject *parent) : QTextDocument(parent)
 
 GeminiDocument::~GeminiDocument()
 {
+}
+
+/*
+ * This replaces single and double quotes (', ") with
+ * one of the four typographer's quotes, a.k.a curly quotes,
+ * e.g: ‘this’ and “this”
+ */
+static QByteArray replace_quotes(QByteArray &line)
+{
+    int last_d = -1,
+        last_s = -1;
+
+    for (int i = 0; i < line.length(); ++i)
+    {
+        // Double quotes
+        if (line[i] == '"')
+        {
+            if (last_d == -1)
+            {
+                last_d = i;
+            }
+            else
+            {
+                // Replace quote at first position:
+                QByteArray first = QString("“").toUtf8();
+                line.replace(last_d, 1, first);
+
+                // Replace quote at second position:
+                line.replace(i + first.size() - 1, 1, QString("”").toUtf8());
+
+                last_d = -1;
+            }
+        }
+        else if (line[i] == '\'')
+        {
+            if (last_s == -1)
+            {
+                // Skip if it looks like a contraction rather
+                // than a quote.
+                if (i > 0 && line[i - 1] != ' ')
+                {
+                    line.replace(i, 1, QString("’").toUtf8());
+                    continue;
+                }
+
+                last_s = i;
+            }
+            else
+            {
+                // Replace quote at first position:
+                QByteArray first = QString("‘").toUtf8();
+                line.replace(last_s, 1, first);
+
+                // Replace quote at second position:
+                line.replace(i + first.size() - 1, 1, QString("’").toUtf8());
+
+                last_s = -1;
+            }
+        }
+    }
+
+    return line;
 }
