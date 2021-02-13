@@ -112,28 +112,25 @@ private slots:
     void on_ui_density_currentIndexChanged(int index);
 
     void on_fancypants_on_clicked();
-
     void on_fancypants_off_clicked();
 
     void on_texthl_on_clicked();
-
     void on_texthl_off_clicked();
 
     void on_gophermap_icon_clicked();
-
     void on_gophermap_text_clicked();
 
     void on_scheme_os_default_clicked();
-
     void on_scheme_error_clicked();
 
     void on_show_hidden_files_clicked();
-
     void on_hide_hidden_files_clicked();
 
     void on_urlbarhl_fancy_clicked();
-
     void on_urlbarhl_none_clicked();
+
+    void on_fancyquotes_on_clicked();
+    void on_fancyquotes_off_clicked();
 
     void on_redirection_mode_currentIndexChanged(int index);
 
@@ -142,13 +139,10 @@ private slots:
     void on_network_timeout_valueChanged(int arg1);
 
     void on_enable_home_btn_clicked(bool arg1);
-
     void on_enable_newtab_btn_clicked(bool arg1);
 
     void on_cache_limit_valueChanged(int limit);
-
     void on_cache_threshold_valueChanged(int thres);
-
     void on_cache_life_valueChanged(int life);
 
 private:

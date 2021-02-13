@@ -364,6 +364,8 @@ void GenericSettings::load(QSettings &settings)
 
     fancy_urlbar = settings.value("fancy_urlbar", true).toBool();
 
+    fancy_quotes = settings.value("fancy_quotes", true).toBool();
+
     max_redirections = settings.value("max_redirections", 5).toInt();
     redirection_policy = RedirectionWarning(settings.value("redirection_policy ", WarnOnHostChange).toInt());
 
@@ -399,6 +401,7 @@ void GenericSettings::save(QSettings &settings) const
     settings.setValue("use_os_scheme_handler", use_os_scheme_handler);
     settings.setValue("show_hidden_files_in_dirs", show_hidden_files_in_dirs);
     settings.setValue("fancy_urlbar", fancy_urlbar);
+    settings.setValue("fancy_quotes", fancy_quotes);
     settings.setValue("max_redirections", max_redirections);
     settings.setValue("redirection_policy", int(redirection_policy));
     settings.setValue("network_timeout", network_timeout);
