@@ -249,6 +249,12 @@ void SettingsDialog::setOptions(const GenericSettings &options)
         this->ui->urlbarhl_none->setChecked(true);
     }
 
+    if(this->current_options.fancy_quotes) {
+        this->ui->fancyquotes_on->setChecked(true);
+    } else {
+        this->ui->fancyquotes_off->setChecked(true);
+    }
+
     this->ui->max_redirects->setValue(this->current_options.max_redirections);
 
     this->ui->redirection_mode->setCurrentIndex(0);
@@ -714,6 +720,16 @@ void SettingsDialog::on_urlbarhl_fancy_clicked()
 void SettingsDialog::on_urlbarhl_none_clicked()
 {
     this->current_options.fancy_urlbar = false;
+}
+
+void SettingsDialog::on_fancyquotes_on_clicked()
+{
+    this->current_options.fancy_quotes = true;
+}
+
+void SettingsDialog::on_fancyquotes_off_clicked()
+{
+    this->current_options.fancy_quotes = false;
 }
 
 void SettingsDialog::on_redirection_mode_currentIndexChanged(int index)

@@ -334,6 +334,9 @@ GeminiDocument::~GeminiDocument()
  */
 static QByteArray replace_quotes(QByteArray &line)
 {
+    if (!kristall::options.fancy_quotes)
+        return line;
+
     int last_d = -1,
         last_s = -1;
 
@@ -367,6 +370,14 @@ static QByteArray replace_quotes(QByteArray &line)
                 if (i > 0 && line[i - 1] != ' ')
                 {
                     line.replace(i, 1, QString("’").toUtf8());
+                    continue;
+                }
+
+                // For shortenings like 'till
+                int len = line.length();
+                if ((i + 1) < len && line[i + 1] != ' ')
+                {
+                    line.replace(i, 1, QString("‘").toUtf8());
                     continue;
                 }
 
