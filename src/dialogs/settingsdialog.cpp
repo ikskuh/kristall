@@ -110,7 +110,8 @@ void SettingsDialog::setGeminiStyle(DocumentStyle const &style)
     this->ui->link_local_prefix->setText(this->current_style.internal_link_prefix);
     this->ui->link_foreign_prefix->setText(this->current_style.external_link_prefix);
 
-    this->ui->page_margin->setValue(this->current_style.margin);
+    this->ui->page_margin_h->setValue(this->current_style.margin_h);
+    this->ui->page_margin_v->setValue(this->current_style.margin_v);
 
     this->ui->enable_justify_text->setChecked(this->current_style.justify_text);
 
@@ -431,9 +432,15 @@ void SettingsDialog::on_preview_url_textChanged(const QString &)
     this->reloadStylePreview();
 }
 
-void SettingsDialog::on_page_margin_valueChanged(double value)
+void SettingsDialog::on_page_margin_h_valueChanged(double value)
 {
-    this->current_style.margin = value;
+    this->current_style.margin_h = value;
+    this->reloadStylePreview();
+}
+
+void SettingsDialog::on_page_margin_v_valueChanged(double value)
+{
+    this->current_style.margin_v = value;
     this->reloadStylePreview();
 }
 

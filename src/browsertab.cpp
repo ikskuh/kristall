@@ -6,6 +6,7 @@
 #include "renderers/geminirenderer.hpp"
 #include "renderers/plaintextrenderer.hpp"
 #include "renderers/markdownrenderer.hpp"
+#include "renderers/renderhelpers.hpp"
 
 #include "mimeparser.hpp"
 
@@ -575,7 +576,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
 
         document->setDefaultFont(doc_style.standard_font);
         document->setDefaultStyleSheet(doc_style.toStyleSheet());
-        document->setDocumentMargin(doc_style.margin);
+        renderhelpers::setPageMargins(document.get(), doc_style.margin_h, doc_style.margin_v);
 
         // Strip inline styles from page, so they don't
         // conflict with user styles.
@@ -1322,7 +1323,7 @@ void BrowserTab::updatePageMargins()
     QTextFrame *root = this->current_document->rootFrame();
     QTextFrameFormat fmt = root->frameFormat();
     int margin = std::max((this->width() - this->current_style.text_width) / 2,
-        this->current_style.margin);
+        this->current_style.margin_h);
     fmt.setLeftMargin(margin);
     fmt.setRightMargin(margin);
     root->setFrameFormat(fmt);

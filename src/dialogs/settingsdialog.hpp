@@ -76,7 +76,8 @@ private slots:
 
     void on_preview_url_textChanged(const QString &arg1);
 
-    void on_page_margin_valueChanged(double arg1);
+    void on_page_margin_h_valueChanged(double arg1);
+    void on_page_margin_v_valueChanged(double arg1);
 
     void on_enable_justify_text_clicked(bool arg1);
 

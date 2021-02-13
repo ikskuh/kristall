@@ -49,7 +49,7 @@ struct DocumentStyle
     QString internal_link_prefix;
     QString external_link_prefix;
 
-    double margin;
+    double margin_h, margin_v;
 
     double text_width;
 

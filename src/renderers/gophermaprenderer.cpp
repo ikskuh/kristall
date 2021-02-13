@@ -30,7 +30,7 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
     bool emit_text_only = (kristall::options.gophermap_display == GenericSettings::PlainText);
 
     std::unique_ptr<QTextDocument> result = std::make_unique<QTextDocument>();
-    result->setDocumentMargin(themed_style.margin);
+    renderhelpers::setPageMargins(result.get(), themed_style.margin_h, themed_style.margin_v);
 
     if(not emit_text_only)
     {
