@@ -200,8 +200,8 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 {
                     link = trim_whitespace(part);
                     title = trim_whitespace(part);
-                    replace_quotes(title);
                 }
+                replace_quotes(title);
 
                 auto local_url = QUrl(link);
 
