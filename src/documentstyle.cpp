@@ -135,11 +135,13 @@ DocumentStyle::DocumentStyle(bool do_init) : theme(Fixed),
     internal_link_prefix("→ "),
     external_link_prefix("⇒ "),
     margin(55.0),
+    text_width(900),
     ansi_colors({"black", "darkred", "darkgreen", "darkgoldenrod",
         "darkblue", "darkmagenta", "darkcyan", "lightgray",
         "gray", "red", "green", "goldenrod",
         "lightblue", "magenta", "cyan", "white"}),
     justify_text(true),
+    text_width_enabled(true),
     line_height_p(5.0),
     line_height_h(0.0),
     indent_bq(2), indent_p(1), indent_h(0), indent_l(2)
@@ -273,6 +275,8 @@ bool DocumentStyle::save(QSettings &settings) const
         settings.beginGroup("Formatting");
 
         settings.setValue("justify_text", justify_text);
+        settings.setValue("text_width_enabled", text_width_enabled);
+        settings.setValue("text_width", text_width);
         settings.setValue("line_height_p", line_height_p);
         settings.setValue("line_height_h", line_height_h);
         settings.setValue("indent_bq", indent_bq);
@@ -378,6 +382,8 @@ bool DocumentStyle::load(QSettings &settings)
             settings.beginGroup("Formatting");
 
             justify_text = settings.value("justify_text", justify_text).toBool();
+            text_width_enabled = settings.value("text_width_enabled", text_width_enabled).toBool();
+            text_width = settings.value("text_width", text_width).toInt();
             line_height_p = settings.value("line_height_p", line_height_p).toDouble();
             line_height_h = settings.value("line_height_h", line_height_h).toDouble();
             indent_bq = settings.value("indent_bq", indent_bq).toInt();

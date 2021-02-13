@@ -730,6 +730,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
 
     this->ui->text_browser->setDocument(document.get());
     this->current_document = std::move(document);
+    this->current_style = std::move(doc_style);
     this->updatePageMargins();
 
     this->needs_rerender = false;
@@ -1315,11 +1316,13 @@ void BrowserTab::setUiDensity(UIDensity density)
 
 void BrowserTab::updatePageMargins()
 {
-    if (!this->current_document) return;
+    if (!this->current_document || !this->current_style.text_width_enabled)
+        return;
 
     QTextFrame *root = this->current_document->rootFrame();
     QTextFrameFormat fmt = root->frameFormat();
-    int margin = std::max((this->width() - 900) / 2, 30);
+    int margin = std::max((this->width() - this->current_style.text_width) / 2,
+        this->current_style.margin);
     fmt.setLeftMargin(margin);
     fmt.setRightMargin(margin);
     root->setFrameFormat(fmt);

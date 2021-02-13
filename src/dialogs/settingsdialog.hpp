@@ -80,6 +80,10 @@ private slots:
 
     void on_enable_justify_text_clicked(bool arg1);
 
+    void on_enable_text_width_clicked(bool arg1);
+
+    void on_text_width_valueChanged(int value);
+
     void on_line_height_p_valueChanged(double arg1);
 
     void on_line_height_h_valueChanged(double arg1);

@@ -114,6 +114,10 @@ void SettingsDialog::setGeminiStyle(DocumentStyle const &style)
 
     this->ui->enable_justify_text->setChecked(this->current_style.justify_text);
 
+    this->ui->enable_text_width->setChecked(this->current_style.text_width_enabled);
+
+    this->ui->text_width->setValue(this->current_style.text_width);
+
     this->ui->line_height_p->setValue(this->current_style.line_height_p);
     this->ui->line_height_h->setValue(this->current_style.line_height_h);
 
@@ -443,6 +447,17 @@ void SettingsDialog::on_enable_justify_text_clicked(bool checked)
 {
     this->current_style.justify_text = checked;
     this->reloadStylePreview();
+}
+
+void SettingsDialog::on_enable_text_width_clicked(bool checked)
+{
+    this->current_style.text_width_enabled = checked;
+    this->ui->text_width->setEnabled(checked);
+}
+
+void SettingsDialog::on_text_width_valueChanged(int value)
+{
+    this->current_style.text_width = value;
 }
 
 void SettingsDialog::on_line_height_p_valueChanged(double value)

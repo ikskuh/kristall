@@ -237,6 +237,8 @@ public:
     bool was_read_from_cache = false;
 
     RequestState request_state;
+
+    DocumentStyle current_style;
 };
 
 #endif // BROWSERTAB_HPP
