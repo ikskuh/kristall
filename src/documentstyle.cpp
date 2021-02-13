@@ -134,7 +134,8 @@ DocumentStyle::DocumentStyle(bool do_init) : theme(Fixed),
     cross_scheme_link_color(0x09, 0x60, 0xa7),
     internal_link_prefix("→ "),
     external_link_prefix("⇒ "),
-    margin(55.0),
+    margin_h(30.0),
+    margin_v(55.0),
     text_width(900),
     ansi_colors({"black", "darkred", "darkgreen", "darkgoldenrod",
         "darkblue", "darkmagenta", "darkcyan", "lightgray",
@@ -225,7 +226,8 @@ bool DocumentStyle::save(QSettings &settings) const
     settings.setValue("background_color", background_color.name());
     settings.setValue("blockquote_color", blockquote_color.name());
 
-    settings.setValue("margins", margin);
+    settings.setValue("margins_h", margin_h);
+    settings.setValue("margins_v", margin_v);
 
     settings.setValue("ansi_colors", ansi_colors);
 
@@ -317,7 +319,7 @@ bool DocumentStyle::load(QSettings &settings)
             internal_link_prefix = settings.value("internal_link_prefix").toString();
             external_link_prefix = settings.value("external_link_prefix").toString();
 
-            margin = settings.value("margins").toDouble();
+            margin_h = margin_v = settings.value("margins").toDouble();
             theme = Theme(settings.value("theme").toInt());
         }
         break;
@@ -328,7 +330,8 @@ bool DocumentStyle::load(QSettings &settings)
         background_color = QColor { settings.value("background_color", background_color.name()).toString() };
         blockquote_color = QColor { settings.value("blockquote_color", blockquote_color.name()).toString() };
 
-        margin = settings.value("margins", 55).toInt();
+        margin_h = settings.value("margins_h", 30).toInt();
+        margin_v = settings.value("margins_v", 55).toInt();
 
         QStringList default_colors = {"black", "darkred", "darkgreen", "darkgoldenrod",
             "darkblue", "darkmagenta", "darkcyan", "lightgray",

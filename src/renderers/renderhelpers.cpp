@@ -2,7 +2,7 @@
  * @TODO I'm hardcoding this to ANSI for now, as it's the most common.
  *       Ideally we should have configurable control characters for various
  *       types of terminals that could be emulated via a standard termcap file.
- * @NOTE ANSI escape sequence reference: 
+ * @NOTE ANSI escape sequence reference:
  *       https://en.wikipedia.org/wiki/ANSI_escape_code#Escape_sequences
  *       Note that escape sequences for other terminal types are a thing, and
  *       currently aren't implemented yet as mentioned in the TODO above, eg:
@@ -14,6 +14,8 @@
 #include <QByteArray>
 #include <QString>
 #include <QTextCursor>
+#include <QTextFrame>
+#include <QTextFrameFormat>
 
 #include <string>
 #include <iostream>
@@ -79,7 +81,7 @@ void parseSGR(
     if (args.empty()) return;
     for (auto it = args.cbegin(); it != args.cend(); ++it)
     {
-        /// @TODO A whole bunch of unimplemented SGR codes are unimplemented 
+        /// @TODO A whole bunch of unimplemented SGR codes are unimplemented
         ///       yet (eg: blink or font switching)
         enum {
             Reset = 0, Bold, Light, Italic, Underline,
@@ -347,3 +349,13 @@ void RenderEscapeCodes(const QByteArray &input, const QTextCharFormat& format, Q
     }
 }
 
+void renderhelpers::setPageMargins(QTextDocument *doc, int mh, int mv)
+{
+    QTextFrame *root = doc->rootFrame();
+    QTextFrameFormat fmt = root->frameFormat();
+    fmt.setLeftMargin(mh);
+    fmt.setRightMargin(mh);
+    fmt.setTopMargin(mv);
+    fmt.setBottomMargin(mv);
+    root->setFrameFormat(fmt);
+}

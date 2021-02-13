@@ -891,15 +891,16 @@
          <item row="12" column="1">
           <widget class="QComboBox" name="auto_theme"/>
          </item>
+
          <item row="13" column="0">
           <widget class="QLabel" name="label_13">
            <property name="text">
-            <string>Page Margin</string>
+            <string>Left/right Page Margin</string>
            </property>
           </widget>
          </item>
          <item row="13" column="1">
-          <widget class="QDoubleSpinBox" name="page_margin">
+          <widget class="QDoubleSpinBox" name="page_margin_h">
            <property name="suffix">
             <string> px</string>
            </property>
@@ -907,18 +908,40 @@
             <number>0</number>
            </property>
            <property name="maximum">
-            <double>350.000000000000000</double>
+            <double>350</double>
            </property>
           </widget>
          </item>
+
          <item row="14" column="0">
+          <widget class="QLabel" name="label_32">
+           <property name="text">
+            <string>Top/bottom Page Margin</string>
+           </property>
+          </widget>
+         </item>
+         <item row="14" column="1">
+          <widget class="QDoubleSpinBox" name="page_margin_v">
+           <property name="suffix">
+            <string> px</string>
+           </property>
+           <property name="decimals">
+            <number>0</number>
+           </property>
+           <property name="maximum">
+            <double>350</double>
+           </property>
+          </widget>
+         </item>
+
+         <item row="15" column="0">
           <widget class="QLabel" name="label_25">
            <property name="text">
             <string>Other options</string>
            </property>
           </widget>
          </item>
-         <item row="14" column="1">
+         <item row="15" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout_98">
            <item>
             <widget class="QCheckBox" name="enable_justify_text">
@@ -943,7 +966,7 @@
           </layout>
          </item>
 
-         <item row="15" column="0">
+         <item row="16" column="0">
           <widget class="QLabel" name="label_38">
            <property name="text">
             <string>Text width limit</string>
@@ -953,7 +976,7 @@
            </property>
           </widget>
          </item>
-         <item row="15" column="1">
+         <item row="16" column="1">
           <widget class="QSpinBox" name="text_width">
            <property name="minimum">
             <number>300</number>
@@ -970,14 +993,14 @@
           </widget>
          </item>
 
-         <item row="16" column="0">
+         <item row="17" column="0">
           <widget class="QLabel" name="label_35">
            <property name="text">
             <string>Line height (paragraph)</string>
            </property>
           </widget>
          </item>
-         <item row="16" column="1">
+         <item row="17" column="1">
           <widget class="QDoubleSpinBox" name="line_height_p">
            <property name="suffix">
             <string> px</string>
@@ -991,14 +1014,14 @@
           </widget>
          </item>
 
-         <item row="17" column="0">
+         <item row="18" column="0">
           <widget class="QLabel" name="label_36">
            <property name="text">
             <string>Line height (header)</string>
            </property>
           </widget>
          </item>
-         <item row="17" column="1">
+         <item row="18" column="1">
           <widget class="QDoubleSpinBox" name="line_height_h">
            <property name="suffix">
             <string> px</string>
@@ -1012,14 +1035,14 @@
           </widget>
          </item>
 
-         <item row="18" column="0">
+         <item row="19" column="0">
           <widget class="QLabel" name="label_37">
            <property name="text">
             <string>Indentation</string>
            </property>
           </widget>
          </item>
-         <item row="18" column="1">
+         <item row="19" column="1">
           <layout class="QHBoxLayout" name="indent_container">
 
            <item>
@@ -1109,14 +1132,14 @@
           </layout>
          </item>
 
-         <item row="19" column="0">
+         <item row="20" column="0">
           <widget class="QLabel" name="label_17">
            <property name="text">
             <string>Presets</string>
            </property>
           </widget>
          </item>
-         <item row="19" column="1">
+         <item row="20" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
             <widget class="QComboBox" name="presets"/>
@@ -1342,7 +1365,8 @@
   <tabstop>link_foreign_prefix</tabstop>
   <tabstop>quote_change_color</tabstop>
   <tabstop>auto_theme</tabstop>
-  <tabstop>page_margin</tabstop>
+  <tabstop>page_margin_h</tabstop>
+  <tabstop>page_margin_v</tabstop>
   <tabstop>enable_justify_text</tabstop>
   <tabstop>enable_text_width</tabstop>
   <tabstop>text_width</tabstop>

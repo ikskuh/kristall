@@ -14,7 +14,7 @@ std::unique_ptr<QTextDocument> PlainTextRenderer::render(const QByteArray &input
     standard.setForeground(style.preformatted_color);
 
     std::unique_ptr<QTextDocument> result = std::make_unique<QTextDocument>();
-    result->setDocumentMargin(style.margin);
+    renderhelpers::setPageMargins(result.get(), style.margin_h, style.margin_v);
 
     QTextCursor cursor { result.get() };
     RenderEscapeCodes(input, standard, cursor);

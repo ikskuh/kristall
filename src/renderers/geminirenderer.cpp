@@ -1,4 +1,5 @@
 #include "geminirenderer.hpp"
+#include "renderhelpers.hpp"
 
 #include <QTextList>
 #include <QTextBlock>
@@ -37,7 +38,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
     TextStyleInstance text_style { themed_style };
 
     std::unique_ptr<GeminiDocument> result = std::make_unique<GeminiDocument>();
-    result->setDocumentMargin(themed_style.margin);
+    renderhelpers::setPageMargins(result.get(), themed_style.margin_h, themed_style.margin_v);
     result->setIndentWidth(20);
 
     bool emit_fancy_text = kristall::options.enable_text_decoration;

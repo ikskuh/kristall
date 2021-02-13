@@ -2,6 +2,8 @@
 
 #include "textstyleinstance.hpp"
 
+#include "renderhelpers.hpp"
+
 #include <cmark.h>
 #include <cassert>
 
@@ -316,7 +318,7 @@ std::unique_ptr<QTextDocument> MarkdownRenderer::render(
         return nullptr;
 
     auto doc = std::make_unique<QTextDocument>();
-    doc->setDocumentMargin(style.margin);
+    renderhelpers::setPageMargins(doc.get(), style.margin_h, style.margin_v);
     doc->setIndentWidth(20);
 
     outline.beginBuild();
