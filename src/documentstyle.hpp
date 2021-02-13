@@ -51,9 +51,11 @@ struct DocumentStyle
 
     double margin;
 
+    double text_width;
+
     QStringList ansi_colors;
 
-    bool justify_text;
+    bool justify_text, text_width_enabled;
     double line_height_p;
     double line_height_h;
     int indent_bq, indent_p, indent_h, indent_l;
