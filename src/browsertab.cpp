@@ -1558,7 +1558,11 @@ bool BrowserTab::searchBoxFind(QString text, bool backward)
 
     // Perform search using our new regex
     return this->ui->text_browser->find(
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 13, 0))
         QRegularExpression(text, QRegularExpression::CaseInsensitiveOption),
+#else
+        QRegExp(text, Qt::CaseInsensitive),
+#endif
         backward ? QTextDocument::FindBackward : QTextDocument::FindFlags());
 }
 
