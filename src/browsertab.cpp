@@ -1545,7 +1545,7 @@ void BrowserTab::disableClientCertificate()
 bool BrowserTab::searchBoxFind(QString text, bool backward)
 {
     // First we escape the query to be suitable to use inside a regex pattern.
-    // https://stackoverflow.com/a/6969486
+    // https://stackoverflow.com/a/3561711
     static const QRegularExpression ESCAPE_REGEX = QRegularExpression(R"(([-\/\\^$*+?.()|[\]{}]))");
     text.replace(ESCAPE_REGEX, "\\\\1");
 
