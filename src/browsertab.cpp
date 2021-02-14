@@ -1542,6 +1542,26 @@ void BrowserTab::disableClientCertificate()
     this->current_identity = CryptoIdentity();
 }
 
+bool BrowserTab::searchBoxFind(QString text, bool backward)
+{
+    // First we escape the query to be suitable to use inside a regex pattern.
+    // https://stackoverflow.com/a/6969486
+    static const QRegularExpression ESCAPE_REGEX = QRegularExpression(R"(([-\/\\^$*+?.()|[\]{}]))");
+    text.replace(ESCAPE_REGEX, "\\\\1");
+
+    // This part allows us to match different types of quotes easily:
+    // ' -> ('|‘|’)
+    // " -> ("|“|”)
+    static const QRegularExpression QUOTES_SINGLE_REGEX = QRegularExpression("'");
+    static const QRegularExpression QUOTES_DOUBLE_REGEX = QRegularExpression("\"");
+    text.replace(QUOTES_SINGLE_REGEX, "('|‘|’)").replace(QUOTES_DOUBLE_REGEX, "(\"|“|”)");
+
+    // Perform search using our new regex
+    return this->ui->text_browser->find(
+        QRegularExpression(text, QRegularExpression::CaseInsensitiveOption),
+        backward ? QTextDocument::FindBackward : QTextDocument::FindFlags());
+}
+
 void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint pos)
 {
     QMenu menu;
@@ -1637,33 +1657,33 @@ void BrowserTab::on_enable_client_cert_button_clicked(bool checked)
 void BrowserTab::on_search_box_textChanged(const QString &arg1)
 {
     this->ui->text_browser->setTextCursor(QTextCursor { this->ui->text_browser->document() });
-    this->ui->text_browser->find(arg1);
+    this->searchBoxFind(arg1);
 }
 
 void BrowserTab::on_search_box_returnPressed()
 {
-    this->ui->text_browser->find(this->ui->search_box->text());
+    this->searchBoxFind(this->ui->search_box->text());
 }
 
 void BrowserTab::on_search_next_clicked()
 {
-    if (!this->ui->text_browser->find(this->ui->search_box->text()) &&
+    if (!this->searchBoxFind(this->ui->search_box->text()) &&
         this->current_buffer.contains(this->ui->search_box->text().toUtf8()))
     {
         // Wrap search
         this->ui->text_browser->moveCursor(QTextCursor::Start);
-        this->ui->text_browser->find(this->ui->search_box->text());
+        this->searchBoxFind(this->ui->search_box->text());
     }
 }
 
 void BrowserTab::on_search_previous_clicked()
 {
-    if (!this->ui->text_browser->find(this->ui->search_box->text(), QTextDocument::FindBackward) &&
+    if (!this->searchBoxFind(this->ui->search_box->text(), true) &&
         this->current_buffer.contains(this->ui->search_box->text().toUtf8()))
     {
         // Wrap search
         this->ui->text_browser->moveCursor(QTextCursor::End);
-        this->ui->text_browser->find(this->ui->search_box->text(), QTextDocument::FindBackward);
+        this->searchBoxFind(this->ui->search_box->text(), true);
     }
 }
 
@@ -1672,7 +1692,7 @@ void BrowserTab::on_close_search_clicked()
     this->ui->search_bar->setVisible(false);
 }
 
-void BrowserTab::resizeEvent(QResizeEvent * event)
+void BrowserTab::resizeEvent(QResizeEvent *event)
 {
     this->updatePageMargins();
     QWidget::resizeEvent(event);
