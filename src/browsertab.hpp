@@ -189,6 +189,8 @@ private:
     bool enableClientCertificate(CryptoIdentity const & ident);
     void disableClientCertificate();
 
+    bool searchBoxFind(QString text, bool backward=false);
+
 protected:
     void resizeEvent(QResizeEvent * event);
 
