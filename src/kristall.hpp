@@ -51,6 +51,7 @@ struct GenericSettings
     };
 
     QString start_page = "about:favourites";
+    QString search_engine = "gemini://geminispace.info/search?%1";
     Theme theme = Theme::light;
     UIDensity ui_density = UIDensity::compact;
     TextDisplay text_display = FormattedText;

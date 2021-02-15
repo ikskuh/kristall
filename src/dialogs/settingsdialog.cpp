@@ -218,6 +218,12 @@ void SettingsDialog::setOptions(const GenericSettings &options)
 
     this->ui->start_page->setText(this->current_options.start_page);
 
+    this->ui->search_engine->clear();
+    this->ui->search_engine->setEditText(this->current_options.search_engine);
+    this->ui->search_engine->addItem("gemini://geminispace.info/search?%1");
+    this->ui->search_engine->addItem("gemini://gus.guru/search?%1");
+    this->ui->search_engine->addItem("gemini://houston.coder.town/search?%1");
+
     if(this->current_options.gophermap_display == GenericSettings::PlainText) {
         this->ui->gophermap_text->setChecked(true);
     } else {
@@ -668,6 +674,11 @@ void SettingsDialog::on_preset_export_clicked()
 void SettingsDialog::on_start_page_textChanged(const QString &start_page)
 {
     this->current_options.start_page = start_page;
+}
+
+void SettingsDialog::on_search_engine_currentTextChanged(const QString &search_engine)
+{
+    this->current_options.search_engine = search_engine;
 }
 
 void SettingsDialog::on_ui_theme_currentIndexChanged(int index)

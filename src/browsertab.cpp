@@ -304,8 +304,19 @@ void BrowserTab::on_url_bar_returnPressed()
         else
         {
             // Use the text as a search query.
-            static const QString search_engine = "gemini://gus.guru/search?%1";
-            url = QUrl{QString(search_engine).arg(this->ui->url_bar->text())};
+            if (kristall::options.search_engine.isEmpty() ||
+                !kristall::options.search_engine.contains("%1"))
+            {
+                QMessageBox::warning(this,
+                    "Kristall",
+                    "No search engine is configured.\n"
+                    "Please configure one in the settings to allow searching via the URL bar.\n\n"
+                    "See the Help menu for additional information."
+                    );
+                return;
+            }
+            url = QUrl{QString(kristall::options.search_engine)
+                .arg(this->ui->url_bar->text())};
         }
     }
 
