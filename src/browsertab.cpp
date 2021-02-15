@@ -90,6 +90,11 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
 
     this->ui->text_browser->verticalScrollBar()->setTracking(true);
 
+    // We hide horizontal scroll bars for now, however mouse-scrolling (overshooting?)
+    // causes the page to still scroll horizontally. TODO: Fix this
+    this->ui->text_browser->horizontalScrollBar()->setEnabled(false);
+    this->ui->text_browser->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
     connect(this->ui->url_bar, &SearchBar::escapePressed, this, &BrowserTab::on_url_bar_escapePressed);
 
     this->network_timeout_timer.setSingleShot(true);

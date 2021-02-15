@@ -16,13 +16,15 @@ struct TextStyleInstance
     QTextCharFormat standard_h1;
     QTextCharFormat standard_h2;
     QTextCharFormat standard_h3;
+    QTextCharFormat blockquote;
 
     QTextBlockFormat standard_format;
     QTextBlockFormat preformatted_format;
-    QTextBlockFormat block_quote_format;
+    QTextBlockFormat blockquote_format;
     QTextBlockFormat heading_format;
     QTextBlockFormat link_format;
     QTextListFormat list_format;
+    QTextTableFormat blockquote_tableformat;
 
     explicit TextStyleInstance(DocumentStyle const & style);
 };

@@ -138,7 +138,7 @@ void SettingsDialog::setGeminiStyle(DocumentStyle const &style)
         .arg(this->current_style.background_color.name(), "#FF00FF"));
 
     ui->quote_preview->setStyleSheet(COLOR_STYLE
-        .arg(this->current_style.blockquote_color.name(), "#FF00FF"));
+        .arg(this->current_style.blockquote_bgcolor.name(), "#FF00FF"));
 
     ui->link_local_preview->setStyleSheet(COLOR_STYLE
         .arg(this->current_style.background_color.name(), this->current_style.internal_link_color.name()));
@@ -154,6 +154,7 @@ void SettingsDialog::setGeminiStyle(DocumentStyle const &style)
     setFontAndColor(this->ui->h1_preview, this->current_style.h1_font, this->current_style.h1_color);
     setFontAndColor(this->ui->h2_preview, this->current_style.h2_font, this->current_style.h2_color);
     setFontAndColor(this->ui->h3_preview, this->current_style.h3_font, this->current_style.h3_color);
+    setFontAndColor(this->ui->bq_preview, this->current_style.blockquote_font, this->current_style.blockquote_fgcolor);
 
     this->reloadStylePreview();
 }
@@ -359,6 +360,11 @@ void SettingsDialog::on_h3_change_font_clicked()
     updateFont(current_style.h3_font);
 }
 
+void SettingsDialog::on_bq_change_font_clicked()
+{
+    updateFont(current_style.blockquote_font);
+}
+
 void SettingsDialog::updateColor(QColor &input)
 {
     QColorDialog dialog { this };
@@ -396,6 +402,11 @@ void SettingsDialog::on_h3_change_color_clicked()
     updateColor(current_style.h3_color);
 }
 
+void SettingsDialog::on_bq_change_color_clicked()
+{
+    updateColor(current_style.blockquote_fgcolor);
+}
+
 void SettingsDialog::on_bg_change_color_clicked()
 {
     updateColor(current_style.background_color);
@@ -417,7 +428,7 @@ void SettingsDialog::on_link_cross_change_color_clicked()
 }
 void SettingsDialog::on_quote_change_color_clicked()
 {
-    updateColor(current_style.blockquote_color);
+    updateColor(current_style.blockquote_bgcolor);
 }
 
 void SettingsDialog::on_link_local_prefix_textChanged(const QString &text)

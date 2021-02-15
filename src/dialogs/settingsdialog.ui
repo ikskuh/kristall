@@ -723,6 +723,7 @@
            </item>
           </layout>
          </item>
+
          <item row="5" column="0">
           <widget class="QLabel" name="label_6">
            <property name="text">
@@ -772,56 +773,107 @@
            </item>
           </layout>
          </item>
+
          <item row="6" column="0">
+          <widget class="QLabel" name="label_33">
+           <property name="text">
+            <string>Blockquote font</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_24">
+           <item>
+            <widget class="QLabel" name="bq_preview">
+             <property name="styleSheet">
+              <string notr="true">border: 1px solid black;</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="text">
+              <string>This font will be used in blockquotes.</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::PlainText</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="bq_change_font">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset theme="font">
+               <normaloff>.</normaloff>.</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="bq_change_color">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset theme="palette">
+               <normaloff>.</normaloff>.</iconset>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+
+         <item row="7" column="0">
           <widget class="QLabel" name="label_7">
            <property name="text">
             <string>Local Link Color</string>
            </property>
           </widget>
          </item>
-         <item row="7" column="0">
+         <item row="8" column="0">
           <widget class="QLabel" name="label_8">
            <property name="text">
             <string>Foreign Link Color</string>
            </property>
           </widget>
          </item>
-         <item row="8" column="0">
+         <item row="9" column="0">
           <widget class="QLabel" name="label_9">
            <property name="text">
             <string>Cross-Scheme-Color</string>
            </property>
           </widget>
          </item>
-         <item row="9" column="0">
+         <item row="10" column="0">
           <widget class="QLabel" name="label_10">
            <property name="text">
             <string>Local Link Prefix</string>
            </property>
           </widget>
          </item>
-         <item row="10" column="0">
+         <item row="11" column="0">
           <widget class="QLabel" name="label_11">
            <property name="text">
             <string>Extern Link Prefix</string>
            </property>
           </widget>
          </item>
-         <item row="10" column="1">
+         <item row="11" column="1">
           <widget class="QLineEdit" name="link_foreign_prefix">
            <property name="text">
             <string>⇒ </string>
            </property>
           </widget>
          </item>
-         <item row="9" column="1">
+         <item row="10" column="1">
           <widget class="QLineEdit" name="link_local_prefix">
            <property name="text">
             <string>→ </string>
            </property>
           </widget>
          </item>
-         <item row="6" column="1">
+         <item row="7" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout_20">
            <item>
             <widget class="QLabel" name="link_local_preview">
@@ -846,7 +898,7 @@
            </item>
           </layout>
          </item>
-         <item row="7" column="1">
+         <item row="8" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout_21">
            <item>
             <widget class="QLabel" name="link_foreign_preview">
@@ -871,7 +923,7 @@
            </item>
           </layout>
          </item>
-         <item row="8" column="1">
+         <item row="9" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout_22">
            <item>
             <widget class="QLabel" name="link_cross_preview">
@@ -896,25 +948,25 @@
            </item>
           </layout>
          </item>
-         <item row="12" column="0">
+         <item row="13" column="0">
           <widget class="QLabel" name="label_12">
            <property name="text">
             <string>Auto-Theme Generation</string>
            </property>
           </widget>
          </item>
-         <item row="12" column="1">
+         <item row="13" column="1">
           <widget class="QComboBox" name="auto_theme"/>
          </item>
 
-         <item row="13" column="0">
+         <item row="14" column="0">
           <widget class="QLabel" name="label_13">
            <property name="text">
             <string>Left/right Page Margin</string>
            </property>
           </widget>
          </item>
-         <item row="13" column="1">
+         <item row="14" column="1">
           <widget class="QDoubleSpinBox" name="page_margin_h">
            <property name="suffix">
             <string> px</string>
@@ -928,14 +980,14 @@
           </widget>
          </item>
 
-         <item row="14" column="0">
+         <item row="15" column="0">
           <widget class="QLabel" name="label_32">
            <property name="text">
             <string>Top/bottom Page Margin</string>
            </property>
           </widget>
          </item>
-         <item row="14" column="1">
+         <item row="15" column="1">
           <widget class="QDoubleSpinBox" name="page_margin_v">
            <property name="suffix">
             <string> px</string>
@@ -949,14 +1001,14 @@
           </widget>
          </item>
 
-         <item row="15" column="0">
+         <item row="16" column="0">
           <widget class="QLabel" name="label_25">
            <property name="text">
             <string>Other options</string>
            </property>
           </widget>
          </item>
-         <item row="15" column="1">
+         <item row="16" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout_98">
            <item>
             <widget class="QCheckBox" name="enable_justify_text">
@@ -981,7 +1033,7 @@
           </layout>
          </item>
 
-         <item row="16" column="0">
+         <item row="17" column="0">
           <widget class="QLabel" name="label_38">
            <property name="text">
             <string>Text width limit</string>
@@ -991,7 +1043,7 @@
            </property>
           </widget>
          </item>
-         <item row="16" column="1">
+         <item row="17" column="1">
           <widget class="QSpinBox" name="text_width">
            <property name="minimum">
             <number>300</number>
@@ -1008,14 +1060,14 @@
           </widget>
          </item>
 
-         <item row="17" column="0">
+         <item row="18" column="0">
           <widget class="QLabel" name="label_35">
            <property name="text">
             <string>Line height (paragraph)</string>
            </property>
           </widget>
          </item>
-         <item row="17" column="1">
+         <item row="18" column="1">
           <widget class="QDoubleSpinBox" name="line_height_p">
            <property name="suffix">
             <string> px</string>
@@ -1029,14 +1081,14 @@
           </widget>
          </item>
 
-         <item row="18" column="0">
+         <item row="19" column="0">
           <widget class="QLabel" name="label_36">
            <property name="text">
             <string>Line height (header)</string>
            </property>
           </widget>
          </item>
-         <item row="18" column="1">
+         <item row="19" column="1">
           <widget class="QDoubleSpinBox" name="line_height_h">
            <property name="suffix">
             <string> px</string>
@@ -1050,14 +1102,14 @@
           </widget>
          </item>
 
-         <item row="19" column="0">
+         <item row="20" column="0">
           <widget class="QLabel" name="label_37">
            <property name="text">
             <string>Indentation</string>
            </property>
           </widget>
          </item>
-         <item row="19" column="1">
+         <item row="20" column="1">
           <layout class="QHBoxLayout" name="indent_container">
 
            <item>
@@ -1147,14 +1199,14 @@
           </layout>
          </item>
 
-         <item row="20" column="0">
+         <item row="21" column="0">
           <widget class="QLabel" name="label_17">
            <property name="text">
             <string>Presets</string>
            </property>
           </widget>
          </item>
-         <item row="20" column="1">
+         <item row="21" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
             <widget class="QComboBox" name="presets"/>
@@ -1230,14 +1282,14 @@
            </item>
           </layout>
          </item>
-         <item row="11" column="0">
+         <item row="12" column="0">
           <widget class="QLabel" name="label_21">
            <property name="text">
             <string>Block Quote Background</string>
            </property>
           </widget>
          </item>
-         <item row="11" column="1">
+         <item row="12" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout_6">
            <item>
             <widget class="QLabel" name="quote_preview">
@@ -1374,6 +1426,8 @@
   <tabstop>h2_change_color</tabstop>
   <tabstop>h3_change_font</tabstop>
   <tabstop>h3_change_color</tabstop>
+  <tabstop>bq_change_font</tabstop>
+  <tabstop>bq_change_color</tabstop>
   <tabstop>link_local_change_color</tabstop>
   <tabstop>link_foreign_change_color</tabstop>
   <tabstop>link_cross_change_color</tabstop>
