@@ -344,7 +344,6 @@ bool DocumentStyle::load(QSettings &settings)
 
         background_color = QColor { settings.value("background_color", background_color.name()).toString() };
         blockquote_bgcolor = QColor { settings.value("blockquote_color", blockquote_bgcolor.name()).toString() };
-        blockquote_fgcolor = QColor { settings.value("blockquote_fgcolor", blockquote_fgcolor.name()).toString() };
 
         margin_h = settings.value("margins_h", 30).toInt();
         margin_v = settings.value("margins_v", 55).toInt();
@@ -388,7 +387,7 @@ bool DocumentStyle::load(QSettings &settings)
         {
             settings.beginGroup("Blockquote");
             blockquote_font.fromString(settings.value("font", blockquote_font.toString()).toString());
-            blockquote_fgcolor = QString { settings.value("color", blockquote_fgcolor.name()).toString() };
+            blockquote_fgcolor = QString { settings.value("color", standard_color.name()).toString() };
             settings.endGroup();
         }
         {
