@@ -220,6 +220,7 @@ void SettingsDialog::setOptions(const GenericSettings &options)
 
     this->ui->search_engine->clear();
     this->ui->search_engine->setEditText(this->current_options.search_engine);
+    this->ui->search_engine->lineEdit()->setPlaceholderText("URL with '%1' in place of query");
     this->ui->search_engine->addItem("gemini://geminispace.info/search?%1");
     this->ui->search_engine->addItem("gemini://gus.guru/search?%1");
     this->ui->search_engine->addItem("gemini://houston.coder.town/search?%1");

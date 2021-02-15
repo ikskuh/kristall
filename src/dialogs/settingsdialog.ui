@@ -79,9 +79,6 @@
          <property name="editable">
           <bool>true</bool>
          </property>
-         <property name="placeholderText">
-           <string>Enter URL with '%1' in place of query</string>
-         </property>
         </widget>
        </item>
        <item row="4" column="0">
