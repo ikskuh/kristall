@@ -292,7 +292,21 @@ void BrowserTab::on_url_bar_returnPressed()
 
     if (url.scheme().isEmpty())
     {
-        url = QUrl{"gemini://" + this->ui->url_bar->text()};
+        // Need this to get the validation below to work.
+        url.setUrl("internal://" + this->ui->url_bar->text());
+
+        // We check if there is at least a TLD so that single words
+        // are assumed to be searches.
+        if (url.isValid() && url.host().contains("."))
+        {
+            url = QUrl{"gemini://" + urltext};
+        }
+        else
+        {
+            // Use the text as a search query.
+            static const QString search_engine = "gemini://gus.guru/search?%1";
+            url = QUrl{QString(search_engine).arg(this->ui->url_bar->text())};
+        }
     }
 
     this->ui->url_bar->clearFocus();
