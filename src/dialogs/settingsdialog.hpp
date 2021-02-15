@@ -112,6 +112,8 @@ private slots:
 
     void on_start_page_textChanged(const QString &arg1);
 
+    void on_search_engine_currentTextChanged(const QString &arg1);
+
     void on_ui_theme_currentIndexChanged(int index);
 
     void on_ui_density_currentIndexChanged(int index);

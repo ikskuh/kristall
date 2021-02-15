@@ -331,6 +331,7 @@ void GenericSettings::load(QSettings &settings)
 {
     network_timeout = settings.value("network_timeout", 5000).toInt();
     start_page = settings.value("start_page", "about:favourites").toString();
+    search_engine = settings.value("search_engine", "gemini://geminispace.info/search?%1").toString();
 
     if(settings.value("text_display", "fancy").toString() == "plain")
         text_display = PlainText;
@@ -380,6 +381,7 @@ void GenericSettings::load(QSettings &settings)
 void GenericSettings::save(QSettings &settings) const
 {
     settings.setValue("start_page", this->start_page);
+    settings.setValue("search_engine", this->search_engine);
     settings.setValue("text_display", (text_display == FormattedText) ? "fancy" : "plain");
     settings.setValue("text_decoration", enable_text_decoration);
     QString theme_name = "os_default";
