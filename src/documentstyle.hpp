@@ -33,6 +33,7 @@ struct DocumentStyle
     QFont h2_font;
     QFont h3_font;
     QFont preformatted_font;
+    QFont blockquote_font;
 
     QColor background_color;
     QColor standard_color;
@@ -40,7 +41,8 @@ struct DocumentStyle
     QColor h1_color;
     QColor h2_color;
     QColor h3_color;
-    QColor blockquote_color;
+    QColor blockquote_fgcolor;
+    QColor blockquote_bgcolor;
 
     QColor internal_link_color;
     QColor external_link_color;

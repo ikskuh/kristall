@@ -6,6 +6,7 @@
 #include <QList>
 #include <QStringList>
 #include <QDebug>
+#include <QTextTable>
 
 #include "kristall.hpp"
 
@@ -106,20 +107,28 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
 
             if(line.startsWith(">"))
             {
-                if(not blockquote ) {
-                    // cursor.insertBlock();
+                if(!blockquote)
+                {
+                    // Start blockquote
+                    QTextTable *table = cursor.insertTable(1, 1, text_style.blockquote_tableformat);
+                    cursor.setBlockFormat(text_style.blockquote_format);
+                    QTextTableCell cell = table->cellAt(0, 0);
+                    cell.setFormat(text_style.blockquote);
+                    blockquote = true;
                 }
-                blockquote  = true;
 
-                cursor.setBlockFormat(text_style.block_quote_format);
                 replace_quotes(line);
-                cursor.insertText(trim_whitespace(line.mid(1)) + "\n", text_style.standard);
+                cursor.insertText(trim_whitespace(line.mid(1)) + "\n", text_style.blockquote);
 
                 continue;
             }
             else
             {
-                if(blockquote) {
+                if (blockquote)
+                {
+                    // End blockquote
+                    cursor.deletePreviousChar();
+                    cursor.movePosition(QTextCursor::NextBlock);
                     cursor.setBlockFormat(text_style.standard_format);
                 }
                 blockquote  = false;

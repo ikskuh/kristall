@@ -122,13 +122,15 @@ DocumentStyle::DocumentStyle(bool do_init) : theme(Fixed),
     h2_font(),
     h3_font(),
     preformatted_font(),
+    blockquote_font(),
     background_color(0xed, 0xef, 0xff),
     standard_color(0x00, 0x00, 0x00),
     preformatted_color(0x00, 0x00, 0x00),
     h1_color(0x02, 0x2f, 0x90),
     h2_color(0x02, 0x2f, 0x90),
     h3_color(0x02, 0x2f, 0x90),
-    blockquote_color(0xFF, 0xFF, 0xFF),
+    blockquote_fgcolor(0x00, 0x00, 0x00),
+    blockquote_bgcolor(0xFF, 0xFF, 0xFF),
     internal_link_color(0x0e, 0x8f, 0xff),
     external_link_color(0x0e, 0x8f, 0xff),
     cross_scheme_link_color(0x09, 0x60, 0xa7),
@@ -185,6 +187,10 @@ void DocumentStyle::initialiseDefaultFonts()
     h3_font.setBold(true);
     h3_font.setPointSizeF(12.0);
 
+    blockquote_font.setFamily(FONT_NORMAL);
+    blockquote_font.setItalic(true);
+    blockquote_font.setPointSizeF(10.0);
+
     this->cookie = []() {
         QByteArray arr(8, ' ');
         for(auto & b : arr)
@@ -224,7 +230,8 @@ bool DocumentStyle::save(QSettings &settings) const
     settings.setValue("theme", int(theme));
 
     settings.setValue("background_color", background_color.name());
-    settings.setValue("blockquote_color", blockquote_color.name());
+
+    settings.setValue("blockquote_color", blockquote_bgcolor.name());
 
     settings.setValue("margins_h", margin_h);
     settings.setValue("margins_v", margin_v);
@@ -259,6 +266,12 @@ bool DocumentStyle::save(QSettings &settings) const
         settings.beginGroup("H3");
         settings.setValue("font", h3_font.toString());
         settings.setValue("color", h3_color.name());
+        settings.endGroup();
+    }
+    {
+        settings.beginGroup("Blockquote");
+        settings.setValue("font", blockquote_font.toString());
+        settings.setValue("color", blockquote_fgcolor.name());
         settings.endGroup();
     }
     {
@@ -304,11 +317,13 @@ bool DocumentStyle::load(QSettings &settings)
             h2_font.fromString(settings.value("h2_font").toString());
             h3_font.fromString(settings.value("h3_font").toString());
             preformatted_font.fromString(settings.value("preformatted_font").toString());
+            blockquote_font.fromString(settings.value("blockquote_font").toString());
 
             background_color = QColor(settings.value("background_color").toString());
             standard_color = QColor(settings.value("standard_color").toString());
             preformatted_color = QColor(settings.value("preformatted_color").toString());
-            blockquote_color = QColor(settings.value("blockquote_color").toString());
+            blockquote_bgcolor = QColor(settings.value("blockquote_color").toString());
+            blockquote_fgcolor = standard_color;
             h1_color = QColor(settings.value("h1_color").toString());
             h2_color = QColor(settings.value("h2_color").toString());
             h3_color = QColor(settings.value("h3_color").toString());
@@ -328,7 +343,8 @@ bool DocumentStyle::load(QSettings &settings)
         theme = Theme(settings.value("theme", int(theme)).toInt());
 
         background_color = QColor { settings.value("background_color", background_color.name()).toString() };
-        blockquote_color = QColor { settings.value("blockquote_color", blockquote_color.name()).toString() };
+        blockquote_bgcolor = QColor { settings.value("blockquote_color", blockquote_bgcolor.name()).toString() };
+        blockquote_fgcolor = QColor { settings.value("blockquote_fgcolor", blockquote_fgcolor.name()).toString() };
 
         margin_h = settings.value("margins_h", 30).toInt();
         margin_v = settings.value("margins_v", 55).toInt();
@@ -367,6 +383,12 @@ bool DocumentStyle::load(QSettings &settings)
             settings.beginGroup("H3");
             h3_font.fromString(settings.value("font", h3_font.toString()).toString());
             h3_color = QString { settings.value("color", h3_color.name()).toString() };
+            settings.endGroup();
+        }
+        {
+            settings.beginGroup("Blockquote");
+            blockquote_font.fromString(settings.value("font", blockquote_font.toString()).toString());
+            blockquote_fgcolor = QString { settings.value("color", blockquote_fgcolor.name()).toString() };
             settings.endGroup();
         }
         {
@@ -441,6 +463,7 @@ DocumentStyle DocumentStyle::derive(const QUrl &url) const
     patchup_font(themed.h3_font, "Kristall H3");
     patchup_font(themed.standard_font, "Kristall Standard");
     patchup_font(themed.preformatted_font, "Kristall Monospace");
+    patchup_font(themed.blockquote_font, "Kristall Blockquote");
 
     if (this->theme == Fixed)
         return themed;
@@ -470,7 +493,8 @@ DocumentStyle DocumentStyle::derive(const QUrl &url) const
         themed.internal_link_color = themed.external_link_color.lighter(110);
         themed.cross_scheme_link_color = themed.external_link_color.darker(110);
 
-        themed.blockquote_color = themed.background_color.lighter(130);
+        themed.blockquote_bgcolor = themed.background_color.lighter(130);
+        themed.blockquote_fgcolor = QColor{0xEE, 0xEE, 0xEE};
 
         break;
     }
@@ -488,7 +512,8 @@ DocumentStyle DocumentStyle::derive(const QUrl &url) const
         themed.internal_link_color = themed.external_link_color.darker(110);
         themed.cross_scheme_link_color = themed.external_link_color.lighter(110);
 
-        themed.blockquote_color = themed.background_color.darker(120);
+        themed.blockquote_bgcolor = themed.background_color.darker(113);
+        themed.blockquote_fgcolor = QColor{0x40, 0x40, 0x40};
 
         break;
     }
@@ -513,7 +538,8 @@ QString DocumentStyle::toStyleSheet() const
     css += QString("h1  { color: %2; %1 }\n").arg(encodeCssFont (h1_font), h1_color.name());
     css += QString("h2  { color: %2; %1 }\n").arg(encodeCssFont (h2_font), h2_color.name());
     css += QString("h3  { color: %2; %1 }\n").arg(encodeCssFont (h3_font), h3_color.name());
-    css += QString("blockquote { background: %1 }\n").arg(blockquote_color.name());
+    css += QString("blockquote { background: %1; color: %2; %3 }\n")
+        .arg(blockquote_bgcolor.name(), blockquote_fgcolor.name(), encodeCssFont(blockquote_font));
 
     // qDebug() << "CSS → " << css;
     return css;

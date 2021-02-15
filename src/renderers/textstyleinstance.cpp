@@ -26,10 +26,11 @@ TextStyleInstance::TextStyleInstance(DocumentStyle const & themed_style)
   standard_h3.setFont(themed_style.h3_font);
   standard_h3.setForeground(QBrush(themed_style.h3_color));
 
-  preformatted_format.setNonBreakableLines(true);
+  blockquote.setFont(themed_style.blockquote_font);
+  blockquote.setForeground(QBrush(themed_style.blockquote_fgcolor));
+  blockquote.setBackground(themed_style.blockquote_bgcolor);
 
-  block_quote_format.setIndent(themed_style.indent_bq);
-  block_quote_format.setBackground(themed_style.blockquote_color);
+  preformatted_format.setNonBreakableLines(true);
 
   // Other alignments
   auto align = themed_style.justify_text ? Qt::AlignJustify : Qt::AlignLeft;
@@ -42,9 +43,15 @@ TextStyleInstance::TextStyleInstance(DocumentStyle const & themed_style)
   link_format.setLineHeight(themed_style.line_height_p,
     QTextBlockFormat::LineDistanceHeight);
 
-  block_quote_format.setAlignment(align);
-  block_quote_format.setLineHeight(themed_style.line_height_p,
+  blockquote_format.setAlignment(align);
+  blockquote_format.setLineHeight(themed_style.line_height_p,
     QTextBlockFormat::LineDistanceHeight);
+  blockquote_tableformat.setBorderStyle(QTextFrameFormat::BorderStyle_None);
+  blockquote_tableformat.setHeaderRowCount(0);
+  blockquote_tableformat.setCellPadding(16.0);
+  blockquote_tableformat.setAlignment(Qt::AlignJustify);
+  blockquote_tableformat.setLeftMargin(20.0 * themed_style.indent_bq);
+  blockquote_tableformat.setBottomMargin(20.0);
 
   list_format.setStyle(QTextListFormat::ListDisc);
   list_format.setIndent(themed_style.indent_l);

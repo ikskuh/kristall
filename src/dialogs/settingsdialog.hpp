@@ -50,6 +50,8 @@ private slots:
 
     void on_h3_change_font_clicked();
 
+    void on_bq_change_font_clicked();
+
     void on_std_change_color_clicked();
 
     void on_pre_change_color_clicked();
@@ -59,6 +61,8 @@ private slots:
     void on_h2_change_color_clicked();
 
     void on_h3_change_color_clicked();
+
+    void on_bq_change_color_clicked();
 
     void on_bg_change_color_clicked();
 

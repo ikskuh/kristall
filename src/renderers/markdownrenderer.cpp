@@ -121,7 +121,7 @@ static void renderNode(RenderState &state, cmark_node & node, const QTextCharFor
         state.emitNewBlock();
         state.suppress_next_block = true;
 
-        cursor.setBlockFormat(state.text_style.block_quote_format);
+        cursor.setBlockFormat(state.text_style.blockquote_format);
         renderChildren(state, node, current_format, page_title);
 
         state.emitNewBlock();
