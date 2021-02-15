@@ -90,6 +90,18 @@ This tab contains an unsorted list of settings that allow you to tweak Kristalls
 
 [Start Page] is the URL to the page that will be loaded for new tabs. Default is "about:favourites".
 
+[Search Engine] is the search engine to use when typing non-URLs in the URL bar. A handful of Gemini search engines are provided as a drop-down. If you would like to specify your own, specify it in a format similar to the following:
+
+```
+gemini://example.com/search?%1
+```
+
+Note the "%1" at the end of the URL. This is where search queries will be inserted. This *must* be provided in order for Kristall to work with the search engine correctly. Be aware that search engine URLs can vary. For example, a different search engine may appear like so:
+
+```
+gemini://example2.com/search/another/%1
+```
+
 [Enabled Protocols] allows you to fine-tune which protocols are fetched by Kristall. By default, only Gemini is enabled, all other protocols are disabled. Disabled protocols are either not served with an error message or forwarded to your OS handler for that URL scheme.
 
 [Text Rendering] allows to control whether Kristall parses text input files or not. This is usually set to [Fancy] which renders text/html, text/gemini, text/markdown and text/gophermap to a nice, hyperlinked display. When set to [Always plain text], Kristall will display all text/* files as plaintext files instead. This may be inconvenient, but necessary for misparsed sites.
