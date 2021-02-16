@@ -1547,7 +1547,7 @@ void BrowserTab::updateMouseCursor(bool waiting)
     if (waiting)
         this->ui->text_browser->setDefaultCursor(Qt::BusyCursor);
     else
-        this->ui->text_browser->setDefaultCursor(Qt::ArrowCursor);
+        this->ui->text_browser->setDefaultCursor(KristallTextBrowser::NORMAL_CURSOR);
 }
 
 bool BrowserTab::enableClientCertificate(const CryptoIdentity &ident)

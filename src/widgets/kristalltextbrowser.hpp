@@ -27,6 +27,9 @@ private: // slots
 private:
     void updateCursor();
 
+public:
+    static const Qt::CursorShape NORMAL_CURSOR;
+
 private:
     bool signal_new_tab = false;
     QCursor wanted_cursor;
