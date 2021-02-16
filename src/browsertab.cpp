@@ -793,7 +793,16 @@ void BrowserTab::updatePageTitle()
 {
     if (page_title.isEmpty())
     {
-        page_title = this->current_location.toString();
+        // Use document filename as title instead.
+        page_title = this->current_location.path();
+        auto parts = page_title.split("/");
+        page_title = parts[parts.length() - 1];
+
+        if (page_title.isEmpty())
+        {
+            // Just use the hostname if we can't find anything else
+            page_title = this->current_location.host();
+        }
     }
 
     // TODO: Shorten lengthy titles?
