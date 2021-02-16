@@ -34,6 +34,11 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     this->ui->ui_theme->addItem(tr("Light"), QVariant::fromValue<int>(int(Theme::light)));
     this->ui->ui_theme->addItem(tr("Dark"), QVariant::fromValue<int>(int(Theme::dark)));
 
+    this->ui->icon_theme->clear();
+    this->ui->icon_theme->addItem(tr("Automatic"), QVariant::fromValue<int>(int(IconTheme::automatic)));
+    this->ui->icon_theme->addItem(tr("Light"), QVariant::fromValue<int>(int(IconTheme::light)));
+    this->ui->icon_theme->addItem(tr("Dark"), QVariant::fromValue<int>(int(IconTheme::dark)));
+
     this->ui->ui_density->clear();
     this->ui->ui_density->addItem(tr("Compact"), QVariant::fromValue<int>(int(UIDensity::compact)));
     this->ui->ui_density->addItem(tr("Classic"), QVariant::fromValue<int>(int(UIDensity::classic)));
@@ -208,6 +213,15 @@ void SettingsDialog::setOptions(const GenericSettings &options)
             break;
         }
     }
+
+    this->ui->icon_theme->setCurrentIndex(0);
+    for(int i = 0; i < this->ui->icon_theme->count(); i++) {
+        if(this->ui->icon_theme->itemData(i).toInt() == int(options.icon_theme)) {
+            this->ui->icon_theme->setCurrentIndex(i);
+            break;
+        }
+    }
+
 
     this->ui->ui_density->setCurrentIndex(0);
     for(int i = 0; i < this->ui->ui_density->count(); ++i) {
@@ -699,6 +713,14 @@ void SettingsDialog::on_ui_theme_currentIndexChanged(int index)
 
     kristall::setTheme(this->current_options.theme);
 }
+
+void SettingsDialog::on_icon_theme_currentIndexChanged(int index)
+{
+    this->current_options.icon_theme = IconTheme(this->ui->icon_theme->itemData(index).toInt());
+
+    kristall::setIconTheme(this->current_options.icon_theme, this->current_options.theme);
+}
+
 
 void SettingsDialog::on_ui_density_currentIndexChanged(int index)
 {

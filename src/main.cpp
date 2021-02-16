@@ -341,12 +341,20 @@ void GenericSettings::load(QSettings &settings)
     enable_text_decoration = settings.value("text_decoration", false).toBool();
 
     QString theme_name = settings.value("theme", "os_default").toString();
-    if(theme_name== "dark")
+    if(theme_name == "dark")
         theme = Theme::dark;
     else if(theme_name == "light")
         theme = Theme::light;
     else
         theme = Theme::os_default;
+
+    QString icon_theme_name = settings.value("icon_theme", "auto").toString();
+    if (icon_theme_name == "light")
+        icon_theme = IconTheme::light;
+    else if (icon_theme_name == "dark")
+        icon_theme = IconTheme::dark;
+    else
+        icon_theme = IconTheme::automatic;
 
     QString density = settings.value("ui_density", "compact").toString();
     if(density == "compact")
@@ -391,6 +399,14 @@ void GenericSettings::save(QSettings &settings) const
     case Theme::os_default: theme_name = "os_default"; break;
     }
     settings.setValue("theme", theme_name);
+
+    QString icon_theme_name = "auto";
+    switch(icon_theme) {
+    case IconTheme::dark:      icon_theme_name = "dark"; break;
+    case IconTheme::light:     icon_theme_name = "light"; break;
+    case IconTheme::automatic: icon_theme_name = "auto"; break;
+    }
+    settings.setValue("icon_theme", icon_theme_name);
 
     QString density = "compact";
     switch(ui_density) {
@@ -458,14 +474,6 @@ void kristall::setTheme(Theme theme)
     {
         app->setStyleSheet("");
 
-        // For Linux we use standard icon set,
-        // for Windows & Mac we need to include our own icons.
-#if defined Q_OS_WIN32 || defined Q_OS_DARWIN
-        QIcon::setThemeName("light");
-#else
-        QIcon::setThemeName("");
-#endif
-
         // Use "mid" colour for our URL bar dim colour:
         QColor col = app->palette().color(QPalette::WindowText);
         col.setAlpha(150);
@@ -478,8 +486,6 @@ void kristall::setTheme(Theme theme)
         QTextStream stream(&file);
         app->setStyleSheet(stream.readAll());
 
-        QIcon::setThemeName("light");
-
         kristall::options.fancy_urlbar_dim_colour = QColor(128, 128, 128, 255);
     }
     else if(theme == Theme::dark)
@@ -489,13 +495,46 @@ void kristall::setTheme(Theme theme)
         QTextStream stream(&file);
         app->setStyleSheet(stream.readAll());
 
-        QIcon::setThemeName("dark");
-
         kristall::options.fancy_urlbar_dim_colour = QColor(150, 150, 150, 255);
     }
 
+    kristall::setIconTheme(kristall::options.icon_theme, theme);
+
     if (main_window && main_window->curTab())
         main_window->curTab()->updateUrlBarStyle();
+}
+
+void kristall::setIconTheme(IconTheme icotheme, Theme uitheme)
+{
+    assert(app != nullptr);
+
+    static const QString icothemes[] = {
+        "light", // Light theme (dark icons)
+        "dark"   // Dark theme (light icons)
+    };
+
+    if (icotheme == IconTheme::automatic)
+    {
+        if (uitheme == Theme::os_default)
+        {
+            // For Linux we use standard system icon set,
+            // for Windows & Mac we just use our default light theme icons.
+        #if defined Q_OS_WIN32 || defined Q_OS_DARWIN
+            QIcon::setThemeName("light");
+        #else
+            QIcon::setThemeName("");
+        #endif
+
+            return;
+        }
+
+        // Use icon theme based on UI theme
+        QIcon::setThemeName(icothemes[(int)uitheme]);
+        return;
+    }
+
+    // Use icon specified by user
+    QIcon::setThemeName(icothemes[(int)icotheme]);
 }
 
 void kristall::setUiDensity(UIDensity density, bool previewing)

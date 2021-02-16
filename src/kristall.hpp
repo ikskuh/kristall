@@ -36,6 +36,13 @@ enum class RequestState : int
     StartedWeb = 255,
 };
 
+enum class IconTheme : int
+{
+    automatic = -1,
+    dark = 0,
+    light = 1
+};
+
 struct GenericSettings
 {
     enum TextDisplay {
@@ -53,6 +60,7 @@ struct GenericSettings
     QString start_page = "about:favourites";
     QString search_engine = "gemini://geminispace.info/search?%1";
     Theme theme = Theme::light;
+    IconTheme icon_theme = IconTheme::automatic;
     UIDensity ui_density = UIDensity::compact;
     TextDisplay text_display = FormattedText;
     bool enable_text_decoration = false;
@@ -135,6 +143,8 @@ namespace kristall
     void saveSettings();
 
     void setTheme(Theme theme);
+
+    void setIconTheme(IconTheme icotheme, Theme uitheme);
 
     void setUiDensity(UIDensity density, bool previewing);
 
