@@ -4,6 +4,8 @@
 #include <QScroller>
 #include <QTouchDevice>
 
+const Qt::CursorShape KristallTextBrowser::NORMAL_CURSOR = Qt::IBeamCursor;
+
 KristallTextBrowser::KristallTextBrowser(QWidget *parent) :
     QTextBrowser(parent)
 {

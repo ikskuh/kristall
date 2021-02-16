@@ -222,14 +222,14 @@ void GeminiClient::socketReadyRead()
                 switch(primary_code)
                 {
                 case 1: // requesting input
-		    switch (secondary_code) {
-		    case 1:
-		      emit inputRequired(meta, true);
-		      break;
-		    case 0:
-		    default:
-		      emit inputRequired(meta, false);
-		    }
+                    switch (secondary_code) {
+                        case 1:
+                        emit inputRequired(meta, true);
+                        break;
+                        case 0:
+                        default:
+                        emit inputRequired(meta, false);
+                    }
                     return;
 
                 case 2: // success
