@@ -356,19 +356,30 @@ void MainWindow::on_history_view_doubleClicked(const QModelIndex &index)
 
 void MainWindow::on_tab_titleChanged(const QString &title)
 {
-   auto * tab = qobject_cast<BrowserTab*>(sender());
-   if(tab != nullptr) {
-       int index = this->ui->browser_tabs->indexOf(tab);
-       assert(index >= 0);
+    auto * tab = qobject_cast<BrowserTab*>(sender());
+    if(tab != nullptr) {
+        int index = this->ui->browser_tabs->indexOf(tab);
+        assert(index >= 0);
 
-       QString escapedTitle = title;
-       this->ui->browser_tabs->setTabText(index, escapedTitle.replace("&", "&&"));
+        QString escapedTitle = title;
 
-       if (tab == this->curTab())
-       {
+        // Set the window title to full title
+        if (tab == this->curTab())
+        {
             updateWindowTitle();
-       }
-   }
+        }
+
+        // Shorten lengthy titles for tab bar (45 chars max for now - we assume
+        // that Gemini surfers don't usually have loads of tabs open, so the
+        // limit is fairly high)
+        const int MAX_TITLE_LEN = 45;
+        if (escapedTitle.length() > MAX_TITLE_LEN)
+        {
+            escapedTitle = escapedTitle.mid(0, MAX_TITLE_LEN - 3).trimmed() + "...";
+        }
+
+        this->ui->browser_tabs->setTabText(index, escapedTitle.replace("&", "&&"));
+    }
 }
 
 void MainWindow::on_tab_locationChanged(const QUrl &url)
