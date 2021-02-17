@@ -805,7 +805,11 @@ void BrowserTab::updatePageTitle()
         }
     }
 
-    // TODO: Shorten lengthy titles?
+    // This will strip new-line characters from the title, in case
+    // there are any.
+    static const QRegularExpression NL_REGEX = QRegularExpression("\n");
+    page_title.replace(NL_REGEX, "");
+    page_title = page_title.trimmed();
 
     emit this->titleChanged(this->page_title);
 }
