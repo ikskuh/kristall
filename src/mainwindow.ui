@@ -222,6 +222,8 @@
     <addaction name="actionGo_to_home"/>
     <addaction name="actionBackward"/>
     <addaction name="actionForward"/>
+    <addaction name="actionRoot"/>
+    <addaction name="actionParent"/>
     <addaction name="separator"/>
     <addaction name="actionRefresh"/>
     <addaction name="separator"/>
@@ -308,6 +310,28 @@
    </property>
    <property name="shortcut">
     <string>Alt+Right</string>
+   </property>
+  </action>
+  <action name="actionRoot">
+   <property name="text">
+    <string>Root</string>
+   </property>
+   <property name="toolTip">
+    <string>Go to the root directory (/)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+/</string>
+   </property>
+  </action>
+  <action name="actionParent">
+   <property name="text">
+    <string>Parent</string>
+   </property>
+   <property name="toolTip">
+    <string>Go to the parent directory</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Up</string>
    </property>
   </action>
   <action name="actionRefresh">

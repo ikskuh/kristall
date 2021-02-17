@@ -70,6 +70,10 @@ private slots:
 
     void on_actionBackward_triggered();
 
+    void on_actionRoot_triggered();
+
+    void on_actionParent_triggered();
+
     void on_actionRefresh_triggered();
 
     void on_actionAbout_Qt_triggered();
