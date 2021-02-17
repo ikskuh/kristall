@@ -320,7 +320,7 @@
     <string>Go to the root directory (/)</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+/</string>
+    <string>Alt+/</string>
    </property>
   </action>
   <action name="actionParent">
