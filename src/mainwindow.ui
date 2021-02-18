@@ -313,6 +313,9 @@
    </property>
   </action>
   <action name="actionRoot">
+   <property name="icon">
+    <iconset theme="go-top"/>
+   </property>
    <property name="text">
     <string>Root</string>
    </property>
@@ -324,6 +327,9 @@
    </property>
   </action>
   <action name="actionParent">
+   <property name="icon">
+    <iconset theme="go-up"/>
+   </property>
    <property name="text">
     <string>Parent</string>
    </property>
