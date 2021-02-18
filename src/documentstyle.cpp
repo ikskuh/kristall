@@ -317,7 +317,7 @@ bool DocumentStyle::load(QSettings &settings)
             h2_font.fromString(settings.value("h2_font").toString());
             h3_font.fromString(settings.value("h3_font").toString());
             preformatted_font.fromString(settings.value("preformatted_font").toString());
-            blockquote_font.fromString(settings.value("blockquote_font").toString());
+            blockquote_font.fromString(settings.value("standard_font").toString());
 
             background_color = QColor(settings.value("background_color").toString());
             standard_color = QColor(settings.value("standard_color").toString());
@@ -386,7 +386,7 @@ bool DocumentStyle::load(QSettings &settings)
         }
         {
             settings.beginGroup("Blockquote");
-            blockquote_font.fromString(settings.value("font", blockquote_font.toString()).toString());
+            blockquote_font.fromString(settings.value("font", standard_font.toString()).toString());
             blockquote_fgcolor = QString { settings.value("color", standard_color.name()).toString() };
             settings.endGroup();
         }
