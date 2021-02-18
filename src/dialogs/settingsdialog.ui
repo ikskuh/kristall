@@ -500,17 +500,31 @@
         </widget>
        </item>
        <item row="19" column="1">
-        <widget class="QSpinBox" name="cache_life">
-         <property name="suffix">
-          <string> minutes</string>
-         </property>
-         <property name="minimum">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <number>8760</number>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_25">
+         <item>
+          <widget class="QSpinBox" name="cache_life">
+           <property name="suffix">
+            <string> minutes</string>
+           </property>
+           <property name="minimum">
+            <number>0</number>
+           </property>
+           <property name="maximum">
+            <number>8760</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="enable_unlimited_cache_life">
+           <property name="text">
+            <string>Unlimited item life</string>
+           </property>
+           <property name="toolTip">
+            <string>Sets cached items to be unexpirable. Items will only be removed if the cache is full.</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
 
       </layout>
@@ -1425,6 +1439,7 @@
   <tabstop>cache_limit</tabstop>
   <tabstop>cache_threshold</tabstop>
   <tabstop>cache_life</tabstop>
+  <tabstop>enable_unlimited_cache_life</tabstop>
   <tabstop>bg_change_color</tabstop>
   <tabstop>style_preview</tabstop>
   <tabstop>std_change_font</tabstop>

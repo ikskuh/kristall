@@ -77,10 +77,14 @@ int CacheHandler::size()
 // Clears expired pages out of cache
 void CacheHandler::clean()
 {
+    // Don't clean anything if we have unlimited item life.
+    if (kristall::options.cache_unlimited_life) return;
+
     // Find list of keys to delete
     std::vector<QString> vec;
     for (auto&& i : this->page_cache)
     {
+        // Check if this cache item is expired.
         if (QDateTime::currentDateTime() > i.second->time_cached
             .addSecs(kristall::options.cache_life * 60))
         {

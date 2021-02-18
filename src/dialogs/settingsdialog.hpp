@@ -157,6 +157,7 @@ private slots:
     void on_cache_limit_valueChanged(int limit);
     void on_cache_threshold_valueChanged(int thres);
     void on_cache_life_valueChanged(int life);
+    void on_enable_unlimited_cache_life_clicked(bool checked);
 
 private:
     void reloadStylePreview();

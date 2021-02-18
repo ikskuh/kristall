@@ -121,7 +121,7 @@ void SettingsDialog::setGeminiStyle(DocumentStyle const &style)
     this->ui->enable_justify_text->setChecked(this->current_style.justify_text);
 
     this->ui->enable_text_width->setChecked(this->current_style.text_width_enabled);
-
+    this->ui->text_width->setEnabled(this->current_style.text_width_enabled);
     this->ui->text_width->setValue(this->current_style.text_width);
 
     this->ui->line_height_p->setValue(this->current_style.line_height_p);
@@ -301,6 +301,8 @@ void SettingsDialog::setOptions(const GenericSettings &options)
     this->ui->cache_limit->setValue(this->current_options.cache_limit);
     this->ui->cache_threshold->setValue(this->current_options.cache_threshold);
     this->ui->cache_life->setValue(this->current_options.cache_life);
+    this->ui->enable_unlimited_cache_life->setChecked(this->current_options.cache_unlimited_life);
+    this->ui->cache_life->setEnabled(!this->current_options.cache_unlimited_life);
 }
 
 GenericSettings SettingsDialog::options() const
@@ -836,4 +838,10 @@ void SettingsDialog::on_cache_threshold_valueChanged(int thres)
 void SettingsDialog::on_cache_life_valueChanged(int life)
 {
     this->current_options.cache_life = life;
+}
+
+void SettingsDialog::on_enable_unlimited_cache_life_clicked(bool checked)
+{
+    this->current_options.cache_unlimited_life = checked;
+    this->ui->cache_life->setEnabled(!checked);
 }

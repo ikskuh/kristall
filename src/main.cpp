@@ -384,6 +384,7 @@ void GenericSettings::load(QSettings &settings)
     cache_limit = settings.value("cache_limit", 1000).toInt();
     cache_threshold = settings.value("cache_threshold", 125).toInt();
     cache_life = settings.value("cache_life", 15).toInt();
+    cache_unlimited_life = settings.value("cache_unlimited_life", true).toBool();
 }
 
 void GenericSettings::save(QSettings &settings) const
@@ -429,6 +430,7 @@ void GenericSettings::save(QSettings &settings) const
     settings.setValue("cache_limit", cache_limit);
     settings.setValue("cache_threshold", cache_threshold);
     settings.setValue("cache_life", cache_life);
+    settings.setValue("cache_unlimited_life", cache_unlimited_life);
 }
 
 
