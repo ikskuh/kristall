@@ -56,6 +56,10 @@ This menu contains means to navigate the internet.
 
 [Foreward] will navigate one page foreward in your history.
 
+[Root] will take you to the root directory of the current site. e.g if you are currently at gemini://example.com/gemlog/some-document.gmi, you will be taken to gemini://example.com/
+
+[Parent] will take you to the 'parent' directory of the current site. e.g if you are at gemini://example.com/parent/some-document.gmi, you will be taken to gemini://example.com/parent/
+
 [Refresh] will reload the current page. This may be necessary for CGI scripts or other interactive content.
 
 [Add to favourites] will add or remove the current page to your list of favourites.
@@ -86,7 +90,9 @@ Kristall offers a vast amount of settings. You can style the documents to your l
 ### Generic
 This tab contains an unsorted list of settings that allow you to tweak Kristalls behaviour.
 
-[UI Theme] controls whether the Qt interface is displayed in a dark or a light theme. You can adjust that to your system style or to your site rendering.
+[UI Theme] controls whether the Qt interface is displayed in a dark or a light theme. You can adjust that to your system style or to your site rendering. The "OS Default" will use your system theme.
+
+[Icon Theme] controls the specific icon set that the Qt interface will use. Usually, the default "Auto" option should be good enough, however for those using the "OS Default" theme, this option may be useful.
 
 [Start Page] is the URL to the page that will be loaded for new tabs. Default is "about:favourites".
 
@@ -112,11 +118,38 @@ gemini://example2.com/search/another/%1
 
 [Unknown Scheme] changes the behaviour how Kristall handles unknown/disabled URL schemes. [Use OS default handler] will invoke your OS default, [Display error message] will just pop up a message box and tell you that Kristall cannot handle this URL.
 
+[Hidden files in file:// directories] determines whether hidden files will display in local directory listings (i.e file:// URLs which do not point to a specific document but rather a directory).
+
+[URL bar highlights] sets whether the URL bar should use "fancy" highlights. The highlighting simply makes the domain of the site more prominent/visible, and the text around it slightly dimmed. This is purely a cosmetic feature.
+
+[Use typographer's quotes] sets whether to replace regular quotation marks, that is:
+```
+"these", and 'these'
+```
+with fancy Unicode quotes, which include the following:
+```
+“these”, and ‘these’
+```
+This is a purely cosmetic feature that may aid in readability.
+
 [Max. Number of Redirections] is a setting that allows you to restrict sites to redirect you only a certain amount of times before erroring out. Setting this to 0 will disable redirections completly, displaying an error with the target URL.
 
 [Redirection Handling] allows you to fine-tune the way Kristall allows redirections. Each of the options defines if Kristall should ask you to allow the redirect or do it silently. [Ask for cross-scheme redirection] will pop up a message box if a host tries to redirect you from one URL scheme to another, e.g. when a web server redirects you from HTTP to HTTPS. [Ask for cross-host redirection] will pop up the message box for all redirections through host boundaries, e.g. when example.com redirects you to www.example.com. [Ask for cross-scheme or cross-host redirection] will enable both of the previous behaviours, asking when any cross-boundary redirection happens. [Ask for all redirections] will pop up a message box every time a server tries to redirect you, keeping you in full control over all redirections. [Silently redirect everything] is the exact oppositve of that, accepting all redirections without warning or notice.
 
 [Network Timeout] is the time a server is allowed to *not respond anything* before a error message appears. As long as a server dripples some bytes to Kristall, no timeout will happen, so having a slow or bad connection shouldn't yield timeouts.
+
+[Additional Toolbar Items] contains various additional toolbar items which some may find useful.
+
+* [Home] button opens the configured home page in the current tab.
+* [New tab] button appears to the right of the tab bar. This simply adds a new tab.
+* [Root] button takes you to the root directory of the current site. (See Menus>Navigation section for explanation of what this does).
+* [Parent] button takes you to the parent directory of the current site. (See Menus>Navigation section for explanation of what this does).
+
+[Total cache size limit] sets the total amount of memory that can be used to cache pages. By default this is set to 500 KiB, but can be set to 0 to completely disable the caching system. The larger this number is, the more memory you are allowing Kristall to use.
+
+[Cached item size threshold] is the maximum size of a single cached item. By default this is set to 400 KiB. This prevents Kristall from caching any pages that are large from clogging up the in-memory cache.
+
+[Cached item life] is the amount of time in minutes before a single cached item is considered "expired." When a cached item is "expired", it is not read from cache, but instead re-retreived from the server. Cache life can be disabled by enabling the [Unlimited item life] option.
 
 ### Style
 On this tab, you can tweak the document rendering in Kristall. On the left half you can see all possible colors and fonts you can tweak, on the right half of the window is a preview rendering with your currently selected style.
@@ -132,7 +165,9 @@ Most items in the *Style* category have either a [Font], [Color] or both buttons
 
 [H2 Font] allows you to change the font and color for secondary headings in documents.
 
-[H3 Font] allows you to change the font and color for ternay headings in documents.
+[H3 Font] allows you to change the font and color for ternary headings in documents.
+
+[Blockquote Font] allows you to change the font and colour for blockquotes in documents.
 
 [Local Link Color] is the color in which links that refer to the same host *and* protocol are rendered.
 
@@ -148,7 +183,28 @@ Most items in the *Style* category have either a [Font], [Color] or both buttons
 
 [Auto-Theme Generation] is an experimental feature that can be set to [Disabled], [Light Theme] and [Dark Theme]. When not set to [Disabled], Kristall will ignore all your beautiful color settings and tries to create a color scheme based on the current pages host name. This allows different styles for each host visited and brings some recognizability in gemini and gopher space.
 
-[Page Margin] is the distance of the page content to the border. Higher values look cooler, but make your display area smaller.
+[Left/right Page Margin] is the distance of horizontal page content to the left/right borders. If you have [Enable text width limit] enabled this value is only used when the window size is less than the set maximum text width.
+
+[Top/bottom Page Margin] is the distance of vertical page content to the top/bottom borders.
+
+[Other options] are a set of extra options to enhance your reading experience (and just look cool in general).
+
+* [Justify text] will make text fill the lines they are on. Note that this only works on gemtext pages.
+
+* [Enable text width limit] will limit the length of text on pages. This works best in gemtext pages, but should also work fine for HTML pages. See below for setting the limit. This can significantly enhance readability of pages.
+
+[Text width limit] sets the maximum line length of text. By default this is set to 900px. If the window itself is smaller in width than the text width limit, the text width limit is "adjusted" to fit inside the window. As mentioned above, horizontal margins will also be applied here.
+
+[Line height (paragraph)] is an additional spacing between paragraph text lines. By default this is set to 5px, and can help with readability. (Gemtext-only feature)
+
+[Line height (header)] is an additional spacing between header text lines. By default this is set to 0px. Pages will usually look better when this is set to a low value, or else headings will appear too far from paragraph text. (Gemtext-only feature)
+
+[Indentation] is a set of options that control the level of indent in certain text parts in Gemini pages.
+
+* [Par] controls indent size of paragraphs (default: 1)
+* [Hea] controls indent size of headings (default: 0)
+* [Quo] controls indent size of blockquotes (default: 2)
+* [Lst] controls indent size of unordered lists (default: 2)
 
 [Presets] is a cool feature to save, restore and share your color themes. The dropdown contains a list of all previously created colors schemes. With the [+] button you can create a scheme with a unique name. The floppy disk button will override the currently selected preset with all the settings displayed above. The folder button will restore a previously saved preset. The last two buttons allow you to import/export presets to disk and share them with your friends! Share all your beautiful color schemes with the world!
 

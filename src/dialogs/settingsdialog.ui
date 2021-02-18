@@ -433,6 +433,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QCheckBox" name="enable_newtab_btn">
+           <property name="text">
+            <string>New tab</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QCheckBox" name="enable_root_btn">
            <property name="text">
             <string>Root (/)</string>
@@ -443,13 +450,6 @@
           <widget class="QCheckBox" name="enable_parent_btn">
            <property name="text">
             <string>Parent (..)</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="enable_newtab_btn">
-           <property name="text">
-            <string>New tab</string>
            </property>
           </widget>
          </item>
