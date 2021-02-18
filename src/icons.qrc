@@ -21,6 +21,8 @@
         <file>icons/light/actions/edit-delete.svg</file>
         <file>icons/light/actions/go-previous.svg</file>
         <file>icons/light/actions/go-next.svg</file>
+        <file>icons/light/actions/go-up.svg</file>
+        <file>icons/light/actions/go-top.svg</file>
         <file>icons/light/actions/media-playback-pause.svg</file>
         <file>icons/light/actions/media-playback-start.svg</file>
         <file>icons/light/actions/view-refresh.svg</file>
@@ -56,6 +58,8 @@
         <file>icons/dark/actions/edit-delete.svg</file>
         <file>icons/dark/actions/go-previous.svg</file>
         <file>icons/dark/actions/go-next.svg</file>
+        <file>icons/dark/actions/go-up.svg</file>
+        <file>icons/dark/actions/go-top.svg</file>
         <file>icons/dark/actions/media-playback-pause.svg</file>
         <file>icons/dark/actions/media-playback-start.svg</file>
         <file>icons/dark/actions/view-refresh.svg</file>

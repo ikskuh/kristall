@@ -112,6 +112,38 @@
       </widget>
      </item>
      <item>
+      <widget class="QToolButton" name="root_button">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="toolTip">
+        <string>Go the root path of current location</string>
+       </property>
+       <property name="text">
+        <string>/</string>
+       </property>
+       <property name="icon">
+        <iconset theme="go-top"/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="parent_button">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="toolTip">
+        <string>Go the parent path of current location</string>
+       </property>
+       <property name="text">
+        <string>P</string>
+       </property>
+       <property name="icon">
+        <iconset theme="go-up"/>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="SearchBar" name="url_bar">
        <property name="placeholderText">
         <string>gemini://</string>

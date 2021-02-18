@@ -75,6 +75,10 @@ public:
 
     void navOneForward();
 
+    void navigateToRoot();
+
+    void navigateToParent();
+
     void scrollToAnchor(QString const & anchor);
 
     void reloadPage();
@@ -103,6 +107,8 @@ public:
 
     void updatePageMargins();
 
+    void refreshOptionalToolbarItems();
+
 signals:
     void titleChanged(QString const & title);
     void locationChanged(QUrl const & url);
@@ -119,6 +125,10 @@ private slots:
     void on_url_bar_blurred();
 
     void on_refresh_button_clicked();
+
+    void on_root_button_clicked();
+
+    void on_parent_button_clicked();
 
     void on_fav_button_clicked();
 
