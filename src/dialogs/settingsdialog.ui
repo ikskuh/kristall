@@ -433,6 +433,20 @@
           </widget>
          </item>
          <item>
+          <widget class="QCheckBox" name="enable_root_btn">
+           <property name="text">
+            <string>Root (/)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="enable_parent_btn">
+           <property name="text">
+            <string>Parent (..)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QCheckBox" name="enable_newtab_btn">
            <property name="text">
             <string>New tab</string>
@@ -1436,6 +1450,8 @@
   <tabstop>network_timeout</tabstop>
   <tabstop>enable_home_btn</tabstop>
   <tabstop>enable_newtab_btn</tabstop>
+  <tabstop>enable_root_btn</tabstop>
+  <tabstop>enable_parent_btn</tabstop>
   <tabstop>cache_limit</tabstop>
   <tabstop>cache_threshold</tabstop>
   <tabstop>cache_life</tabstop>

@@ -436,7 +436,9 @@ void MainWindow::on_actionSettings_triggered()
     // changes are instantly applied.
     for (int i = 0; i < this->ui->browser_tabs->count(); ++i)
     {
-        this->tabAt(i)->needs_rerender = true;
+        BrowserTab *t = this->tabAt(i);
+        t->refreshOptionalToolbarItems();
+        t->needs_rerender = true;
     }
     // Re-render the currently-open tab if we have one.
     BrowserTab * tab = this->curTab();
@@ -496,29 +498,16 @@ void MainWindow::on_actionBackward_triggered()
 void MainWindow::on_actionRoot_triggered()
 {
     BrowserTab * tab = this->curTab();
-    if(tab != nullptr && !tab->is_internal_location) {
-        QUrl url = tab->current_location;
-        url.setPath("/");
-        tab->navigateTo(url, BrowserTab::PushImmediate);
+    if(tab != nullptr) {
+        tab->navigateToRoot();
     }
 }
 
 void MainWindow::on_actionParent_triggered()
 {
     BrowserTab * tab = this->curTab();
-    if(tab != nullptr && !tab->is_internal_location) {
-        QUrl url = tab->current_location;
-
-        // Make sure we have a trailing slash, or else
-        // QUrl::resolved will not work
-        if (!url.path().endsWith("/"))
-        {
-            url.setPath(url.path() + "/");
-        }
-
-        // Go up one directory
-        url = url.resolved(QUrl{".."});
-        tab->navigateTo(url, BrowserTab::PushImmediate);
+    if(tab != nullptr) {
+        tab->navigateToParent();
     }
 }
 

@@ -80,8 +80,10 @@ struct GenericSettings
     int network_timeout = 5000;
 
     // Additional toolbar items
-    bool enable_home_btn = false;
-    bool enable_newtab_btn = true;
+    bool enable_home_btn = false,
+         enable_newtab_btn = true,
+         enable_root_btn = false,
+         enable_parent_btn = false;
 
     // In-memory caching
     int cache_limit = 1000;

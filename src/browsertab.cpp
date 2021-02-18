@@ -160,6 +160,8 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
         kristall::favourites.editFavouriteGroup(this->current_location,
             popup->fav_group->currentText());
     });
+
+    refreshOptionalToolbarItems();
 }
 
 BrowserTab::~BrowserTab()
@@ -222,6 +224,33 @@ void BrowserTab::navOneBackward()
 void BrowserTab::navOneForward()
 {
     navigateBack(history.oneForward(current_history_index));
+}
+
+void BrowserTab::navigateToRoot()
+{
+    if(this->is_internal_location) return;
+
+    QUrl url = this->current_location;
+    url.setPath("/");
+    navigateTo(url, BrowserTab::PushImmediate);
+}
+
+void BrowserTab::navigateToParent()
+{
+    if(this->is_internal_location) return;
+
+    QUrl url = this->current_location;
+
+    // Make sure we have a trailing slash, or else
+    // QUrl::resolved will not work
+    if (!url.path().endsWith("/"))
+    {
+        url.setPath(url.path() + "/");
+    }
+
+    // Go up one directory
+    url = url.resolved(QUrl{".."});
+    navigateTo(url, BrowserTab::PushImmediate);
 }
 
 void BrowserTab::scrollToAnchor(QString const &anchor)
@@ -347,7 +376,17 @@ void BrowserTab::on_url_bar_blurred()
 
 void BrowserTab::on_refresh_button_clicked()
 {
-    reloadPage();
+    this->reloadPage();
+}
+
+void BrowserTab::on_root_button_clicked()
+{
+    this->navigateToRoot();
+}
+
+void BrowserTab::on_parent_button_clicked()
+{
+    this->navigateToParent();
 }
 
 void BrowserTab::on_networkError(ProtocolHandler::NetworkError error_code, const QString &reason)
@@ -1232,8 +1271,6 @@ void BrowserTab::updateUI()
     this->ui->back_button->setEnabled(history.oneBackward(current_history_index).isValid());
     this->ui->forward_button->setEnabled(history.oneForward(current_history_index).isValid());
 
-    this->ui->home_button->setVisible(kristall::options.enable_home_btn);
-
     bool in_progress = (this->current_handler != nullptr) and this->current_handler->isInProgress();
 
     this->ui->refresh_button->setVisible(not in_progress);
@@ -1372,6 +1409,13 @@ void BrowserTab::updatePageMargins()
     root->setFrameFormat(fmt);
 
     this->ui->text_browser->setDocument(this->current_document.get());
+}
+
+void BrowserTab::refreshOptionalToolbarItems()
+{
+    this->ui->home_button->setVisible(kristall::options.enable_home_btn);
+    this->ui->root_button->setVisible(kristall::options.enable_root_btn);
+    this->ui->parent_button->setVisible(kristall::options.enable_parent_btn);
 }
 
 bool BrowserTab::trySetClientCertificate(const QString &query)
