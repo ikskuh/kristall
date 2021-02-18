@@ -86,7 +86,8 @@ struct GenericSettings
     // In-memory caching
     int cache_limit = 1000;
     int cache_threshold = 125;
-    int cache_life = 15;
+    int cache_life = 60;
+    bool cache_unlimited_life = true;
 
     void load(QSettings & settings);
     void save(QSettings & settings) const;
