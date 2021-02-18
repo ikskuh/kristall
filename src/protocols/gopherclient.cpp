@@ -127,8 +127,8 @@ void GopherClient::on_socketError(QAbstractSocket::SocketError error_code)
     // This is more sane then erroring out here as it's a perfectly legal
     // state and we know the connection has ended.
     if (error_code == QAbstractSocket::RemoteHostClosedError) {
+        socket.close();
         return;
-    } else {
-        this->emitNetworkError(error_code, socket.errorString());
     }
+    this->emitNetworkError(error_code, socket.errorString());
 }

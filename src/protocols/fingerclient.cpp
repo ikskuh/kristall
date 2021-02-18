@@ -94,5 +94,10 @@ void FingerClient::on_finished()
 
 void FingerClient::on_socketError(QAbstractSocket::SocketError error_code)
 {
+    // Same as GopherClient::on_SocketError. See there for explanation
+    if (error_code == QAbstractSocket::RemoteHostClosedError) {
+        socket.close();
+        return;
+    }
     this->emitNetworkError(error_code, socket.errorString());
 }

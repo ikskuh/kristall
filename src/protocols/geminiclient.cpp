@@ -391,10 +391,11 @@ void GeminiClient::socketError(QAbstractSocket::SocketError socketError)
     // state and we know the TLS connection has ended.
     if(socketError == QAbstractSocket::RemoteHostClosedError) {
         socket.close();
-    } else {
-        this->is_error_state = true;
-        if(not this->suppress_socket_tls_error) {
-            this->emitNetworkError(socketError, socket.errorString());
-        }
+        return;
+    }
+
+    this->is_error_state = true;
+    if(not this->suppress_socket_tls_error) {
+        this->emitNetworkError(socketError, socket.errorString());
     }
 }
