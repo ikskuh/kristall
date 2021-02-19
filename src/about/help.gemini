@@ -203,7 +203,7 @@ Most items in the *Style* category have either a [Font], [Color] or both buttons
 
 * [Par] controls indent size of paragraphs (default: 1)
 * [Hea] controls indent size of headings (default: 0)
-* [Quo] controls indent size of blockquotes (default: 2)
+* [Quo] controls indent size of blockquotes (default: 1)
 * [Lst] controls indent size of unordered lists (default: 2)
 
 [Presets] is a cool feature to save, restore and share your color themes. The dropdown contains a list of all previously created colors schemes. With the [+] button you can create a scheme with a unique name. The floppy disk button will override the currently selected preset with all the settings displayed above. The folder button will restore a previously saved preset. The last two buttons allow you to import/export presets to disk and share them with your friends! Share all your beautiful color schemes with the world!
