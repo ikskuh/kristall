@@ -43,6 +43,11 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     this->ui->ui_density->addItem(tr("Compact"), QVariant::fromValue<int>(int(UIDensity::compact)));
     this->ui->ui_density->addItem(tr("Classic"), QVariant::fromValue<int>(int(UIDensity::classic)));
 
+    this->ui->list_symbol->clear();
+    this->ui->list_symbol->addItem("Filled circle", QVariant::fromValue<int>(int(QTextListFormat::Style::ListDisc)));
+    this->ui->list_symbol->addItem("Circle", QVariant::fromValue<int>(int(QTextListFormat::Style::ListCircle)));
+    this->ui->list_symbol->addItem("Square", QVariant::fromValue<int>(int(QTextListFormat::Style::ListSquare)));
+
     setGeminiStyle(DocumentStyle { });
 
     this->predefined_styles.clear();
@@ -131,6 +136,14 @@ void SettingsDialog::setGeminiStyle(DocumentStyle const &style)
     this->ui->indent_p->setValue(this->current_style.indent_p);
     this->ui->indent_h->setValue(this->current_style.indent_h);
     this->ui->indent_l->setValue(this->current_style.indent_l);
+
+    this->ui->list_symbol->setCurrentIndex(0);
+    for(int i = 0; i < this->ui->list_symbol->count(); ++i) {
+        if(this->ui->list_symbol->itemData(i).toInt() == int(this->current_style.list_symbol)) {
+            this->ui->list_symbol->setCurrentIndex(i);
+            break;
+        }
+    }
 
     auto setFontAndColor = [this](QLabel * label, const QFont &font, QColor color)
     {
@@ -539,6 +552,13 @@ void SettingsDialog::on_indent_l_valueChanged(int value)
     this->reloadStylePreview();
 }
 
+void SettingsDialog::on_list_symbol_currentIndexChanged(int index)
+{
+    if(index >= 0) {
+        current_style.list_symbol = QTextListFormat::Style(this->ui->list_symbol->itemData(index).toInt());
+        reloadStylePreview();
+    }
+}
 
 void SettingsDialog::on_presets_currentIndexChanged(int index)
 {
