@@ -98,6 +98,8 @@ private slots:
     void on_indent_h_valueChanged(int value);
     void on_indent_l_valueChanged(int value);
 
+    void on_list_symbol_currentIndexChanged(int index);
+
     void on_presets_currentIndexChanged(int index);
 
     void on_preset_new_clicked();

@@ -53,7 +53,7 @@ TextStyleInstance::TextStyleInstance(DocumentStyle const & themed_style)
   blockquote_tableformat.setLeftMargin(20.0 * themed_style.indent_bq);
   blockquote_tableformat.setBottomMargin(20.0);
 
-  list_format.setStyle(QTextListFormat::ListDisc);
+  list_format.setStyle(themed_style.list_symbol);
   list_format.setIndent(themed_style.indent_l);
 
   preformatted_format.setIndent(themed_style.indent_p);

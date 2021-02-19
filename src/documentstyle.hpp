@@ -5,6 +5,7 @@
 #include <QFont>
 #include <QColor>
 #include <QSettings>
+#include <QTextListFormat>
 
 struct DocumentStyle
 {
@@ -61,6 +62,7 @@ struct DocumentStyle
     double line_height_p;
     double line_height_h;
     int indent_bq, indent_p, indent_h, indent_l;
+    QTextListFormat::Style list_symbol;
 
     bool save(QSettings & settings) const;
     bool load(QSettings & settings);

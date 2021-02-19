@@ -206,6 +206,8 @@ Most items in the *Style* category have either a [Font], [Color] or both buttons
 * [Quo] controls indent size of blockquotes (default: 1)
 * [Lst] controls indent size of unordered lists (default: 2)
 
+[List item marker] simply lets you set what symbol is used in list items. By default this is set to Filled Circle.
+
 [Presets] is a cool feature to save, restore and share your color themes. The dropdown contains a list of all previously created colors schemes. With the [+] button you can create a scheme with a unique name. The floppy disk button will override the currently selected preset with all the settings displayed above. The folder button will restore a previously saved preset. The last two buttons allow you to import/export presets to disk and share them with your friends! Share all your beautiful color schemes with the world!
 
 The lone text with with the [host.name] text in it can be used to preview some auto-generated themes. It only refreshes the preview and seeds the auto generator with a new host name.
