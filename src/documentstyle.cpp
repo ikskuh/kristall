@@ -147,7 +147,7 @@ DocumentStyle::DocumentStyle(bool do_init) : theme(Fixed),
     text_width_enabled(true),
     line_height_p(5.0),
     line_height_h(0.0),
-    indent_bq(2), indent_p(1), indent_h(0), indent_l(2)
+    indent_bq(1), indent_p(1), indent_h(0), indent_l(2)
 {
     if (do_init) this->initialiseDefaultFonts();
 }
