@@ -37,6 +37,7 @@ QString toFingerprintString(QSslCertificate const & certificate)
 static QSettings * app_settings_ptr;
 static QApplication * app;
 static MainWindow * main_window = nullptr;
+static bool closing_state_saved = false;
 
 #define SSTR(X) STR(X)
 #define STR(X) #X
@@ -317,12 +318,8 @@ int main(int argc, char *argv[])
 
     int exit_code = app.exec();
 
-    app_settings.beginGroup("Window State");
-    app_settings.setValue("geometry", w.saveGeometry());
-    app_settings.setValue("state", w.saveState());
-    app_settings.endGroup();
-
-    kristall::saveSettings();
+    if (!closing_state_saved)
+        kristall::saveWindowState();
 
     return exit_code;
 }
@@ -560,4 +557,16 @@ void kristall::setUiDensity(UIDensity density, bool previewing)
     assert(app != nullptr);
     assert(main_window != nullptr);
     main_window->setUiDensity(density, previewing);
+}
+
+void kristall::saveWindowState()
+{
+    closing_state_saved = true;
+
+    app_settings_ptr->beginGroup("Window State");
+    app_settings_ptr->setValue("geometry", main_window->saveGeometry());
+    app_settings_ptr->setValue("state", main_window->saveState());
+    app_settings_ptr->endGroup();
+
+    kristall::saveSettings();
 }

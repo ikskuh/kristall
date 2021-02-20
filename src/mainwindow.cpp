@@ -296,6 +296,13 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     }
 }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    kristall::saveWindowState();
+
+    event->accept();
+}
+
 void MainWindow::on_browser_tabs_currentChanged(int index)
 {
     if(index >= 0) {

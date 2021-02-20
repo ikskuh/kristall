@@ -152,6 +152,8 @@ namespace kristall
 
     void setUiDensity(UIDensity density, bool previewing);
 
+    void saveWindowState();
+
     extern QString default_font_family, default_font_family_fixed;
 }
 
