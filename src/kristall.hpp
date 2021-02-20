@@ -61,6 +61,7 @@ struct GenericSettings
     QString search_engine = "gemini://geminispace.info/search?%1";
     Theme theme = Theme::light;
     IconTheme icon_theme = IconTheme::automatic;
+    IconTheme explicit_icon_theme = IconTheme::dark;
     UIDensity ui_density = UIDensity::compact;
     TextDisplay text_display = FormattedText;
     bool enable_text_decoration = false;

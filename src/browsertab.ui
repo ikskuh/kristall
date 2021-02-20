@@ -163,8 +163,8 @@
        </property>
        <property name="icon">
         <iconset resource="icons.qrc">
-         <normaloff>:/icons/common/favourite-off.svg</normaloff>
-         <normalon>:/icons/common/favourite-on.svg</normalon>:/icons/common/favourite-off.svg</iconset>
+         <normaloff>:/icons/light/actions/favourite-off.svg</normaloff>
+         <normalon>:/icons/light/actions/favourite-on.svg</normalon>:/icons/light/actions/favourite-off.svg</iconset>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -184,8 +184,8 @@
        </property>
        <property name="icon">
         <iconset resource="icons.qrc">
-         <normaloff>:/icons/common/certificate-off.svg</normaloff>
-         <normalon>:/icons/common/certificate-on.svg</normalon>:/icons/common/certificate-off.svg</iconset>
+         <normaloff>:/icons/light/actions/certificate-off.svg</normaloff>
+         <normalon>:/icons/light/actions/certificate-on.svg</normalon>:/icons/light/actions/certificate-off.svg</iconset>
        </property>
        <property name="checkable">
         <bool>true</bool>

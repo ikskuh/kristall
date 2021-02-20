@@ -377,7 +377,7 @@
    </property>
    <property name="icon">
     <iconset resource="icons.qrc">
-     <normaloff>:/icons/common/favourite-on.svg</normaloff>:/icons/common/favourite-on.svg</iconset>
+     <normaloff>:/icons/light/actions/favourite-on.svg</normaloff>:/icons/light/actions/favourite-on.svg</iconset>
    </property>
    <property name="text">
     <string>Add to favourites</string>

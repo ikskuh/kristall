@@ -1,9 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/common/certificate-off.svg</file>
-        <file>icons/common/certificate-on.svg</file>
-        <file>icons/common/favourite-off.svg</file>
-        <file>icons/common/favourite-on.svg</file>
         <file>icons/gopher/binary.svg</file>
         <file>icons/gopher/directory.svg</file>
         <file>icons/gopher/dns.svg</file>
@@ -29,6 +25,10 @@
         <file>icons/light/actions/document-export.svg</file>
         <file>icons/light/actions/document-import.svg</file>
         <file>icons/light/actions/document-save.svg</file>
+        <file>icons/light/actions/certificate-off.svg</file>
+        <file>icons/light/actions/certificate-on.svg</file>
+        <file>icons/light/actions/favourite-off.svg</file>
+        <file>icons/light/actions/favourite-on.svg</file>
         <file>icons/light/objects/view-certificate.svg</file>
         <file>icons/light/objects/folder.svg</file>
         <file>icons/light/objects/font.svg</file>
@@ -66,6 +66,10 @@
         <file>icons/dark/actions/document-export.svg</file>
         <file>icons/dark/actions/document-import.svg</file>
         <file>icons/dark/actions/document-save.svg</file>
+        <file>icons/dark/actions/certificate-off.svg</file>
+        <file>icons/dark/actions/certificate-on.svg</file>
+        <file>icons/dark/actions/favourite-off.svg</file>
+        <file>icons/dark/actions/favourite-on.svg</file>
         <file>icons/dark/objects/bookmarks.svg</file>
         <file>icons/dark/objects/view-certificate.svg</file>
         <file>icons/dark/objects/changelog.svg</file>

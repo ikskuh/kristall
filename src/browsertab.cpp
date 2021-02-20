@@ -162,6 +162,7 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
     });
 
     refreshOptionalToolbarItems();
+    refreshToolbarIcons();
 }
 
 BrowserTab::~BrowserTab()
@@ -1416,6 +1417,33 @@ void BrowserTab::refreshOptionalToolbarItems()
     this->ui->home_button->setVisible(kristall::options.enable_home_btn);
     this->ui->root_button->setVisible(kristall::options.enable_root_btn);
     this->ui->parent_button->setVisible(kristall::options.enable_parent_btn);
+}
+
+void BrowserTab::refreshToolbarIcons()
+{
+    const QString ICO_NAMES[] = {
+        "light",
+        "dark"
+    };
+
+    QString ico_name = ICO_NAMES[(int)kristall::options.explicit_icon_theme];
+
+    // Favourites button icons
+    QIcon ico_fav;
+    QPixmap p_fav_on (":/icons/" + ico_name + "/actions/favourite-on.svg");
+    QPixmap p_fav_off(":/icons/" + ico_name + "/actions/favourite-off.svg");
+    ico_fav.addPixmap(p_fav_on,  QIcon::Normal, QIcon::On);
+    ico_fav.addPixmap(p_fav_off, QIcon::Normal, QIcon::Off);
+
+    // Certificates button icons
+    QIcon ico_cert;
+    QPixmap p_cert_on (":/icons/" + ico_name + "/actions/certificate-on.svg");
+    QPixmap p_cert_off(":/icons/" + ico_name + "/actions/certificate-off.svg");
+    ico_cert.addPixmap(p_cert_on,  QIcon::Normal, QIcon::On);
+    ico_cert.addPixmap(p_cert_off, QIcon::Normal, QIcon::Off);
+
+    this->ui->fav_button->setIcon(ico_fav);
+    this->ui->enable_client_cert_button->setIcon(ico_cert);
 }
 
 bool BrowserTab::trySetClientCertificate(const QString &query)

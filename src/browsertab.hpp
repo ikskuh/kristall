@@ -109,6 +109,8 @@ public:
 
     void refreshOptionalToolbarItems();
 
+    void refreshToolbarIcons();
+
 signals:
     void titleChanged(QString const & title);
     void locationChanged(QUrl const & url);
