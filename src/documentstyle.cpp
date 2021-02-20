@@ -146,7 +146,7 @@ DocumentStyle::DocumentStyle(bool do_init) : theme(Fixed),
     justify_text(true),
     text_width_enabled(true),
     line_height_p(5.0),
-    line_height_h(0.0),
+    line_height_h(5.0),
     indent_bq(1), indent_p(1), indent_h(0), indent_l(2),
     indent_size(15.0),
     list_symbol(QTextListFormat::ListDisc)
