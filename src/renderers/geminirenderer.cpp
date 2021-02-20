@@ -7,6 +7,7 @@
 #include <QStringList>
 #include <QDebug>
 #include <QTextTable>
+#include <QRegularExpression>
 
 #include "kristall.hpp"
 
@@ -258,63 +259,153 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
 
                 if(emit_fancy_text)
                 {
-                    // TODO: Fix UTF-8 encoding here… Don't emit single characters but always spans!
-
-                    bool rendering_bold = false;
-                    bool rendering_underlined = false;
-
-                    QTextCharFormat fmt = text_style.standard;
-
-                    QByteArray buffer;
-
-                    auto flush = [&]() {
-                        if(buffer.size() > 0) {
-                            cursor.insertText(QString::fromUtf8(buffer), fmt);
-                            buffer.resize(0);
-                        }
-                    };
-
-                    for(int i = 0; i < line.length(); i += 1)
+                    // Just render lines not containing asterisks/underscores normally.
+                    // This actually helps reduce the small overhead on large pages to
+                    // being almost negligable
+                    if (!line.contains("*") && !line.contains("_"))
                     {
-                        char c = line.at(i);
-                        if(c == ' ') {
-                            flush();
-                            fmt = text_style.standard;
-                            buffer.append(' ');
-                            rendering_bold = false;
-                            rendering_underlined = false;
-                        }
-                        else if(c == '*') {
-                            if(rendering_bold) {
-                                buffer.append('*');
-                            }
-                            flush();
-                            rendering_bold = not rendering_bold;
-                            auto f = fmt.font();
-                            f.setBold(rendering_bold);
-                            fmt.setFont(f);
-                            if(rendering_bold) {
-                                buffer.append('*');
-                            }
-                        }
-                        else if(c == '_') {
-                            if(rendering_underlined) {
-                                buffer.append(' ');
-                            }
-                            flush();
-                            rendering_underlined = not rendering_underlined;
-                            auto f = fmt.font();
-                            fmt.setUnderlineStyle(rendering_underlined ? QTextCharFormat::SingleUnderline : QTextCharFormat::NoUnderline);
-                            if(rendering_underlined) {
-                                buffer.append(' ');
-                            }
-                        }
-                        else {
-                            buffer.append(c);
-                        }
+                        cursor.insertText(line + "\n", text_style.standard);
+                        continue;
                     }
 
-                    flush();
+                    // Easier to work on this as an array of QChars
+                    QString text(line);
+
+                    // Whether to hide formatting codes (*, and _). This option
+                    // is mainly here so that the code which strips these is
+                    // more understandable.
+                    static const bool HIDE_FORMATS = true;
+
+                    // The first thing we do is convert double-asterisk bolding to single-asterisk.
+                    // This makes it A LOT easier to bold these things.
+                    //
+                    // This is done using this regex. In a simpler, pseudo form, it can be written as:
+                    // (punctuation/whitespace/line-begin)+\*\*(bolded text)\*\*(punctuation/whitespace/EOL)
+                    // Just stare at it a bit and you might figure out how it works...
+                    QRegularExpression BOLD_DBL_REGEX
+                        = QRegularExpression(R"((^|[\s.,!?[\]()\\-])+\*\*([^\*\s]+[^\*]+[^\*\s]+)\*\*($|[\s.,!?[\]()\\-]))");
+                    text.replace(BOLD_DBL_REGEX,  QString(R"(\1*\2*\3)"));
+
+                    QTextCharFormat fmt = text_style.standard;
+                    bool bold = false, underline = false;
+                    bool was_bold = false, was_underline = false;
+                    int last = 0;
+
+                    // Used to prepare the format before actually drawing the text.
+                    auto format_text = [&bold, &underline, &was_bold, &was_underline, &last, &text, &fmt](int i) -> QString
+                    {
+                        // Makes sure that bold/underline text only gets printed
+                        // if it has a matching * or _.
+                        if (bold && !text.mid(i, text.length() - i).contains("*"))
+                            bold = false;
+                        if (underline && !text.mid(i, text.length() - i).contains("_"))
+                            underline = false;
+
+                        // Sets format to bold/underline as necessary.
+                        auto f = fmt.font();
+                        f.setBold(bold);
+                        fmt.setFont(f);
+                        fmt.setUnderlineStyle(underline ?
+                            QTextCharFormat::SingleUnderline : QTextCharFormat::NoUnderline);
+
+                        // Remove formats
+                        QString span = text.mid(last, i - last);
+                        if (HIDE_FORMATS &&
+                            span.length() > 1 &&
+                            (((bold || was_bold) && span.startsWith("*")) ||
+                             ((underline || was_underline) && span.startsWith("_"))))
+                        {
+                            span = span.mid(1, span.length() - 1);
+                        }
+
+                        return span;
+                    };
+
+                    for (int i = 0; i < text.length(); ++i)
+                    {
+                        if (text[i] == '*')
+                        {
+                            // Format and insert the text.
+                            cursor.insertText(format_text(i), fmt);
+
+                            // 'Toggle' bold state.
+                            if (was_bold) was_bold = false;
+                            if (bold) {
+                                was_bold = true;
+                                bold = false;
+                            } else {
+                                // Only start bold formatting if this looks like bold formatting:
+                                // * Previous char must be either whitespace, nothing
+                                // * Next char must not be: whitespace, comma, full-stop, asterisk, or underscore.
+                                if ((i == 0 || text[i - 1].isSpace()) &&
+                                    (i + 1) < text.length() &&
+                                    !text[i + 1].isSpace() &&
+                                    text[i + 1] != ',' &&
+                                    text[i + 1] != '.' &&
+                                    text[i + 1] != '*' &&
+                                    text[i + 1] != '_')
+                                {
+                                    bold = true;
+                                }
+                            }
+
+                            last = i;
+                        }
+                        else if (text[i] == '_')
+                        {
+                            // Insert the text
+                            cursor.insertText(format_text(i), fmt);
+
+                            // 'Toggle' underline state.
+                            if (was_underline) was_underline = false;
+                            if (underline) {
+                                was_underline = true;
+                                underline = false;
+                            } else {
+                                // Only start underline formatting if it looks like an underline.
+                                // * Previous char must be either whitespace or nothing
+                                // * Next char must not be: whitespace, comma, full-stop, asterisk, or underscore.
+                                if ((i == 0 || text[i - 1].isSpace()) &&
+                                    (i + 1) < text.length() &&
+                                    !text[i + 1].isSpace() &&
+                                    text[i + 1] != ',' &&
+                                    text[i + 1] != '.' &&
+                                    text[i + 1] != '*' &&
+                                    text[i + 1] != '_')
+                                {
+                                    underline = true;
+                                }
+                            }
+
+                            last = i;
+                        }
+
+                        if (i == text.length() - 1)
+                        {
+                            QString span = text.mid(last, i - last + 1);
+
+                            // Skip if the span is just an asterisk/underline
+                            if (HIDE_FORMATS &&
+                                ((was_bold && span == "*") ||
+                                (was_underline && span == "_")))
+                            {
+                                break;
+                            }
+
+                            // Strips previous underline/asterisk
+                            if (HIDE_FORMATS &&
+                                span.length() > 1 &&
+                                ((was_bold && span.startsWith("*")) ||
+                                 (was_underline && span.startsWith("_"))))
+                            {
+                                span = span.mid(1, span.length() - 1);
+                            }
+
+                            // Draw ending text normally.
+                            cursor.insertText(span, text_style.standard);
+                            break;
+                        }
+                    }
 
                     cursor.insertText("\n", text_style.standard);
                 }
