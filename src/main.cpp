@@ -519,6 +519,11 @@ void kristall::setIconTheme(IconTheme icotheme, Theme uitheme)
         "dark"   // Dark theme (light icons)
     };
 
+    auto ret = []() {
+        if (main_window && main_window->curTab())
+            main_window->curTab()->refreshToolbarIcons();
+    };
+
     if (icotheme == IconTheme::automatic)
     {
         if (uitheme == Theme::os_default)
@@ -531,16 +536,23 @@ void kristall::setIconTheme(IconTheme icotheme, Theme uitheme)
             QIcon::setThemeName("");
         #endif
 
+            kristall::options.explicit_icon_theme = IconTheme::dark;
+
+            ret();
             return;
         }
 
         // Use icon theme based on UI theme
         QIcon::setThemeName(icothemes[(int)uitheme]);
+        kristall::options.explicit_icon_theme = (IconTheme)uitheme;
+        ret();
         return;
     }
 
     // Use icon specified by user
     QIcon::setThemeName(icothemes[(int)icotheme]);
+    kristall::options.explicit_icon_theme = (IconTheme)icotheme;
+    ret();
 }
 
 void kristall::setUiDensity(UIDensity density, bool previewing)

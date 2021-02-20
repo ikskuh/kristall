@@ -438,6 +438,7 @@ void MainWindow::on_actionSettings_triggered()
     {
         BrowserTab *t = this->tabAt(i);
         t->refreshOptionalToolbarItems();
+        t->refreshToolbarIcons();
         t->needs_rerender = true;
     }
     // Re-render the currently-open tab if we have one.
