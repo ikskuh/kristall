@@ -47,6 +47,8 @@ public:
 
     void mousePressEvent(QMouseEvent *event) override;
 
+    void closeEvent(QCloseEvent *event) override;
+
 private slots:
     void on_browser_tabs_currentChanged(int index);
 
