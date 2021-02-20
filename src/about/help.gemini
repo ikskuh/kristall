@@ -1,5 +1,5 @@
 # Kristall Help
-This is the manual for the Kristall small-internet browser. It contains explanations on how to use the program, what each setting means and
+This is the manual for the Kristall small-internet browser. It contains explanations on how to use the program, what each setting means and other information about the browser.
 
 ## The Mission
 Kristall tries to fill the hole of graphical browsers for alternative internet protocols with a high usability and feature richness.
@@ -197,7 +197,7 @@ Most items in the *Style* category have either a [Font], [Color] or both buttons
 
 [Line height (paragraph)] is an additional spacing between paragraph text lines. By default this is set to 5px, and can help with readability. (Gemtext-only feature)
 
-[Line height (header)] is an additional spacing between header text lines. By default this is set to 0px. Pages will usually look better when this is set to a low value, or else headings will appear too far from paragraph text. (Gemtext-only feature)
+[Line height (header)] is an additional spacing between header text lines. By default this is set to 5px. (Gemtext-only feature)
 
 [Indentation] is a set of options that control the level of indent in certain text parts in Gemini pages.
 

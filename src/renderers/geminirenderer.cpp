@@ -66,6 +66,15 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
         {
             if (line.startsWith("```"))
             {
+                // Set the last line of the preformatted block to have
+                // standard line height.
+                QTextBlockFormat fmt = text_style.preformatted_format;
+                fmt.setLineHeight(themed_style.line_height_p,
+                    QTextBlockFormat::LineDistanceHeight);
+                cursor.movePosition(QTextCursor::PreviousBlock);
+                cursor.setBlockFormat(fmt);
+
+                cursor.movePosition(QTextCursor::NextBlock);
                 cursor.setBlockFormat(text_style.standard_format);
                 verbatim = false;
             }
