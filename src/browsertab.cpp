@@ -826,7 +826,12 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
 
 void BrowserTab::rerenderPage()
 {
+    auto scroll = this->ui->text_browser->verticalScrollBar()->value();
+
     this->renderPage(this->current_buffer, this->current_mime);
+
+    // Restore scroll position
+    this->ui->text_browser->verticalScrollBar()->setValue(scroll);
 }
 
 void BrowserTab::updatePageTitle()
