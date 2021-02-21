@@ -1747,7 +1747,7 @@ void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint pos)
         menu.addSeparator();
     } else {
         menu.addAction("Copy to clipboard", [this]() {
-            this->ui->text_browser->copy();
+            this->ui->text_browser->betterCopy();
         }, QKeySequence("Ctrl+C"));
     }
 

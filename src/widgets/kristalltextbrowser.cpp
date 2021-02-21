@@ -1,8 +1,12 @@
 #include "kristalltextbrowser.hpp"
 
+#include "kristall.hpp"
+
 #include <QMouseEvent>
 #include <QScroller>
 #include <QTouchDevice>
+#include <QRegularExpression>
+#include <QLineEdit>
 
 const Qt::CursorShape KristallTextBrowser::NORMAL_CURSOR = Qt::IBeamCursor;
 
@@ -75,4 +79,63 @@ void KristallTextBrowser::updateCursor()
     {
         this->viewport()->setCursor(wanted_cursor);
     }
+}
+
+void KristallTextBrowser::keyPressEvent(QKeyEvent *event)
+{
+    if(event->modifiers() == Qt::ControlModifier &&
+        event->key() == Qt::Key_C) {
+        this->betterCopy();
+    } else {
+        QTextBrowser::keyPressEvent(event);
+    }
+}
+
+void KristallTextBrowser::keyReleaseEvent(QKeyEvent *event)
+{
+    if(event->modifiers() == Qt::ControlModifier &&
+        event->key() == Qt::Key_C) {
+        // Eat the event
+    } else {
+        QTextBrowser::keyReleaseEvent(event);
+    }
+}
+
+
+void KristallTextBrowser::betterCopy()
+{
+    // Our own implementation of a copy. All we need to do is get the
+    // selected text, adjust it if needed, and copy it.
+    //
+    // The main adjustment we make here is stripping "fancy" quotes from the text,
+    // as these quotes are usually an annoyance when copying text.
+    //
+    // There is a little trick here though: if a user selects a piece of text
+    // which consists only of whitespace and fancy quotes (or some punctuation: ,.),
+    // the fancy quotes will be included in the copy.
+    //
+    // In all other cases the quotes will be replaced. This can be said to be
+    // a usability feature for the few people that may want to actually copy
+    // the quotes themselves.
+
+    QTextCursor cursor = QTextBrowser::textCursor();
+    QString text = cursor.selectedText();
+
+    if (text.isEmpty()) return;
+
+    // Check if text only consists of fancy quotes:
+    static const QRegularExpression REGEX_ONLY_QUOTES(R"(^[\s“”‘’,.]+$)",
+        QRegularExpression::CaseInsensitiveOption);
+    if (text.contains(REGEX_ONLY_QUOTES))
+    {
+        // Copy the original text.
+        kristall::clipboard->setText(text);
+        return;
+    }
+
+    // Replace fancy quotes
+    static const QRegularExpression REGEX_QUOTES_D("(“|”)"), REGEX_QUOTES_S("(‘|’)");
+    text.replace(REGEX_QUOTES_D, "\"").replace(REGEX_QUOTES_S, "'");
+
+    kristall::clipboard->setText(text);
 }
