@@ -111,7 +111,7 @@ void KristallTextBrowser::betterCopy()
     // as these quotes are usually an annoyance when copying text.
     //
     // There is a little trick here though: if a user selects a piece of text
-    // which consists only of whitespace and fancy quotes (or some punctuation: ,.),
+    // which consists only of whitespace and fancy quotes
     // the fancy quotes will be included in the copy.
     //
     // In all other cases the quotes will be replaced. This can be said to be
@@ -124,7 +124,7 @@ void KristallTextBrowser::betterCopy()
     if (text.isEmpty()) return;
 
     // Check if text only consists of fancy quotes:
-    static const QRegularExpression REGEX_ONLY_QUOTES(R"(^[\s“”‘’,.]+$)",
+    static const QRegularExpression REGEX_ONLY_QUOTES(R"(^[\s“”‘’]+$)",
         QRegularExpression::CaseInsensitiveOption);
     if (text.contains(REGEX_ONLY_QUOTES))
     {

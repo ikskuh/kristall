@@ -376,6 +376,9 @@ void MainWindow::on_tab_titleChanged(const QString &title)
             updateWindowTitle();
         }
 
+        // Set tooltip
+        this->ui->browser_tabs->tab_bar->setTabToolTip(index, title);
+
         // Shorten lengthy titles for tab bar (45 chars max for now - we assume
         // that Gemini surfers don't usually have loads of tabs open, so the
         // limit is fairly high)
