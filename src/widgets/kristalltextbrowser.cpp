@@ -15,11 +15,15 @@ KristallTextBrowser::KristallTextBrowser(QWidget *parent) :
 {
     connect(this, &QTextBrowser::anchorClicked, this, &KristallTextBrowser::on_anchorClicked);
 
-    // Enable touch scrolling
-    if (QTouchDevice::devices().length() > 0)
+    // Enable touch scrolling on touchscreen devices
+    for (int i = 0; i < QTouchDevice::devices().length(); ++i)
     {
-        this->viewport()->setAttribute(Qt::WA_AcceptTouchEvents);
-        QScroller::grabGesture(this, QScroller::LeftMouseButtonGesture);
+        if (QTouchDevice::devices()[i]->type() == QTouchDevice::TouchScreen)
+        {
+            this->viewport()->setAttribute(Qt::WA_AcceptTouchEvents);
+            QScroller::grabGesture(this, QScroller::LeftMouseButtonGesture);
+            break;
+        }
     }
 }
 
