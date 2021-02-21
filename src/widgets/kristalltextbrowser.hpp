@@ -18,6 +18,11 @@ public:
 
     void setDefaultCursor(QCursor const & shape);
 
+    void keyPressEvent(QKeyEvent *event) override;
+    void keyReleaseEvent(QKeyEvent *event) override;
+
+    void betterCopy();
+
 signals:
     void anchorClicked(QUrl const &, bool open_in_new_tab);
 
