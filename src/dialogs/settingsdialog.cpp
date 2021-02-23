@@ -136,6 +136,7 @@ void SettingsDialog::setGeminiStyle(DocumentStyle const &style)
     this->ui->indent_p->setValue(this->current_style.indent_p);
     this->ui->indent_h->setValue(this->current_style.indent_h);
     this->ui->indent_l->setValue(this->current_style.indent_l);
+    this->ui->indent_size->setValue(this->current_style.indent_size);
 
     this->ui->list_symbol->setCurrentIndex(0);
     for(int i = 0; i < this->ui->list_symbol->count(); ++i) {
@@ -549,6 +550,12 @@ void SettingsDialog::on_indent_p_valueChanged(int value)
 void SettingsDialog::on_indent_l_valueChanged(int value)
 {
     this->current_style.indent_l = value;
+    this->reloadStylePreview();
+}
+
+void SettingsDialog::on_indent_size_valueChanged(double value)
+{
+    this->current_style.indent_size = value;
     this->reloadStylePreview();
 }
 

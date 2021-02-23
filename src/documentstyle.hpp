@@ -62,6 +62,7 @@ struct DocumentStyle
     double line_height_p;
     double line_height_h;
     int indent_bq, indent_p, indent_h, indent_l;
+    int indent_size;
     QTextListFormat::Style list_symbol;
 
     bool save(QSettings & settings) const;
