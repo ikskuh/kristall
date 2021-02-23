@@ -7,6 +7,7 @@
 #include <QInputDialog>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QScrollBar>
 #include <QDebug>
 
 #include <cassert>
@@ -84,6 +85,14 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     this->ui->redirection_mode->addItem("Ask for cross-host redirection", int(GenericSettings::WarnOnHostChange));
     this->ui->redirection_mode->addItem("Ask for all redirection", int(GenericSettings::WarnAlways));
     this->ui->redirection_mode->addItem("Silently redirect everything", int(GenericSettings::WarnNever));
+
+    connect(this->ui->tabWidget, &QTabWidget::currentChanged, this, [this] (int index) {
+        if (index != 1) /* Style tab */
+            return;
+
+        this->ui->style_scroll_area->setMinimumWidth(this->ui->style_scroll_layout->minimumSize().width()
+            + this->ui->style_scroll_area->verticalScrollBar()->sizeHint().width());
+    });
 }
 
 SettingsDialog::~SettingsDialog()
