@@ -288,11 +288,16 @@ This list contains all built-in shortcuts:
 * Ctrl+D ⇒ Quick add/remove from favourites
 * Ctrl+L ⇒ Focus URL bar
 * Ctrl+S ⇒ Save current file
-* Ctrl+H ⇒ Go to home page
+* Ctrl+B ⇒ Toggle favourites dock
+* Ctrl+H ⇒ Toggle history dock
+* Ctrl+M ⇒ Toggle document outline dock
 * Ctrl+U ⇒ View document source
+* Ctrl+Q ⇒ Quit Kristall
+* Ctrl+, ⇒ Open settings window
 * Alt+Left ⇒ Navigate one page back
 * Alt+Right ⇒ Navigate one page forward
 * Alt+Up ⇒ Navigate to parent directory
+* Alt+Home ⇒ Go to home page
 * Alt+/ ⇒ Navigate to root directory
 * Alt+, ⇒ Open Settings dialog
 * F1 ⇒ View this document
