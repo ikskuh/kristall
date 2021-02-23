@@ -148,6 +148,7 @@ DocumentStyle::DocumentStyle(bool do_init) : theme(Fixed),
     line_height_p(5.0),
     line_height_h(0.0),
     indent_bq(1), indent_p(1), indent_h(0), indent_l(2),
+    indent_size(15.0),
     list_symbol(QTextListFormat::ListDisc)
 {
     if (do_init) this->initialiseDefaultFonts();
@@ -299,6 +300,7 @@ bool DocumentStyle::save(QSettings &settings) const
         settings.setValue("indent_p", indent_p);
         settings.setValue("indent_h", indent_h);
         settings.setValue("indent_l", indent_l);
+        settings.setValue("indent_size", indent_size);
         settings.setValue("list_symbol", (int)list_symbol);
 
         settings.endGroup();
@@ -416,6 +418,7 @@ bool DocumentStyle::load(QSettings &settings)
             indent_p = settings.value("indent_p", indent_p).toInt();
             indent_h = settings.value("indent_h", indent_h).toInt();
             indent_l = settings.value("indent_l", indent_l).toInt();
+            indent_size = settings.value("indent_size", indent_size).toDouble();
             list_symbol = (QTextListFormat::Style)settings.value("list_symbol", list_symbol).toInt();
 
             settings.endGroup();

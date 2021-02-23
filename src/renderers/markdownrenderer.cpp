@@ -319,7 +319,7 @@ std::unique_ptr<QTextDocument> MarkdownRenderer::render(
 
     auto doc = std::make_unique<QTextDocument>();
     renderhelpers::setPageMargins(doc.get(), style.margin_h, style.margin_v);
-    doc->setIndentWidth(20);
+    doc->setIndentWidth(style.indent_size);
 
     outline.beginBuild();
 

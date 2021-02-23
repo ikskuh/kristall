@@ -50,7 +50,9 @@ TextStyleInstance::TextStyleInstance(DocumentStyle const & themed_style)
   blockquote_tableformat.setHeaderRowCount(0);
   blockquote_tableformat.setCellPadding(16.0);
   blockquote_tableformat.setAlignment(Qt::AlignJustify);
-  blockquote_tableformat.setLeftMargin(20.0 * themed_style.indent_bq);
+
+  // We set blockquote indent manually, since it is a table.
+  blockquote_tableformat.setLeftMargin(themed_style.indent_size * themed_style.indent_bq);
   blockquote_tableformat.setBottomMargin(20.0);
 
   list_format.setStyle(themed_style.list_symbol);

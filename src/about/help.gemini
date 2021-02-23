@@ -206,6 +206,8 @@ Most items in the *Style* category have either a [Font], [Color] or both buttons
 * [Quo] controls indent size of blockquotes (default: 1)
 * [Lst] controls indent size of unordered lists (default: 2)
 
+[Indent Size] is the size in pixels of a single indent. This affects how much of an effect the above [Indentation] settings have on the layout (default 15).
+
 [List item marker] simply lets you set what symbol is used in list items. By default this is set to Filled Circle.
 
 [Presets] is a cool feature to save, restore and share your color themes. The dropdown contains a list of all previously created colors schemes. With the [+] button you can create a scheme with a unique name. The floppy disk button will override the currently selected preset with all the settings displayed above. The folder button will restore a previously saved preset. The last two buttons allow you to import/export presets to disk and share them with your friends! Share all your beautiful color schemes with the world!
@@ -267,7 +269,7 @@ This dialog provides means to create a new persistent identity.
 [Group] is the name of the group where this certificate should be stored. You can either chose an existing group from the drop down or just enter a non-existing name to create a new group ad-hoc.
 [Display Name] is the title of the certificate that Kristall will show you. It will not be sent to a server ever.
 [Common Name] is the CN field in the X509 certificate. It's required for identitication to the hosts.
-[Exporation Date] is the date when your certificate becomes invalid. Kristall choses a default of "1 year from now on", but you can chose any time you want, even just 30 minutes. Better chose a long time though if you don't know how long you need that certificate.
+[Expiration Date] is the date when your certificate becomes invalid. Kristall choses a default of "1 year from now on", but you can chose any time you want, even just 30 minutes. Better chose a long time though if you don't know how long you need that certificate.
 
 With a click on [OK], Kristall will create a new certificate and put it in your certificate store. It can then be selected from the certificate selection dialog or certificate manager.
 
@@ -287,8 +289,12 @@ This list contains all built-in shortcuts:
 * Ctrl+L ⇒ Focus URL bar
 * Ctrl+S ⇒ Save current file
 * Ctrl+H ⇒ Go to home page
+* Ctrl+U ⇒ View document source
 * Alt+Left ⇒ Navigate one page back
 * Alt+Right ⇒ Navigate one page forward
+* Alt+Up ⇒ Navigate to parent directory
+* Alt+/ ⇒ Navigate to root directory
+* Alt+, ⇒ Open Settings dialog
 * F1 ⇒ View this document
 * F5 ⇒ Refresh current tab
 
