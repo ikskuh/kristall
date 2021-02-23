@@ -50,6 +50,13 @@ bool GopherClient::startRequest(const QUrl &url, RequestOptions options)
     if(type == "") mime = "text/gophermap";
     else if(type == "0") mime = "text/plain";
     else if(type == "1") mime = "text/gophermap";
+    else if(type == "7") {
+        mime = "text/gophermap";
+        if (!url.hasQuery()) {
+            emit inputRequired(tr("Search:"), false);
+            return true;
+        }
+    }
     else if(type == "g") mime = "image/gif";
     else if(type == "I") mime = "image/unknown";
     else if(type == "h") mime = "text/html";
@@ -84,7 +91,8 @@ bool GopherClient::cancelRequest()
 
 void GopherClient::on_connected()
 {
-    auto blob = (requested_url.path().mid(2) + "\r\n").toUtf8();
+    auto searchstr = requested_url.hasQuery() ? "\t" + requested_url.query() : QString();
+    auto blob = (requested_url.path().mid(2) + searchstr + "\r\n").toUtf8();
 
     IoUtil::writeAll(socket, blob);
 
