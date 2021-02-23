@@ -257,11 +257,13 @@ void SettingsDialog::setOptions(const GenericSettings &options)
     this->ui->start_page->setText(this->current_options.start_page);
 
     this->ui->search_engine->clear();
-    this->ui->search_engine->setEditText(this->current_options.search_engine);
+    QString search = this->current_options.search_engine;
     this->ui->search_engine->lineEdit()->setPlaceholderText("URL with '%1' in place of query");
     this->ui->search_engine->addItem("gemini://geminispace.info/search?%1");
     this->ui->search_engine->addItem("gemini://gus.guru/search?%1");
     this->ui->search_engine->addItem("gemini://houston.coder.town/search?%1");
+    this->ui->search_engine->addItem("gopher://gopher.floodgap.com:70/7/v2/vs?%1");
+    this->ui->search_engine->setCurrentText(search);
 
     if(this->current_options.gophermap_display == GenericSettings::PlainText) {
         this->ui->gophermap_text->setChecked(true);
