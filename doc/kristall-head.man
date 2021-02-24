@@ -1,0 +1,31 @@
+.\"
+.\" Kristall man page
+.\"
+.
+.TH KRISTALL 1 $(DATE) Unix "User manuals"
+.SH NAME
+.PP
+.B kristall
+\- a cross-platform graphical small-internet client.
+.PP
+Kristall tries to fill the hole of graphical browsers for alternative internet protocols with a high usability and feature richness.
+.
+.SH SYNOPSIS
+.B kristall
+[\fI\,FLAGS\/\fR]... [\fI\,URL\/\fR]
+.
+.SH DESCRIPTION
+.P
+.B kristall
+is a small-Internet browser designed primarily for browsing geminispace. The gopher and finger protocols are also supported, as well as basic HTTP/S.
+.
+.SH FLAGS
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+Displays help information
+.
+.TP
+\fB\-v\fR, \fB\-\-version\fR
+Displays version information
+.
+.\" Stuff after this is converted from the Gemtext about:help file
