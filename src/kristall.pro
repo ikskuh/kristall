@@ -21,6 +21,14 @@ DEFINES += KRISTALL_VERSION="\"$(shell cd $$PWD; git describe --tags)\""
 # We need iconv on non-linux platforms
 !linux: LIBS += -liconv
 
+# On systems that have dpkg, append build flags for hardening
+system("which dpkg-buildflags") {
+    QMAKE_CPPFLAGS *= $(shell dpkg-buildflags --get CPPFLAGS)
+    QMAKE_CFLAGS   *= $(shell dpkg-buildflags --get CFLAGS)
+    QMAKE_CXXFLAGS *= $(shell dpkg-buildflags --get CXXFLAGS)
+    QMAKE_LFLAGS   *= $(shell dpkg-buildflags --get LDFLAGS)
+}
+
 QMAKE_CFLAGS += -Wno-unused-parameter -Werror=return-type
 QMAKE_CXXFLAGS += -Wno-unused-parameter -Werror=return-type
 
