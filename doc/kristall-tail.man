@@ -1,0 +1,6 @@
+.\" End of converted Gemtext
+.
+.SH BUGS
+Bug tracker:
+.IP
+https://github.com/MasterQ32/kristall/issues
