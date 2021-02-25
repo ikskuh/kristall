@@ -97,8 +97,15 @@ int main(int argc, char *argv[])
 
     {
         // Initialise default fonts
+    #ifdef Q_OS_WIN32
+        // Windows default fonts are ugly, so we use standard ones.
+        kristall::default_font_family = "Segoe UI";
+        kristall::default_font_family_fixed = "Consolas";
+    #else
+        // *nix
         kristall::default_font_family = QFontDatabase::systemFont(QFontDatabase::GeneralFont).family();
         kristall::default_font_family_fixed = QFontInfo(QFont("monospace")).family();
+    #endif
         kristall::document_style.initialiseDefaultFonts();
     }
 
