@@ -624,7 +624,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset theme="palette">
+                  <iconset theme="color-select-symbolic">
                    <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
@@ -674,7 +674,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset theme="palette">
+                  <iconset theme="color-select-symbolic">
                    <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
@@ -717,7 +717,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset theme="palette">
+                  <iconset theme="color-select-symbolic">
                    <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
@@ -760,7 +760,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset theme="palette">
+                  <iconset theme="color-select-symbolic">
                    <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
@@ -803,7 +803,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset theme="palette">
+                  <iconset theme="color-select-symbolic">
                    <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
@@ -853,7 +853,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset theme="palette">
+                  <iconset theme="color-select-symbolic">
                    <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
@@ -903,7 +903,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset theme="palette">
+                  <iconset theme="color-select-symbolic">
                    <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
@@ -978,7 +978,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset theme="palette">
+                  <iconset theme="color-select-symbolic">
                    <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
@@ -1003,7 +1003,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset theme="palette">
+                  <iconset theme="color-select-symbolic">
                    <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
@@ -1028,7 +1028,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset theme="palette">
+                  <iconset theme="color-select-symbolic">
                    <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
@@ -1354,7 +1354,7 @@
                   <string>...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="palette">
+                  <iconset theme="color-select-symbolic">
                    <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
