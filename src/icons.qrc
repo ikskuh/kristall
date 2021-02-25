@@ -35,7 +35,7 @@
         <file>icons/light/objects/go-home.svg</file>
         <file>icons/light/objects/help-about.svg</file>
         <file>icons/light/objects/menu.svg</file>
-        <file>icons/light/objects/palette.svg</file>
+        <file>icons/light/objects/color-select-symbolic.svg</file>
         <file>icons/light/objects/settings.svg</file>
         <file>icons/light/objects/audio-volume-high.svg</file>
         <file>icons/light/objects/audio-volume-muted.svg</file>
@@ -80,7 +80,7 @@
         <file>icons/dark/objects/go-home.svg</file>
         <file>icons/dark/objects/help-about.svg</file>
         <file>icons/dark/objects/menu.svg</file>
-        <file>icons/dark/objects/palette.svg</file>
+        <file>icons/dark/objects/color-select-symbolic.svg</file>
         <file>icons/dark/objects/settings.svg</file>
         <file>icons/dark/objects/table-of-contents.svg</file>
         <file>icons/dark/objects/audio-volume-muted.svg</file>
