@@ -430,6 +430,8 @@ DocumentStyle DocumentStyle::derive(const QUrl &url) const
     auto const patchup_font = [](QFont & font, bool fixed=false)
     {
         // Set the "fallback" font, just to be absolutely sure.
+        // Note the main purpose of this is to avoid emoji fonts
+        // from taking precedence over text fonts.
         // (fixes *nix default font issues)
         emojiFonts[1] = fixed
             ? kristall::default_font_family_fixed
@@ -438,7 +440,7 @@ DocumentStyle DocumentStyle::derive(const QUrl &url) const
         // Set the primary font as the preferred font.
         // We ensure that the font family is available first,
         // so that we don't get an ugly default font
-        // (fixes Windows' default font)
+        // (fixes Windows' default font problem)
         QFontDatabase db;
         if (!db.families().contains(font.family()))
         {
@@ -451,12 +453,16 @@ DocumentStyle DocumentStyle::derive(const QUrl &url) const
             emojiFonts.front() = font.family();
         }
 
-        // We don't support emoji fonts on lower than Qt 5.13
-    #if QT_VERSION < QT_VERSION_CHECK(5, 13, 0)
-        font.setFamily(emojiFonts.front());
-    #else
-        font.setFamilies(emojiFonts);
-    #endif
+        // Set emoji fonts if supported and enabled.
+        if (kristall::EMOJIS_SUPPORTED &&
+            kristall::options.emojis_enabled)
+        {
+            font.setFamilies(emojiFonts);
+        }
+        else
+        {
+            font.setFamily(emojiFonts.front());
+        }
     };
 
     patchup_font(themed.h1_font);

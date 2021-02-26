@@ -69,6 +69,7 @@ struct GenericSettings
     bool show_hidden_files_in_dirs = false;
     bool fancy_urlbar = true;
     bool fancy_quotes = true;
+    bool emojis_enabled = true;
 
     // This is set automatically
     QColor fancy_urlbar_dim_colour;
@@ -155,6 +156,9 @@ namespace kristall
     void saveWindowState();
 
     extern QString default_font_family, default_font_family_fixed;
+
+    //! Whether emojis are supprted in current build configuration
+    extern const bool EMOJIS_SUPPORTED;
 }
 
 #endif // KRISTALL_HPP

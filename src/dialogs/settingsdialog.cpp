@@ -301,6 +301,24 @@ void SettingsDialog::setOptions(const GenericSettings &options)
         this->ui->urlbarhl_none->setChecked(true);
     }
 
+    if (kristall::EMOJIS_SUPPORTED && this->current_options.emojis_enabled)
+    {
+        this->ui->emojis_on->setChecked(true);
+    }
+    else
+    {
+        this->ui->emojis_off->setChecked(true);
+
+        // Grey out emoji options on unsupported emoji builds
+        if (!kristall::EMOJIS_SUPPORTED)
+        {
+            this->ui->emojis_on->setEnabled(false);
+            this->ui->emojis_off->setEnabled(false);
+            this->ui->emojis_label->setToolTip(
+                this->ui->emojis_label->toolTip() + " (not supported in this build)");
+        }
+    }
+
     if(this->current_options.fancy_quotes) {
         this->ui->fancyquotes_on->setChecked(true);
     } else {
@@ -829,6 +847,16 @@ void SettingsDialog::on_urlbarhl_fancy_clicked()
 void SettingsDialog::on_urlbarhl_none_clicked()
 {
     this->current_options.fancy_urlbar = false;
+}
+
+void SettingsDialog::on_emojis_on_clicked()
+{
+    this->current_options.emojis_enabled = true;
+}
+
+void SettingsDialog::on_emojis_off_clicked()
+{
+    this->current_options.emojis_enabled = false;
 }
 
 void SettingsDialog::on_fancyquotes_on_clicked()

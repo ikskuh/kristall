@@ -29,6 +29,15 @@ QDir kristall::dirs::offline_pages;
 QDir kristall::dirs::themes;
 QDir kristall::dirs::styles;
 
+// We need QFont::setFamilies for emojis to work properly,
+// Qt versions below 5.13 don't support this.
+const bool kristall::EMOJIS_SUPPORTED =
+#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0)
+    false;
+#else
+    true;
+#endif
+
 QString toFingerprintString(QSslCertificate const & certificate)
 {
     return QCryptographicHash::hash(certificate.toDer(), QCryptographicHash::Sha256).toHex(':');
@@ -379,6 +388,10 @@ void GenericSettings::load(QSettings &settings)
 
     fancy_quotes = settings.value("fancy_quotes", true).toBool();
 
+    emojis_enabled = kristall::EMOJIS_SUPPORTED
+        ? settings.value("emojis_enabled", true).toBool()
+        : false;
+
     max_redirections = settings.value("max_redirections", 5).toInt();
     redirection_policy = RedirectionWarning(settings.value("redirection_policy ", WarnOnHostChange).toInt());
 
@@ -439,6 +452,13 @@ void GenericSettings::save(QSettings &settings) const
     settings.setValue("cache_threshold", cache_threshold);
     settings.setValue("cache_life", cache_life);
     settings.setValue("cache_unlimited_life", cache_unlimited_life);
+
+    if (kristall::EMOJIS_SUPPORTED)
+    {
+        // Save emoji pref only if emojis are supported, so if user changes to a build
+        // with emoji support, they get it out of the box.
+        settings.setValue("emojis_enabled", emojis_enabled);
+    }
 }
 
 
