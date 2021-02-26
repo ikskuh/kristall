@@ -373,37 +373,71 @@
         </layout>
        </item>
        <item row="13" column="0">
+        <widget class="QLabel" name="emojis_label">
+         <property name="text">
+          <string>Render emojis</string>
+         </property>
+         <property name="toolTip">
+          <string>Whether to render emojis in a page.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_17">
+         <item>
+          <widget class="QRadioButton" name="emojis_on">
+           <property name="text">
+            <string>On</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">emojisBtnGroup</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="emojis_off">
+           <property name="text">
+            <string>Off</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">emojisBtnGroup</string>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="14" column="0">
         <widget class="QLabel" name="label_26">
          <property name="text">
           <string>Max. Number of Redirections</string>
          </property>
         </widget>
        </item>
-       <item row="13" column="1">
+       <item row="14" column="1">
         <widget class="QSpinBox" name="max_redirects">
          <property name="value">
           <number>5</number>
          </property>
         </widget>
        </item>
-       <item row="14" column="0">
+       <item row="15" column="0">
         <widget class="QLabel" name="label_27">
          <property name="text">
           <string>Redirection Handling</string>
          </property>
         </widget>
        </item>
-       <item row="14" column="1">
+       <item row="15" column="1">
         <widget class="QComboBox" name="redirection_mode"/>
        </item>
-       <item row="15" column="0">
+       <item row="16" column="0">
         <widget class="QLabel" name="label_28">
          <property name="text">
           <string>Network Timeout</string>
          </property>
         </widget>
        </item>
-       <item row="15" column="1">
+       <item row="16" column="1">
         <widget class="QSpinBox" name="network_timeout">
          <property name="suffix">
           <string> ms</string>
@@ -416,14 +450,14 @@
          </property>
         </widget>
        </item>
-       <item row="16" column="0">
+       <item row="17" column="0">
         <widget class="QLabel" name="label_29">
          <property name="text">
           <string>Additional toolbar buttons</string>
          </property>
         </widget>
        </item>
-       <item row="16" column="1">
+       <item row="17" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_99">
          <item>
           <widget class="QCheckBox" name="enable_home_btn">
@@ -455,7 +489,7 @@
          </item>
         </layout>
        </item>
-       <item row="17" column="0">
+       <item row="18" column="0">
         <widget class="QLabel" name="label_30">
          <property name="text">
           <string>Total cache size limit</string>
@@ -465,7 +499,7 @@
          </property>
         </widget>
        </item>
-       <item row="17" column="1">
+       <item row="18" column="1">
         <widget class="QSpinBox" name="cache_limit">
          <property name="suffix">
           <string> KiB</string>
@@ -479,7 +513,7 @@
         </widget>
        </item>
 
-       <item row="18" column="0">
+       <item row="19" column="0">
         <widget class="QLabel" name="label_31">
          <property name="text">
           <string>Cached item size threshold</string>
@@ -489,7 +523,7 @@
          </property>
         </widget>
        </item>
-       <item row="18" column="1">
+       <item row="19" column="1">
         <widget class="QSpinBox" name="cache_threshold">
          <property name="suffix">
           <string> KiB</string>
@@ -503,7 +537,7 @@
         </widget>
        </item>
 
-       <item row="19" column="0">
+       <item row="20" column="0">
         <widget class="QLabel" name="label_31">
          <property name="text">
           <string>Cached item life</string>
@@ -513,7 +547,7 @@
          </property>
         </widget>
        </item>
-       <item row="19" column="1">
+       <item row="20" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_25">
          <item>
           <widget class="QSpinBox" name="cache_life">
@@ -1503,6 +1537,8 @@
   <tabstop>urlbarhl_none</tabstop>
   <tabstop>fancyquotes_on</tabstop>
   <tabstop>fancyquotes_off</tabstop>
+  <tabstop>emojis_on</tabstop>
+  <tabstop>emojis_off</tabstop>
   <tabstop>max_redirects</tabstop>
   <tabstop>redirection_mode</tabstop>
   <tabstop>network_timeout</tabstop>
@@ -1598,5 +1634,6 @@
   <buttongroup name="hiddenFilesBtnGroup"/>
   <buttongroup name="urlbarBtnGroup"/>
   <buttongroup name="quotesBtnGroup"/>
+  <buttongroup name="emojisBtnGroup"/>
  </buttongroups>
 </ui>
