@@ -457,7 +457,10 @@ DocumentStyle DocumentStyle::derive(const QUrl &url) const
         if (kristall::EMOJIS_SUPPORTED &&
             kristall::options.emojis_enabled)
         {
+            // Redundant check to make compiler happy...
+        #if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
             font.setFamilies(emojiFonts);
+        #endif
         }
         else
         {
