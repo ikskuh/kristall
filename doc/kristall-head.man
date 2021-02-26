@@ -7,8 +7,6 @@
 .PP
 .B kristall
 \- a cross-platform graphical small-internet client.
-.PP
-Kristall tries to fill the hole of graphical browsers for alternative internet protocols with a high usability and feature richness.
 .
 .SH SYNOPSIS
 .B kristall
@@ -18,6 +16,7 @@ Kristall tries to fill the hole of graphical browsers for alternative internet p
 .P
 .B kristall
 is a small-Internet browser designed primarily for browsing geminispace. The gopher and finger protocols are also supported, as well as basic HTTP/S.
+It tries to fill the hole of graphical browsers for alternative internet protocols with a high usability and feature richness.
 .
 .SH FLAGS
 .TP

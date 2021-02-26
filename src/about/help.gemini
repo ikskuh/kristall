@@ -1,5 +1,5 @@
 # Kristall Help
-This is the manual for the Kristall small-internet browser. It contains explanations on how to use the program, what each setting means and other information about the browser.
+This is the user manual for the Kristall small-internet browser. It contains explanations on how to use the program, what each setting means and other information about the browser.
 
 ## The Mission
 Kristall tries to fill the hole of graphical browsers for alternative internet protocols with a high usability and feature richness.
@@ -67,7 +67,7 @@ This menu contains means to navigate the internet.
 ### View
 This menu allows you to show/hide dockable dialogs.
 
-[Document Outline] toggles the document outline. Documents with text/gemini get an automatic outline generation that can be used to navigate larger documents quicker. This document is a good place to try that out!
+[Document Outline] toggles the document outline. Documents with text/gemini get an automatic outline generation that can be used to navigate larger documents quicker. If you're reading this help document in the browser, this is a good place to try this feature out!
 
 [Bookmarks] opens a dock containing a list of all your favourite sites. Open your bookmarks into a new tab by double-clicking the entries.
 
@@ -76,7 +76,7 @@ This menu allows you to show/hide dockable dialogs.
 ### Help
 This menu contains some stuff that provides help or information about Kristall.
 
-[Help] displays this document.
+[Help] displays the help manual (this document).
 
 [Changelog] will open a document that lists the changes in Kristall in a bulleted list.
 
@@ -300,7 +300,7 @@ This list contains all built-in shortcuts:
 * Alt+Up ⇒ Navigate to parent directory
 * Alt+Home ⇒ Go to home page
 * Alt+/ ⇒ Navigate to root directory
-* F1 ⇒ View this document
+* F1 ⇒ Open help manual
 * F5 ⇒ Refresh current tab
 
 ## Protocol support
