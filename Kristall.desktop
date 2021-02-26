@@ -2,10 +2,10 @@
 Name=Kristall
 GenericName=Gemini client
 Comment=Surf geminispace, gopherspace, and the web
-Categories=Network;WebBrowser
+Categories=Network;WebBrowser;
 Icon=net.random-projects.kristall
 Exec=kristall %u
 Terminal=false
 Type=Application
 MimeType=x-scheme-handler/gemini;x-scheme-handler/gopher;x-scheme-handler/finger;text/gemini;text/markdown;text/x-kristall-theme;
-Keywords=gemini;gopher;browser
+Keywords=gemini;gopher;browser;
