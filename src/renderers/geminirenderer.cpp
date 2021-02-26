@@ -185,15 +185,15 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
 
                 outline.appendH1(heading, id);
 
-                cursor.setBlockFormat(text_style.heading_format);
-                cursor.insertText(replace_quotes(heading), fmt);
-                cursor.insertText("\n", text_style.standard);
-
                 // Use first heading as the page's title.
                 if (page_title != nullptr && page_title->isEmpty())
                 {
                     *page_title = heading;
                 }
+
+                cursor.setBlockFormat(text_style.heading_format);
+                cursor.insertText(replace_quotes(heading), fmt);
+                cursor.insertText("\n", text_style.standard);
             }
             else if (line.startsWith("=>"))
             {
