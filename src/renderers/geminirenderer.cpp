@@ -51,6 +51,8 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
     QTextList *current_list = nullptr;
     bool blockquote = false;
 
+    bool centre_first_h1 = true;
+
     outline.beginBuild();
 
     int anchor_id = 0;
@@ -193,7 +195,20 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                     *page_title = heading;
                 }
 
-                cursor.setBlockFormat(text_style.heading_format);
+                // Centre the first heading. We can't use the above code block
+                // for this because it doesn't get run on every re-render of the page
+                if (centre_first_h1)
+                {
+                    auto f = text_style.heading_format;
+                    f.setAlignment(Qt::AlignCenter);
+                    cursor.setBlockFormat(f);
+                    centre_first_h1 = false;
+                }
+                else
+                {
+                    cursor.setBlockFormat(text_style.heading_format);
+                }
+
                 cursor.insertText(replace_quotes(heading), fmt);
                 cursor.insertText("\n", text_style.standard);
             }
