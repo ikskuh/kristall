@@ -229,7 +229,7 @@ void BrowserTab::navOneForward()
 
 void BrowserTab::navigateToRoot()
 {
-    if(this->is_internal_location) return;
+    if(this->current_location.scheme() == "about") return;
 
     QUrl url = this->current_location;
     url.setPath("/");
@@ -238,7 +238,7 @@ void BrowserTab::navigateToRoot()
 
 void BrowserTab::navigateToParent()
 {
-    if(this->is_internal_location) return;
+    if(this->current_location.scheme() == "about") return;
 
     QUrl url = this->current_location;
 
@@ -1321,12 +1321,12 @@ void BrowserTab::updateUrlBarStyle()
     QUrl url { this->ui->url_bar->text().trimmed() };
 
     // Set all text to default colour if url bar
-    // is focused, is at an internal location (like about:...),
+    // is focused, is at an about: location,
     // or has an invalid URL.
     if (!kristall::options.fancy_urlbar ||
         this->ui->url_bar->hasFocus() ||
         !url.isValid() ||
-        this->is_internal_location)
+        this->current_location.scheme() == "about")
     {
         // Disable styling
         if (!this->no_url_style)
