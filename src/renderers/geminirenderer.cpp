@@ -51,7 +51,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
     QTextList *current_list = nullptr;
     bool blockquote = false;
 
-    bool centre_first_h1 = true;
+    bool centre_first_h1 = themed_style.centre_h1;
 
     outline.beginBuild();
 

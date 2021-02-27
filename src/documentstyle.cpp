@@ -146,6 +146,7 @@ DocumentStyle::DocumentStyle(bool do_init) : theme(Fixed),
         "lightblue", "magenta", "cyan", "white"}),
     justify_text(true),
     text_width_enabled(true),
+    centre_h1(false),
     line_height_p(5.0),
     line_height_h(5.0),
     indent_bq(1), indent_p(1), indent_h(0), indent_l(2),
@@ -272,6 +273,7 @@ bool DocumentStyle::save(QSettings &settings) const
 
         settings.setValue("justify_text", justify_text);
         settings.setValue("text_width_enabled", text_width_enabled);
+        settings.setValue("centre_h1", centre_h1);
         settings.setValue("text_width", text_width);
         settings.setValue("line_height_p", line_height_p);
         settings.setValue("line_height_h", line_height_h);
@@ -390,6 +392,7 @@ bool DocumentStyle::load(QSettings &settings)
 
             justify_text = settings.value("justify_text", justify_text).toBool();
             text_width_enabled = settings.value("text_width_enabled", text_width_enabled).toBool();
+            centre_h1 = settings.value("centre_h1", centre_h1).toBool();
             text_width = settings.value("text_width", text_width).toInt();
             line_height_p = settings.value("line_height_p", line_height_p).toDouble();
             line_height_h = settings.value("line_height_h", line_height_h).toDouble();

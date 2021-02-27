@@ -134,6 +134,8 @@ void SettingsDialog::setGeminiStyle(DocumentStyle const &style)
 
     this->ui->enable_justify_text->setChecked(this->current_style.justify_text);
 
+    this->ui->enable_centre_h1->setChecked(this->current_style.centre_h1);
+
     this->ui->enable_text_width->setChecked(this->current_style.text_width_enabled);
     this->ui->text_width->setEnabled(this->current_style.text_width_enabled);
     this->ui->text_width->setValue(this->current_style.text_width);
@@ -532,6 +534,12 @@ void SettingsDialog::on_page_margin_v_valueChanged(double value)
 void SettingsDialog::on_enable_justify_text_clicked(bool checked)
 {
     this->current_style.justify_text = checked;
+    this->reloadStylePreview();
+}
+
+void SettingsDialog::on_enable_centre_h1_clicked(bool checked)
+{
+    this->current_style.centre_h1 = checked;
     this->reloadStylePreview();
 }
 
