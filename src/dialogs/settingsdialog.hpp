@@ -87,6 +87,8 @@ private slots:
 
     void on_enable_text_width_clicked(bool arg1);
 
+    void on_enable_centre_h1_clicked(bool arg1);
+
     void on_text_width_valueChanged(int value);
 
     void on_line_height_p_valueChanged(double arg1);

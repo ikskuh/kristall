@@ -1108,12 +1108,12 @@
                 </widget>
                </item>
                <item>
-                <widget class="QCheckBox" name="enable_text_width">
+                <widget class="QCheckBox" name="enable_centre_h1">
                  <property name="text">
-                  <string>Enable text width limit</string>
+                  <string>Centre first H1 </string>
                  </property>
                  <property name="toolTip">
-                  <string>Whether to limit the width of formatted text on the page or not.</string>
+                  <string>Whether to centre the first top-level heading in the document.</string>
                  </property>
                 </widget>
                </item>
@@ -1131,20 +1131,34 @@
               </widget>
              </item>
              <item row="17" column="1">
-              <widget class="QSpinBox" name="text_width">
-               <property name="minimum">
-                <number>300</number>
-               </property>
-               <property name="value">
-                <number>900</number>
-               </property>
-               <property name="maximum">
-                <number>2000</number>
-               </property>
-               <property name="suffix">
-                <string> px</string>
-               </property>
-              </widget>
+              <layout class="QHBoxLayout" name="horizontalLayout_26">
+               <item>
+                <widget class="QSpinBox" name="text_width">
+                 <property name="minimum">
+                  <number>300</number>
+                 </property>
+                 <property name="value">
+                  <number>900</number>
+                 </property>
+                 <property name="maximum">
+                  <number>2000</number>
+                 </property>
+                 <property name="suffix">
+                  <string> px</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="enable_text_width">
+                 <property name="text">
+                  <string>Enabled</string>
+                 </property>
+                 <property name="toolTip">
+                  <string>Whether to limit the width of formatted text on the page or not.</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
 
              <item row="18" column="0">
@@ -1574,8 +1588,9 @@
   <tabstop>page_margin_h</tabstop>
   <tabstop>page_margin_v</tabstop>
   <tabstop>enable_justify_text</tabstop>
-  <tabstop>enable_text_width</tabstop>
+  <tabstop>enable_centre_h1</tabstop>
   <tabstop>text_width</tabstop>
+  <tabstop>enable_text_width</tabstop>
   <tabstop>line_height_p</tabstop>
   <tabstop>line_height_h</tabstop>
   <tabstop>indent_p</tabstop>
