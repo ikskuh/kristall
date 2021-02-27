@@ -192,10 +192,9 @@ Most items in the *Style* category have either a [Font], [Color] or both buttons
 [Other options] are a set of extra options to enhance your reading experience (and just look cool in general).
 
 * [Justify text] will make text fill the lines they are on. Note that this only works on gemtext pages.
+* [Centre first H1] will centre-align the first top-level heading in gemtext pages. This can look really cool with [Text width limit] enabled!
 
-* [Enable text width limit] will limit the length of text on pages. This works best in gemtext pages, but should also work fine for HTML pages. See below for setting the limit. This can significantly enhance readability of pages.
-
-[Text width limit] sets the maximum line length of text. By default this is set to 900px. If the window itself is smaller in width than the text width limit, the text width limit is "adjusted" to fit inside the window. As mentioned above, horizontal margins will also be applied here.
+[Text width limit] sets the maximum line length of text. By default this is set to 900px. If the window itself is smaller in width than the text width limit, the text width limit is "adjusted" to fit inside the window. As mentioned above, horizontal margins will also be applied here. The [Enabled] checkbox to the right of this option toggles whether this option is enabled or not. (Enabled by default)
 
 [Line height (paragraph)] is an additional spacing between paragraph text lines. By default this is set to 5px, and can help with readability. (Gemtext-only feature)
 
