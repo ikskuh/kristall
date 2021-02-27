@@ -92,7 +92,9 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 if (current_list == nullptr)
                 {
                     cursor.deletePreviousChar();
-                    current_list = cursor.insertList(text_style.list_format);
+                    cursor.insertBlock();
+                    cursor.setBlockFormat(text_style.standard_format);
+                    current_list = cursor.createList(text_style.list_format);
                 }
                 else
                 {
