@@ -242,11 +242,11 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
 
                 auto local_url = QUrl(link);
 
-                // Makes local URLs like the following work properly:
-                // Root:  gemini://cosmic.voyage
-                // Local: gemini:///sub_directory
+                // Makes relative URLs with scheme provided (e.g gemini:///relative) work
+                // From RFC 1630: "If the scheme parts are different, the whole absolute URI must be given"
+                // therefor the schemes must be same for this to be allowed.
                 if (local_url.scheme() == root_url.scheme() &&
-                    local_url.host().isEmpty() &&
+                    local_url.authority().isEmpty() &&
                     local_url.scheme() != "about" &&
                     local_url.scheme() != "file")
                 {
