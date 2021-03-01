@@ -242,7 +242,18 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
 
                 auto local_url = QUrl(link);
 
-                auto absolute_url = root_url.resolved(QUrl(link));
+                // Makes local URLs like the following work properly:
+                // Root:  gemini://cosmic.voyage
+                // Local: gemini:///sub_directory
+                if (local_url.scheme() == root_url.scheme() &&
+                    local_url.host().isEmpty() &&
+                    local_url.scheme() != "about" &&
+                    local_url.scheme() != "file")
+                {
+                    // qDebug() << "Adjusting local url: " << local_url;
+                    local_url = local_url.adjusted(QUrl::RemoveScheme | QUrl::RemoveAuthority);
+                }
+                auto absolute_url = root_url.resolved(local_url);
 
                 // qDebug() << link << title;
 
