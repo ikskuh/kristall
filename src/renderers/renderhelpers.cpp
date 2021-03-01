@@ -324,12 +324,26 @@ static void parseCSI(
     }
 }
 
+// Replaces CR-LF line endings with pure LF endings,
+// and then replaces any remaining CRs with LFs.
+static QString cleanLineEndings(QString &input)
+{
+    // Replace all CR-LF with LF
+    input.replace("\r\n", "\n");
+
+    // Replace stray CRs with LF
+    input.replace("\r", "\n");
+
+    return input;
+}
+
 void renderhelpers::renderEscapeCodes(const QByteArray &input,
     const QTextCharFormat& format, QTextCursor& cursor)
 {
     auto textFormat = format;
     const auto tokens = input.split(escapeString);
-    const auto inputString = QString::fromUtf8(input);
+    QString inputString = QString::fromUtf8(input);
+    cleanLineEndings(inputString);
     for (QString::const_iterator it = inputString.cbegin(); it != inputString.cend(); ++it)
     {
         const auto currentCharacter = *it;;
