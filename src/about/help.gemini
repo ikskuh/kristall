@@ -1,10 +1,13 @@
 # Kristall Help
+
 This is the user manual for the Kristall small-internet browser. It contains explanations on how to use the program, what each setting means and other information about the browser.
 
 ## The Mission
+
 Kristall tries to fill the hole of graphical browsers for alternative internet protocols with a high usability and feature richness.
 
 ## The main interface
+
 The main interface of Kristall consists of three parts:
 
 * the navigation bar on top,
@@ -12,6 +15,7 @@ The main interface of Kristall consists of three parts:
 * and the status bar on the bottom
 
 ### Navigation bar
+
 In the navigation bar, you have some buttons and your URL bar.
 
 You can enter any supported URL in the URL bar, press *Return* and Kristall will then load the page in the content view. You usually need to specify the url scheme to navigate to a specific site, but you can omit the gemini:// prefix for gemini pages. If you enter a URL with no scheme, and it looks like a URL (e.g "tilde.pink"), Kristall will assume that it is in fact a gemini URL. If you enter something in the URL bar that *doesn't* look like a URL (e.g "i like dogs"), it will be assumed a search query, and will be forwarded to the search engine that is set in the Settings.
@@ -23,6 +27,7 @@ On the right side of the URL bar you will find two buttons:
 * The button with the shield icon toggles the use of client certificates. Pressing it when no client certificate is enabled, a dialog will pop up asking you to select or create a certificate. When a certificate is enabled, the button will have a filled shield with a small lock in it. Pressing the button now will disable the currently used certificate. Note that if you're using a transient certificate, Kristall will ask you a safety question before destroying the certificate.
 
 ### Content view
+
 The content view renders the requested document. For hypertext documents (i.e gemtext, markdown, etc), you get a nicely rendered version of those documents, other text files are displayed in monospace. Audio and video files are played in a small built-in media player that allows you to play/pause the media, scroll around in the time line and mute/unmute audio. Images are rendered in an interactive view where you can drag the image around and zoom in/out with the mouse wheel.
 
 Documents that can't be rendered will be displayed with file size and mime type, so you can save them to disk and open the files with another program.
@@ -30,13 +35,16 @@ Documents that can't be rendered will be displayed with file size and mime type,
 Right-clicking in the content view will produce a menu which allows you to copy text, navigate back/forward in history, and copy or open links which are being hovered over. If you right click a HTTP/S link you will also see an option "Open with external web browser" which allows you to open these pages in your default WWW browser.
 
 ### Status bar
+
 The status bar displays auxiliary information:
 On the left, you can see the link target when you hover a link. On the right, you can see the document size, time needed to load the document and the mime type of the content. This is especially important when Kristall is not able to render the document nicely. A "(cached)" indicator will appear to the left of the mime type, indicating that the page has been read from cache.
 
 ## Menus
+
 This chapter explains what each menu button does. I hope that most stuff isn't surprising 😉
 
 ### File
+
 [New Tab] will open a new tab to surf.
 
 [Save as] allows you to save the currently displayed file to your disk.
@@ -50,6 +58,7 @@ This chapter explains what each menu button does. I hope that most stuff isn't s
 [Quit] will close Kristall.
 
 ### Navigation
+
 This menu contains means to navigate the internet.
 
 [Go to home] will navigate your current tab to your home page.
@@ -67,6 +76,7 @@ This menu contains means to navigate the internet.
 [Add to favourites] will add or remove the current page to/from your list of favourites.
 
 ### View
+
 This menu allows you to show/hide dockable dialogs.
 
 [Document Outline] toggles the document outline. Documents with text/gemini get an automatic outline generation that can be used to navigate larger documents quicker. If you're reading this help document inside of Kristall, this is a good place to try this feature out!
@@ -76,6 +86,7 @@ This menu allows you to show/hide dockable dialogs.
 [History] shows the surfing history of the current tab. Double-clicking an entry navigates back and forth in your history without disturbing the list.
 
 ### Help
+
 This menu contains some stuff that provides help or information about Kristall.
 
 [Help] displays the help manual (this document).
@@ -87,9 +98,11 @@ This menu contains some stuff that provides help or information about Kristall.
 [About Qt] shows a dialog containing legal information about the Qt version used.
 
 ## Settings
+
 Kristall offers a vast amount of settings. You can style the documents to your liking, changing fonts and colors. You can also fine-tune the behaviour of Kristall to match your likings and keep track of your trusted pages. Please note that Kristall has been designed mostly for browsing geminispace, thus many of these settings are specific or exclusive to Gemini only.
 
 ### Generic
+
 This tab contains an unsorted list of settings that allow you to tweak Kristalls behaviour.
 
 [UI Theme] controls whether the Qt interface is displayed in a dark or a light theme. Selecting [Light] or [Dark] will use the provided Qt light/dark themes. [OS Default] will use your system theme.
@@ -156,6 +169,7 @@ This is a purely cosmetic feature that may aid in readability.
 [Cached item life] is the amount of time in minutes before a single cached item is considered "expired." When a cached item is "expired", it is not read from cache, but instead re-retreived from the server. Cache life can be disabled by enabling the [Unlimited item life] option. Note: [Cached item life] is only recommended if you desperately want to keep your memory usage to a minimum, otherwise, having [Unlimited item life] is usually a great convenience, and due to the usually very small size of pages in geminispace, gopherspace, etc - it doesn't require much memory.
 
 ### Style
+
 In this tab, you can customise the document rendering in Kristall. The left pane contains a vast array of options to tweak, and the right pane displays a preview of your currently-selected style.
 Many items in the *Style* category have either a [Font], [Color], or both buttons. Click these to change the respective value.
 
@@ -218,6 +232,7 @@ Many items in the *Style* category have either a [Font], [Color], or both button
 The lone text with with the [host.name] text in it can be used to preview some auto-generated themes. It only refreshes the preview and seeds the auto generator with a new host name.
 
 ### Gemini TLS and HTTPS TLS
+
 These two sites contain the TLS settings for either Gemini or HTTPS. Both protocols are handled in the same way, but with different data sets, so each one has its own settings page.
 
 [Trust Level] defines how you trust hosts. [Trust on first encounter] is also known as *Trust On First Use* (or TOFU) and will store the servers public key in Kristalls database of trusted hosts. If a host is later encountered that has changed its public key, an error will be displayed to the user that this host may be compromised (as the changing of a public key can be a man-in-the-middle attack). [Trust everything] will just happily accept every TLS server, ignoring the certificate issuer completely. [Manually verify fingerprints] allows you to chose whether you trust a server or not based on its fingerprint. This will be displayed in the error page as well as the option to add that server to your list of trusted hosts.
@@ -229,6 +244,7 @@ These two sites contain the TLS settings for either Gemini or HTTPS. Both protoc
 [Revoke trust] allows you to remove a server from your database. Select a server in the list and click the button. Kristall will now act as it hasn't ever seen that server before and will now handle the server as an unknown one.
 
 ## Certificate Manager
+
 This dialog allows you to manage your client certificates. There are options to import, export, delete and create new certificates as well as manage your existing ones.
 
 The window is separated in two halves:
@@ -260,6 +276,7 @@ Using passphrases for importing/exporting certificates is currently not supporte
 Please note that changes in this dialog are immediaty applied and there is no way back when doing an action. This may change in the future, but will stay like this for now.
 
 ## Certificate Selection Dialog
+
 This dialog allows you to enable client certificates. It is opened by clicking the shield button in the navigation bar or it will automatically pop up when a site requests the use of a client certificate.
 
 In the upper part, this dialog provides you with a list of all your persistent certificates. If you want to use one of those, select the certificate and click [Use]. Or simply double-click a certificate to chose it.
@@ -267,6 +284,7 @@ You can also ad-hoc create a new certificate with the click on [Create new ident
 On the lower part you can create temporary certificates that have a short lifespan and will be destroyed as soon as you disable the certificate or close your client.
 
 ## Certificate Creation Dialog
+
 This dialog provides means to create a new persistent identity.
 
 [Group] is the name of the group where this certificate should be stored. You can either chose an existing group from the drop down or just enter a non-existing name to create a new group ad-hoc.
@@ -277,6 +295,7 @@ This dialog provides means to create a new persistent identity.
 With a click on [OK], Kristall will create a new certificate and put it in your certificate store. It can then be selected from the certificate selection dialog or certificate manager.
 
 ## Certificate I/O Dialog
+
 This dialog enables you to import or export certificate-key-pairs into or from Kristall.
 
 [Key Type] contains the type of your key. If you import, you need to select the correct key type there, if you export, it will be disabled, but shows the correct type of key for your identity.
@@ -284,6 +303,7 @@ This dialog enables you to import or export certificate-key-pairs into or from K
 [Certificate File] needs to be a full path to either a .der or .pem file where Kristall will load/store the certificate from/to.
 
 ## Shortcuts
+
 The following list contains all of Kristall's built-in shortcuts:
 
 * Ctrl+T ⇒ New tab
@@ -306,6 +326,7 @@ The following list contains all of Kristall's built-in shortcuts:
 * F5 ⇒ Refresh current tab
 
 ## Protocol support
+
 These protocols are currently supported via their respective URL schemes:
 => https://gemini.circumlunar.space/ Gemini
 => https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol HTTP/HTTPS
@@ -313,9 +334,11 @@ These protocols are currently supported via their respective URL schemes:
 => https://en.wikipedia.org/wiki/Finger_protocol Finger
 
 ### Gemini
+
 Kristall tries to implement the current feature set of the gemini specification. All response types of a gemini server are relayed to the user and the user choses when to do certain actions or not. Redirections are followed automatically, and you will be prompted depending on your configured Settings.
 
 ### Gopher
+
 Kristall provides access to gopherspace and supports most modern/common file types:
 * Gophermaps / Directories
 * Text
@@ -327,6 +350,7 @@ Kristall provides access to gopherspace and supports most modern/common file typ
 There is currently no support for automatic redirection on URL: resources or special/oldschool file types like DOS/HexBin/UUencoded data.
 
 ### Local file browsing
+
 The file:// scheme can be used to browse local files and directories on your system. (This feature has not been well-tested on Windows systems)
 
 Browsing to a local directory, such as file:///home/user will create a "directory listing", with links allowing you to navigate the file structure.
@@ -334,6 +358,7 @@ Browsing to a local directory, such as file:///home/user will create a "director
 Browsing to an actual file, such as file:///home/user/file.txt will cause Kristall to attempt to display that file.
 
 ### Built-in sites
+
 There is also the scheme about: which can be used to access internal sites for configuration, usability or help (this is one of them!):
 => about:blank
 => about:favourites
@@ -343,6 +368,7 @@ There is also the scheme about: which can be used to access internal sites for c
 => about:cache
 
 ## Security Concept
+
 Kristall has some built-in security measures to make your browsing experience safe and sane.
 
 ### Philosophy
@@ -363,6 +389,7 @@ It will also make some artificial hurdles when you can *really* make something t
 * Trusting TLS connections based on manually built lists, TOFU method or using the certificate authority system
 
 ## Caching
+
 Kristall has an in-memory page caching system enabled by default. This allows for quick loading of pages that have already been visited. Currently, this cache is cleared when Kristall is exited.
 
 The caching system is fairly basic; when a page is loaded, it is pushed to the cache (if it is smaller than [Cached item size threshold]). If the cache exceeds the [Total cache size limit], the oldest item in the cache is removed. The [Cached item life] determines how long this cached pages will be valid for.
@@ -372,6 +399,7 @@ When a page is read from cache, it is indicated in the Status Bar, to the left o
 If you would like to disable page caching, set the [Total cache size limit] to 0. See *Settings* for more information
 
 ## Supported Media Types
+
 * text/plain
 * text/gemini
 * text/html
@@ -384,6 +412,7 @@ If you would like to disable page caching, set the [Total cache size limit] to 0
 All unrecognized text files will be rendered as text/plain documents with a monospaced font.
 
 ## Contact me
+
 I'm eager to hear from your experience! Did everything work? Is something especially cool or bad? Tell me what you think or what annoys you!
 
 Please note that everything here is still work-in-progress and may crash!

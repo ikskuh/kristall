@@ -54,8 +54,8 @@ gem_in=$(
     cat "$gemtext_in" |
 
     # Strip a few lines from beginning/end of file.
-    tail -n +7 |
-    head -n -7 |
+    tail -n +9 |
+    head -n -9 |
 
     # First expression replaces all [Text like this] with bold text.
     # Second expression replaces text like *This* or _this_ with italic text.
