@@ -15,8 +15,8 @@
 .SH DESCRIPTION
 .P
 .B kristall
-is a small-Internet browser designed primarily for browsing geminispace. The gopher and finger protocols are also supported, as well as basic HTTP/S.
-It tries to fill the hole of graphical browsers for alternative internet protocols with a high usability and feature richness.
+is a small-Internet browser primarily designed for browsing geminispace, but also supports gopher, finger, and basic HTTP/S.
+It tries to fill the hole of graphical browsers for these alternative Internet protocols, with a high usability, feature richness, and somewhat familiar interface for newcomers.
 .
 .SH FLAGS
 .TP
