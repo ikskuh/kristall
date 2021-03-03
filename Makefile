@@ -48,6 +48,7 @@ install: kristall
 	$(MAKEDIR) $(sharedir)/icons/hicolor/128x128/apps/
 	$(MAKEDIR) $(sharedir)/applications/
 	$(MAKEDIR) $(sharedir)/mime/packages/
+	$(MAKEDIR) $(mandir)
 	$(MAKEDIR) $(bindir)
 
 	# Install files
