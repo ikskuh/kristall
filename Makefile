@@ -75,4 +75,5 @@ uninstall:
 
 clean:
 	rm -rf build
+	rm -f doc/kristall.1
 	rm -f kristall
