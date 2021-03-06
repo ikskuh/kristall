@@ -43,7 +43,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
     renderhelpers::setPageMargins(result.get(), themed_style.margin_h, themed_style.margin_v);
     result->setIndentWidth(themed_style.indent_size);
 
-    bool emit_fancy_text = kristall::options.enable_text_decoration;
+    bool emit_fancy_text = kristall::globals().options.enable_text_decoration;
 
     QTextCursor cursor{result.get()};
 
@@ -472,7 +472,7 @@ GeminiDocument::~GeminiDocument()
  */
 static QByteArray replace_quotes(QByteArray &line)
 {
-    if (!kristall::options.fancy_quotes)
+    if (!kristall::globals().options.fancy_quotes)
         return line;
 
     int last_d = -1,

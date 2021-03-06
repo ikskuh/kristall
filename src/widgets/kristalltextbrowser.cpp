@@ -7,6 +7,7 @@
 #include <QTouchDevice>
 #include <QRegularExpression>
 #include <QLineEdit>
+#include <QApplication>
 
 const Qt::CursorShape KristallTextBrowser::NORMAL_CURSOR = Qt::IBeamCursor;
 
@@ -133,7 +134,7 @@ void KristallTextBrowser::betterCopy()
     if (text.contains(REGEX_ONLY_QUOTES))
     {
         // Copy the original text.
-        kristall::clipboard->setText(text);
+        qApp->clipboard()->setText(text);
         return;
     }
 
@@ -151,5 +152,5 @@ void KristallTextBrowser::betterCopy()
     text.replace(QChar(0x2029), "\n");
 #endif
 
-    kristall::clipboard->setText(text);
+    qApp->clipboard()->setText(text);
 }

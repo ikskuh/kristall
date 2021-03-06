@@ -30,7 +30,7 @@ bool AboutHandler::startRequest(const QUrl &url, ProtocolHandler::RequestOptions
 
         QString current_group;
 
-        for (auto const &fav : kristall::favourites.allFavourites())
+        for (auto const &fav : kristall::globals().favourites.allFavourites())
         {
             if(current_group != fav.first) {
 
@@ -54,7 +54,7 @@ bool AboutHandler::startRequest(const QUrl &url, ProtocolHandler::RequestOptions
         QByteArray document;
         document.append("# Cache information\n");
 
-        auto& cache = kristall::cache.getPages();
+        auto& cache = kristall::globals().cache.getPages();
         long unsigned cache_usage = 0;
         int cached_count = 0;
         for (auto it = cache.begin(); it != cache.end(); ++it, ++cached_count)

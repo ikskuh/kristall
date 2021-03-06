@@ -15,7 +15,14 @@ struct DocumentStyle
         AutoLightTheme = 2
     };
 
-    DocumentStyle(bool do_init = true);
+    struct DefaultFonts
+    {
+        QString regular, fixed;
+
+        DefaultFonts();
+    };
+
+    DocumentStyle();
 
     void initialiseDefaultFonts();
 

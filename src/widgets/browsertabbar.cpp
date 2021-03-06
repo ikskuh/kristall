@@ -13,7 +13,7 @@ BrowserTabBar::BrowserTabBar(QWidget *parent) :
     new_tab_btn = new QPushButton("+", this);
     new_tab_btn->setFixedSize(NEWTAB_BTN_SIZE, NEWTAB_BTN_SIZE);
     connect(new_tab_btn, &QPushButton::clicked, this, &BrowserTabBar::on_newTabClicked);
-    this->new_tab_btn->setVisible(kristall::options.enable_newtab_btn);
+    this->new_tab_btn->setVisible(kristall::globals().options.enable_newtab_btn);
 }
 
 void BrowserTabBar::mouseReleaseEvent(QMouseEvent *event)
@@ -27,7 +27,7 @@ void BrowserTabBar::mouseReleaseEvent(QMouseEvent *event)
 
 void BrowserTabBar::moveNewTabButton()
 {
-    if (!kristall::options.enable_newtab_btn)
+    if (!kristall::globals().options.enable_newtab_btn)
     {
         return;
     }

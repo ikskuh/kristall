@@ -30,7 +30,7 @@ static void setColor(QTextCharFormat& format, unsigned char n, bool bg=false)
     if (n < 16)
     {
         // The normal pre-defined typical 16 colors.
-        color = QColor(kristall::document_style.ansi_colors[n]);
+        color = QColor(kristall::globals().document_style.ansi_colors[n]);
     }
     else if (n < 232)
     {

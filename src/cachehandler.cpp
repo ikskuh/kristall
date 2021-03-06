@@ -8,14 +8,14 @@ void CacheHandler::push(const QUrl &url, const QByteArray &body, const MimeType 
 {
     // Skip if this item is above the cached item size threshold
     int bodysize = body.size();
-    if (bodysize > (kristall::options.cache_threshold * 1024))
+    if (bodysize > (kristall::globals().options.cache_threshold * 1024))
     {
         qDebug() << "cache: item exceeds threshold (" << IoUtil::size_human(body.size()) << ")";
         return;
     }
 
     // Pop cached items until we are below the cache limit
-    while ((bodysize + this->size()) > (kristall::options.cache_limit * 1024))
+    while ((bodysize + this->size()) > (kristall::globals().options.cache_limit * 1024))
     {
         this->popOldest();
     }
@@ -78,7 +78,7 @@ int CacheHandler::size()
 void CacheHandler::clean()
 {
     // Don't clean anything if we have unlimited item life.
-    if (kristall::options.cache_unlimited_life) return;
+    if (kristall::globals().options.cache_unlimited_life) return;
 
     // Find list of keys to delete
     std::vector<QString> vec;
@@ -86,7 +86,7 @@ void CacheHandler::clean()
     {
         // Check if this cache item is expired.
         if (QDateTime::currentDateTime() > i.second->time_cached
-            .addSecs(kristall::options.cache_life * 60))
+            .addSecs(kristall::globals().options.cache_life * 60))
         {
             vec.emplace_back(std::move(i.first));
         }

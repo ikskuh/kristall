@@ -5,6 +5,7 @@
 #include <QString>
 #include <QStringList>
 #include <QFontDatabase>
+#include <QFontInfo>
 
 #include <QCryptographicHash>
 #include <QDebug>
@@ -12,6 +13,20 @@
 #include <cctype>
 #include <array>
 #include <cmath>
+
+DocumentStyle::DefaultFonts::DefaultFonts()
+{
+    // Initialise default fonts
+    #ifdef Q_OS_WIN32
+        // Windows default fonts are ugly, so we use standard ones.
+        family = "Segoe UI";
+        fixed = "Consolas";
+    #else
+        // *nix
+        regular = QFontDatabase::systemFont(QFontDatabase::GeneralFont).family();
+        fixed = QFontInfo(QFont("monospace")).family();
+    #endif
+}
 
 static QString encodeCssFont (const QFont& refFont)
 {
@@ -117,7 +132,7 @@ static QString encodeCssFont (const QFont& refFont)
     return cssFontStr;
 }
 
-DocumentStyle::DocumentStyle(bool do_init) : theme(Fixed),
+DocumentStyle::DocumentStyle() : theme(Fixed),
     standard_font(),
     h1_font(),
     h2_font(),
@@ -153,30 +168,32 @@ DocumentStyle::DocumentStyle(bool do_init) : theme(Fixed),
     indent_size(15.0),
     list_symbol(QTextListFormat::ListDisc)
 {
-    if (do_init) this->initialiseDefaultFonts();
+    this->initialiseDefaultFonts();
 }
 
 void DocumentStyle::initialiseDefaultFonts()
 {
-    preformatted_font.setFamily(kristall::default_font_family_fixed);
+    DefaultFonts default_fonts;
+
+    preformatted_font.setFamily(default_fonts.fixed);
     preformatted_font.setPointSizeF(12.0);
 
-    standard_font.setFamily(kristall::default_font_family);
+    standard_font.setFamily(default_fonts.regular);
     standard_font.setPointSizeF(12.0);
 
-    h1_font.setFamily(kristall::default_font_family);
+    h1_font.setFamily(default_fonts.regular);
     h1_font.setBold(true);
     h1_font.setPointSizeF(22.0);
 
-    h2_font.setFamily(kristall::default_font_family);
+    h2_font.setFamily(default_fonts.regular);
     h2_font.setBold(true);
     h2_font.setPointSizeF(17.0);
 
-    h3_font.setFamily(kristall::default_font_family);
+    h3_font.setFamily(default_fonts.regular);
     h3_font.setBold(true);
     h3_font.setPointSizeF(14.0);
 
-    blockquote_font.setFamily(kristall::default_font_family);
+    blockquote_font.setFamily(default_fonts.regular);
     blockquote_font.setItalic(true);
     blockquote_font.setPointSizeF(12.0);
 }
@@ -430,15 +447,17 @@ DocumentStyle DocumentStyle::derive(const QUrl &url) const
         "JoyPixels",
     };
 
-    auto const patchup_font = [](QFont & font, bool fixed=false)
+    DefaultFonts default_fonts;
+
+    auto const patchup_font = [&default_fonts](QFont & font, bool fixed=false)
     {
         // Set the "fallback" font, just to be absolutely sure.
         // Note the main purpose of this is to avoid emoji fonts
         // from taking precedence over text fonts.
         // (fixes *nix default font issues)
         emojiFonts[1] = fixed
-            ? kristall::default_font_family_fixed
-            : kristall::default_font_family;
+            ? default_fonts.fixed
+            : default_fonts.regular;
 
         // Set the primary font as the preferred font.
         // We ensure that the font family is available first,
@@ -448,8 +467,8 @@ DocumentStyle DocumentStyle::derive(const QUrl &url) const
         if (!db.families().contains(font.family()))
         {
             emojiFonts.front() = fixed
-                ? kristall::default_font_family_fixed
-                : kristall::default_font_family;
+                ? default_fonts.fixed
+                : default_fonts.regular;
         }
         else
         {
@@ -458,7 +477,7 @@ DocumentStyle DocumentStyle::derive(const QUrl &url) const
 
         // Set emoji fonts if supported and enabled.
         if (kristall::EMOJIS_SUPPORTED &&
-            kristall::options.emojis_enabled)
+            kristall::globals().options.emojis_enabled)
         {
             // Redundant check to make compiler happy...
         #if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)

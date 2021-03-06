@@ -34,6 +34,8 @@ class FavouriteCollection : public QAbstractItemModel
         std::vector<std::unique_ptr<Node>> children;
         Type type;
         explicit Node(Type t) : type(t) { }
+        Node(Node const &) = delete;
+        Node(Node &&) = delete;
         virtual ~Node() = default;
 
         template<typename T>
@@ -46,17 +48,23 @@ class FavouriteCollection : public QAbstractItemModel
     struct FavouriteNode : Node {
         ::Favourite favourite;
         FavouriteNode() : Node(Favourite) { }
+        FavouriteNode(FavouriteNode const &) = delete;
+        FavouriteNode(FavouriteNode &&) = delete;
         ~FavouriteNode() override = default;
     };
 
     struct GroupNode : Node {
         QString title;
         GroupNode() : Node(Group) { }
+        GroupNode(GroupNode const &) = delete;
+        GroupNode(GroupNode &&) = delete;
         ~GroupNode() override = default;
     };
 
     struct RootNode : Node {
         RootNode() : Node(Root) { }
+        RootNode(RootNode const &) = delete;
+        RootNode(RootNode &&) = delete;
         ~RootNode() override = default;
     };
 
@@ -64,6 +72,10 @@ public:
     explicit FavouriteCollection(QObject *parent = nullptr);
 
     FavouriteCollection(FavouriteCollection const & other);
+
+    FavouriteCollection(FavouriteCollection && other);
+
+    ~FavouriteCollection();
 
     FavouriteCollection & operator=(FavouriteCollection const &);
     FavouriteCollection & operator=(FavouriteCollection &&);

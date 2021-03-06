@@ -117,36 +117,53 @@ class MainWindow;
 ///
 namespace kristall
 {
-    extern ProtocolSetup protocols;
+    //! Whether emojis are supprted in current build configuration
+    extern const bool EMOJIS_SUPPORTED;
 
-    extern QSettings * settings;
-    extern IdentityCollection identities;
-    extern QClipboard * clipboard;
-    extern FavouriteCollection favourites;
-    extern GenericSettings options;
+    struct Trust
+    {
+        SslTrust gemini;
+        SslTrust https;
+    };
 
-    extern DocumentStyle document_style;
+    struct Dirs
+    {
 
-    extern CacheHandler cache;
-
-    namespace trust {
-        extern SslTrust gemini;
-        extern SslTrust https;
-    }
-
-    namespace dirs {
-        extern QDir config_root;
-        extern QDir cache_root;
+        QDir config_root;
+        QDir cache_root;
 
         //! Contains files per host
-        extern QDir offline_pages;
+        QDir offline_pages;
 
         //! Contains custom UI themes for kristall
-        extern QDir themes;
+        QDir themes;
 
         //! Contains custom document styles / presets
-        extern QDir styles;
-    }
+        QDir styles;
+    };
+
+    struct Globals
+    {
+
+        ProtocolSetup protocols;
+
+        QSettings * settings;
+        IdentityCollection identities;
+        QClipboard * clipboard;
+        FavouriteCollection favourites;
+        GenericSettings options;
+
+        DocumentStyle document_style;
+
+        CacheHandler cache;
+
+        Trust trust;
+
+        Dirs dirs;
+    };
+
+    //! returns the instance of the globals structure
+    Globals & globals();
 
     //! Forwards the current settings to all windows
     void applySettings();
@@ -176,11 +193,6 @@ namespace kristall
     //! Opens a new window with the given list of urls.
     //! If the list is empty, no new tab will spawned.
     MainWindow * openNewWindow(QVector<QUrl> const & urls);
-
-    extern QString default_font_family, default_font_family_fixed;
-
-    //! Whether emojis are supprted in current build configuration
-    extern const bool EMOJIS_SUPPORTED;
 }
 
 #endif // KRISTALL_HPP

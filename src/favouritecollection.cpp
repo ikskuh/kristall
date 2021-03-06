@@ -39,6 +39,17 @@ FavouriteCollection::FavouriteCollection(const FavouriteCollection &other)
     relayout();
 }
 
+FavouriteCollection::FavouriteCollection(FavouriteCollection &&other)
+{
+    this->root.children = std::move(other.root.children);
+}
+
+
+FavouriteCollection::~FavouriteCollection()
+{
+
+}
+
 FavouriteCollection &FavouriteCollection::operator=(const FavouriteCollection & other)
 {
     beginResetModel();

@@ -52,10 +52,10 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     setGeminiStyle(DocumentStyle { });
 
     this->predefined_styles.clear();
-    for(auto const & fileName : kristall::dirs::styles.entryList())
+    for(auto const & fileName : kristall::globals().dirs.styles.entryList())
     {
         QSettings style_sheet {
-            kristall::dirs::styles.absoluteFilePath(fileName),
+            kristall::globals().dirs.styles.absoluteFilePath(fileName),
             QSettings::IniFormat
         };
 
@@ -670,7 +670,7 @@ void SettingsDialog::on_preset_load_clicked()
 
 void SettingsDialog::on_SettingsDialog_accepted()
 {
-    QStringList files = kristall::dirs::styles.entryList();
+    QStringList files = kristall::globals().dirs.styles.entryList();
 
     for(auto const & style_name : this->predefined_styles.keys())
     {
@@ -678,7 +678,7 @@ void SettingsDialog::on_SettingsDialog_accepted()
         files.removeAll(fileName);
 
         QSettings style_sheet {
-            kristall::dirs::styles.absoluteFilePath(fileName),
+            kristall::globals().dirs.styles.absoluteFilePath(fileName),
             QSettings::IniFormat
         };
 
@@ -690,7 +690,7 @@ void SettingsDialog::on_SettingsDialog_accepted()
 
     for(auto const & fileName : files)
     {
-        kristall::dirs::styles.remove(fileName);
+        kristall::globals().dirs.styles.remove(fileName);
     }
 }
 

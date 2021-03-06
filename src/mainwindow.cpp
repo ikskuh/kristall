@@ -39,7 +39,7 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     this->statusBar()->addPermanentWidget(this->file_size);
     this->statusBar()->addPermanentWidget(this->load_time);
 
-    ui->favourites_view->setModel(&kristall::favourites);
+    ui->favourites_view->setModel(&kristall::globals().favourites);
 
     this->ui->outline_window->setVisible(false);
     this->ui->history_window->setVisible(false);
@@ -56,7 +56,7 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     connect(this->ui->menuNavigation, &QMenu::aboutToShow, [this]() {
         BrowserTab * tab = this->curTab();
         if(tab != nullptr) {
-            ui->actionAdd_to_favourites->setChecked(kristall::favourites.containsUrl(tab->current_location));
+            ui->actionAdd_to_favourites->setChecked(kristall::globals().favourites.containsUrl(tab->current_location));
         }
     });
 
@@ -149,7 +149,7 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new, bool load_default)
     }
 
     if(load_default) {
-        tab->navigateTo(QUrl(kristall::options.start_page), BrowserTab::PushImmediate);
+        tab->navigateTo(QUrl(kristall::globals().options.start_page), BrowserTab::PushImmediate);
         tab->focusUrlBar();
     } else {
         tab->navigateTo(QUrl("about:blank"), BrowserTab::DontPush);
@@ -274,7 +274,7 @@ QString MainWindow::newGroupDialog()
     if(dialog.exec() != QDialog::Accepted)
         return QString { };
 
-    kristall::favourites.addGroup(dialog.textValue());
+    kristall::globals().favourites.addGroup(dialog.textValue());
 
     return dialog.textValue();
 }
@@ -297,7 +297,7 @@ void MainWindow::applySettings()
         tab->rerenderPage();
 
     // Update new-tab button visibility.
-    this->ui->browser_tabs->tab_bar->new_tab_btn->setVisible(kristall::options.enable_newtab_btn);
+    this->ui->browser_tabs->tab_bar->new_tab_btn->setVisible(kristall::globals().options.enable_newtab_btn);
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
@@ -427,24 +427,24 @@ void MainWindow::on_actionSettings_triggered()
 {
     SettingsDialog dialog;
 
-    dialog.setGeminiStyle(kristall::document_style);
-    dialog.setProtocols(kristall::protocols);
-    dialog.setOptions(kristall::options);
-    dialog.setGeminiSslTrust(kristall::trust::gemini);
-    dialog.setHttpsSslTrust(kristall::trust::https);
+    dialog.setGeminiStyle(kristall::globals().document_style);
+    dialog.setProtocols(kristall::globals().protocols);
+    dialog.setOptions(kristall::globals().options);
+    dialog.setGeminiSslTrust(kristall::globals().trust.gemini);
+    dialog.setHttpsSslTrust(kristall::globals().trust.https);
 
     if(dialog.exec() != QDialog::Accepted) {
-        kristall::setTheme(kristall::options.theme);
-        this->setUiDensity(kristall::options.ui_density, false);
+        kristall::setTheme(kristall::globals().options.theme);
+        this->setUiDensity(kristall::globals().options.ui_density, false);
         return;
     }
 
-    kristall::trust::gemini = dialog.geminiSslTrust();
-    kristall::trust::https = dialog.httpsSslTrust();
-    kristall::options = dialog.options();
+    kristall::globals().trust.gemini = dialog.geminiSslTrust();
+    kristall::globals().trust.https = dialog.httpsSslTrust();
+    kristall::globals().options = dialog.options();
 
-    kristall::protocols = dialog.protocols();
-    kristall::document_style = dialog.geminiStyle();
+    kristall::globals().protocols = dialog.protocols();
+    kristall::globals().document_style = dialog.geminiStyle();
 
     kristall::applySettings();
 
@@ -571,7 +571,7 @@ void MainWindow::on_actionGo_to_home_triggered()
 {
     BrowserTab * tab = this->curTab();
     if(tab != nullptr) {
-        tab->navigateTo(QUrl(kristall::options.start_page), BrowserTab::PushImmediate);
+        tab->navigateTo(QUrl(kristall::globals().options.start_page), BrowserTab::PushImmediate);
     }
 }
 
@@ -647,7 +647,7 @@ void MainWindow::on_history_view_customContextMenuRequested(const QPoint pos)
 void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
 {
     if(auto idx = this->ui->favourites_view->indexAt(pos); idx.isValid()) {
-        if(QUrl url = kristall::favourites.getFavourite(idx).destination; url.isValid()) {
+        if(QUrl url = kristall::globals().favourites.getFavourite(idx).destination; url.isValid()) {
             QMenu menu;
 
             BrowserTab * tab = this->curTab();
@@ -668,12 +668,12 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
 
                 dialog.setInputMode(QInputDialog::TextInput);
                 dialog.setLabelText(tr("Enter new location of this favourite:"));
-                dialog.setTextValue(kristall::favourites.getFavourite(idx).destination.toString(QUrl::FullyEncoded));
+                dialog.setTextValue(kristall::globals().favourites.getFavourite(idx).destination.toString(QUrl::FullyEncoded));
 
                 if (dialog.exec() != QDialog::Accepted)
                     return;
 
-                kristall::favourites.editFavouriteDest(idx, QUrl(dialog.textValue()));
+                kristall::globals().favourites.editFavouriteDest(idx, QUrl(dialog.textValue()));
             });
 
             connect(menu.addAction(tr("Rename")), &QAction::triggered, [this, idx]() {
@@ -681,23 +681,23 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
 
                 dialog.setInputMode(QInputDialog::TextInput);
                 dialog.setLabelText(tr("New name of this favourite:"));
-                dialog.setTextValue(kristall::favourites.getFavourite(idx).getTitle());
+                dialog.setTextValue(kristall::globals().favourites.getFavourite(idx).getTitle());
 
                 if (dialog.exec() != QDialog::Accepted)
                     return;
 
-                kristall::favourites.editFavouriteTitle(idx, dialog.textValue());
+                kristall::globals().favourites.editFavouriteTitle(idx, dialog.textValue());
             });
 
             menu.addSeparator();
 
             connect(menu.addAction(tr("Delete")), &QAction::triggered, [idx]() {
-                kristall::favourites.destroyFavourite(idx);
+                kristall::globals().favourites.destroyFavourite(idx);
             });
 
             menu.exec(this->ui->favourites_view->mapToGlobal(pos));
         }
-        else if(QString group = kristall::favourites.group(idx); not group.isEmpty()) {
+        else if(QString group = kristall::globals().favourites.group(idx); not group.isEmpty()) {
             QMenu menu;
 
             connect(menu.addAction(tr("Rename group")), &QAction::triggered, [this, group]() {
@@ -710,7 +710,7 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
                 if (dialog.exec() != QDialog::Accepted)
                     return;
 
-                if (!kristall::favourites.renameGroup(group, dialog.textValue()))
+                if (!kristall::globals().favourites.renameGroup(group, dialog.textValue()))
                     QMessageBox::information(this, tr("Kristall"), tr("Rename failed: group name already in use."));
             });
 
@@ -727,7 +727,7 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
                 {
                     return;
                 }
-                kristall::favourites.deleteGroupRecursive(kristall::favourites.group(idx));
+                kristall::globals().favourites.deleteGroupRecursive(kristall::globals().favourites.group(idx));
             });
 
             menu.exec(this->ui->favourites_view->mapToGlobal(pos));
@@ -753,11 +753,11 @@ void MainWindow::on_actionManage_Certificates_triggered()
 {
     CertificateManagementDialog dialog { this };
 
-    dialog.setIdentitySet(kristall::identities);
+    dialog.setIdentitySet(kristall::globals().identities);
     if(dialog.exec() != QDialog::Accepted)
         return;
 
-    kristall::identities = dialog.identitySet();
+    kristall::globals().identities = dialog.identitySet();
 
     kristall::saveSettings();
 }
@@ -779,7 +779,7 @@ void MainWindow::on_actionClose_Window_triggered()
 
 void MainWindow::on_favourites_view_activated(const QModelIndex &index)
 {
-    if(auto url = kristall::favourites.getFavourite(index).destination; url.isValid()) {
+    if(auto url = kristall::globals().favourites.getFavourite(index).destination; url.isValid()) {
         this->addNewTab(true, url);
     }
 }

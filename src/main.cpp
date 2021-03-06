@@ -14,24 +14,21 @@
 #include <QLibraryInfo>
 #include <cassert>
 
-ProtocolSetup       kristall::protocols;
-IdentityCollection  kristall::identities;
-QSettings *         kristall::settings;
-QClipboard *        kristall::clipboard;
-SslTrust            kristall::trust::gemini;
-SslTrust            kristall::trust::https;
-FavouriteCollection kristall::favourites;
-GenericSettings     kristall::options;
-DocumentStyle       kristall::document_style(false);
-CacheHandler        kristall::cache;
-QString             kristall::default_font_family;
-QString             kristall::default_font_family_fixed;
+static std::unique_ptr<kristall::Globals> main_globals;
 
-QDir kristall::dirs::config_root;
-QDir kristall::dirs::cache_root;
-QDir kristall::dirs::offline_pages;
-QDir kristall::dirs::themes;
-QDir kristall::dirs::styles;
+struct EnsureGlobalsReset
+{
+    ~EnsureGlobalsReset()
+    {
+        main_globals.reset();
+    }
+};
+
+kristall::Globals & kristall::globals()
+{
+    assert(main_globals != nullptr);
+    return *main_globals;
+}
 
 // We need QFont::setFamilies for emojis to work properly,
 // Qt versions below 5.13 don't support this.
@@ -364,6 +361,11 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     app.setApplicationVersion(SSTR(KRISTALL_VERSION));
 
+    main_globals = std::make_unique<kristall::Globals>(    );
+
+    // this is relevant to delete kristall::Globals before the application itself.
+    EnsureGlobalsReset ensure_globals_reset;
+
     QObject::connect(&app, &QApplication::focusChanged, [](QWidget *old, QWidget *now) {
         // Determine the window for both, we're only interested in window focus changes.
         if(old != nullptr) old = old->window();
@@ -391,22 +393,6 @@ int main(int argc, char *argv[])
     trans.load(QLocale(), QLatin1String("kristall"), QLatin1String("_"), QLatin1String(":/i18n"));
     app.installTranslator(&qttrans);
     app.installTranslator(&trans);
-
-    {
-        // Initialise default fonts
-    #ifdef Q_OS_WIN32
-        // Windows default fonts are ugly, so we use standard ones.
-        kristall::default_font_family = "Segoe UI";
-        kristall::default_font_family_fixed = "Consolas";
-    #else
-        // *nix
-        kristall::default_font_family = QFontDatabase::systemFont(QFontDatabase::GeneralFont).family();
-        kristall::default_font_family_fixed = QFontInfo(QFont("monospace")).family();
-    #endif
-        kristall::document_style.initialiseDefaultFonts();
-    }
-
-    kristall::clipboard = app.clipboard();
 
     addEmojiSubstitutions();
 
@@ -503,18 +489,18 @@ int main(int argc, char *argv[])
     QString cache_root = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     QString config_root = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
 
-    kristall::dirs::config_root = QDir { config_root };
-    kristall::dirs::cache_root  = QDir { cache_root };
+    kristall::globals().dirs.config_root = QDir { config_root };
+    kristall::globals().dirs.cache_root  = QDir { cache_root };
 
-    kristall::dirs::offline_pages = derive_dir(kristall::dirs::cache_root, "offline-pages");
-    kristall::dirs::themes = derive_dir(kristall::dirs::config_root, "themes");
+    kristall::globals().dirs.offline_pages = derive_dir(kristall::globals().dirs.cache_root, "offline-pages");
+    kristall::globals().dirs.themes = derive_dir(kristall::globals().dirs.config_root, "themes");
 
-    kristall::dirs::styles = derive_dir(kristall::dirs::config_root, "styles");
-    kristall::dirs::styles.setNameFilters(QStringList { "*.kthm" });
-    kristall::dirs::styles.setFilter(QDir::Files);
+    kristall::globals().dirs.styles = derive_dir(kristall::globals().dirs.config_root, "styles");
+    kristall::globals().dirs.styles.setNameFilters(QStringList { "*.kthm" });
+    kristall::globals().dirs.styles.setFilter(QDir::Files);
 
     QSettings app_settings {
-        kristall::dirs::config_root.absoluteFilePath("config.ini"),
+        kristall::globals().dirs.config_root.absoluteFilePath("config.ini"),
         QSettings::IniFormat
     };
     app_settings_ptr = &app_settings;
@@ -549,10 +535,10 @@ int main(int argc, char *argv[])
                         do {
                             fileName = DocumentStyle::createFileNameFromName(name, index);
                             index += 1;
-                        } while(kristall::dirs::styles.exists(fileName));
+                        } while(kristall::globals().dirs.styles.exists(fileName));
 
                         QSettings style_sheet {
-                            kristall::dirs::styles.absoluteFilePath(fileName),
+                            kristall::globals().dirs.styles.absoluteFilePath(fileName),
                                     QSettings::IniFormat
                         };
                         style_sheet.setValue("name", name);
@@ -637,35 +623,35 @@ int main(int argc, char *argv[])
         app_settings.endArray();
     }
 
-    kristall::settings = &app_settings;
+    kristall::globals().settings = &app_settings;
 
-    kristall::options.load(app_settings);
+    kristall::globals().options.load(app_settings);
 
     app_settings.beginGroup("Protocols");
-    kristall::protocols.load(app_settings);
+    kristall::globals().protocols.load(app_settings);
     app_settings.endGroup();
 
     app_settings.beginGroup("Client Identities");
-    kristall::identities.load(app_settings);
+    kristall::globals().identities.load(app_settings);
     app_settings.endGroup();
 
     app_settings.beginGroup("Trusted Servers");
-    kristall::trust::gemini.load(app_settings);
+    kristall::globals().trust.gemini.load(app_settings);
     app_settings.endGroup();
 
     app_settings.beginGroup("Trusted HTTPS Servers");
-    kristall::trust::https.load(app_settings);
+    kristall::globals().trust.https.load(app_settings);
     app_settings.endGroup();
 
     app_settings.beginGroup("Theme");
-    kristall::document_style.load(app_settings);
+    kristall::globals().document_style.load(app_settings);
     app_settings.endGroup();
 
     app_settings.beginGroup("Favourites");
-    kristall::favourites.load(app_settings);
+    kristall::globals().favourites.load(app_settings);
     app_settings.endGroup();
 
-    kristall::setTheme(kristall::options.theme);
+    kristall::setTheme(kristall::globals().options.theme);
 
     if(ipc_server != nullptr) {
         QObject::connect(ipc_server.get(), &QLocalServer::newConnection, [&ipc_server]() {
@@ -830,8 +816,8 @@ void GenericSettings::save(QSettings &settings) const
 
 void kristall::applySettings()
 {
-    kristall::setTheme(kristall::options.theme);
-    kristall::setUiDensity(kristall::options.ui_density, false);
+    kristall::setTheme(kristall::globals().options.theme);
+    kristall::setUiDensity(kristall::globals().options.ui_density, false);
 
     forAllAppWindows([](MainWindow * window)
     {
@@ -845,30 +831,30 @@ void kristall::saveSettings()
     QSettings & app_settings = *app_settings_ptr;
 
     app_settings.beginGroup("Favourites");
-    kristall::favourites.save(app_settings);
+    kristall::globals().favourites.save(app_settings);
     app_settings.endGroup();
 
     app_settings.beginGroup("Protocols");
-    kristall::protocols.save(app_settings);
+    kristall::globals().protocols.save(app_settings);
     app_settings.endGroup();
 
     app_settings.beginGroup("Client Identities");
-    kristall::identities.save(app_settings);
+    kristall::globals().identities.save(app_settings);
     app_settings.endGroup();
 
     app_settings.beginGroup("Trusted Servers");
-    kristall::trust::gemini.save(app_settings);
+    kristall::globals().trust.gemini.save(app_settings);
     app_settings.endGroup();
 
     app_settings.beginGroup("Trusted HTTPS Servers");
-    kristall::trust::https.save(app_settings);
+    kristall::globals().trust.https.save(app_settings);
     app_settings.endGroup();
 
     app_settings.beginGroup("Theme");
-    kristall::document_style.save(app_settings);
+    kristall::globals().document_style.save(app_settings);
     app_settings.endGroup();
 
-    kristall::options.save(app_settings);
+    kristall::globals().options.save(app_settings);
 
     app_settings.sync();
 }
@@ -884,7 +870,7 @@ void kristall::setTheme(Theme theme)
         // Use "mid" colour for our URL bar dim colour:
         QColor col = qApp->palette().color(QPalette::WindowText);
         col.setAlpha(150);
-        kristall::options.fancy_urlbar_dim_colour = std::move(col);
+        kristall::globals().options.fancy_urlbar_dim_colour = std::move(col);
     }
     else if(theme == Theme::light)
     {
@@ -893,7 +879,7 @@ void kristall::setTheme(Theme theme)
         QTextStream stream(&file);
         qApp->setStyleSheet(stream.readAll());
 
-        kristall::options.fancy_urlbar_dim_colour = QColor(128, 128, 128, 255);
+        kristall::globals().options.fancy_urlbar_dim_colour = QColor(128, 128, 128, 255);
     }
     else if(theme == Theme::dark)
     {
@@ -902,10 +888,10 @@ void kristall::setTheme(Theme theme)
         QTextStream stream(&file);
         qApp->setStyleSheet(stream.readAll());
 
-        kristall::options.fancy_urlbar_dim_colour = QColor(150, 150, 150, 255);
+        kristall::globals().options.fancy_urlbar_dim_colour = QColor(150, 150, 150, 255);
     }
 
-    kristall::setIconTheme(kristall::options.icon_theme, theme);
+    kristall::setIconTheme(kristall::globals().options.icon_theme, theme);
 
     forAllAppWindows([](MainWindow * main_window) {
         if (main_window && main_window->curTab())
@@ -941,7 +927,7 @@ void kristall::setIconTheme(IconTheme icotheme, Theme uitheme)
             QIcon::setThemeName("");
         #endif
 
-            kristall::options.explicit_icon_theme = IconTheme::dark;
+            kristall::globals().options.explicit_icon_theme = IconTheme::dark;
 
             ret();
             return;
@@ -949,14 +935,14 @@ void kristall::setIconTheme(IconTheme icotheme, Theme uitheme)
 
         // Use icon theme based on UI theme
         QIcon::setThemeName(icothemes[(int)uitheme]);
-        kristall::options.explicit_icon_theme = (IconTheme)uitheme;
+        kristall::globals().options.explicit_icon_theme = (IconTheme)uitheme;
         ret();
         return;
     }
 
     // Use icon specified by user
     QIcon::setThemeName(icothemes[(int)icotheme]);
-    kristall::options.explicit_icon_theme = (IconTheme)icotheme;
+    kristall::globals().options.explicit_icon_theme = (IconTheme)icotheme;
     ret();
 }
 

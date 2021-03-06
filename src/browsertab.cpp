@@ -63,7 +63,7 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
 {
     ui->setupUi(this);
 
-    this->setUiDensity(kristall::options.ui_density);
+    this->setUiDensity(kristall::globals().options.ui_density);
 
     addProtocolHandler<GeminiClient>();
     addProtocolHandler<FingerClient>();
@@ -124,7 +124,7 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
     FavouritePopup * popup = new FavouritePopup(this->ui->fav_button, this);
     connect(popup, &FavouritePopup::unfavourited, this, [this]() {
         this->ui->fav_button->setChecked(false);
-        kristall::favourites.removeUrl(this->current_location);
+        kristall::globals().favourites.removeUrl(this->current_location);
     });
     this->ui->fav_button->setPopupMode(QToolButton::DelayedPopup);
     this->ui->fav_button->setMenu(popup);
@@ -135,7 +135,7 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
 
         // Update combobox
         popup->fav_group->clear();
-        QStringList groups = kristall::favourites.groups();
+        QStringList groups = kristall::globals().favourites.groups();
         for (int i = 0; i < groups.length(); ++i)
         {
             popup->fav_group->addItem(groups[i]);
@@ -157,7 +157,7 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
         if (!popup->is_ready || index == -1) return;
 
         // Change favourite's current group
-        kristall::favourites.editFavouriteGroup(this->current_location,
+        kristall::globals().favourites.editFavouriteGroup(this->current_location,
             popup->fav_group->currentText());
     });
 
@@ -172,7 +172,7 @@ BrowserTab::~BrowserTab()
 
 void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode, RequestFlags flags)
 {
-    if (kristall::protocols.isSchemeSupported(url.scheme()) != ProtocolSetup::Enabled)
+    if (kristall::globals().protocols.isSchemeSupported(url.scheme()) != ProtocolSetup::Enabled)
     {
         QMessageBox::warning(this, tr("Kristall"), tr("URI scheme not supported or disabled: ") + url.scheme());
         return;
@@ -185,7 +185,7 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode, RequestFlags fl
     }
 
     // If this page is in cache, store the scroll position
-    if (auto pg = kristall::cache.find(this->current_location); pg != nullptr)
+    if (auto pg = kristall::globals().cache.find(this->current_location); pg != nullptr)
     {
         pg->scroll_pos = this->ui->text_browser->verticalScrollBar()->value();
     }
@@ -339,8 +339,8 @@ void BrowserTab::on_url_bar_returnPressed()
         else
         {
             // Use the text as a search query.
-            if (kristall::options.search_engine.isEmpty() ||
-                !kristall::options.search_engine.contains("%1"))
+            if (kristall::globals().options.search_engine.isEmpty() ||
+                !kristall::globals().options.search_engine.contains("%1"))
             {
                 QMessageBox::warning(this,
                     tr("Kristall"),
@@ -350,7 +350,7 @@ void BrowserTab::on_url_bar_returnPressed()
                     );
                 return;
             }
-            url = QUrl{QString(kristall::options.search_engine)
+            url = QUrl{QString(kristall::globals().options.search_engine)
                 .arg(this->ui->url_bar->text())};
         }
     }
@@ -615,11 +615,11 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
 
     this->outline.clear();
 
-    auto doc_style = kristall::document_style.derive(this->current_location);
+    auto doc_style = kristall::globals().document_style.derive(this->current_location);
 
     this->ui->text_browser->setStyleSheet(QString("QTextBrowser { background-color: %1; color: %2; }").arg(doc_style.background_color.name(), doc_style.standard_color.name()));
 
-    bool plaintext_only = (kristall::options.text_display == GenericSettings::PlainText);
+    bool plaintext_only = (kristall::globals().options.text_display == GenericSettings::PlainText);
 
     // Only cache text pages
     bool will_cache = true;
@@ -663,7 +663,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
     else if (not plaintext_only and mime.is("text","x-kristall-theme"))
     {
         // ugly workaround for QSettings needing a file
-        QFile temp_file { kristall::dirs::cache_root.absoluteFilePath("preview-theme.kthm") };
+        QFile temp_file { kristall::globals().dirs.cache_root.absoluteFilePath("preview-theme.kthm") };
 
         if(temp_file.open(QFile::WriteOnly)) {
             IoUtil::writeAll(temp_file, data);
@@ -820,7 +820,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
         !this->was_read_from_cache &&
         !this->current_identity.isValid())
     {
-        kristall::cache.push(this->current_location, data, mime);
+        kristall::globals().cache.push(this->current_location, data, mime);
     }
 }
 
@@ -908,7 +908,7 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
         uri.setHost(current_location.host());
     }
 
-    if (redirection_count >= kristall::options.max_redirections)
+    if (redirection_count >= kristall::globals().options.max_redirections)
     {
         setErrorMessage(QString(tr("Too many consecutive redirections. The last redirection would have redirected you to:\r\n%1")).arg(uri.toString(QUrl::FullyEncoded)));
         return;
@@ -919,7 +919,7 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
         bool is_cross_host = (this->current_location.host() != uri.host());
 
         QString question;
-        if(kristall::options.redirection_policy == GenericSettings::WarnAlways)
+        if(kristall::globals().options.redirection_policy == GenericSettings::WarnAlways)
         {
             question = QString(
                 tr("The location you visited wants to redirect you to another location:\r\n"
@@ -927,7 +927,7 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
                 "Do you want to allow the redirection?")
             ).arg(uri.toString(QUrl::FullyEncoded));
         }
-        else if((kristall::options.redirection_policy & (GenericSettings::WarnOnHostChange | GenericSettings::WarnOnSchemeChange)) and is_cross_protocol and is_cross_host)
+        else if((kristall::globals().options.redirection_policy & (GenericSettings::WarnOnHostChange | GenericSettings::WarnOnSchemeChange)) and is_cross_protocol and is_cross_host)
         {
             question = QString(
                 tr("The location you visited wants to redirect you to another host and switch the protocol.\r\n"
@@ -936,7 +936,7 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
                 "Do you want to allow the redirection?")
             ).arg(uri.scheme()).arg(uri.host());
         }
-        else if((kristall::options.redirection_policy & GenericSettings::WarnOnSchemeChange) and is_cross_protocol)
+        else if((kristall::globals().options.redirection_policy & GenericSettings::WarnOnSchemeChange) and is_cross_protocol)
         {
             question = QString(
                 tr("The location you visited wants to switch the protocol.\r\n"
@@ -944,7 +944,7 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
                 "Do you want to allow the redirection?")
             ).arg(uri.scheme());
         }
-        else if((kristall::options.redirection_policy & GenericSettings::WarnOnHostChange) and is_cross_host)
+        else if((kristall::globals().options.redirection_policy & GenericSettings::WarnOnHostChange) and is_cross_host)
         {
             question = QString(
                 tr("The location you visited wants to redirect you to another host.\r\n"
@@ -999,9 +999,9 @@ void BrowserTab::pushToHistory(const QUrl &url)
 void BrowserTab::showFavouritesPopup()
 {
     // We add it to favourites immediately.
-    kristall::favourites.addUnsorted(this->current_location, this->page_title);
+    kristall::globals().favourites.addUnsorted(this->current_location, this->page_title);
 
-    const Favourite fav = kristall::favourites.getFavourite(this->current_location);
+    const Favourite fav = kristall::globals().favourites.getFavourite(this->current_location);
 
     this->ui->fav_button->setChecked(true);
     FavouritePopup *popup = static_cast<FavouritePopup*>(this->ui->fav_button->menu());
@@ -1013,13 +1013,13 @@ void BrowserTab::showFavouritesPopup()
         // Setup the group combobox
         popup->fav_group->setCurrentIndex(-1);
         popup->fav_group->clear();
-        QStringList groups = kristall::favourites.groups();
+        QStringList groups = kristall::globals().favourites.groups();
         for (int i = 0; i < groups.length(); ++i)
         {
             popup->fav_group->addItem(groups[i]);
 
             // Set combobox index to current group
-            if (groups[i] == kristall::favourites.groupForFavourite(fav.destination))
+            if (groups[i] == kristall::globals().favourites.groupForFavourite(fav.destination))
             {
                 popup->fav_group->setCurrentIndex(i);
             }
@@ -1038,7 +1038,7 @@ void BrowserTab::showFavouritesPopup()
     this->ui->fav_button->showMenu();
 
     // Update the favourites entry with what user inputted into menu
-    kristall::favourites.editFavouriteTitle(this->current_location, popup->fav_title->text());
+    kristall::globals().favourites.editFavouriteTitle(this->current_location, popup->fav_title->text());
 }
 
 void BrowserTab::on_fav_button_clicked()
@@ -1090,10 +1090,10 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new
                 }
 
                 if(this->current_location.scheme() == "gemini") {
-                    kristall::trust::gemini.addTrust(this->current_location, this->current_server_certificate);
+                    kristall::globals().trust.gemini.addTrust(this->current_location, this->current_server_certificate);
                 }
                 else if(this->current_location.scheme() == "https") {
-                    kristall::trust::https.addTrust(this->current_location, this->current_server_certificate);
+                    kristall::globals().trust.https.addTrust(this->current_location, this->current_server_certificate);
                 }
                 else {
                     assert(false and "missing protocol implementation!");
@@ -1106,7 +1106,7 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new
                 if(is_theme_preview)
                 {
                     // ugly workaround for QSettings needing a file
-                    QFile temp_file { kristall::dirs::cache_root.absoluteFilePath("preview-theme.kthm") };
+                    QFile temp_file { kristall::globals().dirs.cache_root.absoluteFilePath("preview-theme.kthm") };
 
                     if(temp_file.open(QFile::WriteOnly)) {
                         IoUtil::writeAll(temp_file, this->current_buffer);
@@ -1151,9 +1151,9 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new
                     {
                         fileName = DocumentStyle::createFileNameFromName(name, index);
                         index += 1;
-                    } while(kristall::dirs::styles.exists(fileName));
+                    } while(kristall::globals().dirs.styles.exists(fileName));
 
-                    QFile target_file { kristall::dirs::styles.absoluteFilePath(fileName) };
+                    QFile target_file { kristall::globals().dirs.styles.absoluteFilePath(fileName) };
 
                     if(target_file.open(QFile::WriteOnly)) {
                         IoUtil::writeAll(target_file, this->current_buffer);
@@ -1192,7 +1192,7 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new
     if (real_url.isRelative())
         real_url = this->current_location.resolved(url);
 
-    auto support = kristall::protocols.isSchemeSupported(real_url.scheme());
+    auto support = kristall::globals().protocols.isSchemeSupported(real_url.scheme());
 
     if (support == ProtocolSetup::Enabled)
     {
@@ -1204,7 +1204,7 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new
     }
     else
     {
-        if (kristall::options.use_os_scheme_handler)
+        if (kristall::globals().options.use_os_scheme_handler)
         {
             if (not QDesktopServices::openUrl(url))
             {
@@ -1247,7 +1247,7 @@ void BrowserTab::on_stop_button_clicked()
 
 void BrowserTab::on_home_button_clicked()
 {
-    this->navigateTo(QUrl(kristall::options.start_page), BrowserTab::PushImmediate);
+    this->navigateTo(QUrl(kristall::globals().options.start_page), BrowserTab::PushImmediate);
 }
 
 void BrowserTab::on_requestProgress(qint64 transferred)
@@ -1259,7 +1259,7 @@ void BrowserTab::on_requestProgress(qint64 transferred)
     emit this->fileLoaded(this->current_stats);
 
     this->network_timeout_timer.stop();
-    this->network_timeout_timer.start(kristall::options.network_timeout);
+    this->network_timeout_timer.start(kristall::globals().options.network_timeout);
 }
 
 void BrowserTab::on_back_button_clicked()
@@ -1288,7 +1288,7 @@ void BrowserTab::updateUI()
 void BrowserTab::refreshFavButton()
 {
     this->ui->fav_button->setEnabled(this->successfully_loaded);
-    this->ui->fav_button->setChecked(kristall::favourites.containsUrl(this->current_location));
+    this->ui->fav_button->setChecked(kristall::globals().favourites.containsUrl(this->current_location));
 }
 
 void BrowserTab::setUrlBarText(const QString & text)
@@ -1323,7 +1323,7 @@ void BrowserTab::updateUrlBarStyle()
     // Set all text to default colour if url bar
     // is focused, is at an about: location,
     // or has an invalid URL.
-    if (!kristall::options.fancy_urlbar ||
+    if (!kristall::globals().options.fancy_urlbar ||
         this->ui->url_bar->hasFocus() ||
         !url.isValid() ||
         this->current_location.scheme() == "about")
@@ -1359,7 +1359,7 @@ void BrowserTab::updateUrlBarStyle()
     // non-authority colour text (grey-ish, determined by theme in kristall:setTheme)
     // The rest of the text is in default theme foreground colour.
     QTextCharFormat f;
-    f.setForeground(kristall::options.fancy_urlbar_dim_colour);
+    f.setForeground(kristall::globals().options.fancy_urlbar_dim_colour);
 
     // Create format range for left-side of URL
     QTextLayout::FormatRange fr_left;
@@ -1419,9 +1419,9 @@ void BrowserTab::updatePageMargins()
 
 void BrowserTab::refreshOptionalToolbarItems()
 {
-    this->ui->home_button->setVisible(kristall::options.enable_home_btn);
-    this->ui->root_button->setVisible(kristall::options.enable_root_btn);
-    this->ui->parent_button->setVisible(kristall::options.enable_parent_btn);
+    this->ui->home_button->setVisible(kristall::globals().options.enable_home_btn);
+    this->ui->root_button->setVisible(kristall::globals().options.enable_root_btn);
+    this->ui->parent_button->setVisible(kristall::globals().options.enable_parent_btn);
 }
 
 void BrowserTab::refreshToolbarIcons()
@@ -1431,7 +1431,7 @@ void BrowserTab::refreshToolbarIcons()
         "dark"
     };
 
-    QString ico_name = ICO_NAMES[(int)kristall::options.explicit_icon_theme];
+    QString ico_name = ICO_NAMES[(int)kristall::globals().options.explicit_icon_theme];
 
     // Favourites button icons
     QIcon ico_fav;
@@ -1566,7 +1566,7 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
         }
     }
     else if(not this->current_identity.isValid()) {
-        for(auto ident_ptr : kristall::identities.allIdentities())
+        for(auto ident_ptr : kristall::globals().identities.allIdentities())
         {
             if(ident_ptr->isAutomaticallyEnabledOn(url)) {
 
@@ -1598,7 +1598,7 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
     this->current_location = url;
     this->setUrlBarText(urlstr);
 
-    this->network_timeout_timer.start(kristall::options.network_timeout);
+    this->network_timeout_timer.start(kristall::globals().options.network_timeout);
 
     const auto req = [this, &url, &options]()
     {
@@ -1612,8 +1612,8 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
     }
 
     // Check if we have the page in our cache.
-    kristall::cache.clean();
-    if (auto pg = kristall::cache.find(url); pg != nullptr)
+    kristall::globals().cache.clean();
+    if (auto pg = kristall::globals().cache.find(url); pg != nullptr)
     {
         qDebug() << "Reading page from cache";
         this->was_read_from_cache = true;
@@ -1717,7 +1717,7 @@ void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint pos)
         });
 
         connect(menu.addAction(tr("Copy link")), &QAction::triggered, [real_url]() {
-            kristall::clipboard->setText(real_url.toString(QUrl::FullyEncoded));
+            qApp->clipboard()->setText(real_url.toString(QUrl::FullyEncoded));
         });
 
         menu.addSeparator();

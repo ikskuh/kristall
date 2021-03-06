@@ -38,7 +38,7 @@ bool FileHandler::startRequest(const QUrl &url, RequestOptions options)
         page += QString("# Index of %1\n").arg(url.path());
 
         auto filters = QDir::Dirs | QDir::Files | QDir::NoDot;
-        if (kristall::options.show_hidden_files_in_dirs) filters |= QDir::Hidden;
+        if (kristall::globals().options.show_hidden_files_in_dirs) filters |= QDir::Hidden;
         dir.setFilter(filters);
 
         // Iterate over files in the directory, and add links to each.
