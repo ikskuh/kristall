@@ -14,6 +14,10 @@
 * New action: "View/Show document source" will display the raw data of the document in a small separate window
 * Change: Makes TLS editor columns sortable
 
+-- There's a lot missing here still
+
+* Adds single-session mode so opening links will open them in the currently focuse kristall window instead of a new instance every time.
+
 ## 0.3 - TLS and security
 * Adds support for transient client certificates
 * Adds support for permanent client certificates
@@ -46,7 +50,7 @@
 * Implement Ctrl+S/*Save as...* menu item
 * Add display for "non-recognized files"
 * Added support for gopher:// and gophermaps
-* Added "go to home" menu 
+* Added "go to home" menu
 * Added support for video/* and audio/* via QMediaPlayer
 * Added support for file:// scheme
 * Added status bar with loading time, file size and mime type

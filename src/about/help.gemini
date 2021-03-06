@@ -365,6 +365,7 @@ There is also the scheme about: which can be used to access internal sites for c
 => about:help
 => about:updates
 => about:style-preview
+=> about:style-display
 => about:cache
 
 ## Security Concept

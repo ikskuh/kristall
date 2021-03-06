@@ -1,34 +1,54 @@
 [General]
-name=DOS
-version=1
-theme=0
+ansi_colors=black, darkred, darkgreen, darkgoldenrod, darkblue, darkmagenta, darkcyan, lightgray, gray, red, green, goldenrod, lightblue, magenta, cyan, white
 background_color=#00008b
 blockquote_color=#000000
-margins=55
+margins_h=55
+margins_v=55
+name=DOS
+theme=0
+version=1
 
-[Standard]
-font="PxPlus IBM VGA9,16,-1,5,50,0,0,0,0,0,Regular"
+[Blockquote]
 color=#d3d3d3
+font="Source Code Pro,16,-1,5,50,0,0,0,0,0,Regular"
 
-[Preformatted]
-font="PxPlus IBM VGA9,16,-1,5,50,0,0,0,0,0,Regular"
-color=#ffffff
+[Formatting]
+centre_h1=false
+indent_bq=0
+indent_h=0
+indent_l=2
+indent_p=0
+indent_size=16
+justify_text=true
+line_height_h=0
+line_height_p=0
+list_symbol=-3
+text_width=900
+text_width_enabled=true
 
 [H1]
-font="PxPlus IBM VGA9,16,-1,5,50,0,0,0,0,0,Regular"
 color=#ffff00
+font="Source Code Pro,16,-1,5,50,0,0,0,0,0,Regular"
 
 [H2]
-font="PxPlus IBM VGA9,16,-1,5,50,0,0,0,0,0,Regular"
 color=#00ff00
+font="Source Code Pro,16,-1,5,50,0,0,0,0,0,Regular"
 
 [H3]
-font="PxPlus IBM VGA9,16,-1,5,50,0,0,0,0,0,Regular"
 color=#ffffff
+font="Source Code Pro,16,-1,5,50,0,0,0,0,0,Regular"
 
 [Link]
-color_internal=#00ffff
-color_external=#00ffff
 color_cross_scheme=#00ffff
-internal_prefix="\x2192 "
+color_external=#00ffff
+color_internal=#00ffff
 external_prefix="\x21d2 "
+internal_prefix="\x2192 "
+
+[Preformatted]
+color=#ffffff
+font="Source Code Pro,16,-1,5,50,0,0,0,0,0,Regular"
+
+[Standard]
+color=#d3d3d3
+font="Source Code Pro,16,-1,5,50,0,0,0,0,0,Regular"

@@ -8,6 +8,8 @@
 #include <QDebug>
 #include <QStandardPaths>
 #include <QFontDatabase>
+#include <QLocalSocket>
+#include <QLocalServer>
 #include <cassert>
 
 ProtocolSetup       kristall::protocols;
@@ -96,6 +98,182 @@ static void addEmojiSubstitutions()
     }
 }
 
+// Explanation to the IPC protocol:
+// Each IPC request is required to open a new connection.
+// The first some bytes are the ipc::Message struct that is inspected.
+// After that, message-dependent bytes are sent and the IPC process is terminated.
+// There is now way of indicating an error.
+// Messages are not allowed to be larger than 64k
+// We don't need to think about endianess or alignment as we only communicate with
+// the same machine.
+namespace ipc
+{
+    static char const * socket_name = "net.random-projects.kristall";
+
+    struct Message
+    {
+        enum Type
+        {
+            /// Requests that a series of urls URLs are opened
+            /// as new tabs in the currently focused window.
+            /// Payload description:
+            /// The message will contain a sequence of UTF-8 encoded bytes
+            /// that encode URLs. The URLs are separated by LF.
+            open_in_tabs = 0,
+
+            /// Same format as open_in_tabs, but requests that these urls are
+            /// opened in a new window instead of new tabs.
+            open_in_window = 1,
+        };
+
+        enum Protocol : uint16_t
+        {
+            version_1 = 1,
+        };
+
+        Protocol version;
+        Type type;
+    };
+
+    static_assert(std::is_trivial_v<Message>, "Message needs to be flat-copyable!");
+    static_assert(std::is_trivially_copyable_v<Message>, "Message needs to be flat-copyable!");
+
+    //! Implements the
+    struct ConnectedClient : QObject
+    {
+        QLocalSocket * socket;
+        QByteArray receive_buffer;
+        bool everything_ok;
+
+        ConnectedClient(QLocalSocket * socket) :
+            QObject(socket),
+            socket(socket),
+            everything_ok(true)
+        {
+            QObject::connect(socket, &QLocalSocket::readyRead, this, &ConnectedClient::on_readyRead);
+            QObject::connect(socket, &QLocalSocket::disconnected, this, &ConnectedClient::on_disconnected);
+        }
+
+        void on_readyRead()
+        {
+            auto const buffer = socket->readAll();
+            if(buffer.size() + this->receive_buffer.size() > 65536) {
+                qCritical() << "ipc failure: IPC client sent more than 64k bytes of data!";
+                this->everything_ok = false;
+                this->socket->close();
+            }
+
+            this->receive_buffer.append(buffer);
+        }
+
+        void on_disconnected()
+        {
+            if(not this->everything_ok)
+                return;
+            if(size_t(this->receive_buffer.size()) < sizeof(Message)) {
+                qCritical() << "ipc failure: IPC client did not send enough data!";
+                return;
+            }
+            Message message;
+            memcpy(&message, this->receive_buffer.data(), sizeof(Message));
+            switch(message.version)
+            {
+            case Message::version_1: {
+                this->processRequest(
+                    message.type,
+                    this->receive_buffer.mid(sizeof(Message))
+                );
+                break;
+            }
+            default: {
+                qCritical() << "ipc failure: IPC client used a unsupported protocol version!";
+                return;
+            }
+            }
+        }
+
+        void processRequest(Message::Type type, QByteArray const  & payload)
+        {
+            switch(type)
+            {
+            case Message::open_in_tabs: {
+                for(auto const & data : payload.split('\n'))
+                {
+                    QUrl url { QString::fromUtf8(data) };
+                    if(url.isValid()) {
+                        if(main_window != nullptr) {
+                            main_window->addNewTab(true, url);
+                        }
+                    }
+                }
+                break;
+            }
+            case Message::open_in_window: {
+                for(auto const & data : payload.split('\n'))
+                {
+                    QUrl url { QString::fromUtf8(data) };
+                    if(url.isValid()) {
+                        // TODO: Implement opening these urls in a new
+                        // window instead of a new tab!
+                        if(main_window != nullptr) {
+                            main_window->addNewTab(true, url);
+                        }
+                    }
+                }
+                break;
+            }
+
+            default: {
+                qCritical() << "ipc failure: IPC client used a unsupported message type!";
+                return;
+            }
+            }
+        }
+    };
+
+    void send(QLocalSocket & socket, void const * buffer, size_t length)
+    {
+        size_t offset = 0;
+        while(offset < length)
+        {
+            auto const sent = socket.write(
+                reinterpret_cast<char const *>(buffer) + offset,
+                length - offset
+            );
+            if(sent <= 0)
+                return;
+            offset += sent;
+        }
+    }
+
+    /// Sends a open_in_tabs request and closes the socket.
+    void sendOpenInTabs(QLocalSocket & socket, QVector<QUrl> const & urls)
+    {
+        Message msg { Message::version_1, Message::open_in_tabs };
+        send(socket, &msg, sizeof msg);
+        for(int i = 0; i < urls.size(); i++)
+        {
+            if(i > 0)
+                send(socket, "\n", 1);
+            auto const bits = urls[i].toString(QUrl::FullyEncoded).toUtf8();
+            send(socket, bits.data(), bits.size());
+        }
+    }
+
+    /// Sends a open_in_window request and closes the socket.
+    void sendOpenInWindow(QLocalSocket & socket, QVector<QUrl> const & urls)
+    {
+        Message msg { Message::version_1, Message::open_in_window };
+        send(socket, &msg, sizeof msg);
+        for(int i = 0; i < urls.size(); i++)
+        {
+            if(i > 0)
+                send(socket, "\n", 1);
+            auto const bits = urls[i].toString(QUrl::FullyEncoded).toUtf8();
+            send(socket, bits.data(), bits.size());
+        }
+    }
+}
 
 int main(int argc, char *argv[])
 {
@@ -123,11 +301,93 @@ int main(int argc, char *argv[])
     addEmojiSubstitutions();
 
     QCommandLineParser cli_parser;
+
+    QCommandLineOption newWindowOption {
+        { "w", "new-window" },
+        app.tr("Opens the provided links in a new window instead of tabs."),
+    };
+
+    QCommandLineOption isolatedOption {
+        { "i", "isolated" },
+        app.tr("Starts the instance of kristall as a isolated session that cannot communicate with other windows."),
+    };
+
     cli_parser.addVersionOption();
     cli_parser.addHelpOption();
+    cli_parser.addOption(newWindowOption);
+    cli_parser.addOption(isolatedOption);
+
     cli_parser.addPositionalArgument("urls", app.tr("The urls that should be opened instead of the start page"), "[urls...]");
 
     cli_parser.process(app);
+
+    QVector<QUrl> urls;
+    {
+        auto cli_args = cli_parser.positionalArguments();
+        for(auto const & url_str : cli_args)
+        {
+            QUrl url { url_str };
+            if (url.isRelative())
+            {
+                if (QFile::exists(url_str)) {
+                    url = QUrl::fromLocalFile(QFileInfo(url_str).absoluteFilePath());
+                } else {
+                    url = QUrl("gemini://" + url_str);
+                }
+            }
+            if(url.isValid()) {
+                urls.append(url);
+            } else {
+                qDebug() << "Invalid url: " << url_str;
+            }
+        }
+    }
+
+    auto const open_new_window = cli_parser.isSet(newWindowOption);
+
+    auto const isolated_session = cli_parser.isSet(isolatedOption);
+
+    std::unique_ptr<QLocalServer> ipc_server { nullptr };
+
+    if(not isolated_session)
+    {
+        // try connecting to a already existing instance of kristall
+        {
+            QLocalSocket socket;
+            socket.connectToServer(ipc::socket_name);
+            // do not use less time here as we need to give the other task a bit
+            // of time. Most OS have a "loop time" of ~10 ms, so we use twice the
+            // time here to allow a response.
+            if(socket.waitForConnected(20))
+            {
+                qDebug() << "we already have a kristall instance running!";
+                if(urls.length() > 0)
+                {
+                    if(open_new_window)
+                        ipc::sendOpenInWindow(socket, urls);
+                    else
+                        ipc::sendOpenInTabs(socket, urls);
+                }
+                socket.waitForBytesWritten();
+                return 0;
+            }
+        }
+
+        // Otherwise, spawn a new local socket that will accept messages
+        // to provide proper IPC
+        {
+            std::unique_ptr<QLocalServer> server { new QLocalServer };
+            if(server->listen(ipc::socket_name))
+            {
+                qDebug() << "successfully started the IPC socket.";
+                ipc_server = std::move(server);
+            }
+            else
+            {
+                qCritical() << "failed to create IPC socket: " << server->errorString();
+            }
+        }
+    }
 
     QString cache_root = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     QString config_root = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
@@ -299,22 +559,23 @@ int main(int argc, char *argv[])
     MainWindow w(&app);
     main_window = &w;
 
-    auto urls = cli_parser.positionalArguments();
+    QObject::connect(ipc_server.get(), &QLocalServer::newConnection, [&ipc_server]() {
+        auto * const socket = ipc_server->nextPendingConnection();
+        if(socket != nullptr) {
+            // this will set up everything needed:
+            // - signals from socket
+            // - set itself as the socket child, so it will be deleted when the socket is closed
+            (void) new ipc::ConnectedClient(socket);
+
+            // destroy the socket when the connection was closed.
+            QObject::connect(socket, &QLocalSocket::disconnected, socket, &QObject::deleteLater);
+        }
+    });
+
+    // Open all URLs in the new window
     if(urls.size() > 0) {
-        for(const auto &url_str : urls) {
-            QUrl url { url_str };
-            if (url.isRelative()) {
-                if (QFile::exists(url_str)) {
-                    url = QUrl::fromLocalFile(QFileInfo(url_str).absoluteFilePath());
-                } else {
-                    url = QUrl("gemini://" + url_str);
-                }
-            }
-            if(url.isValid()) {
-                w.addNewTab(false, url);
-            } else {
-                qDebug() << "Invalid url: " << url_str;
-            }
+        for(const auto & url : urls) {
+            w.addNewTab(false, url);
         }
     }
     else {
