@@ -27,4 +27,12 @@ Displays help information
 \fB\-v\fR, \fB\-\-version\fR
 Displays version information
 .
+.TP
+\fB\-w\fR, \fB\-\-new-window\fR
+Opens \fIURL\fR in a new window if another Kristall session is already running (instead of opening a new tab).
+.
+.TP
+\fB\-i\fR, \fB\-\-isolated\fR
+Starts the instance of Kristall as an isolated session that cannot communicate with other Kristall windows.
+.
 .\" Stuff after this is converted from the Gemtext about:help file
