@@ -45,9 +45,10 @@ QString toFingerprintString(QSslCertificate const & certificate)
     return QCryptographicHash::hash(certificate.toDer(), QCryptographicHash::Sha256).toHex(':');
 }
 
-static QSettings * app_settings_ptr;
-static QApplication * app;
-static MainWindow * main_window = nullptr;
+char const * const app_window_property = "kristall:app-window";
+
+static QSettings * app_settings_ptr= nullptr;
+static MainWindow * last_focused_window = nullptr;
 static bool closing_state_saved = false;
 
 #define SSTR(X) STR(X)
@@ -97,6 +98,29 @@ static void addEmojiSubstitutions()
         // TODO: QFont::insertSubstitutions(family, current);
     }
 }
+
+template<typename F>
+void forAllAppWindows(F const & f)
+{
+    assert(qApp != nullptr);
+    for(auto * const widget : qApp->topLevelWidgets())
+    {
+        auto * const main_window = qobject_cast<MainWindow*>(widget);
+        if(main_window != nullptr) {
+            f(main_window);
+        }
+    }
+}
+
+MainWindow * getFocusedAppWindow()
+{
+    assert(qApp != nullptr);
+    auto * main_window = qobject_cast<MainWindow *>(qApp->activeWindow());
+    if(main_window != nullptr)
+        return main_window;
+    return last_focused_window;
+}
+
 
 // Explanation to the IPC protocol:
 // Each IPC request is required to open a new connection.
@@ -197,26 +221,28 @@ namespace ipc
             switch(type)
             {
             case Message::open_in_tabs: {
+                auto * const window = getFocusedAppWindow();
                 for(auto const & data : payload.split('\n'))
                 {
                     QUrl url { QString::fromUtf8(data) };
                     if(url.isValid()) {
-                        if(main_window != nullptr) {
-                            main_window->addNewTab(true, url);
+                        if(window != nullptr) {
+                            window->addNewTab(true, url);
                         }
                     }
                 }
                 break;
             }
             case Message::open_in_window: {
+                auto * const window = getFocusedAppWindow();
                 for(auto const & data : payload.split('\n'))
                 {
                     QUrl url { QString::fromUtf8(data) };
                     if(url.isValid()) {
                         // TODO: Implement opening these urls in a new
                         // window instead of a new tab!
-                        if(main_window != nullptr) {
-                            main_window->addNewTab(true, url);
+                        if(window != nullptr) {
+                            window->addNewTab(true, url);
                         }
                     }
                 }
@@ -275,12 +301,42 @@ namespace ipc
     }
 }
 
+void kristall::registerAppWindow(MainWindow * window)
+{
+    window->setProperty(app_window_property, QVariant(true));
+    QObject::connect(window, &MainWindow::destroyed, [window]() {
+        // reset the focus so we don't store a dangling pointer!
+        if(::last_focused_window == window)
+            ::last_focused_window = nullptr;
+    });
+}
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     app.setApplicationVersion(SSTR(KRISTALL_VERSION));
 
-    ::app = &app;
+    QObject::connect(&app, &QApplication::focusChanged, [](QWidget *old, QWidget *now) {
+        // Determine the window for both, we're only interested in window focus changes.
+        if(old != nullptr) old = old->window();
+        if(now != nullptr) now = now->window();
+
+        if(old == now) // no focus change here
+            return;
+
+        auto * const main_window = qobject_cast<MainWindow*>(now);
+        if(main_window != nullptr) {
+
+            auto is_app_window = main_window->property(app_window_property);
+            if(is_app_window.toBool() == true) {
+                // safety measure to not accidently store non-resettable pointers here
+                ::last_focused_window = main_window;
+            }
+            else {
+                qCritical() << main_window << "is not registered as a proper app window!";
+            }
+        }
+    });
 
     {
         // Initialise default fonts
@@ -377,6 +433,7 @@ int main(int argc, char *argv[])
         // to provide proper IPC
         {
             std::unique_ptr<QLocalServer> server { new QLocalServer };
+            server->setSocketOptions(QLocalServer::UserAccessOption);
             if(server->listen(ipc::socket_name))
             {
                 qDebug() << "successfully started the IPC socket.";
@@ -557,20 +614,21 @@ int main(int argc, char *argv[])
     kristall::setTheme(kristall::options.theme);
 
     MainWindow w(&app);
-    main_window = &w;
 
-    QObject::connect(ipc_server.get(), &QLocalServer::newConnection, [&ipc_server]() {
-        auto * const socket = ipc_server->nextPendingConnection();
-        if(socket != nullptr) {
-            // this will set up everything needed:
-            // - signals from socket
-            // - set itself as the socket child, so it will be deleted when the socket is closed
-            (void) new ipc::ConnectedClient(socket);
+    if(ipc_server != nullptr) {
+        QObject::connect(ipc_server.get(), &QLocalServer::newConnection, [&ipc_server]() {
+            auto * const socket = ipc_server->nextPendingConnection();
+            if(socket != nullptr) {
+                // this will set up everything needed:
+                // - signals from socket
+                // - set itself as the socket child, so it will be deleted when the socket is closed
+                (void) new ipc::ConnectedClient(socket);
 
-            // destroy the socket when the connection was closed.
-            QObject::connect(socket, &QLocalSocket::disconnected, socket, &QObject::deleteLater);
-        }
-    });
+                // destroy the socket when the connection was closed.
+                QObject::connect(socket, &QLocalSocket::disconnected, socket, &QObject::deleteLater);
+            }
+        });
+    }
 
     // Open all URLs in the new window
     if(urls.size() > 0) {
@@ -759,14 +817,14 @@ void kristall::saveSettings()
 
 void kristall::setTheme(Theme theme)
 {
-    assert(app != nullptr);
+    assert(qApp != nullptr);
 
     if(theme == Theme::os_default)
     {
-        app->setStyleSheet("");
+        qApp->setStyleSheet("");
 
         // Use "mid" colour for our URL bar dim colour:
-        QColor col = app->palette().color(QPalette::WindowText);
+        QColor col = qApp->palette().color(QPalette::WindowText);
         col.setAlpha(150);
         kristall::options.fancy_urlbar_dim_colour = std::move(col);
     }
@@ -775,7 +833,7 @@ void kristall::setTheme(Theme theme)
         QFile file(":/light.qss");
         file.open(QFile::ReadOnly | QFile::Text);
         QTextStream stream(&file);
-        app->setStyleSheet(stream.readAll());
+        qApp->setStyleSheet(stream.readAll());
 
         kristall::options.fancy_urlbar_dim_colour = QColor(128, 128, 128, 255);
     }
@@ -784,20 +842,22 @@ void kristall::setTheme(Theme theme)
         QFile file(":/dark.qss");
         file.open(QFile::ReadOnly | QFile::Text);
         QTextStream stream(&file);
-        app->setStyleSheet(stream.readAll());
+        qApp->setStyleSheet(stream.readAll());
 
         kristall::options.fancy_urlbar_dim_colour = QColor(150, 150, 150, 255);
     }
 
     kristall::setIconTheme(kristall::options.icon_theme, theme);
 
-    if (main_window && main_window->curTab())
-        main_window->curTab()->updateUrlBarStyle();
+    forAllAppWindows([](MainWindow * main_window) {
+        if (main_window && main_window->curTab())
+            main_window->curTab()->updateUrlBarStyle();
+    });
 }
 
 void kristall::setIconTheme(IconTheme icotheme, Theme uitheme)
 {
-    assert(app != nullptr);
+    assert(qApp != nullptr);
 
     static const QString icothemes[] = {
         "light", // Light theme (dark icons)
@@ -805,8 +865,10 @@ void kristall::setIconTheme(IconTheme icotheme, Theme uitheme)
     };
 
     auto ret = []() {
-        if (main_window && main_window->curTab())
-            main_window->curTab()->refreshToolbarIcons();
+        forAllAppWindows([](MainWindow * main_window) {
+            if (main_window && main_window->curTab())
+                main_window->curTab()->refreshToolbarIcons();
+        });
     };
 
     if (icotheme == IconTheme::automatic)
@@ -842,9 +904,9 @@ void kristall::setIconTheme(IconTheme icotheme, Theme uitheme)
 
 void kristall::setUiDensity(UIDensity density, bool previewing)
 {
-    assert(app != nullptr);
-    assert(main_window != nullptr);
-    main_window->setUiDensity(density, previewing);
+    forAllAppWindows([density, previewing](MainWindow * main_window) {
+        main_window->setUiDensity(density, previewing);
+    });
 }
 
 void kristall::saveWindowState()
@@ -852,8 +914,8 @@ void kristall::saveWindowState()
     closing_state_saved = true;
 
     app_settings_ptr->beginGroup("Window State");
-    app_settings_ptr->setValue("geometry", main_window->saveGeometry());
-    app_settings_ptr->setValue("state", main_window->saveState());
+    //app_settings_ptr->setValue("geometry", main_window->saveGeometry());
+    //app_settings_ptr->setValue("state", main_window->saveState());
     app_settings_ptr->endGroup();
 
     kristall::saveSettings();

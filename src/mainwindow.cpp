@@ -125,6 +125,8 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     connect(this->ui->browser_tabs->tab_bar, &BrowserTabBar::on_newTabClicked, this, [this]() {
         this->addEmptyTab(true, true);
     });
+
+    kristall::registerAppWindow(this);
 }
 
 MainWindow::~MainWindow()

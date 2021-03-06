@@ -102,6 +102,9 @@ struct GenericSettings
 //! `:`-separated SHA256 hash
 QString toFingerprintString(QSslCertificate const & certificate);
 
+// Forward declaration
+class MainWindow;
+
 ///
 /// Kristall directory structure:
 /// ~/.cache/kristall/
@@ -154,6 +157,10 @@ namespace kristall
     void setUiDensity(UIDensity density, bool previewing);
 
     void saveWindowState();
+
+    //! Registers a main window as a proper kristall application window
+    //! that can be tracked by the application.
+    void registerAppWindow(MainWindow * window);
 
     extern QString default_font_family, default_font_family_fixed;
 
