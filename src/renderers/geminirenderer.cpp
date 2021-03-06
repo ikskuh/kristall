@@ -82,8 +82,19 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
             else
             {
                 cursor.setBlockFormat(text_style.preformatted_format);
-                cursor.setCharFormat(text_style.preformatted);
-                cursor.insertText(line + "\n");
+
+                // TODO: make this a preference
+                const bool RENDER_ESCAPES = true;
+
+                if (RENDER_ESCAPES)
+                {
+                    renderhelpers::renderEscapeCodes(line, text_style.preformatted, cursor);
+                    cursor.insertText("\n", text_style.preformatted);
+                }
+                else
+                {
+                    cursor.insertText(line + "\n", text_style.preformatted);
+                }
             }
 
             continue;
