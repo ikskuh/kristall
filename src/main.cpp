@@ -11,6 +11,7 @@
 #include <QFontDatabase>
 #include <QLocalSocket>
 #include <QLocalServer>
+#include <QLibraryInfo>
 #include <cassert>
 
 ProtocolSetup       kristall::protocols;
@@ -386,7 +387,7 @@ int main(int argc, char *argv[])
     });
 
     QTranslator trans, qttrans;
-    qttrans.load(QLocale(), QLatin1String("qt"), "_", "../share/qt5/translations");
+    qttrans.load(QLocale(), QLatin1String("qt"), "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     trans.load(QLocale(), QLatin1String("kristall"), QLatin1String("_"), QLatin1String(":/i18n"));
     app.installTranslator(&qttrans);
     app.installTranslator(&trans);
