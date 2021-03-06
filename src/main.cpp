@@ -386,7 +386,7 @@ int main(int argc, char *argv[])
     });
 
     QTranslator trans, qttrans;
-    qttrans.load(QLocale(), QLatin1String("qt"), "_", "/usr/local/share/qt5/translations");
+    qttrans.load(QLocale(), QLatin1String("qt"), "_", "../share/qt5/translations");
     trans.load(QLocale(), QLatin1String("kristall"), QLatin1String("_"), QLatin1String(":/i18n"));
     app.installTranslator(&qttrans);
     app.installTranslator(&trans);
