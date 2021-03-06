@@ -47,6 +47,8 @@ This chapter explains what each menu button does. I hope that most stuff isn't s
 
 [New Tab] will open a new tab to surf.
 
+[New Window] will open a new window to browse in.
+
 [Save as] allows you to save the currently displayed file to your disk.
 
 [Close Tab] will close the current tab. Does the same as clicking the small (×) button on the tab itself.
@@ -81,7 +83,7 @@ This menu allows you to show/hide dockable dialogs.
 
 [Document Outline] toggles the document outline. Documents with text/gemini get an automatic outline generation that can be used to navigate larger documents quicker. If you're reading this help document inside of Kristall, this is a good place to try this feature out!
 
-[Favourites] opens a dock containing a list of all your favourite (a.k.a bookmarked) sites. Open your favourites into a new tab by double-clicking the entries. If you right click on an entry you will be presented with a menu in which you can edit the name or location of the entry, or delete it. Right-clicking in the window (not on an entry, not on a group) will allow you to create a new "group" of entries. Right clicking on a group will allow you to rename the group, or recursively delete it (be careful!).
+[Favourites] opens a dock containing a list of all your favourite (a.k.a bookmarked) sites. Open your favourites into a new tab by double-clicking or pressing *Return* on the entries. If you right click on an entry you will be presented with a menu in which you can edit the name or location of the entry, or delete it. Right-clicking in the window (not on an entry, not on a group) will allow you to create a new "group" of entries. Right clicking on a group will allow you to rename the group, or recursively delete it (be careful!).
 
 [History] shows the surfing history of the current tab. Double-clicking an entry navigates back and forth in your history without disturbing the list.
 
@@ -109,7 +111,7 @@ This tab contains an unsorted list of settings that allow you to tweak Kristalls
 
 [Icon Theme] controls the specific icon set that the Qt interface will use. Usually, the default [Auto] option should be good enough, however for those using the [OS Default] UI theme, this option may be useful.
 
-[Start Page] is the URL to the page that will be loaded for new tabs. Default is [about:favourites].
+[Start Page] is the URL to the page that will be loaded for new tabs and windows. Default is [about:favourites].
 
 [Search Engine] is the search engine to use when typing non-URLs in the URL bar. A handful of Gemini search engines are provided as a drop-down. If you would like to specify your own, specify it in a format similar to the following:
 
@@ -158,7 +160,7 @@ This is a purely cosmetic feature that may aid in readability.
 [Additional Toolbar Items] contains various additional toolbar items which some may find useful.
 
 * [Home] button opens the configured home page in the current tab.
-* [New tab] button appears to the right of the tab bar. This simply adds a new tab.
+* [New tab] button appears to the right of the tab bar. This simply adds a new tab to the current window.
 * [Root] button takes you to the root directory of the current site. (See Menus>Navigation section for explanation of what this does).
 * [Parent] button takes you to the parent directory of the current site. (See Menus>Navigation section for explanation of what this does).
 
@@ -307,6 +309,7 @@ This dialog enables you to import or export certificate-key-pairs into or from K
 The following list contains all of Kristall's built-in shortcuts:
 
 * Ctrl+T ⇒ New tab
+* Ctrl+N ⇒ New window
 * Ctrl+W ⇒ Close tab
 * Ctrl+D ⇒ Quick add/remove from favourites
 * Ctrl+L ⇒ Focus URL bar
