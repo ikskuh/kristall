@@ -2,29 +2,58 @@ name: master Build Matrix
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build_ubuntu_20:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
-    - uses: jurplel/install-qt-action@v2
-      with:
-        version: '5.12.8'
-    - name: make
-      run: make
+      - uses: actions/checkout@v2
+
+      - uses: jurplel/install-qt-action@v2
+        with:
+          version: "5.12.8"
+
+      - name: make
+        run: make
+
   build_ubuntu_18:
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v2
-    - uses: jurplel/install-qt-action@v2
-      with:
-        version: '5.9.5'
-    - name: make
-      run: make
+      - uses: actions/checkout@v2
+
+      - uses: jurplel/install-qt-action@v2
+        with:
+          version: "5.9.5"
+
+      - name: make
+        run: make
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies via brew
+        run: brew install qt@5 openssl
+
+      - uses: jurplel/install-qt-action@v2
+        with:
+          version: "5.12.8"
+
+      - name: make
+        run: make build/kristall
+
+      - name: display
+        run: ls build
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Kristall.app
+          path: build/kristall.app
+#
 
 # Disabled until both aqinstall and install-qt-action support the fixes…
 #  build_windows:
