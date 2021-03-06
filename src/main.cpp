@@ -2,6 +2,7 @@
 #include "kristall.hpp"
 
 #include <QApplication>
+#include <QTranslator>
 #include <QUrl>
 #include <QSettings>
 #include <QCommandLineParser>
@@ -384,6 +385,12 @@ int main(int argc, char *argv[])
         }
     });
 
+    QTranslator trans, qttrans;
+    qttrans.load(QLocale(), QLatin1String("qt"), "_", "/usr/local/share/qt5/translations");
+    trans.load(QLocale(), QLatin1String("kristall"), QLatin1String("_"), QLatin1String(":/i18n"));
+    app.installTranslator(&qttrans);
+    app.installTranslator(&trans);
+
     {
         // Initialise default fonts
     #ifdef Q_OS_WIN32
@@ -406,12 +413,12 @@ int main(int argc, char *argv[])
 
     QCommandLineOption newWindowOption {
         { "w", "new-window" },
-        app.tr("Opens the provided links in a new window instead of tabs."),
+        QApplication::tr("Opens the provided links in a new window instead of tabs."),
     };
 
     QCommandLineOption isolatedOption {
         { "i", "isolated" },
-        app.tr("Starts the instance of kristall as a isolated session that cannot communicate with other windows."),
+        QApplication::tr("Starts the instance of kristall as a isolated session that cannot communicate with other windows."),
     };
 
     cli_parser.addVersionOption();
@@ -419,7 +426,7 @@ int main(int argc, char *argv[])
     cli_parser.addOption(newWindowOption);
     cli_parser.addOption(isolatedOption);
 
-    cli_parser.addPositionalArgument("urls", app.tr("The urls that should be opened instead of the start page"), "[urls...]");
+    cli_parser.addPositionalArgument("urls", QApplication::tr("The urls that should be opened instead of the start page"), "[urls...]");
 
     cli_parser.process(app);
 

@@ -28,9 +28,9 @@ QVariant TrustedHostCollection::headerData(int section, Qt::Orientation orientat
     {
         switch(section)
         {
-        case 0: return "Host Name";
-        case 1: return "First Seen";
-        case 2: return "Key Type";
+        case 0: return QObject::tr("Host Name");
+        case 1: return QObject::tr("First Seen");
+        case 2: return QObject::tr("Key Type");
         }
     }
     return QVariant { };
@@ -71,8 +71,8 @@ QVariant TrustedHostCollection::data(const QModelIndex &index, int role) const
             case QSsl::Ec: return "EC";
             // case QSsl::Dh: return "DH";
             case QSsl::Dsa: return "DSA";
-            case QSsl::Opaque: return "Opaque";
-            default: return "Unforseen";
+            case QSsl::Opaque: return QObject::tr("Opaque");
+            default: return QObject::tr("Unforseen");
             }
         }
     }

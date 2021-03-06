@@ -174,13 +174,13 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode, RequestFlags fl
 {
     if (kristall::protocols.isSchemeSupported(url.scheme()) != ProtocolSetup::Enabled)
     {
-        QMessageBox::warning(this, "Kristall", "URI scheme not supported or disabled: " + url.scheme());
+        QMessageBox::warning(this, tr("Kristall"), tr("URI scheme not supported or disabled: ") + url.scheme());
         return;
     }
 
     if ((this->current_handler != nullptr) and not this->current_handler->cancelRequest())
     {
-        QMessageBox::warning(this, "Kristall", "Failed to cancel running request!");
+        QMessageBox::warning(this, tr("Kristall"), tr("Failed to cancel running request!"));
         return;
     }
 
@@ -288,13 +288,13 @@ void BrowserTab::openSourceView()
     monospace_font.setStyleHint(QFont::Monospace);
 
     auto dialog = std::make_unique<QDialog>(this);
-    dialog->setWindowTitle(QString("Source of %0").arg(this->current_location.toString()));
+    dialog->setWindowTitle(QString(tr("Source of %0")).arg(this->current_location.toString()));
 
     auto layout = new QVBoxLayout(dialog.get());
     dialog->setLayout(layout);
 
     auto hint = new QLabel(dialog.get());
-    hint->setText(QString("Mime type: %0").arg(current_mime.toString()));
+    hint->setText(QString(tr("Mime type: %0")).arg(current_mime.toString()));
     layout->addWidget(hint);
 
     auto text = new QPlainTextEdit(dialog.get());
@@ -343,10 +343,10 @@ void BrowserTab::on_url_bar_returnPressed()
                 !kristall::options.search_engine.contains("%1"))
             {
                 QMessageBox::warning(this,
-                    "Kristall",
-                    "No search engine is configured.\n"
+                    tr("Kristall"),
+                    tr("No search engine is configured.\n"
                     "Please configure one in the settings to allow searching via the URL bar.\n\n"
-                    "See the Help menu for additional information."
+                    "See the Help menu for additional information.")
                     );
                 return;
             }
@@ -436,7 +436,7 @@ void BrowserTab::on_networkTimeout()
     if(this->current_handler != nullptr) {
         this->current_handler->cancelRequest();
     }
-    on_networkError(ProtocolHandler::Timeout, "The server didn't respond in time.");
+    on_networkError(ProtocolHandler::Timeout, tr("The server didn't respond in time."));
 }
 
 void BrowserTab::on_focusSearchbar()
@@ -450,7 +450,7 @@ void BrowserTab::on_certificateRequired(const QString &reason)
 
     if (not trySetClientCertificate(reason))
     {
-        setErrorMessage(QString("The page requested a authorized client certificate, but none was provided.\r\nOriginal query was: %1").arg(reason));
+        setErrorMessage(QString(tr("The page requested a authorized client certificate, but none was provided.\r\nOriginal query was: %1")).arg(reason));
     }
     else
     {
@@ -557,12 +557,12 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const MimeType &
         } else {
             auto response = QMessageBox::question(
                 this,
-                "Kristall",
-                QString("Failed to convert input charset %1 to UTF-8. Cannot display the file.\r\nDo you want to display unconverted data anyways?").arg(charset)
+                tr("Kristall"),
+                QString(tr("Failed to convert input charset %1 to UTF-8. Cannot display the file.\r\nDo you want to display unconverted data anyways?")).arg(charset)
             );
 
             if(response != QMessageBox::Yes) {
-                setErrorMessage(QString("Failed to convert input charset %1 to UTF-8.").arg(charset));
+                setErrorMessage(QString(tr("Failed to convert input charset %1 to UTF-8.")).arg(charset));
                 return;
             }
         }
@@ -725,7 +725,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
         }
         else
         {
-            this->graphics_scene.addText(QString("Failed to load picture:\r\n%1").arg(reader.errorString()));
+            this->graphics_scene.addText(QString(tr("Failed to load picture:\r\n%1")).arg(reader.errorString()));
         }
 
         this->ui->graphics_browser->setScene(&graphics_scene);
@@ -754,13 +754,13 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
         document->setDefaultStyleSheet(doc_style.toStyleSheet());
 
         QString plain_data = QString(
-            "Unsupported Media Type!\n"
+            tr("Unsupported Media Type!\n"
             "\n"
             "Kristall cannot display the requested document\n"
             "To view this media, use the File menu to save it to your local drive, then open the saved file in another program that can display the document for you.\n\n"
             "Details:\n"
             "- MIME type: %1/%2\n"
-            "- Size: %3\n"
+            "- Size: %3\n")
         ).arg(mime.type, mime.subtype, IoUtil::size_human(data.size()));
 
         document->setPlainText(plain_data);
@@ -770,7 +770,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
     else
     {
         QString page_data = QString(
-            "# Unsupported Media Type!\n"
+            tr("# Unsupported Media Type!\n"
             "\n"
             "Kristall cannot display the requested document.\n"
             "\n"
@@ -780,7 +780,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
             "Details:\n"
             "- MIME type: %1/%2\n"
             "- Size: %3\n"
-            "```\n"
+            "```\n")
         ).arg(mime.type, mime.subtype, IoUtil::size_human(data.size()));
 
         document = GeminiRenderer::render(
@@ -874,7 +874,7 @@ void BrowserTab::on_inputRequired(const QString &query, const bool is_sensitive)
     {
         if (dialog.exec() != QDialog::Accepted)
         {
-            setErrorMessage(QString("Site requires input:\n%1").arg(query));
+            setErrorMessage(QString(tr("Site requires input:\n%1")).arg(query));
             return;
         }
 
@@ -885,7 +885,7 @@ void BrowserTab::on_inputRequired(const QString &query, const bool is_sensitive)
         if(len >= 1020) {
             QMessageBox::warning(
                 this,
-                "Kristall",
+                tr("Kristall"),
                 tr("Your input message is too long. Your input is %1 bytes, but a maximum of %2 bytes are allowed.\r\nPlease cancel or shorten your input.").arg(len).arg(1020)
             );
         } else {
@@ -910,7 +910,7 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
 
     if (redirection_count >= kristall::options.max_redirections)
     {
-        setErrorMessage(QString("Too many consecutive redirections. The last redirection would have redirected you to:\r\n%1").arg(uri.toString(QUrl::FullyEncoded)));
+        setErrorMessage(QString(tr("Too many consecutive redirections. The last redirection would have redirected you to:\r\n%1")).arg(uri.toString(QUrl::FullyEncoded)));
         return;
     }
     else
@@ -922,34 +922,34 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
         if(kristall::options.redirection_policy == GenericSettings::WarnAlways)
         {
             question = QString(
-                "The location you visited wants to redirect you to another location:\r\n"
+                tr("The location you visited wants to redirect you to another location:\r\n"
                 "%1\r\n"
-                "Do you want to allow the redirection?"
+                "Do you want to allow the redirection?")
             ).arg(uri.toString(QUrl::FullyEncoded));
         }
         else if((kristall::options.redirection_policy & (GenericSettings::WarnOnHostChange | GenericSettings::WarnOnSchemeChange)) and is_cross_protocol and is_cross_host)
         {
             question = QString(
-                "The location you visited wants to redirect you to another host and switch the protocol.\r\n"
+                tr("The location you visited wants to redirect you to another host and switch the protocol.\r\n"
                 "Protocol: %1\r\n"
                 "New Host: %2\r\n"
-                "Do you want to allow the redirection?"
+                "Do you want to allow the redirection?")
             ).arg(uri.scheme()).arg(uri.host());
         }
         else if((kristall::options.redirection_policy & GenericSettings::WarnOnSchemeChange) and is_cross_protocol)
         {
             question = QString(
-                "The location you visited wants to switch the protocol.\r\n"
+                tr("The location you visited wants to switch the protocol.\r\n"
                 "Protocol: %1\r\n"
-                "Do you want to allow the redirection?"
+                "Do you want to allow the redirection?")
             ).arg(uri.scheme());
         }
         else if((kristall::options.redirection_policy & GenericSettings::WarnOnHostChange) and is_cross_host)
         {
             question = QString(
-                "The location you visited wants to redirect you to another host.\r\n"
+                tr("The location you visited wants to redirect you to another host.\r\n"
                 "New Host: %1\r\n"
-                "Do you want to allow the redirection?"
+                "Do you want to allow the redirection?")
             ).arg(uri.host());
         }
 
@@ -957,11 +957,11 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
         {
             auto answer = QMessageBox::question(
                 this,
-                "Kristall",
+                tr("Kristall"),
                 question
             );
             if(answer != QMessageBox::Yes) {
-                setErrorMessage(QString("Redirection to %1 cancelled by user").arg(uri.toString()));
+                setErrorMessage(QString(tr("Redirection to %1 cancelled by user")).arg(uri.toString()));
                 return;
             }
         }
@@ -975,7 +975,7 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
         }
         else
         {
-            setErrorMessage(QString("Redirection to %1 failed").arg(uri.toString()));
+            setErrorMessage(QString(tr("Redirection to %1 failed")).arg(uri.toString()));
         }
     }
 }
@@ -984,7 +984,7 @@ void BrowserTab::setErrorMessage(const QString &msg)
 {
     this->is_internal_location = true;
     this->on_requestComplete(
-        QString("An error happened:\r\n%0").arg(msg).toUtf8(),
+        QString(tr("An error happened:\r\n%0")).arg(msg).toUtf8(),
         "text/plain charset=utf-8");
 
     this->updateUI();
@@ -1062,7 +1062,7 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new
             if(not is_theme_preview and opt == "ignore-tls") {
                 auto response = QMessageBox::question(
                     this,
-                    "Kristall",
+                    tr("Kristall"),
                     tr("This sites certificate could not be verified! This may be a man-in-the-middle attack on the server to send you malicious content (or the server admin made a configuration mistake).\r\nAre you sure you want to continue?"),
                     QMessageBox::Yes | QMessageBox::No,
                     QMessageBox::No
@@ -1079,7 +1079,7 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new
             else if(not is_theme_preview and opt == "add-fingerprint") {
                 auto answer = QMessageBox::question(
                     this,
-                    "Kristall",
+                    tr("Kristall"),
                     tr("Do you really want to add the server certificate to your list of trusted hosts?\r\nHost: %1")
                         .arg(this->current_location.host()),
                     QMessageBox::Yes | QMessageBox::No,
@@ -1138,7 +1138,7 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new
 
                     auto answer = QMessageBox::question(
                         this,
-                        "Kristall",
+                        tr("Kristall"),
                         tr("Do you want to add the style %1 to your collection?").arg(name)
                     );
                     if(answer != QMessageBox::Yes)
@@ -1169,7 +1169,7 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new
 
                     QMessageBox::information(
                         this,
-                        "Kristall",
+                        tr("Kristall"),
                         tr("The theme %1 was successfully added to your theme collection!").arg(name)
                     );
                 }
@@ -1181,7 +1181,7 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new
         } else {
             QMessageBox::critical(
                 this,
-                "Kristall",
+                tr("Kristall"),
                 tr("Malicious site detected! This site tries to use the Kristall control scheme!\r\nA trustworthy site does not do this!").arg(this->current_location.host())
             );
         }
@@ -1208,16 +1208,16 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new
         {
             if (not QDesktopServices::openUrl(url))
             {
-                QMessageBox::warning(this, "Kristall", QString("Failed to start system URL handler for\r\n%1").arg(real_url.toString()));
+                QMessageBox::warning(this, "Kristall", QString(tr("Failed to start system URL handler for\r\n%1")).arg(real_url.toString()));
             }
         }
         else if (support == ProtocolSetup::Disabled)
         {
-            QMessageBox::warning(this, "Kristall", QString("The requested url uses a scheme that has been disabled in the settings:\r\n%1").arg(real_url.toString()));
+            QMessageBox::warning(this, "Kristall", QString(tr("The requested url uses a scheme that has been disabled in the settings:\r\n%1")).arg(real_url.toString()));
         }
         else
         {
-            QMessageBox::warning(this, "Kristall", QString("The requested url cannot be processed by Kristall:\r\n%1").arg(real_url.toString()));
+            QMessageBox::warning(this, "Kristall", QString(tr("The requested url cannot be processed by Kristall:\r\n%1")).arg(real_url.toString()));
         }
     }
 }
@@ -1470,7 +1470,7 @@ void BrowserTab::resetClientCertificate()
 {
     if (this->current_identity.isValid() and not this->current_identity.is_persistent)
     {
-        auto respo = QMessageBox::question(this, "Kristall", "You currently have a transient session active!\r\nIf you disable the session, you will not be able to restore it. Continue?");
+        auto respo = QMessageBox::question(this, "Kristall", tr("You currently have a transient session active!\r\nIf you disable the session, you will not be able to restore it. Continue?"));
         if (respo != QMessageBox::Yes)
         {
             this->ui->enable_client_cert_button->setChecked(true);
@@ -1644,7 +1644,7 @@ bool BrowserTab::enableClientCertificate(const CryptoIdentity &ident)
 {
     if (not ident.isValid())
     {
-        QMessageBox::warning(this, "Kristall", "Failed to generate temporary crypto-identitiy");
+        QMessageBox::warning(this, "Kristall", tr("Failed to generate temporary crypto-identitiy"));
         this->disableClientCertificate();
         return false;
     }
@@ -1697,26 +1697,26 @@ void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint pos)
         if (real_url.isRelative())
             real_url = this->current_location.resolved(real_url);
 
-        connect(menu.addAction("Open in new tab"), &QAction::triggered, [this, real_url]() {
+        connect(menu.addAction(tr("Open in new tab")), &QAction::triggered, [this, real_url]() {
             mainWindow->addNewTab(false, real_url);
         });
 
         // "open in default browser" for HTTP/S links
         if (real_url.scheme().startsWith("http", Qt::CaseInsensitive)) {
-            connect(menu.addAction("Open with external web browser"), &QAction::triggered, [this, real_url]() {
+            connect(menu.addAction(tr("Open with external web browser")), &QAction::triggered, [this, real_url]() {
                 if (!QDesktopServices::openUrl(real_url))
                 {
                     QMessageBox::warning(this, "Kristall",
-                        QString("Failed to start system URL handler for\r\n%1").arg(real_url.toString()));
+                        QString(tr("Failed to start system URL handler for\r\n%1")).arg(real_url.toString()));
                 }
             });
         }
 
-        connect(menu.addAction("Follow link"), &QAction::triggered, [this, real_url]() {
+        connect(menu.addAction(tr("Follow link")), &QAction::triggered, [this, real_url]() {
             this->navigateTo(real_url, PushImmediate);
         });
 
-        connect(menu.addAction("Copy link"), &QAction::triggered, [real_url]() {
+        connect(menu.addAction(tr("Copy link")), &QAction::triggered, [real_url]() {
             kristall::clipboard->setText(real_url.toString(QUrl::FullyEncoded));
         });
 
@@ -1746,18 +1746,18 @@ void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint pos)
 
         menu.addSeparator();
     } else {
-        menu.addAction("Copy to clipboard", [this]() {
+        menu.addAction(tr("Copy to clipboard"), [this]() {
             this->ui->text_browser->betterCopy();
         }, QKeySequence("Ctrl+C"));
     }
 
-    connect(menu.addAction("Select all"), &QAction::triggered, [this]() {
+    connect(menu.addAction(tr("Select all")), &QAction::triggered, [this]() {
         this->ui->text_browser->selectAll();
     });
 
     menu.addSeparator();
 
-    QAction * viewsrc = menu.addAction("View document source");
+    QAction * viewsrc = menu.addAction(tr("View document source"));
     viewsrc->setShortcut(QKeySequence("Ctrl+U"));
     connect(viewsrc, &QAction::triggered, [this]() {
         mainWindow->viewPageSource();

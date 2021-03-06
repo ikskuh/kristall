@@ -65,7 +65,7 @@ void CertificateIoDialog::on_select_certificate_file_button_clicked()
 {
     QFileDialog dialog { this };
 
-    dialog.setNameFilter("Certificate File(*.pem *.der)");
+    dialog.setNameFilter(tr("Certificate File(*.pem *.der)"));
     dialog.setAcceptMode((this->current_mode == Export) ? QFileDialog::AcceptSave : QFileDialog::AcceptOpen);
     dialog.selectFile(this->ui->certificate_file_name->text());
 
@@ -81,7 +81,7 @@ void CertificateIoDialog::on_select_key_file_button_clicked()
 {
     QFileDialog dialog { this };
 
-    dialog.setNameFilter("Certificate File(*.pem *.der)");
+    dialog.setNameFilter(tr("Certificate File(*.pem *.der)"));
     dialog.setAcceptMode((this->current_mode == Export) ? QFileDialog::AcceptSave : QFileDialog::AcceptOpen);
     dialog.selectFile(this->ui->key_file_name->text());
 

@@ -26,7 +26,7 @@ bool AboutHandler::startRequest(const QUrl &url, ProtocolHandler::RequestOptions
     {
         QByteArray document;
 
-        document.append("# Favourites\n");
+        document.append(tr("# Favourites\n"));
 
         QString current_group;
 
