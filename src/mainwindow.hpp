@@ -45,6 +45,9 @@ public:
 
     QString newGroupDialog();
 
+    //! Applies setting changes to the window.
+    void applySettings();
+
     void mousePressEvent(QMouseEvent *event) override;
 
     void closeEvent(QCloseEvent *event) override;
@@ -99,6 +102,10 @@ private slots:
     void on_actionManage_Certificates_triggered();
 
     void on_actionShow_document_source_triggered();
+
+    void on_actionNew_window_triggered();
+
+    void on_actionClose_Window_triggered();
 
 private: // slots
 

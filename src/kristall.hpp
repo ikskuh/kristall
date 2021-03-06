@@ -148,6 +148,10 @@ namespace kristall
         extern QDir styles;
     }
 
+    //! Forwards the current settings to all windows
+    void applySettings();
+
+    //! Saves the current settings to disk
     void saveSettings();
 
     void setTheme(Theme theme);
@@ -161,6 +165,17 @@ namespace kristall
     //! Registers a main window as a proper kristall application window
     //! that can be tracked by the application.
     void registerAppWindow(MainWindow * window);
+
+    //! Opens a new window with the default page open.
+    //! @param load_default Loads the default/start page instead of about:blank
+    MainWindow * openNewWindow(bool load_default);
+
+    //! Opens a new window with the given url.
+    MainWindow * openNewWindow(QUrl const & url);
+
+    //! Opens a new window with the given list of urls.
+    //! If the list is empty, no new tab will spawned.
+    MainWindow * openNewWindow(QVector<QUrl> const & urls);
 
     extern QString default_font_family, default_font_family_fixed;
 

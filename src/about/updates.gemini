@@ -16,7 +16,10 @@
 
 -- There's a lot missing here still
 
-* Adds single-session mode so opening links will open them in the currently focuse kristall window instead of a new instance every time.
+* Adds single-session mode so opening links will open them in the currently focused window instead of a new instance every time.
+* Adds the option to open multiple kristall windows in one session.
+* Adds --new-window command line option to open urls into a new kristall window instead of opening them as a new tab
+* Adds --isolated command line option to start a separated instance of kristall
 
 ## 0.3 - TLS and security
 * Adds support for transient client certificates

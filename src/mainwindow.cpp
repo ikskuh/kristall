@@ -253,7 +253,8 @@ void MainWindow::setUiDensity(UIDensity density, bool previewing)
 
     if (previewing)
     {
-        if (!this->curTab()) return;
+        if (not this->curTab())
+            return;
         this->curTab()->setUiDensity(density);
     }
     else
@@ -276,6 +277,27 @@ QString MainWindow::newGroupDialog()
     kristall::favourites.addGroup(dialog.textValue());
 
     return dialog.textValue();
+}
+
+void MainWindow::applySettings()
+{
+    // Flag open tabs for re-render so theme
+    // changes are instantly applied.
+    for (int i = 0; i < this->ui->browser_tabs->count(); ++i)
+    {
+        BrowserTab *t = this->tabAt(i);
+        t->refreshOptionalToolbarItems();
+        t->refreshToolbarIcons();
+        t->needs_rerender = true;
+    }
+
+    // Re-render the currently-open tab if we have one.
+    BrowserTab * tab = this->curTab();
+    if (tab)
+        tab->rerenderPage();
+
+    // Update new-tab button visibility.
+    this->ui->browser_tabs->tab_bar->new_tab_btn->setVisible(kristall::options.enable_newtab_btn);
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
@@ -439,27 +461,9 @@ void MainWindow::on_actionSettings_triggered()
     kristall::protocols = dialog.protocols();
     kristall::document_style = dialog.geminiStyle();
 
+    kristall::applySettings();
+
     kristall::saveSettings();
-
-    kristall::setTheme(kristall::options.theme);
-    this->setUiDensity(kristall::options.ui_density, false);
-
-    // Flag open tabs for re-render so theme
-    // changes are instantly applied.
-    for (int i = 0; i < this->ui->browser_tabs->count(); ++i)
-    {
-        BrowserTab *t = this->tabAt(i);
-        t->refreshOptionalToolbarItems();
-        t->refreshToolbarIcons();
-        t->needs_rerender = true;
-    }
-    // Re-render the currently-open tab if we have one.
-    BrowserTab * tab = this->curTab();
-    if (tab) tab->rerenderPage();
-
-    // Update new-tab button visibility.
-    this->ui->browser_tabs->tab_bar->new_tab_btn
-        ->setVisible(kristall::options.enable_newtab_btn);
 }
 
 void MainWindow::on_actionNew_Tab_triggered()
@@ -776,4 +780,14 @@ void MainWindow::on_actionManage_Certificates_triggered()
 void MainWindow::on_actionShow_document_source_triggered()
 {
     this->viewPageSource();
+}
+
+void MainWindow::on_actionNew_window_triggered()
+{
+    kristall::openNewWindow(false);
+}
+
+void MainWindow::on_actionClose_Window_triggered()
+{
+    this->deleteLater();
 }

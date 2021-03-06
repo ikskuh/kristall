@@ -189,6 +189,7 @@
      <string>File</string>
     </property>
     <addaction name="actionNew_Tab"/>
+    <addaction name="actionNew_window"/>
     <addaction name="separator"/>
     <addaction name="actionSave_as"/>
     <addaction name="actionClose_Tab"/>
@@ -196,6 +197,7 @@
     <addaction name="actionManage_Certificates"/>
     <addaction name="actionSettings"/>
     <addaction name="separator"/>
+    <addaction name="actionClose_Window"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -236,7 +238,8 @@
   </widget>
   <action name="actionAbout">
    <property name="icon">
-    <iconset theme="help-about"/>
+    <iconset theme="help-about">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>About...</string>
@@ -244,7 +247,8 @@
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset theme="application-exit"/>
+    <iconset theme="application-exit">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Quit</string>
@@ -263,7 +267,8 @@
   </action>
   <action name="actionClose_Tab">
    <property name="icon">
-    <iconset theme="window-close"/>
+    <iconset theme="window-close">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Close Tab</string>
@@ -286,7 +291,8 @@
   </action>
   <action name="actionBackward">
    <property name="icon">
-    <iconset theme="go-previous"/>
+    <iconset theme="go-previous">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Back</string>
@@ -300,7 +306,8 @@
   </action>
   <action name="actionForward">
    <property name="icon">
-    <iconset theme="go-next"/>
+    <iconset theme="go-next">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Forward</string>
@@ -314,7 +321,8 @@
   </action>
   <action name="actionRoot">
    <property name="icon">
-    <iconset theme="go-top"/>
+    <iconset theme="go-top">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Root</string>
@@ -328,7 +336,8 @@
   </action>
   <action name="actionParent">
    <property name="icon">
-    <iconset theme="go-up"/>
+    <iconset theme="go-up">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Parent</string>
@@ -342,7 +351,8 @@
   </action>
   <action name="actionRefresh">
    <property name="icon">
-    <iconset theme="view-refresh"/>
+    <iconset theme="view-refresh">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Refresh</string>
@@ -362,7 +372,8 @@
   </action>
   <action name="actionSave_as">
    <property name="icon">
-    <iconset theme="document-save-as"/>
+    <iconset theme="document-save-as">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Save as...</string>
@@ -388,7 +399,8 @@
   </action>
   <action name="actionGo_to_home">
    <property name="icon">
-    <iconset theme="go-home"/>
+    <iconset theme="go-home">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Go to home</string>
@@ -420,7 +432,8 @@
   </action>
   <action name="actionManage_Certificates">
    <property name="icon">
-    <iconset theme="view-certificate"/>
+    <iconset theme="view-certificate">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Manage Certificates…</string>
@@ -432,6 +445,25 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+U</string>
+   </property>
+  </action>
+  <action name="actionNew_window">
+   <property name="text">
+    <string>New Window</string>
+   </property>
+   <property name="toolTip">
+    <string>Opens a new window</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionClose_Window">
+   <property name="text">
+    <string>Close Window</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+F4</string>
    </property>
   </action>
  </widget>

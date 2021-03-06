@@ -115,10 +115,27 @@ void forAllAppWindows(F const & f)
 MainWindow * getFocusedAppWindow()
 {
     assert(qApp != nullptr);
+    // first, check if we have currently active window:
     auto * main_window = qobject_cast<MainWindow *>(qApp->activeWindow());
     if(main_window != nullptr)
         return main_window;
-    return last_focused_window;
+
+    // if not, fall back to the window we focused last:
+    if(::last_focused_window != nullptr)
+        return ::last_focused_window;
+
+    // and if we have none, we just take the first window we can find if
+    // any:
+    forAllAppWindows([&main_window](MainWindow * w) {
+        if(main_window == nullptr)
+            main_window = w;
+    });
+    if(main_window != nullptr)
+        return main_window;
+
+    qCritical() << "could not find a focused/foreground window!";
+
+    return main_window;
 }
 
 
@@ -234,17 +251,16 @@ namespace ipc
                 break;
             }
             case Message::open_in_window: {
-                auto * const window = getFocusedAppWindow();
+                QVector<QUrl> urls;
                 for(auto const & data : payload.split('\n'))
                 {
                     QUrl url { QString::fromUtf8(data) };
                     if(url.isValid()) {
-                        // TODO: Implement opening these urls in a new
-                        // window instead of a new tab!
-                        if(window != nullptr) {
-                            window->addNewTab(true, url);
-                        }
+                        urls.append(url);
                     }
+                }
+                if(urls.size() > 0) {
+                    kristall::openNewWindow(urls);
                 }
                 break;
             }
@@ -310,6 +326,36 @@ void kristall::registerAppWindow(MainWindow * window)
             ::last_focused_window = nullptr;
     });
 }
+
+MainWindow * kristall::openNewWindow(bool load_default)
+{
+    auto * const window = openNewWindow(QVector<QUrl>{});
+    window->addEmptyTab(true, load_default);
+    return window;
+}
+
+//! Opens a new window with the given url.
+MainWindow * kristall::openNewWindow(QUrl const & url)
+{
+    return openNewWindow(QVector<QUrl>{url});
+}
+
+//! Opens a new window with the given list of urls.
+//! If the list is empty, no new tab will spawned.
+MainWindow * kristall::openNewWindow(QVector<QUrl> const & urls)
+{
+    MainWindow * const window = new MainWindow(qApp);
+
+    for(int i = 0; i < urls.length(); i++)
+    {
+        window->addNewTab((i == 0), urls.at(i));
+    }
+
+    window->show();
+
+    return window;
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -461,7 +507,7 @@ int main(int argc, char *argv[])
 
     QSettings app_settings {
         kristall::dirs::config_root.absoluteFilePath("config.ini"),
-                QSettings::IniFormat
+        QSettings::IniFormat
     };
     app_settings_ptr = &app_settings;
 
@@ -613,8 +659,6 @@ int main(int argc, char *argv[])
 
     kristall::setTheme(kristall::options.theme);
 
-    MainWindow w(&app);
-
     if(ipc_server != nullptr) {
         QObject::connect(ipc_server.get(), &QLocalServer::newConnection, [&ipc_server]() {
             auto * const socket = ipc_server->nextPendingConnection();
@@ -632,24 +676,20 @@ int main(int argc, char *argv[])
 
     // Open all URLs in the new window
     if(urls.size() > 0) {
-        for(const auto & url : urls) {
-            w.addNewTab(false, url);
-        }
+        kristall::openNewWindow(urls);
     }
     else {
-        w.addEmptyTab(true, true);
+        kristall::openNewWindow(true);
     }
 
-    app_settings.beginGroup("Window State");
-    if(app_settings.contains("geometry")) {
-        w.restoreGeometry(app_settings.value("geometry").toByteArray());
-    }
-    if(app_settings.contains("state")) {
-        w.restoreState(app_settings.value("state").toByteArray());
-    }
-    app_settings.endGroup();
-
-    w.show();
+    //app_settings.beginGroup("Window State");
+    //if(app_settings.contains("geometry")) {
+    //    w.restoreGeometry(app_settings.value("geometry").toByteArray());
+    //}
+    //if(app_settings.contains("state")) {
+    //    w.restoreState(app_settings.value("state").toByteArray());
+    //}
+    //app_settings.endGroup();
 
     int exit_code = app.exec();
 
@@ -780,6 +820,16 @@ void GenericSettings::save(QSettings &settings) const
     }
 }
 
+void kristall::applySettings()
+{
+    kristall::setTheme(kristall::options.theme);
+    kristall::setUiDensity(kristall::options.ui_density, false);
+
+    forAllAppWindows([](MainWindow * window)
+    {
+        window->applySettings();
+    });
+}
 
 void kristall::saveSettings()
 {
