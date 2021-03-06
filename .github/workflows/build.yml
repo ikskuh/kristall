@@ -47,7 +47,8 @@ jobs:
         run: make build/kristall
 
       - name: Prepare deployment
-        run: macdeployqt build/kristall.app
+        working-directory: build
+        run: macdeployqt kristall.app -dmg
 
       - name: display
         run: |
@@ -58,13 +59,13 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: Kristall.app
-          path: build/kristall.app
+          path: build/kristall.dmg
 
       - name: Deploy with SCP
         uses: noobly314/deploy-with-scp@v1
         with:
-          src: build/kristall.app
-          dest: kristall/Kristall-nightly-macos-x86_64.app
+          src: build/kristall.dmg
+          dest: kristall/Kristall-nightly-macos-x86_64.dmg
           username: generic-ci
           server-ip: random-projects.net
           ssh-key: ${{ secrets.PRIVATE_KEY }} #
