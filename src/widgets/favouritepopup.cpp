@@ -18,13 +18,13 @@ FavouritePopup::FavouritePopup(QToolButton *button, QWidget *parent)
     auto layout = new QGridLayout();
 
     // Title
-    auto title_lab = new QLabel("Title:");
+    auto title_lab = new QLabel(tr("Title:"));
     this->fav_title = new QLineEdit();
     layout->addWidget(title_lab, 0, 0);
     layout->addWidget(this->fav_title, 0, 1);
 
     // Group
-    auto group_lab = new QLabel("Group:");
+    auto group_lab = new QLabel(tr("Group:"));
     layout->addWidget(group_lab);
     {
         this->fav_group = new QComboBox();
@@ -42,7 +42,7 @@ FavouritePopup::FavouritePopup(QToolButton *button, QWidget *parent)
     }
 
     // Unfavourite
-    auto unfav_btn = new QPushButton("Unfavourite");
+    auto unfav_btn = new QPushButton(tr("Unfavourite"));
     layout->addWidget(unfav_btn);
     connect(unfav_btn, &QPushButton::clicked, this, [this]() {
         this->setVisible(false);
@@ -50,7 +50,7 @@ FavouritePopup::FavouritePopup(QToolButton *button, QWidget *parent)
     });
 
     // Confirm
-    this->confirm_btn = new QPushButton("Confirm");
+    this->confirm_btn = new QPushButton(tr("Confirm"));
     layout->addWidget(this->confirm_btn);
     connect(confirm_btn, &QPushButton::clicked, this, [this]() {
         this->confirmPressed();

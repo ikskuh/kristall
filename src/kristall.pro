@@ -192,8 +192,11 @@ FORMS += \
   widgets/mediaplayer.ui \
   widgets/ssltrusteditor.ui
 
+CONFIG += lrelease embed_translations
+
 TRANSLATIONS += \
-    kristall_en_US.ts
+    ../translations/kristall_en_US.ts \
+    ../translations/kristall_ru.ts
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

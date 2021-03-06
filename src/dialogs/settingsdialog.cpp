@@ -45,9 +45,9 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     this->ui->ui_density->addItem(tr("Classic"), QVariant::fromValue<int>(int(UIDensity::classic)));
 
     this->ui->list_symbol->clear();
-    this->ui->list_symbol->addItem("Filled circle", QVariant::fromValue<int>(int(QTextListFormat::Style::ListDisc)));
-    this->ui->list_symbol->addItem("Circle", QVariant::fromValue<int>(int(QTextListFormat::Style::ListCircle)));
-    this->ui->list_symbol->addItem("Square", QVariant::fromValue<int>(int(QTextListFormat::Style::ListSquare)));
+    this->ui->list_symbol->addItem(tr("Filled circle"), QVariant::fromValue<int>(int(QTextListFormat::Style::ListDisc)));
+    this->ui->list_symbol->addItem(tr("Circle"), QVariant::fromValue<int>(int(QTextListFormat::Style::ListCircle)));
+    this->ui->list_symbol->addItem(tr("Square"), QVariant::fromValue<int>(int(QTextListFormat::Style::ListSquare)));
 
     setGeminiStyle(DocumentStyle { });
 
@@ -80,11 +80,11 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     }
 
     this->ui->redirection_mode->clear();
-    this->ui->redirection_mode->addItem("Ask for cross-scheme or cross-host redirection", int(GenericSettings::WarnOnHostChange | GenericSettings::WarnOnSchemeChange));
-    this->ui->redirection_mode->addItem("Ask for cross-scheme redirection", int(GenericSettings::WarnOnSchemeChange));
-    this->ui->redirection_mode->addItem("Ask for cross-host redirection", int(GenericSettings::WarnOnHostChange));
-    this->ui->redirection_mode->addItem("Ask for all redirection", int(GenericSettings::WarnAlways));
-    this->ui->redirection_mode->addItem("Silently redirect everything", int(GenericSettings::WarnNever));
+    this->ui->redirection_mode->addItem(tr("Ask for cross-scheme or cross-host redirection"), int(GenericSettings::WarnOnHostChange | GenericSettings::WarnOnSchemeChange));
+    this->ui->redirection_mode->addItem(tr("Ask for cross-scheme redirection"), int(GenericSettings::WarnOnSchemeChange));
+    this->ui->redirection_mode->addItem(tr("Ask for cross-host redirection"), int(GenericSettings::WarnOnHostChange));
+    this->ui->redirection_mode->addItem(tr("Ask for all redirection"), int(GenericSettings::WarnAlways));
+    this->ui->redirection_mode->addItem(tr("Silently redirect everything"), int(GenericSettings::WarnNever));
 
     connect(this->ui->tabWidget, &QTabWidget::currentChanged, this, [this] (int index) {
         if (index != 1) /* Style tab */
@@ -260,7 +260,7 @@ void SettingsDialog::setOptions(const GenericSettings &options)
 
     this->ui->search_engine->clear();
     QString search = this->current_options.search_engine;
-    this->ui->search_engine->lineEdit()->setPlaceholderText("URL with '%1' in place of query");
+    this->ui->search_engine->lineEdit()->setPlaceholderText(tr("URL with '%1' in place of query"));
     this->ui->search_engine->addItem("gemini://geminispace.info/search?%1");
     this->ui->search_engine->addItem("gemini://gus.guru/search?%1");
     this->ui->search_engine->addItem("gemini://houston.coder.town/search?%1");
@@ -317,7 +317,7 @@ void SettingsDialog::setOptions(const GenericSettings &options)
             this->ui->emojis_on->setEnabled(false);
             this->ui->emojis_off->setEnabled(false);
             this->ui->emojis_label->setToolTip(
-                this->ui->emojis_label->toolTip() + " (not supported in this build)");
+                this->ui->emojis_label->toolTip() + tr(" (not supported in this build)"));
         }
     }
 
@@ -615,9 +615,9 @@ void SettingsDialog::on_preset_new_clicked()
 {
     QInputDialog dlg { this };
     dlg.setInputMode(QInputDialog::TextInput);
-    dlg.setOkButtonText("Save");
-    dlg.setCancelButtonText("Cancel");
-    dlg.setLabelText("Enter the name of your new preset:");
+    dlg.setOkButtonText(tr("Save"));
+    dlg.setCancelButtonText(tr("Cancel"));
+    dlg.setLabelText(tr("Enter the name of your new preset:"));
 
     if(dlg.exec() != QInputDialog::Accepted)
         return;
@@ -626,7 +626,7 @@ void SettingsDialog::on_preset_new_clicked()
     bool override = false;
     if(this->predefined_styles.contains(name))
     {
-        auto response = QMessageBox::question(this, "Kristall", QString("A style with the name '%1' already exists! Replace?").arg(name));
+        auto response = QMessageBox::question(this, "Kristall", QString(tr("A style with the name '%1' already exists! Replace?")).arg(name));
         if(response != QMessageBox::Yes)
             return;
         override = true;
@@ -646,7 +646,7 @@ void SettingsDialog::on_preset_save_clicked()
     if(name.isEmpty())
         return;
 
-    auto response = QMessageBox::question(this, "Kristall", QString("Do you want to override the style '%1'?").arg(name));
+    auto response = QMessageBox::question(this, "Kristall", QString(tr("Do you want to override the style '%1'?")).arg(name));
     if(response != QMessageBox::Yes)
         return;
 
@@ -660,7 +660,7 @@ void SettingsDialog::on_preset_load_clicked()
     if(name.isEmpty())
         return;
 
-    auto response = QMessageBox::question(this, "Kristall", QString("Do you want to load the style '%1'?\r\nThis will discard all currently set up values!").arg(name));
+    auto response = QMessageBox::question(this, "Kristall", QString(tr("Do you want to load the style '%1'?\r\nThis will discard all currently set up values!")).arg(name));
     if(response != QMessageBox::Yes)
         return;
 
@@ -698,7 +698,7 @@ void SettingsDialog::on_preset_import_clicked()
 {
     QFileDialog dialog { this };
     dialog.setAcceptMode(QFileDialog::AcceptOpen);
-    dialog.selectNameFilter("Kristall Theme (*.kthm)");
+    dialog.selectNameFilter(tr("Kristall Theme (*.kthm)"));
 
     if(dialog.exec() !=QFileDialog::Accepted)
         return;
@@ -715,9 +715,9 @@ void SettingsDialog::on_preset_import_clicked()
     {
         QInputDialog dlg { this };
         dlg.setInputMode(QInputDialog::TextInput);
-        dlg.setOkButtonText("Save");
-        dlg.setCancelButtonText("Cancel");
-        dlg.setLabelText("Imported preset has no name.\r\nPlease enter a name for the preset:");
+        dlg.setOkButtonText(tr("Save"));
+        dlg.setCancelButtonText(tr("Cancel"));
+        dlg.setLabelText(tr("Imported preset has no name.\r\nPlease enter a name for the preset:"));
         if(dlg.exec() != QDialog::Accepted)
             return;
         name = dlg.textValue();
@@ -726,7 +726,7 @@ void SettingsDialog::on_preset_import_clicked()
     bool override = false;
     if(this->predefined_styles.contains(name))
     {
-        auto response = QMessageBox::question(this, "Kristall", QString("Do you want to override the style '%1'?").arg(name));
+        auto response = QMessageBox::question(this, "Kristall", QString(tr("Do you want to override the style '%1'?")).arg(name));
         if(response != QMessageBox::Yes)
             return;
         override = true;
@@ -751,7 +751,7 @@ void SettingsDialog::on_preset_export_clicked()
 
     QFileDialog dialog { this };
     dialog.setAcceptMode(QFileDialog::AcceptSave);
-    dialog.selectNameFilter("Kristall Theme (*.kthm)");
+    dialog.selectNameFilter(tr("Kristall Theme (*.kthm)"));
     dialog.selectFile(QString("%1.kthm").arg(name));
 
     if(dialog.exec() !=QFileDialog::Accepted)

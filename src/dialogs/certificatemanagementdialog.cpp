@@ -61,7 +61,8 @@ void CertificateManagementDialog::on_certificates_selected(QModelIndex const& in
         this->ui->cert_display_name->setText(cert.display_name);
         this->ui->cert_common_name->setText(cert.certificate.subjectInfo(QSslCertificate::CommonName).join(", "));
         this->ui->cert_expiration_date->setDateTime(cert.certificate.expiryDate());
-        this->ui->cert_livetime->setText(QString("%1 days").arg(QDateTime::currentDateTime().daysTo(cert.certificate.expiryDate())));
+        auto days = QDateTime::currentDateTime().daysTo(cert.certificate.expiryDate());
+        this->ui->cert_livetime->setText(QString(tr("%1 day","%1 days",days)).arg(days));
         this->ui->cert_fingerprint->setPlainText(toFingerprintString(cert.certificate));
         this->ui->cert_notes->setPlainText(cert.user_notes);
 
@@ -113,29 +114,29 @@ void CertificateManagementDialog::on_delete_cert_button_clicked()
     {
         auto answer = QMessageBox::question(
             this,
-            "Kristall",
-            "Do you really want to delete this certificate?\r\n\r\nYou will not be able to restore the identity after this!",
+            tr("Kristall"),
+            tr("Do you really want to delete this certificate?\r\n\r\nYou will not be able to restore the identity after this!"),
             QMessageBox::Yes | QMessageBox::No,
             QMessageBox::No
         );
         if(answer != QMessageBox::Yes)
             return;
         if(not identity_set.destroyIdentity(index)) {
-            QMessageBox::warning(this, "Kristall", "Could not destroy identity!");
+            QMessageBox::warning(this, tr("Kristall"), tr("Could not destroy identity!"));
         }
     }
     else if(auto group_name = identity_set.group(index); not group_name.isEmpty()) {
 
         auto answer = QMessageBox::question(
             this,
-            "Kristall",
-            QString("Do you want to delete the group '%1'").arg(group_name)
+            tr("Kristall"),
+            QString(tr("Do you want to delete the group '%1'")).arg(group_name)
         );
         if(answer != QMessageBox::Yes)
             return;
 
         if(not identity_set.deleteGroup(group_name)) {
-            QMessageBox::warning(this, "Kristall", "Could not delete group!");
+            QMessageBox::warning(this, tr("Kristall"), tr("Could not delete group!"));
         }
     }
 }
@@ -157,7 +158,7 @@ void CertificateManagementDialog::on_export_cert_button_clicked()
         if(not cert_file.open(QFile::WriteOnly)) {
             QMessageBox::warning(
                 this,
-                "Kristall",
+                tr("Kristall"),
                 tr("The file %1 could not be found!").arg(dialog.certificateFileName())
             );
             return;
@@ -173,7 +174,7 @@ void CertificateManagementDialog::on_export_cert_button_clicked()
         if(not IoUtil::writeAll(cert_file, cert_blob)) {
             QMessageBox::warning(
                 this,
-                "Kristall",
+                tr("Kristall"),
                 tr("The file %1 could not be created found!").arg(dialog.certificateFileName())
             );
             return;
@@ -185,7 +186,7 @@ void CertificateManagementDialog::on_export_cert_button_clicked()
         if(not key_file.open(QFile::WriteOnly)) {
             QMessageBox::warning(
                 this,
-                "Kristall",
+                tr("Kristall"),
                 tr("The file %1 could not be found!").arg(dialog.keyFileName())
             );
             return;
@@ -201,8 +202,8 @@ void CertificateManagementDialog::on_export_cert_button_clicked()
         if(not IoUtil::writeAll(key_file, key_blob)) {
             QMessageBox::warning(
                 this,
-                "Kristall",
-                tr("The file %1 could not be created found!").arg(dialog.keyFileName())
+                tr("Kristall"),
+                tr("The file %1 could not be created!").arg(dialog.keyFileName())
             );
             return;
         }
@@ -222,7 +223,7 @@ void CertificateManagementDialog::on_import_cert_button_clicked()
     if(not cert_file.open(QFile::ReadOnly)) {
         QMessageBox::warning(
             this,
-            "Kristall",
+            tr("Kristall"),
             tr("The file %1 could not be found!").arg(dialog.certificateFileName())
         );
         return;
@@ -232,7 +233,7 @@ void CertificateManagementDialog::on_import_cert_button_clicked()
     if(not key_file.open(QFile::ReadOnly)) {
         QMessageBox::warning(
             this,
-            "Kristall",
+            tr("Kristall"),
             tr("The file %1 could not be found!").arg(dialog.keyFileName())
         );
         return;
@@ -250,7 +251,8 @@ void CertificateManagementDialog::on_import_cert_button_clicked()
         dialog.keyFileName().endsWith(".der") ? QSsl::Der : QSsl::Pem,
     };
     ident.user_notes = tr("Imported from:\r\nkey: %1\r\n:cert: %2").arg(dialog.keyFileName(), dialog.certificateFileName());
-    ident.display_name = "Imported Certificate";
+    //: Default name
+    ident.display_name = tr("Imported Certificate");
     ident.auto_enable = false;
     ident.host_filter = "";
     ident.is_persistent = true;
@@ -258,7 +260,7 @@ void CertificateManagementDialog::on_import_cert_button_clicked()
     if(ident.private_key.isNull()) {
         QMessageBox::warning(
             this,
-            "Kristall",
+            tr("Kristall"),
             tr("The key file %1 could not be loaded. Please verify your key file.").arg(dialog.keyFileName())
         );
         return;
@@ -267,7 +269,7 @@ void CertificateManagementDialog::on_import_cert_button_clicked()
     if(ident.certificate.isNull()) {
         QMessageBox::warning(
             this,
-            "Kristall",
+            tr("Kristall"),
             tr("The certificate file %1 could not be loaded. Please verify your certificate.").arg(dialog.keyFileName())
         );
         return;
@@ -276,7 +278,7 @@ void CertificateManagementDialog::on_import_cert_button_clicked()
     if(not identity_set.addCertificate(tr("Imported Certificates"), ident)) {
         QMessageBox::warning(
             this,
-            "Kristall",
+            tr("Kristall"),
             tr("Failed to import the certificate.")
         );
     }

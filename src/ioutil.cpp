@@ -18,14 +18,14 @@ bool IoUtil::writeAll(QIODevice &dst, QByteArray const & src)
 QString IoUtil::size_human(qint64 size)
 {
     if(size < 1024)
-        return QString("%1 B").arg(size);
+        return QString(QObject::tr("%1 B")).arg(size);
 
     float num = size;
     QStringList list;
-    list << "KB" << "MB" << "GB" << "TB";
+    list << QObject::tr("KB") << QObject::tr("MB") << QObject::tr("GB") << QObject::tr("TB");
 
     QStringListIterator i(list);
-    QString unit("B");
+    QString unit(QObject::tr("B"));
 
     while(num >= 1024.0 && i.hasNext())
     {

@@ -464,12 +464,12 @@ void MainWindow::on_actionQuit_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
     QMessageBox::about(this,
-                       "Kristall",
-R"about(Kristall, an OpenSource Gemini browser.
+                       tr("Kristall"),
+tr(R"about(Kristall, an OpenSource Gemini browser.
 Made by Felix "xq" Queißner
 
 This is free software. You can get the source code at
-https://github.com/MasterQ32/Kristall)about"
+https://github.com/MasterQ32/Kristall)about")
     );
 }
 
@@ -530,9 +530,9 @@ void MainWindow::setFileStatus(const DocumentStats &stats)
 {
     if(stats.isValid()) {
         this->file_size->setText(IoUtil::size_human(stats.file_size));
-        this->file_cached->setText(stats.loaded_from_cache ? "(cached)" : "");
+        this->file_cached->setText(stats.loaded_from_cache ? tr("(cached)") : "");
         this->file_mime->setText(stats.mime_type.toString(false));
-        this->load_time->setText(QString("%1 ms").arg(stats.loading_time));
+        this->load_time->setText(QString(tr("%1 ms")).arg(stats.loading_time));
     } else {
         this->file_size->setText("");
         this->file_cached->setText("");
@@ -562,7 +562,7 @@ void MainWindow::on_actionSave_as_triggered()
         }
         else
         {
-            QMessageBox::warning(this, "Kristall", QString("Could not save file:\r\n%1").arg(file.errorString()));
+            QMessageBox::warning(this, tr("Kristall"), QString("Could not save file:\r\n%1").arg(file.errorString()));
         }
     }
 }
@@ -629,12 +629,12 @@ void MainWindow::on_history_view_customContextMenuRequested(const QPoint pos)
             if(QUrl url = tab->history.get(idx); url.isValid()) {
                 QMenu menu;
 
-                connect(menu.addAction("Open here"), &QAction::triggered, [tab, idx]() {
+                connect(menu.addAction(tr("Open here")), &QAction::triggered, [tab, idx]() {
                     // We do the same thing as a double click here
                     tab->navigateBack(idx);
                 });
 
-                connect(menu.addAction("Open in new tab"), &QAction::triggered, [this, url]() {
+                connect(menu.addAction(tr("Open in new tab")), &QAction::triggered, [this, url]() {
                     addNewTab(true, url);
                 });
 
@@ -652,18 +652,18 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
 
             BrowserTab * tab = this->curTab();
             if(tab != nullptr) {
-                connect(menu.addAction("Open here"), &QAction::triggered, [tab, url]() {
+                connect(menu.addAction(tr("Open here")), &QAction::triggered, [tab, url]() {
                     tab->navigateTo(url, BrowserTab::PushImmediate);
                 });
             }
 
-            connect(menu.addAction("Open in new tab"), &QAction::triggered, [this, url]() {
+            connect(menu.addAction(tr("Open in new tab")), &QAction::triggered, [this, url]() {
                 addNewTab(true, url);
             });
 
             menu.addSeparator();
 
-            connect(menu.addAction("Relocate"), &QAction::triggered, [this, idx]() {
+            connect(menu.addAction(tr("Relocate")), &QAction::triggered, [this, idx]() {
                 QInputDialog dialog { this };
 
                 dialog.setInputMode(QInputDialog::TextInput);
@@ -676,7 +676,7 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
                 kristall::favourites.editFavouriteDest(idx, QUrl(dialog.textValue()));
             });
 
-            connect(menu.addAction("Rename"), &QAction::triggered, [this, idx]() {
+            connect(menu.addAction(tr("Rename")), &QAction::triggered, [this, idx]() {
                 QInputDialog dialog { this };
 
                 dialog.setInputMode(QInputDialog::TextInput);
@@ -691,7 +691,7 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
 
             menu.addSeparator();
 
-            connect(menu.addAction("Delete"), &QAction::triggered, [idx]() {
+            connect(menu.addAction(tr("Delete")), &QAction::triggered, [idx]() {
                 kristall::favourites.destroyFavourite(idx);
             });
 
@@ -700,7 +700,7 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
         else if(QString group = kristall::favourites.group(idx); not group.isEmpty()) {
             QMenu menu;
 
-            connect(menu.addAction("Rename group"), &QAction::triggered, [this, group]() {
+            connect(menu.addAction(tr("Rename group")), &QAction::triggered, [this, group]() {
                 QInputDialog dialog { this };
 
                 dialog.setInputMode(QInputDialog::TextInput);
@@ -711,18 +711,18 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
                     return;
 
                 if (!kristall::favourites.renameGroup(group, dialog.textValue()))
-                    QMessageBox::information(this, "Kristall", "Rename failed: group name already in use.");
+                    QMessageBox::information(this, tr("Kristall"), tr("Rename failed: group name already in use."));
             });
 
             menu.addSeparator();
 
-            connect(menu.addAction("Delete group"), &QAction::triggered, [this, idx]() {
+            connect(menu.addAction(tr("Delete group")), &QAction::triggered, [this, idx]() {
                 if (QMessageBox::question(
                     this,
-                    "Kristall",
-                    "Are you sure you want to delete this Favourite Group?\n"
+                    tr("Kristall"),
+                    tr("Are you sure you want to delete this Favourite Group?\n"
                     "All favourites in this group will be lost.\n\n"
-                    "This action cannot be undone!"
+                    "This action cannot be undone!")
                 ) != QMessageBox::Yes)
                 {
                     return;
@@ -736,7 +736,7 @@ void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
     else {
         QMenu menu;
 
-        connect(menu.addAction("Create new group..."), &QAction::triggered, [this]() {
+        connect(menu.addAction(tr("Create new group...")), &QAction::triggered, [this]() {
             this->newGroupDialog();
         });
 
