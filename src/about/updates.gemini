@@ -2,16 +2,16 @@
 
 ## 0.4 - Improved user experience
 * Basic Emoji rendering support using OpenMoji
-* Improved favourites: Adds grouping and custom names
+* Changed: Improved favourites: Adds grouping and custom names
 * Adds support for text/kristall-theme mime to preview/install kristall themes via the browser surface
 * Adds Ctrl-F search function
-* Mouse middle now opens links in new tabs
-* Ctrl + mouse left opens links in new tabs
-* Mouse middle now closes tabs when clicking them
-* Improved settings system with folder-based approach
-* Document styles are now saved as files which are exchangeable
+* Adds Mouse middle now opens links in new tabs
+* Adds Ctrl + mouse left opens links in new tabs
+* Adds Mouse middle now closes tabs when clicking them
+* Adds improved settings system with folder-based approach
 * Adds colored icons to dark/light theme so it has improved contrast
-* New action: "View/Show document source" will display the raw data of the document in a small separate window
+* Adds new action: "View/Show document source" will display the raw data of the document in a small separate window
+* Change: Document styles are now saved as files which are exchangeable
 * Change: Makes TLS editor columns sortable
 
 -- There's a lot missing here still
@@ -22,6 +22,7 @@
 * Adds --isolated command line option to start a separated instance of kristall
 * Adds possibility to open favourites with enter key in addition to double clicking.
 * Adds possibility to open history entries with enter key in addition to double clicking.
+* Fix: Gophermap icons map now respect the background color
 
 ## 0.3 - TLS and security
 * Adds support for transient client certificates

@@ -1,17 +1,29 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/gopher/binary.svg</file>
-        <file>icons/gopher/directory.svg</file>
-        <file>icons/gopher/dns.svg</file>
-        <file>icons/gopher/error.svg</file>
-        <file>icons/gopher/gif.svg</file>
-        <file>icons/gopher/html.svg</file>
-        <file>icons/gopher/image.svg</file>
-        <file>icons/gopher/mirror.svg</file>
-        <file>icons/gopher/search.svg</file>
-        <file>icons/gopher/sound.svg</file>
-        <file>icons/gopher/telnet.svg</file>
-        <file>icons/gopher/text.svg</file>
+        <file>icons/dark/gopher/binary.svg</file>
+        <file>icons/dark/gopher/directory.svg</file>
+        <file>icons/dark/gopher/dns.svg</file>
+        <file>icons/dark/gopher/error.svg</file>
+        <file>icons/dark/gopher/gif.svg</file>
+        <file>icons/dark/gopher/html.svg</file>
+        <file>icons/dark/gopher/image.svg</file>
+        <file>icons/dark/gopher/mirror.svg</file>
+        <file>icons/dark/gopher/search.svg</file>
+        <file>icons/dark/gopher/sound.svg</file>
+        <file>icons/dark/gopher/telnet.svg</file>
+        <file>icons/dark/gopher/text.svg</file>
+        <file>icons/light/gopher/binary.svg</file>
+        <file>icons/light/gopher/directory.svg</file>
+        <file>icons/light/gopher/dns.svg</file>
+        <file>icons/light/gopher/error.svg</file>
+        <file>icons/light/gopher/gif.svg</file>
+        <file>icons/light/gopher/html.svg</file>
+        <file>icons/light/gopher/image.svg</file>
+        <file>icons/light/gopher/mirror.svg</file>
+        <file>icons/light/gopher/search.svg</file>
+        <file>icons/light/gopher/sound.svg</file>
+        <file>icons/light/gopher/telnet.svg</file>
+        <file>icons/light/gopher/text.svg</file>
         <file>icons/light/actions/window-close.svg</file>
         <file>icons/light/actions/process-stop.svg</file>
         <file>icons/light/actions/edit-delete.svg</file>

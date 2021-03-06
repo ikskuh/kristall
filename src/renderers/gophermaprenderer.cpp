@@ -34,18 +34,26 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
 
     if(not emit_text_only)
     {
-        result->addResource(QTextDocument::ImageResource, QUrl("gopher/binary"), QVariant::fromValue(QImage(":/icons/gopher/binary.svg")));
-        result->addResource(QTextDocument::ImageResource, QUrl("gopher/directory"), QVariant::fromValue(QImage(":/icons/gopher/directory.svg")));
-        result->addResource(QTextDocument::ImageResource, QUrl("gopher/dns"), QVariant::fromValue(QImage(":/icons/gopher/dns.svg")));
-        result->addResource(QTextDocument::ImageResource, QUrl("gopher/error"), QVariant::fromValue(QImage(":/icons/gopher/error.svg")));
-        result->addResource(QTextDocument::ImageResource, QUrl("gopher/gif"), QVariant::fromValue(QImage(":/icons/gopher/gif.svg")));
-        result->addResource(QTextDocument::ImageResource, QUrl("gopher/html"), QVariant::fromValue(QImage(":/icons/gopher/html.svg")));
-        result->addResource(QTextDocument::ImageResource, QUrl("gopher/image"), QVariant::fromValue(QImage(":/icons/gopher/image.svg")));
-        result->addResource(QTextDocument::ImageResource, QUrl("gopher/mirror"), QVariant::fromValue(QImage(":/icons/gopher/mirror.svg")));
-        result->addResource(QTextDocument::ImageResource, QUrl("gopher/search"), QVariant::fromValue(QImage(":/icons/gopher/search.svg")));
-        result->addResource(QTextDocument::ImageResource, QUrl("gopher/sound"), QVariant::fromValue(QImage(":/icons/gopher/sound.svg")));
-        result->addResource(QTextDocument::ImageResource, QUrl("gopher/telnet"), QVariant::fromValue(QImage(":/icons/gopher/telnet.svg")));
-        result->addResource(QTextDocument::ImageResource, QUrl("gopher/text"), QVariant::fromValue(QImage(":/icons/gopher/text.svg")));
+        QString icon_prefix;
+        if(themed_style.background_color.valueF() < 0.65)
+            icon_prefix = ":/icons/dark/gopher/";
+        else
+            icon_prefix = ":/icons/light/gopher/";
+        qDebug() << "lightness" << themed_style.background_color.lightnessF();
+        qDebug() << "value" << themed_style.background_color.valueF();
+
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/binary"), QVariant::fromValue(QImage(icon_prefix + "binary.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/directory"), QVariant::fromValue(QImage(icon_prefix + "directory.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/dns"), QVariant::fromValue(QImage(icon_prefix + "dns.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/error"), QVariant::fromValue(QImage(icon_prefix + "error.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/gif"), QVariant::fromValue(QImage(icon_prefix + "gif.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/html"), QVariant::fromValue(QImage(icon_prefix + "html.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/image"), QVariant::fromValue(QImage(icon_prefix + "image.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/mirror"), QVariant::fromValue(QImage(icon_prefix + "mirror.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/search"), QVariant::fromValue(QImage(icon_prefix + "search.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/sound"), QVariant::fromValue(QImage(icon_prefix + "sound.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/telnet"), QVariant::fromValue(QImage(icon_prefix + "telnet.svg")));
+        result->addResource(QTextDocument::ImageResource, QUrl("gopher/text"), QVariant::fromValue(QImage(icon_prefix + "text.svg")));
     }
 
     QTextCursor cursor{result.get()};
