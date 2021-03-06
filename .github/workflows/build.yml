@@ -52,6 +52,7 @@ jobs:
       - name: display
         run: |
           uname -a
+          file build/kristall.app 
           ls build
 
       - uses: actions/upload-artifact@v2
@@ -59,16 +60,25 @@ jobs:
           name: Kristall.app
           path: build/kristall.app
 
-      - name: Deploy via SCP
-        uses: horochx/deploy-via-scp@master
+      - name: Deploy with SCP
+        uses: noobly314/deploy-with-scp@v1
         with:
-          local: build/kristall.app
-          remote: kristall/Kristall-nightly-macos-x86_64.app
-          host: random-projects.net
-          port: 22
-          user: generic-ci
-          key: ${{ secrets.PRIVATE_KEY }} #
+          src: build/kristall.app
+          dest: kristall/Kristall-nightly-macos-x86_64.app
+          username: generic-ci
+          server-ip: random-projects.net
+          ssh-key: ${{ secrets.PRIVATE_KEY }} #
 
+      # - name: Deploy via SCP
+      #   uses: horochx/deploy-via-scp@master
+      #   with:
+      #     local: build/kristall.app
+      #     remote: kristall/Kristall-nightly-macos-x86_64.app
+      #     host: random-projects.net
+      #     port: 22
+      #     user: generic-ci
+      #     key: ${{ secrets.PRIVATE_KEY }} #
+      #
       # - name: Deploy via SCP
       #   uses: garygrossgarten/github-action-scp@release
       #   with:
