@@ -45,51 +45,7 @@ jobs:
 
       - name: make
         run: make build/kristall
-
-      - name: Prepare deployment
-        working-directory: build
-        run: macdeployqt kristall.app -dmg
-
-      - name: display
-        run: |
-          uname -a
-          file build/kristall.app 
-          ls build
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: Kristall.app
-          path: build/kristall.dmg
-
-      - name: Deploy with SCP
-        uses: noobly314/deploy-with-scp@v1
-        with:
-          src: build/kristall.dmg
-          dest: kristall/Kristall-nightly-macos-x86_64.dmg
-          username: generic-ci
-          server-ip: random-projects.net
-          ssh-key: ${{ secrets.PRIVATE_KEY }} #
-
-      # - name: Deploy via SCP
-      #   uses: horochx/deploy-via-scp@master
-      #   with:
-      #     local: build/kristall.app
-      #     remote: kristall/Kristall-nightly-macos-x86_64.app
-      #     host: random-projects.net
-      #     port: 22
-      #     user: generic-ci
-      #     key: ${{ secrets.PRIVATE_KEY }} #
-      #
-      # - name: Deploy via SCP
-      #   uses: garygrossgarten/github-action-scp@release
-      #   with:
-      #     host: random-projects.net
-      #     username: generic-ci
-      #     privateKey: ${{ secrets.PRIVATE_KEY }}
-      #     local: "build/kristall.app"
-      #     remote: "kristall/Kristall-nightly-macos-x86_64.app"
-#
-
+        
 # Disabled until both aqinstall and install-qt-action support the fixes…
 #  build_windows:
 #    runs-on: windows-latest

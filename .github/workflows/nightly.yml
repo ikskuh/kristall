@@ -1,0 +1,34 @@
+name: Nightly Deploy
+
+on:
+  schedule:
+    - cron: "0 3 * * *" # run at 3 AM UTC
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies via brew
+        run: brew install qt@5 openssl
+
+      - uses: jurplel/install-qt-action@v2
+        with:
+          version: "5.12.8"
+
+      - name: make
+        run: make build/kristall
+
+      - name: Prepare deployment
+        working-directory: build
+        run: macdeployqt kristall.app -dmg
+
+      - name: Deploy with SCP
+        uses: noobly314/deploy-with-scp@v1
+        with:
+          src: build/kristall.dmg
+          dest: kristall/Kristall-nightly-macos-x86_64.dmg
+          username: generic-ci
+          server-ip: random-projects.net
+          ssh-key: ${{ secrets.PRIVATE_KEY }} #
