@@ -663,7 +663,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset theme="font">
+                  <iconset theme="font-select-symbolic">
                    <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
@@ -706,7 +706,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset theme="font">
+                  <iconset theme="font-select-symbolic">
                    <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
@@ -749,7 +749,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset theme="font">
+                  <iconset theme="font-select-symbolic">
                    <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
@@ -792,7 +792,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset theme="font">
+                  <iconset theme="font-select-symbolic">
                    <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
@@ -842,7 +842,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset theme="font">
+                  <iconset theme="font-select-symbolic">
                    <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
@@ -892,7 +892,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset theme="font">
+                  <iconset theme="font-select-symbolic">
                    <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
