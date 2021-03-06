@@ -54,14 +54,29 @@ jobs:
           uname -a
           ls build
 
-      - name: Deploy via SCP
-        uses: garygrossgarten/github-action-scp@release
+      - uses: actions/upload-artifact@v2
         with:
+          name: Kristall.app
+          path: build/kristall.app
+
+      - name: Deploy via SCP
+        uses: horochx/deploy-via-scp@master
+        with:
+          local: build/kristall.app
+          remote: kristall/Kristall-nightly-macos-x86_64.app
           host: random-projects.net
-          username: generic-ci
-          privateKey: ${{ secrets.PRIVATE_KEY }}
-          local: "build/kristall.app"
-          remote: "kristall/Kristall-nightly-macos-x86_64.app"
+          port: 22
+          user: generic-ci
+          key: ${{ secrets.PRIVATE_KEY }} #
+
+      # - name: Deploy via SCP
+      #   uses: garygrossgarten/github-action-scp@release
+      #   with:
+      #     host: random-projects.net
+      #     username: generic-ci
+      #     privateKey: ${{ secrets.PRIVATE_KEY }}
+      #     local: "build/kristall.app"
+      #     remote: "kristall/Kristall-nightly-macos-x86_64.app"
 #
 
 # Disabled until both aqinstall and install-qt-action support the fixes…
