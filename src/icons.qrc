@@ -31,7 +31,7 @@
         <file>icons/light/actions/favourite-on.svg</file>
         <file>icons/light/objects/view-certificate.svg</file>
         <file>icons/light/objects/folder.svg</file>
-        <file>icons/light/objects/font.svg</file>
+        <file>icons/light/objects/font-select-symbolic.svg</file>
         <file>icons/light/objects/go-home.svg</file>
         <file>icons/light/objects/help-about.svg</file>
         <file>icons/light/objects/menu.svg</file>
@@ -74,7 +74,7 @@
         <file>icons/dark/objects/view-certificate.svg</file>
         <file>icons/dark/objects/changelog.svg</file>
         <file>icons/dark/objects/folder.svg</file>
-        <file>icons/dark/objects/font.svg</file>
+        <file>icons/dark/objects/font-select-symbolic.svg</file>
         <file>icons/dark/objects/help.svg</file>
         <file>icons/dark/objects/history.svg</file>
         <file>icons/dark/objects/go-home.svg</file>
