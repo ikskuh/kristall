@@ -57,8 +57,6 @@ private slots:
 
     void on_browser_tabs_tabCloseRequested(int index);
 
-    void on_history_view_doubleClicked(const QModelIndex &index);
-
     void on_outline_view_clicked(const QModelIndex &index);
 
     void on_actionSettings_triggered();
@@ -95,8 +93,6 @@ private slots:
 
     void on_favourites_view_customContextMenuRequested(const QPoint pos);
 
-    void on_favourites_view_doubleClicked(const QModelIndex &index);
-
     void on_actionChangelog_triggered();
 
     void on_actionManage_Certificates_triggered();
@@ -106,6 +102,10 @@ private slots:
     void on_actionNew_window_triggered();
 
     void on_actionClose_Window_triggered();
+
+    void on_favourites_view_activated(const QModelIndex &index);
+
+    void on_history_view_activated(const QModelIndex &index);
 
 private: // slots
 

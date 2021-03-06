@@ -365,24 +365,9 @@ void MainWindow::on_browser_tabs_currentChanged(int index)
     updateWindowTitle();
 }
 
-void MainWindow::on_favourites_view_doubleClicked(const QModelIndex &index)
-{
-    if(auto url = kristall::favourites.getFavourite(index).destination; url.isValid()) {
-        this->addNewTab(true, url);
-    }
-}
-
 void MainWindow::on_browser_tabs_tabCloseRequested(int index)
 {
     delete tabAt(index);
-}
-
-void MainWindow::on_history_view_doubleClicked(const QModelIndex &index)
-{
-    BrowserTab * tab = this->curTab();
-    if(tab != nullptr) {
-        tab->navigateBack(index);
-    }
 }
 
 void MainWindow::on_tab_titleChanged(const QString &title)
@@ -790,4 +775,19 @@ void MainWindow::on_actionNew_window_triggered()
 void MainWindow::on_actionClose_Window_triggered()
 {
     this->deleteLater();
+}
+
+void MainWindow::on_favourites_view_activated(const QModelIndex &index)
+{
+    if(auto url = kristall::favourites.getFavourite(index).destination; url.isValid()) {
+        this->addNewTab(true, url);
+    }
+}
+
+void MainWindow::on_history_view_activated(const QModelIndex &index)
+{
+    BrowserTab * tab = this->curTab();
+    if(tab != nullptr) {
+        tab->navigateBack(index);
+    }
 }
