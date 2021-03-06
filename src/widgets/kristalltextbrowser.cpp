@@ -141,5 +141,15 @@ void KristallTextBrowser::betterCopy()
     static const QRegularExpression REGEX_QUOTES_D("(“|”)"), REGEX_QUOTES_S("(‘|’)");
     text.replace(REGEX_QUOTES_D, "\"").replace(REGEX_QUOTES_S, "'");
 
+    // From docs:
+    // "If the selection obtained from an editor spans a line break, the text will
+    // contain a Unicode U+2029 paragraph separator character instead of a newline \n character"
+    // Hence, we replace with \r\n on Win$hit, and \n on all other platforms
+#ifdef Q_OS_WIN32
+    text.replace(QChar(0x2029), "\r\n");
+#else
+    text.replace(QChar(0x2029), "\n");
+#endif
+
     kristall::clipboard->setText(text);
 }
