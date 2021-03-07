@@ -19,8 +19,8 @@ DocumentStyle::DefaultFonts::DefaultFonts()
     // Initialise default fonts
     #ifdef Q_OS_WIN32
         // Windows default fonts are ugly, so we use standard ones.
-        family = "Segoe UI";
-        fixed = "Consolas";
+        this->regular = "Segoe UI";
+        this->fixed = "Consolas";
     #else
         // *nix
         regular = QFontDatabase::systemFont(QFontDatabase::GeneralFont).family();
