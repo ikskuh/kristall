@@ -64,7 +64,7 @@ bool GeminiClient::startRequest(const QUrl &url, RequestOptions options)
     this->options = options;
 
     QSslConfiguration ssl_config = socket.sslConfiguration();
-    ssl_config.setProtocol(QSsl::TlsV1_2);
+    ssl_config.setProtocol(QSsl::TlsV1_2OrLater);
     if(not kristall::globals().trust.gemini.enable_ca)
         ssl_config.setCaCertificates(QList<QSslCertificate> { });
     else
