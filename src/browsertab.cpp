@@ -6,6 +6,7 @@
 #include "renderers/geminirenderer.hpp"
 #include "renderers/plaintextrenderer.hpp"
 #include "renderers/markdownrenderer.hpp"
+#include "renderers/htmlrenderer.hpp"
 #include "renderers/renderhelpers.hpp"
 
 #include "mimeparser.hpp"
@@ -631,7 +632,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
             this->current_location,
             doc_style,
             this->outline,
-            &this->page_title);
+            this->page_title);
     }
     else if (not plaintext_only and mime.is("text","gophermap"))
     {
@@ -642,23 +643,12 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
     }
     else if (not plaintext_only and mime.is("text","html"))
     {
-        document = std::make_unique<QTextDocument>();
-
-        document->setDefaultFont(doc_style.standard_font);
-        document->setDefaultStyleSheet(doc_style.toStyleSheet());
-        renderhelpers::setPageMargins(document.get(), doc_style.margin_h, doc_style.margin_v);
-
-        // Strip inline styles from page, so they don't
-        // conflict with user styles.
-        QString page_html = QString::fromUtf8(data);
-        page_html.replace(QRegularExpression("<style.*?>[\\S\\s]*?</style.*?>", QRegularExpression::CaseInsensitiveOption), "");
-
-        // Strip bgcolor attribute from body. These can screw up user styles too.
-        page_html.replace(QRegularExpression("<body.*bgcolor.*>", QRegularExpression::CaseInsensitiveOption), "<body>");
-
-        document->setHtml(page_html);
-
-        page_title = document->metaInformation(QTextDocument::DocumentTitle);
+        document = HtmlRenderer::render(
+            data,
+            this->current_location,
+            doc_style,
+            this->outline,
+            this->page_title);
     }
     else if (not plaintext_only and mime.is("text","x-kristall-theme"))
     {
@@ -685,7 +675,8 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
             src.readAll(),
             this->current_location,
             preview_style,
-            this->outline);
+            this->outline,
+            this->page_title);
 
         this->ui->text_browser->setStyleSheet(QString("QTextBrowser { background-color: %1; color: %2; }")
             .arg(preview_style.background_color.name(), preview_style.standard_color.name()));
@@ -788,7 +779,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
             this->current_location,
             doc_style,
             this->outline,
-            &this->page_title);
+            this->page_title);
 
         will_cache = false;
     }

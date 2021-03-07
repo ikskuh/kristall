@@ -387,12 +387,14 @@ void SettingsDialog::reloadStylePreview()
     QUrl url { QUrl(QString("about://%1/foobar").arg(host)) };
 
     DocumentOutlineModel outline;
+    QString document_title;
     auto doc_style = current_style.derive(url);
     auto doc = GeminiRenderer::render(
         document,
         url,
         doc_style,
-        outline
+        outline,
+        document_title
     );
 
     ui->style_preview->setStyleSheet(QString("QTextBrowser { background-color: %1; color: %2; }")
