@@ -107,6 +107,8 @@ private slots:
 
     void on_history_view_activated(const QModelIndex &index);
 
+    void on_outline_view_activated(const QModelIndex &index);
+
 private: // slots
 
     void on_tab_fileLoaded(DocumentStats const & stats);

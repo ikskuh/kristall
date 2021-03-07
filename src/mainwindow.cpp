@@ -415,7 +415,6 @@ void MainWindow::on_outline_view_clicked(const QModelIndex &index)
 {
     BrowserTab * tab = this->curTab();
     if(tab != nullptr) {
-
         auto anchor = tab->outline.getAnchor(index);
         if(not anchor.isEmpty()) {
             tab->scrollToAnchor(anchor);
@@ -790,4 +789,9 @@ void MainWindow::on_history_view_activated(const QModelIndex &index)
     if(tab != nullptr) {
         tab->navigateBack(index);
     }
+}
+
+void MainWindow::on_outline_view_activated(const QModelIndex &index)
+{
+    this->on_outline_view_clicked(index);
 }
