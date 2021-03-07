@@ -43,6 +43,13 @@ enum class IconTheme : int
     light = 1
 };
 
+enum class AnsiEscRenderMode : int
+{
+    ignore = 0,
+    render = 1,
+    strip = 2
+};
+
 struct GenericSettings
 {
     enum TextDisplay {
@@ -70,6 +77,7 @@ struct GenericSettings
     bool fancy_urlbar = true;
     bool fancy_quotes = true;
     bool emojis_enabled = true;
+    AnsiEscRenderMode ansi_escapes = AnsiEscRenderMode::render;
 
     // This is set automatically
     QColor fancy_urlbar_dim_colour;

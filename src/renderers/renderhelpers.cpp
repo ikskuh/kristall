@@ -340,9 +340,17 @@ static QString cleanLineEndings(QString &input)
 void renderhelpers::renderEscapeCodes(const QByteArray &input,
     QTextCharFormat& format, const QTextCharFormat& defaultFormat, QTextCursor& cursor)
 {
-    const auto tokens = input.split(escapeString);
     QString inputString = QString::fromUtf8(input);
     cleanLineEndings(inputString);
+
+    // Don't render escapes if set to 'ignore'
+    if (kristall::globals().options.ansi_escapes == AnsiEscRenderMode::ignore)
+    {
+        cursor.insertText(input, defaultFormat);
+        return;
+    }
+
+    const auto tokens = input.split(escapeString);
     for (QString::const_iterator it = inputString.cbegin(); it != inputString.cend(); ++it)
     {
         const auto currentCharacter = *it;;
@@ -356,8 +364,15 @@ void renderhelpers::renderEscapeCodes(const QByteArray &input,
                 parseCSI(input, it, format, defaultFormat, cursor);
             }
         }
+        else if (kristall::globals().options.ansi_escapes == AnsiEscRenderMode::strip)
+        {
+            // 'strip' mode -> we still interpret escapes as above, but just render
+            // text in the default format.
+            cursor.insertText(currentCharacter, defaultFormat);
+        }
         else
         {
+            // 'render' mode -> we use the interpreted ANSI format
             cursor.insertText(currentCharacter, format);
         }
     }

@@ -44,6 +44,11 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     this->ui->ui_density->addItem(tr("Compact"), QVariant::fromValue<int>(int(UIDensity::compact)));
     this->ui->ui_density->addItem(tr("Classic"), QVariant::fromValue<int>(int(UIDensity::classic)));
 
+    this->ui->ansi_escapes->clear();
+    this->ui->ansi_escapes->addItem(tr("Ignore"), QVariant::fromValue<int>(int(AnsiEscRenderMode::ignore)));
+    this->ui->ansi_escapes->addItem(tr("Render"), QVariant::fromValue<int>(int(AnsiEscRenderMode::render)));
+    this->ui->ansi_escapes->addItem(tr("Strip"), QVariant::fromValue<int>(int(AnsiEscRenderMode::strip)));
+
     this->ui->list_symbol->clear();
     this->ui->list_symbol->addItem(tr("Filled circle"), QVariant::fromValue<int>(int(QTextListFormat::Style::ListDisc)));
     this->ui->list_symbol->addItem(tr("Circle"), QVariant::fromValue<int>(int(QTextListFormat::Style::ListCircle)));
@@ -255,6 +260,16 @@ void SettingsDialog::setOptions(const GenericSettings &options)
             break;
         }
     }
+
+    this->ui->ansi_escapes->setCurrentIndex(0);
+    for(int i = 0; i < this->ui->ansi_escapes->count(); ++i)
+    {
+        if(this->ui->ansi_escapes->itemData(i).toInt() == int(options.ansi_escapes)) {
+            this->ui->ansi_escapes->setCurrentIndex(i);
+            break;
+        }
+    }
+
 
     this->ui->start_page->setText(this->current_options.start_page);
 
@@ -865,6 +880,11 @@ void SettingsDialog::on_emojis_on_clicked()
 void SettingsDialog::on_emojis_off_clicked()
 {
     this->current_options.emojis_enabled = false;
+}
+
+void SettingsDialog::on_ansi_escapes_currentIndexChanged(int index)
+{
+    this->current_options.ansi_escapes = AnsiEscRenderMode(this->ui->ansi_escapes->itemData(index).toInt());
 }
 
 void SettingsDialog::on_fancyquotes_on_clicked()

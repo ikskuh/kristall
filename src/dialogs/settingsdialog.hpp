@@ -154,6 +154,8 @@ private slots:
     void on_emojis_on_clicked();
     void on_emojis_off_clicked();
 
+    void on_ansi_escapes_currentIndexChanged(int index);
+
     void on_redirection_mode_currentIndexChanged(int index);
 
     void on_max_redirects_valueChanged(int arg1);
