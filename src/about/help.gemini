@@ -151,6 +151,11 @@ This is a purely cosmetic feature that may aid in readability.
 
 [Render emojis] allows you to toggle whether to render emojis using installed emoji fonts. Disabling this can help prevent text rendering issues due to emojis. Note that emojis are only supported in Kristall builds with Qt 5.13 or later.
 
+[ANSI Escape Sequences] determines the method of handling ANSI escape codes. This allows a document to alter some of the format (colour, etc) of text.
+* [Ignore] ignores ANSI sequences and leaves them in the text. This option will often create eyesores out of pages that have fancy ANSI art!
+* [Interpret (preformatted text only)] will allow Kristall to interpret ANSI escape sequences in *preformatted* text blocks.
+* [Strip] is a hybrid of the above. It strips ANSI sequences from the text, and displays the text normally, as if the escape sequences were not there.
+
 [Max. Number of Redirections] is a setting that allows you to restrict sites to redirect you only a certain number of times before erroring out. Setting this to 0 will disable redirections completely, displaying an error with the target URL.
 
 [Redirection Handling] allows you to fine-tune the way Kristall allows redirections. Each of the options defines if Kristall should ask you to allow the redirect or do it silently. [Ask for cross-scheme redirection] will pop up a message box if a host tries to redirect you from one URL scheme to another, e.g. when a web server redirects you from HTTP to HTTPS. [Ask for cross-host redirection] will pop up the message box for all redirections through host boundaries, e.g. when example.com redirects you to www.example.com. [Ask for cross-scheme or cross-host redirection] will enable both of the previous behaviours, asking when any cross-boundary redirection happens. [Ask for all redirections] will pop up a message box every time a server tries to redirect you, keeping you in full control over all redirections. [Silently redirect everything] is the exact oppositve of that, accepting all redirections without warning or notice.

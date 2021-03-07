@@ -46,7 +46,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
     this->ui->ansi_escapes->clear();
     this->ui->ansi_escapes->addItem(tr("Ignore"), QVariant::fromValue<int>(int(AnsiEscRenderMode::ignore)));
-    this->ui->ansi_escapes->addItem(tr("Render"), QVariant::fromValue<int>(int(AnsiEscRenderMode::render)));
+    this->ui->ansi_escapes->addItem(tr("Interpret (preformatted text only)"), QVariant::fromValue<int>(int(AnsiEscRenderMode::render)));
     this->ui->ansi_escapes->addItem(tr("Strip"), QVariant::fromValue<int>(int(AnsiEscRenderMode::strip)));
 
     this->ui->list_symbol->clear();
