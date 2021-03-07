@@ -9,6 +9,8 @@
 #include <QTextList>
 #include <QRegularExpression>
 
+#include <assert.h>
+
 static void* malloc_wrapper(void*, size_t size) { return malloc(size); }
 
 static void free_wrapper(void*, void* ptr) { free(ptr); }
@@ -100,6 +102,7 @@ static void renderRecursive(RenderState & state, GumboNode const & node, int nes
     /** Document node.  v will be a GumboDocument. */
     case GUMBO_NODE_DOCUMENT: {
         qWarning() << "Detected embedded document";
+        break;
     }
 
     /** Element node.v will be a GumboElement. */
