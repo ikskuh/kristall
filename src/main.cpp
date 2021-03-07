@@ -745,6 +745,14 @@ void GenericSettings::load(QSettings &settings)
         ? settings.value("emojis_enabled", true).toBool()
         : false;
 
+    QString ansi = settings.value("ansi_escapes", "render").toString();
+    if(ansi == "ignore")
+        ansi_escapes = AnsiEscRenderMode::ignore;
+    else if(ansi == "render")
+        ansi_escapes = AnsiEscRenderMode::render;
+    else if(ansi == "strip")
+        ansi_escapes = AnsiEscRenderMode::strip;
+
     max_redirections = settings.value("max_redirections", 5).toInt();
     redirection_policy = RedirectionWarning(settings.value("redirection_policy ", WarnOnHostChange).toInt());
 
@@ -787,6 +795,14 @@ void GenericSettings::save(QSettings &settings) const
     case UIDensity::classic: density = "classic"; break;
     }
     settings.setValue("ui_density", density);
+
+    QString ansi = "render";
+    switch(ansi_escapes) {
+    case AnsiEscRenderMode::ignore: ansi = "ignore"; break;
+    case AnsiEscRenderMode::render: ansi = "render"; break;
+    case AnsiEscRenderMode::strip: ansi = "strip"; break;
+    }
+    settings.setValue("ansi_escapes", ansi);
 
     settings.setValue("gophermap_display", (gophermap_display == FormattedText) ? "rendered" : "text");
     settings.setValue("use_os_scheme_handler", use_os_scheme_handler);
