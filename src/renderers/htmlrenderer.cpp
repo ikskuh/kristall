@@ -6,6 +6,7 @@
 
 #include <QDebug>
 #include <QTextTable>
+#include <QTextList>
 #include <QRegularExpression>
 
 static void* malloc_wrapper(void*, size_t size) { return malloc(size); }
@@ -62,11 +63,15 @@ static const char* find_title(const GumboNode* root) {
 
 struct RenderState
 {
-    QTextCursor cursor;
-    TextStyleInstance text_style;
+    QString & stream;
     QUrl root_url;
-    DocumentStyle const * style;
-    DocumentOutlineModel * outline;
+    DocumentOutlineModel & outline;
+
+    //! when non-null, we're inside a header element and accumulate the text to
+    //! compute the outline.
+    QString * header_text;
+
+    int header_count;
 };
 
 static char const * getAttribute(GumboElement const & element, char const * attrib_name)
@@ -80,32 +85,6 @@ static char const * getAttribute(GumboElement const & element, char const * attr
     return nullptr;
 }
 
-struct TextFormatReset
-{
-    QTextCursor * cursor;
-
-    QTextCharFormat char_format;
-    QTextBlockFormat block_format;
-
-    TextFormatReset(QTextCursor * cursor) :
-        cursor(cursor),
-        char_format(cursor->charFormat()),
-        block_format(cursor->blockFormat())
-    {
-
-    }
-
-    TextFormatReset(TextFormatReset const &) = delete;
-    TextFormatReset(TextFormatReset &&) = delete;
-
-    ~TextFormatReset()
-    {
-        this->cursor->setCharFormat(this->char_format);
-        this->cursor->setBlockFormat(this->block_format);
-    }
-
-};
-
 // Problems:
 // Style/theme elements must use a push/pop
 // use instead of "replacing" styles
@@ -114,8 +93,8 @@ struct TextFormatReset
 
 static void renderRecursive(RenderState & state, GumboNode const & node, int nesting = 0)
 {
-    auto & cursor = state.cursor;
-    auto & text_style = state.text_style;
+    auto & stream = state.stream;
+    auto & outline = state.outline;
     switch(node.type)
     {
     /** Document node.  v will be a GumboDocument. */
@@ -123,154 +102,82 @@ static void renderRecursive(RenderState & state, GumboNode const & node, int nes
         qWarning() << "Detected embedded document";
     }
 
-    /** Element node.  v will be a GumboElement. */
+    /** Element node.v will be a GumboElement. */
     case GUMBO_NODE_ELEMENT: {
         auto const & element = node.v.element;
 
-        TextFormatReset format_reset { &cursor };
-
         // qDebug() << "begin node(" << gumbo_normalized_tagname(element.tag) << ")";
+
+        bool process_header = false;
+        QString header_text;
 
         switch(element.tag) {
 
         // Stripped tags
         case GUMBO_TAG_STYLE:
         case GUMBO_TAG_SCRIPT:
+        case GUMBO_TAG_UNKNOWN:
+            return;
+
+        case GUMBO_TAG_BR:
+            stream += "<br>";
+            return;
+
+        case GUMBO_TAG_HR:
+            // HACK: stream += "<p style=\"text-align: center; width: 100%;\"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>&nbsp;</p>";
+            stream += "<hr>";
             return;
 
         case GUMBO_TAG_NAV: {
             // TODO: Optionally strip navigation from sites
-            if(true)
-                return;
+            //if(true)
+            //    return;
+            stream += "<nav>";
             break;
         }
 
         // Terminal tags
         case GUMBO_TAG_IMG: {
-            // TODO: Insert link to image here
-            cursor.insertText("[IMG]");
+            //stream += "[IMG]";
             return;
         }
         case GUMBO_TAG_SVG: {
-            // TODO: Insert link to image here
-            cursor.insertText("[SVG]");
+            //stream += "[SVG]";
             return;
         }
         case GUMBO_TAG_BUTTON: {
-            // TODO: Insert link to image here
-            cursor.insertText("[BUTTON]");
+            //stream += "[BUTTON]";
             return;
         }
         case GUMBO_TAG_INPUT: {
-            // TODO: Insert link to image here
-            cursor.insertText("[INPUT]");
+            //stream += "[INPUT]";
             return;
         }
 
-        // Paragraph-like elements:
-        case GUMBO_TAG_DIV: // <div> is the same as <p> for us
-        case GUMBO_TAG_P: {
-            // cursor.insertBlock();
-            break;
-        }
-        case GUMBO_TAG_H1: {
-            // cursor.insertBlock();
-            cursor.setBlockFormat(text_style.heading_format);
-            cursor.setCharFormat(text_style.standard_h1);
-            break;
-        }
-        case GUMBO_TAG_H2: {
-            // cursor.insertBlock();
-            cursor.setBlockFormat(text_style.heading_format);
-            cursor.setCharFormat(text_style.standard_h2);
-
-            break;
-        }
-        case GUMBO_TAG_H3: {
-            // cursor.insertBlock();
-            cursor.setBlockFormat(text_style.heading_format);
-            cursor.setCharFormat(text_style.standard_h3);
-            break;
-        }
-
-        case GUMBO_TAG_PRE: {
-            // cursor.insertBlock();
-            cursor.setBlockFormat(text_style.preformatted_format);
-            cursor.setCharFormat(text_style.preformatted);
-            break;
-        }
-
-        case GUMBO_TAG_OL:
-        case GUMBO_TAG_UL: {
-            // cursor.insertBlock();
-
-            if(element.tag == GUMBO_TAG_OL) {
-                auto fmt = text_style.list_format;
-                fmt.setStyle(QTextListFormat::ListDecimal);
-                fmt.setNumberPrefix("");
-                fmt.setNumberSuffix(".");
-                cursor.createList(fmt);
-            }
-            else {
-                cursor.createList(text_style.list_format);
-            }
-            break;
-        }
-        case GUMBO_TAG_LI: {
-            break;
-        }
-        case GUMBO_TAG_BLOCKQUOTE: {
-            QTextTable *table = cursor.insertTable(1, 1,text_style.blockquote_tableformat);
-            cursor.setBlockFormat(text_style.blockquote_format);
-            QTextTableCell cell = table->cellAt(0, 0);
-            cell.setFormat(text_style.blockquote);
-
-            cursor.setCharFormat(text_style.blockquote);
-
-            break;
-        }
-
-        // Text modification elements:
-        case GUMBO_TAG_SPAN: {
-            // This usually has a style change, but we ignore that completly
-            break;
-        }
-        case GUMBO_TAG_BR: {
-            cursor.insertText("\n");
-            break;
-        }
-        case GUMBO_TAG_I: {
-            auto fmt = cursor.charFormat();
-            fmt.setFontItalic(true);
-            cursor.setCharFormat(fmt);
-            break;
-        }
-        case GUMBO_TAG_B: {
-            auto fmt = cursor.charFormat();
-            fmt.setFontWeight(QFont::Bold);
-            cursor.setCharFormat(fmt);
-            break;
-        }
-        case GUMBO_TAG_U: {
-            auto fmt = cursor.charFormat();
-            fmt.setFontUnderline(true);
-            cursor.setCharFormat(fmt);
-            break;
-        }
         case GUMBO_TAG_A: {
             char const * anchor = getAttribute(element, "href");
             if(anchor == nullptr) {
                 anchor = "#";
             }
-
-            auto fmt = text_style.standard_link;
-            fmt.setAnchor(true);
-            fmt.setAnchorHref(QString::fromUtf8(anchor));
-            cursor.setCharFormat(fmt);
+            stream += "<a href=\""+QString::fromUtf8(anchor)+"\">";
             break;
         }
+
+        case GUMBO_TAG_H1:
+        case GUMBO_TAG_H2:
+        case GUMBO_TAG_H3:
+        case GUMBO_TAG_H4:
+        case GUMBO_TAG_H5:
+        case GUMBO_TAG_H6:
+            if(state.header_text == nullptr) {
+                process_header = true;
+                state.header_text = &header_text;
+            }
+            stream += "<" + QString::fromUtf8(gumbo_normalized_tagname(element.tag)) + QString(" id=\"header-%1\">").arg(state.header_count);
+            break;
+
         default:
-            qDebug() << "unhandled tag:" << gumbo_normalized_tagname(element.tag);
+            stream += "<" + QString::fromUtf8(gumbo_normalized_tagname(element.tag)) + ">";
             break;
         }
 
@@ -279,76 +186,57 @@ static void renderRecursive(RenderState & state, GumboNode const & node, int nes
             renderRecursive(state, *child, nesting + 1);
         }
 
-        switch(element.tag) {
-        // case GUMBO_TAG_PRE: {
-//            // Set the last line of the preformatted block to have
-//            // standard line height.
-//            QTextBlockFormat fmt = cursor.blockFormat();
-//            fmt.setLineHeight(state.style->line_height_p, QTextBlockFormat::LineDistanceHeight);
-//            cursor.movePosition(QTextCursor::PreviousBlock);
-//            cursor.setBlockFormat(fmt);
+        if(process_header) {
+            state.header_text = nullptr;
 
-//            cursor.movePosition(QTextCursor::NextBlock);
-//            break;
-//        }
+            QRegularExpression regex { "\\s+", QRegularExpression::DotMatchesEverythingOption };
 
-        // Requires closing block
-        case GUMBO_TAG_PRE:
-        case GUMBO_TAG_P:
-        case GUMBO_TAG_DIV:
-        case GUMBO_TAG_H1:
-        case GUMBO_TAG_H2:
-        case GUMBO_TAG_H3:
-            cursor.insertBlock();
-            break;
+            QString const header = header_text.replace(regex, " ");
+            QString const anchor = QString("header-%1").arg(state.header_count);
 
-        case GUMBO_TAG_OL:
-        case GUMBO_TAG_UL:
-            // cursor.insertBlock();
-            break;
-
-        case GUMBO_TAG_LI:
-            // Terminate the <li> by pressing "enter"
-            cursor.insertBlock();
-            break;
-
-        case GUMBO_TAG_BLOCKQUOTE:
-            cursor.deletePreviousChar();
-            cursor.movePosition(QTextCursor::NextBlock);
-            break;
-
-        default: break;
+            switch(element.tag) {
+            case GUMBO_TAG_H1:
+                outline.appendH1(header, anchor);
+                break;
+            case GUMBO_TAG_H2:
+                outline.appendH2(header, anchor);
+                break;
+            case GUMBO_TAG_H3:
+                outline.appendH3(header, anchor);
+                break;
+            case GUMBO_TAG_H4:
+                // TODO: Support H4 headings
+                break;
+            case GUMBO_TAG_H5:
+                // TODO: Support H5 headings
+                break;
+            case GUMBO_TAG_H6:
+                // TODO: Support H6 headings
+                break;
+            default:
+                break;
+            }
+            state.header_count += 1;
         }
+
+        stream += "</" + QString::fromUtf8(gumbo_normalized_tagname(element.tag)) + ">";
 
         // qDebug() << "end node(" << gumbo_normalized_tagname(element.tag) << ")";
 
         break;
     }
 
-    /** Text node.  v will be a GumboText. */
-    case GUMBO_NODE_TEXT: {
+
+    case GUMBO_NODE_TEXT:    // Text node.v will be a GumboText.
+    case GUMBO_NODE_CDATA: { // CDATA node.v will be a GumboText.
         auto const & text = node.v.text;
+        QString raw = QString::fromUtf8(text.text);
 
-        auto contents = QString::fromUtf8(text.text);
-        // qDebug() << contents;
+        if(state.header_text != nullptr) {
+            (*state.header_text) += raw;
+        }
 
-        QRegularExpression regex { "\\s+", QRegularExpression::DotMatchesEverythingOption };
-
-        // TODO: This is not quite right, but QTextCursor::inserText
-        // will insert spurious blocks when a "\n" is encountered.
-        state.cursor.insertText(contents.replace(regex, " "));
-        break;
-    }
-
-    /** CDATA node. v will be a GumboText. */
-    case GUMBO_NODE_CDATA: {
-        auto const & text = node.v.text;
-
-        auto const contents = QString::fromUtf8(text.text);
-
-        // TODO: This is not quite right, but QTextCursor::inserText
-        // will insert spurious blocks when a "\n" is encountered.
-        state.cursor.insertText(contents.trimmed());
+        stream += raw.toHtmlEscaped();
         break;
     }
 
@@ -397,10 +285,6 @@ std::unique_ptr<QTextDocument> HtmlRenderer::render(
         return nullptr;
     }
 
-    auto doc = std::make_unique<QTextDocument>();
-    renderhelpers::setPageMargins(doc.get(), style.margin_h, style.margin_v);
-    doc->setIndentWidth(style.indent_size);
-
     outline.beginBuild();
 
     // Find page title
@@ -411,6 +295,7 @@ std::unique_ptr<QTextDocument> HtmlRenderer::render(
         }
     }
 
+    QString document_text = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head>";
     {
         GumboVector const * const root_children = &gumbo_output->root->v.element.children;
         GumboNode* body = nullptr;
@@ -424,22 +309,26 @@ std::unique_ptr<QTextDocument> HtmlRenderer::render(
         if(body != nullptr)
         {
             RenderState state {
-                QTextCursor { doc.get() },
-                TextStyleInstance { style },
+                document_text,
                 root_url,
-                &style,
-                &outline,
+                outline,
+                nullptr,
+                0,
             };
-
-            state.cursor.setBlockFormat(state.text_style.standard_format);
-            state.cursor.setCharFormat(state.text_style.standard);
-
             renderRecursive(state, *body);
         }
     }
-
+    document_text += "</html>";
 
     outline.endBuild();
 
-    return doc;
+    auto document = std::make_unique<QTextDocument>();
+    renderhelpers::setPageMargins(document.get(), style.margin_h, style.margin_v);
+    document->setIndentWidth(style.indent_size);
+
+    document->setDefaultFont(style.standard_font);
+    document->setDefaultStyleSheet(style.toStyleSheet());
+    document->setHtml(document_text);
+
+    return document;
 }
