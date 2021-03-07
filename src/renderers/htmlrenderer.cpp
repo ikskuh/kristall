@@ -219,7 +219,16 @@ static void renderRecursive(RenderState & state, GumboNode const & node, int nes
         case GUMBO_TAG_LI: {
             break;
         }
+        case GUMBO_TAG_BLOCKQUOTE: {
+            QTextTable *table = cursor.insertTable(1, 1,text_style.blockquote_tableformat);
+            cursor.setBlockFormat(text_style.blockquote_format);
+            QTextTableCell cell = table->cellAt(0, 0);
+            cell.setFormat(text_style.blockquote);
 
+            cursor.setCharFormat(text_style.blockquote);
+
+            break;
+        }
 
         // Text modification elements:
         case GUMBO_TAG_SPAN: {
@@ -257,18 +266,7 @@ static void renderRecursive(RenderState & state, GumboNode const & node, int nes
             auto fmt = text_style.standard_link;
             fmt.setAnchor(true);
             fmt.setAnchorHref(QString::fromUtf8(anchor));
-            cursor.setBlockFormat(text_style.link_format);
             cursor.setCharFormat(fmt);
-            break;
-        }
-        case GUMBO_TAG_BLOCKQUOTE: {
-            QTextTable *table = cursor.insertTable(1, 1,text_style.blockquote_tableformat);
-            cursor.setBlockFormat(text_style.blockquote_format);
-            QTextTableCell cell = table->cellAt(0, 0);
-            cell.setFormat(text_style.blockquote);
-
-            cursor.setCharFormat(text_style.blockquote);
-
             break;
         }
         default:
