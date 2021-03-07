@@ -338,9 +338,8 @@ static QString cleanLineEndings(QString &input)
 }
 
 void renderhelpers::renderEscapeCodes(const QByteArray &input,
-    const QTextCharFormat& format, QTextCursor& cursor)
+    QTextCharFormat& format, const QTextCharFormat& defaultFormat, QTextCursor& cursor)
 {
-    auto textFormat = format;
     const auto tokens = input.split(escapeString);
     QString inputString = QString::fromUtf8(input);
     cleanLineEndings(inputString);
@@ -354,12 +353,12 @@ void renderhelpers::renderEscapeCodes(const QByteArray &input,
             if (escSequence == "[")
             {
                 it++;
-                parseCSI(input, it, textFormat, format, cursor);
+                parseCSI(input, it, format, defaultFormat, cursor);
             }
         }
         else
         {
-            cursor.insertText(currentCharacter, textFormat);
+            cursor.insertText(currentCharacter, format);
         }
     }
 }

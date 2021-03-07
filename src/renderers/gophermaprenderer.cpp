@@ -60,6 +60,8 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
 
     QTextBlockFormat non_list_format = cursor.blockFormat();
 
+    QTextCharFormat text_fmt = standard;
+
     char last_type = '1';
 
     QList<QByteArray> lines = input.split('\n');
@@ -149,7 +151,7 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
         if (type == 'i')
         {
             const QString escapeRenderInput = title + "\n";
-            renderhelpers::renderEscapeCodes(escapeRenderInput.toUtf8(), standard, cursor);
+            renderhelpers::renderEscapeCodes(escapeRenderInput.toUtf8(), text_fmt, standard, cursor);
         }
         else
         {
