@@ -83,6 +83,14 @@ external-cmark {
     include($$PWD/../lib/cmark/cmark.pri)
 }
 
+
+external-gumbo-parser {
+    CONFIG += link_pkgconfig
+    PKGCONFIG += gumbo-parser
+} else {
+    include($$PWD/../lib/gumbo-parser/gumbo-parser.pri)
+}
+
 INCLUDEPATH += $$PWD/../lib/luis-l-gist/
 DEPENDPATH += $$PWD/../lib/luis-l-gist/
 
@@ -103,6 +111,7 @@ SOURCES += \
     ioutil.cpp \
     main.cpp \
     mainwindow.cpp \
+    renderers/htmlrenderer.cpp \
     renderers/markdownrenderer.cpp \
     renderers/renderhelpers.cpp \
     renderers/textstyleinstance.cpp \
@@ -151,6 +160,7 @@ HEADERS += \
     ioutil.hpp \
     kristall.hpp \
     mainwindow.hpp \
+    renderers/htmlrenderer.hpp \
     renderers/markdownrenderer.hpp \
     renderers/textstyleinstance.hpp \
     widgets/browsertabbar.hpp \

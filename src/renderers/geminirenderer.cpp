@@ -36,7 +36,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
         QUrl const &root_url,
         DocumentStyle const & themed_style,
         DocumentOutlineModel &outline,
-        QString* const page_title)
+        QString & page_title)
 {
     TextStyleInstance text_style { themed_style };
 
@@ -72,8 +72,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 // Set the last line of the preformatted block to have
                 // standard line height.
                 QTextBlockFormat fmt = text_style.preformatted_format;
-                fmt.setLineHeight(themed_style.line_height_p,
-                    QTextBlockFormat::LineDistanceHeight);
+                fmt.setLineHeight(themed_style.line_height_p, QTextBlockFormat::LineDistanceHeight);
                 cursor.movePosition(QTextCursor::PreviousBlock);
                 cursor.setBlockFormat(fmt);
 
@@ -190,9 +189,9 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
             outline.appendH1(heading, id);
 
             // Use first heading as the page's title.
-            if (page_title != nullptr && page_title->isEmpty())
+            if (page_title.isEmpty())
             {
-                *page_title = heading;
+                    page_title = heading;
             }
 
             // Centre the first heading. We can't use the above code block

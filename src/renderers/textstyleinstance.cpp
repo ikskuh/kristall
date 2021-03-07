@@ -60,7 +60,6 @@ TextStyleInstance::TextStyleInstance(DocumentStyle const & themed_style)
 
   preformatted_format.setIndent(themed_style.indent_p);
 
-  heading_format.setLineHeight(themed_style.line_height_h,
-    QTextBlockFormat::LineDistanceHeight);
+  heading_format.setLineHeight(themed_style.line_height_h, QTextBlockFormat::LineDistanceHeight);
   heading_format.setIndent(themed_style.indent_h);
 }
