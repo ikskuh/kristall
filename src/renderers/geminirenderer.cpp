@@ -52,6 +52,8 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
 
     bool centre_first_h1 = themed_style.centre_h1;
 
+    QTextCharFormat preformatted_fmt = text_style.preformatted;
+
     outline.beginBuild();
 
     int anchor_id = 0;
@@ -88,7 +90,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
 
                 if (RENDER_ESCAPES)
                 {
-                    renderhelpers::renderEscapeCodes(line, text_style.preformatted, cursor);
+                    renderhelpers::renderEscapeCodes(line, preformatted_fmt, text_style.preformatted, cursor);
                     cursor.insertText("\n", text_style.preformatted);
                 }
                 else
@@ -298,6 +300,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
         else if (line.startsWith("```"))
         {
             verbatim = true;
+            preformatted_fmt = text_style.preformatted;
         }
         else
         {

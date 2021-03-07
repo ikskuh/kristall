@@ -7,7 +7,7 @@
 
 namespace renderhelpers
 {
-    void renderEscapeCodes(const QByteArray &input, const QTextCharFormat& format, QTextCursor& cursor);
+    void renderEscapeCodes(const QByteArray &input, QTextCharFormat& format, const QTextCharFormat& defaultFormat, QTextCursor& cursor);
 
     void setPageMargins(QTextDocument *doc, int mh, int mv);
 }

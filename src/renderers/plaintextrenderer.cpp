@@ -17,7 +17,8 @@ std::unique_ptr<QTextDocument> PlainTextRenderer::render(const QByteArray &input
     renderhelpers::setPageMargins(result.get(), style.margin_h, style.margin_v);
 
     QTextCursor cursor { result.get() };
-    renderhelpers::renderEscapeCodes(input, standard, cursor);
+    QTextCharFormat text_fmt = standard;
+    renderhelpers::renderEscapeCodes(input, text_fmt, standard, cursor);
 
     return result;
 }
