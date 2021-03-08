@@ -172,6 +172,10 @@ private slots:
     void on_cache_life_valueChanged(int life);
     void on_enable_unlimited_cache_life_clicked(bool checked);
 
+    void on_strip_nav_on_clicked();
+
+    void on_strip_nav_off_clicked();
+
 private:
     void reloadStylePreview();
 

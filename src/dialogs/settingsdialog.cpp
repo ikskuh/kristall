@@ -91,11 +91,12 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     this->ui->redirection_mode->addItem(tr("Ask for all redirection"), int(GenericSettings::WarnAlways));
     this->ui->redirection_mode->addItem(tr("Silently redirect everything"), int(GenericSettings::WarnNever));
 
-    connect(this->ui->tabWidget, &QTabWidget::currentChanged, this, [this] (int index) {
-        if (index != 1) /* Style tab */
+    connect(this->ui->tab_control, &QTabWidget::currentChanged, this, [this] (int index) {
+        if (this->ui->tab_control->widget(index) != this->ui->style_tab)
             return;
 
-        this->ui->style_scroll_area->setMinimumWidth(this->ui->style_scroll_layout->minimumSize().width()
+        this->ui->style_scroll_area->setMinimumWidth(
+            this->ui->style_scroll_layout->minimumSize().width()
             + this->ui->style_scroll_area->verticalScrollBar()->sizeHint().width());
     });
 }
@@ -316,6 +317,12 @@ void SettingsDialog::setOptions(const GenericSettings &options)
         this->ui->urlbarhl_fancy->setChecked(true);
     } else {
         this->ui->urlbarhl_none->setChecked(true);
+    }
+
+    if(this->current_options.strip_nav) {
+        this->ui->strip_nav_on->setChecked(true);
+    } else {
+        this->ui->strip_nav_off->setChecked(true);
     }
 
     if (kristall::EMOJIS_SUPPORTED && this->current_options.emojis_enabled)
@@ -952,4 +959,14 @@ void SettingsDialog::on_enable_unlimited_cache_life_clicked(bool checked)
 {
     this->current_options.cache_unlimited_life = checked;
     this->ui->cache_life->setEnabled(!checked);
+}
+
+void SettingsDialog::on_strip_nav_on_clicked()
+{
+    this->current_options.strip_nav = true;
+}
+
+void SettingsDialog::on_strip_nav_off_clicked()
+{
+    this->current_options.strip_nav = false;
 }

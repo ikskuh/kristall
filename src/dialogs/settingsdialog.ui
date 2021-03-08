@@ -33,71 +33,71 @@
       </attribute>
       <layout class="QFormLayout" name="formLayout">
        <item row="0" column="0">
-        <widget class="QLabel" name="label_15">
-         <property name="text">
-          <string>UI Theme</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="ui_theme"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_34">
-         <property name="text">
-          <string>Icon Theme</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QComboBox" name="icon_theme"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_1">
-         <property name="text">
-          <string>UI Density</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QComboBox" name="ui_density"/>
-       </item>
-       <item row="3" column="0">
         <widget class="QLabel" name="label_14">
          <property name="text">
           <string>Start Page:</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item row="0" column="1">
         <widget class="QLineEdit" name="start_page">
          <property name="placeholderText">
           <string>about://blank</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
+       <item row="1" column="0">
         <widget class="QLabel" name="label_40">
          <property name="text">
           <string>Search engine:</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
+       <item row="1" column="1">
         <widget class="QComboBox" name="search_engine">
          <property name="editable">
           <bool>true</bool>
          </property>
         </widget>
        </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_15">
+         <property name="text">
+          <string>UI Theme</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QComboBox" name="ui_theme"/>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_34">
+         <property name="text">
+          <string>Icon Theme</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QComboBox" name="icon_theme"/>
+       </item>
        <item row="5" column="0">
+        <widget class="QLabel" name="label_1">
+         <property name="text">
+          <string>UI Density</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QComboBox" name="ui_density"/>
+       </item>
+       <item row="6" column="0">
         <widget class="QLabel" name="label_16">
          <property name="text">
           <string>Enabled Protocols</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
+       <item row="6" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <widget class="QCheckBox" name="enable_gemini">
@@ -142,116 +142,14 @@
          </item>
         </layout>
        </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="text_rendering_label">
-         <property name="text">
-          <string>Text Rendering</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
-         <item>
-          <widget class="QRadioButton" name="fancypants_on">
-           <property name="text">
-            <string>Fancy</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">textRenderingBtnGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="fancypants_off">
-           <property name="text">
-            <string>Always plain text</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">textRenderingBtnGroup</string>
-           </attribute>
-          </widget>
-         </item>
-        </layout>
-       </item>
        <item row="7" column="0">
-        <widget class="QLabel" name="text_highlight_label">
-         <property name="text">
-          <string>Enable text highlights</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <widget class="QRadioButton" name="texthl_on">
-           <property name="text">
-            <string>On (Experimental)</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">textHighlightsBtnGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="texthl_off">
-           <property name="text">
-            <string>Off</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">textHighlightsBtnGroup</string>
-           </attribute>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="8" column="0">
-        <widget class="QLabel" name="label_20">
-         <property name="text">
-          <string>Gopher Map</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <item>
-          <widget class="QRadioButton" name="gophermap_icon">
-           <property name="text">
-            <string>Use icons</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">gophermapBtnGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="gophermap_text">
-           <property name="text">
-            <string>Use text only</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">gophermapBtnGroup</string>
-           </attribute>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="9" column="0">
         <widget class="QLabel" name="label_22">
          <property name="text">
           <string>Unknown Scheme</string>
          </property>
         </widget>
        </item>
-       <item row="9" column="1">
+       <item row="7" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
           <widget class="QRadioButton" name="scheme_os_default">
@@ -275,181 +173,38 @@
          </item>
         </layout>
        </item>
-       <item row="10" column="0">
-        <widget class="QLabel" name="label_23">
-         <property name="text">
-          <string>Hidden files in file:// directories</string>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_8">
-         <item>
-          <widget class="QRadioButton" name="show_hidden_files">
-           <property name="text">
-            <string>Show</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">hiddenFilesBtnGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="hide_hidden_files">
-           <property name="text">
-            <string>Hide</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">hiddenFilesBtnGroup</string>
-           </attribute>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="11" column="0">
-        <widget class="QLabel" name="label_24">
-         <property name="text">
-          <string>URL bar highlights</string>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_9">
-         <item>
-          <widget class="QRadioButton" name="urlbarhl_fancy">
-           <property name="text">
-            <string>Fancy</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">urlbarBtnGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="urlbarhl_none">
-           <property name="text">
-            <string>None</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">urlbarBtnGroup</string>
-           </attribute>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="12" column="0">
-        <widget class="QLabel" name="label_39">
-         <property name="toolTip">
-          <string>Replace single and double quotes with curly typographer quotes.</string>
-         </property>
-         <property name="text">
-          <string>Use typographer's quotes</string>
-         </property>
-        </widget>
-       </item>
-       <item row="12" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_10">
-         <item>
-          <widget class="QRadioButton" name="fancyquotes_on">
-           <property name="text">
-            <string>On</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">quotesBtnGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="fancyquotes_off">
-           <property name="text">
-            <string>Off</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">quotesBtnGroup</string>
-           </attribute>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="13" column="0">
-        <widget class="QLabel" name="emojis_label">
-         <property name="toolTip">
-          <string>Whether to render emojis in a page.</string>
-         </property>
-         <property name="text">
-          <string>Render emojis</string>
-         </property>
-        </widget>
-       </item>
-       <item row="13" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_17">
-         <item>
-          <widget class="QRadioButton" name="emojis_on">
-           <property name="text">
-            <string>On</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">emojisBtnGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="emojis_off">
-           <property name="text">
-            <string>Off</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">emojisBtnGroup</string>
-           </attribute>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="14" column="0">
-        <widget class="QLabel" name="ansi_label">
-         <property name="toolTip">
-          <string>Determine how to render ANSI escape sequences</string>
-         </property>
-         <property name="text">
-          <string>ANSI Escape Sequences</string>
-         </property>
-        </widget>
-       </item>
-       <item row="14" column="1">
-        <widget class="QComboBox" name="ansi_escapes"/>
-       </item>
-       <item row="15" column="0">
+       <item row="8" column="0">
         <widget class="QLabel" name="label_26">
          <property name="text">
           <string>Max. Number of Redirections</string>
          </property>
         </widget>
        </item>
-       <item row="15" column="1">
+       <item row="8" column="1">
         <widget class="QSpinBox" name="max_redirects">
          <property name="value">
           <number>5</number>
          </property>
         </widget>
        </item>
-       <item row="16" column="0">
+       <item row="9" column="0">
         <widget class="QLabel" name="label_27">
          <property name="text">
           <string>Redirection Handling</string>
          </property>
         </widget>
        </item>
-       <item row="16" column="1">
+       <item row="9" column="1">
         <widget class="QComboBox" name="redirection_mode"/>
        </item>
-       <item row="17" column="0">
+       <item row="10" column="0">
         <widget class="QLabel" name="label_28">
          <property name="text">
           <string>Network Timeout</string>
          </property>
         </widget>
        </item>
-       <item row="17" column="1">
+       <item row="10" column="1">
         <widget class="QSpinBox" name="network_timeout">
          <property name="suffix">
           <string> ms</string>
@@ -462,14 +217,14 @@
          </property>
         </widget>
        </item>
-       <item row="18" column="0">
+       <item row="2" column="0">
         <widget class="QLabel" name="label_29">
          <property name="text">
           <string>Additional toolbar buttons</string>
          </property>
         </widget>
        </item>
-       <item row="18" column="1">
+       <item row="2" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_99">
          <item>
           <widget class="QCheckBox" name="enable_home_btn">
@@ -507,6 +262,284 @@
       <attribute name="title">
        <string>Display</string>
       </attribute>
+      <layout class="QFormLayout" name="formLayout_3">
+       <item row="4" column="0">
+        <widget class="QLabel" name="ansi_label">
+         <property name="toolTip">
+          <string>Determine how to render ANSI escape sequences</string>
+         </property>
+         <property name="text">
+          <string>ANSI Escape Sequences</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QComboBox" name="ansi_escapes"/>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_20">
+         <property name="text">
+          <string>Gopher Map</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QRadioButton" name="gophermap_icon">
+           <property name="text">
+            <string>Use icons</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_7</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="gophermap_text">
+           <property name="text">
+            <string>Use text only</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_7</string>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="emojis_label">
+         <property name="toolTip">
+          <string>Whether to render emojis in a page.</string>
+         </property>
+         <property name="text">
+          <string>Render emojis</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_17">
+         <item>
+          <widget class="QRadioButton" name="emojis_on">
+           <property name="text">
+            <string>On</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_2</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="emojis_off">
+           <property name="text">
+            <string>Off</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_2</string>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_24">
+         <property name="text">
+          <string>URL bar highlights</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <item>
+          <widget class="QRadioButton" name="urlbarhl_fancy">
+           <property name="text">
+            <string>Fancy</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_3</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="urlbarhl_none">
+           <property name="text">
+            <string>None</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_3</string>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="text_rendering_label">
+         <property name="text">
+          <string>Text Rendering</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QRadioButton" name="fancypants_on">
+           <property name="text">
+            <string>Fancy</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_4</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="fancypants_off">
+           <property name="text">
+            <string>Always plain text</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_4</string>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="text_highlight_label">
+         <property name="text">
+          <string>Enable text highlights</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QRadioButton" name="texthl_on">
+           <property name="text">
+            <string>On (Experimental)</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_6</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="texthl_off">
+           <property name="text">
+            <string>Off</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_6</string>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="label_23">
+         <property name="text">
+          <string>Hidden files in file:// directories</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <item>
+          <widget class="QRadioButton" name="show_hidden_files">
+           <property name="text">
+            <string>Show</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_8</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="hide_hidden_files">
+           <property name="text">
+            <string>Hide</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_8</string>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_39">
+         <property name="toolTip">
+          <string>Replace single and double quotes with curly typographer quotes.</string>
+         </property>
+         <property name="text">
+          <string>Use typographer's quotes</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
+         <item>
+          <widget class="QRadioButton" name="fancyquotes_on">
+           <property name="text">
+            <string>On</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_5</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="fancyquotes_off">
+           <property name="text">
+            <string>Off</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_5</string>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_18">
+         <property name="text">
+          <string>Strip &lt;nav&gt; from HTML pages</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_11">
+         <item>
+          <widget class="QRadioButton" name="strip_nav_on">
+           <property name="text">
+            <string>On</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_9</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="strip_nav_off">
+           <property name="text">
+            <string>Off</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_9</string>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="cache_tab">
       <attribute name="title">
@@ -1538,29 +1571,13 @@
   <tabstop>ui_theme</tabstop>
   <tabstop>icon_theme</tabstop>
   <tabstop>ui_density</tabstop>
-  <tabstop>start_page</tabstop>
-  <tabstop>search_engine</tabstop>
   <tabstop>enable_gemini</tabstop>
   <tabstop>enable_gopher</tabstop>
   <tabstop>enable_finger</tabstop>
   <tabstop>enable_http</tabstop>
   <tabstop>enable_https</tabstop>
-  <tabstop>fancypants_on</tabstop>
-  <tabstop>fancypants_off</tabstop>
-  <tabstop>texthl_on</tabstop>
-  <tabstop>texthl_off</tabstop>
-  <tabstop>gophermap_icon</tabstop>
-  <tabstop>gophermap_text</tabstop>
   <tabstop>scheme_os_default</tabstop>
   <tabstop>scheme_error</tabstop>
-  <tabstop>show_hidden_files</tabstop>
-  <tabstop>hide_hidden_files</tabstop>
-  <tabstop>urlbarhl_fancy</tabstop>
-  <tabstop>urlbarhl_none</tabstop>
-  <tabstop>fancyquotes_on</tabstop>
-  <tabstop>fancyquotes_off</tabstop>
-  <tabstop>emojis_on</tabstop>
-  <tabstop>emojis_off</tabstop>
   <tabstop>max_redirects</tabstop>
   <tabstop>redirection_mode</tabstop>
   <tabstop>network_timeout</tabstop>
@@ -1646,13 +1663,14 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="gophermapBtnGroup"/>
   <buttongroup name="buttonGroup"/>
-  <buttongroup name="quotesBtnGroup"/>
-  <buttongroup name="hiddenFilesBtnGroup"/>
-  <buttongroup name="textRenderingBtnGroup"/>
-  <buttongroup name="textHighlightsBtnGroup"/>
-  <buttongroup name="urlbarBtnGroup"/>
-  <buttongroup name="emojisBtnGroup"/>
+  <buttongroup name="buttonGroup_2"/>
+  <buttongroup name="buttonGroup_3"/>
+  <buttongroup name="buttonGroup_4"/>
+  <buttongroup name="buttonGroup_5"/>
+  <buttongroup name="buttonGroup_6"/>
+  <buttongroup name="buttonGroup_7"/>
+  <buttongroup name="buttonGroup_8"/>
+  <buttongroup name="buttonGroup_9"/>
  </buttongroups>
 </ui>

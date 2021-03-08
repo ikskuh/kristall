@@ -3,6 +3,7 @@
 #include "renderhelpers.hpp"
 #include "textstyleinstance.hpp"
 #include "gumbo.h"
+#include "kristall.hpp"
 
 #include <QDebug>
 #include <QTextTable>
@@ -126,9 +127,8 @@ static void renderRecursive(RenderState & state, GumboNode const & node, int nes
             return;
 
         case GUMBO_TAG_NAV: {
-            // TODO: Optionally strip navigation from sites
-            //if(true)
-            //    return;
+            if(kristall::globals().options.strip_nav)
+                return;
             stream += "<nav>";
             break;
         }
