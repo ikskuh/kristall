@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1100</width>
-    <height>650</height>
+    <height>737</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTabWidget" name="tabWidget">
+    <widget class="QTabWidget" name="tab_control">
      <property name="currentIndex">
       <number>0</number>
      </property>
@@ -62,7 +62,6 @@
        <item row="2" column="1">
         <widget class="QComboBox" name="ui_density"/>
        </item>
-
        <item row="3" column="0">
         <widget class="QLabel" name="label_14">
          <property name="text">
@@ -144,7 +143,7 @@
         </layout>
        </item>
        <item row="6" column="0">
-        <widget class="QLabel" name="label_19">
+        <widget class="QLabel" name="text_rendering_label">
          <property name="text">
           <string>Text Rendering</string>
          </property>
@@ -178,7 +177,7 @@
         </layout>
        </item>
        <item row="7" column="0">
-        <widget class="QLabel" name="label_18">
+        <widget class="QLabel" name="text_highlight_label">
          <property name="text">
           <string>Enable text highlights</string>
          </property>
@@ -340,11 +339,11 @@
        </item>
        <item row="12" column="0">
         <widget class="QLabel" name="label_39">
-         <property name="text">
-          <string>Use typographer's quotes</string>
-         </property>
          <property name="toolTip">
           <string>Replace single and double quotes with curly typographer quotes.</string>
+         </property>
+         <property name="text">
+          <string>Use typographer's quotes</string>
          </property>
         </widget>
        </item>
@@ -374,11 +373,11 @@
        </item>
        <item row="13" column="0">
         <widget class="QLabel" name="emojis_label">
-         <property name="text">
-          <string>Render emojis</string>
-         </property>
          <property name="toolTip">
           <string>Whether to render emojis in a page.</string>
+         </property>
+         <property name="text">
+          <string>Render emojis</string>
          </property>
         </widget>
        </item>
@@ -406,21 +405,19 @@
          </item>
         </layout>
        </item>
-
        <item row="14" column="0">
         <widget class="QLabel" name="ansi_label">
-         <property name="text">
-          <string>ANSI Escape Sequences</string>
-         </property>
          <property name="toolTip">
           <string>Determine how to render ANSI escape sequences</string>
+         </property>
+         <property name="text">
+          <string>ANSI Escape Sequences</string>
          </property>
         </widget>
        </item>
        <item row="14" column="1">
         <widget class="QComboBox" name="ansi_escapes"/>
        </item>
-
        <item row="15" column="0">
         <widget class="QLabel" name="label_26">
          <property name="text">
@@ -504,17 +501,29 @@
          </item>
         </layout>
        </item>
-       <item row="19" column="0">
+      </layout>
+     </widget>
+     <widget class="QWidget" name="display_tab">
+      <attribute name="title">
+       <string>Display</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="cache_tab">
+      <attribute name="title">
+       <string>Cache</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_2">
+       <item row="0" column="0">
         <widget class="QLabel" name="label_30">
-         <property name="text">
-          <string>Total cache size limit</string>
-         </property>
          <property name="toolTip">
           <string>The total amount of memory that can be occupied by cached items. Set to zero to disable in-memory caching.</string>
          </property>
+         <property name="text">
+          <string>Total cache size limit</string>
+         </property>
         </widget>
        </item>
-       <item row="19" column="1">
+       <item row="0" column="1">
         <widget class="QSpinBox" name="cache_limit">
          <property name="suffix">
           <string> KiB</string>
@@ -527,18 +536,17 @@
          </property>
         </widget>
        </item>
-
-       <item row="20" column="0">
+       <item row="1" column="0">
         <widget class="QLabel" name="label_31">
-         <property name="text">
-          <string>Cached item size threshold</string>
-         </property>
          <property name="toolTip">
           <string>Items which are below this threshold are cached in memory. Any above are simply discarded.</string>
          </property>
+         <property name="text">
+          <string>Cached item size threshold</string>
+         </property>
         </widget>
        </item>
-       <item row="20" column="1">
+       <item row="1" column="1">
         <widget class="QSpinBox" name="cache_threshold">
          <property name="suffix">
           <string> KiB</string>
@@ -551,18 +559,17 @@
          </property>
         </widget>
        </item>
-
-       <item row="21" column="0">
-        <widget class="QLabel" name="label_31">
-         <property name="text">
-          <string>Cached item life</string>
-         </property>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_43">
          <property name="toolTip">
           <string>How long cached items last before they are expired and require a reload.</string>
          </property>
+         <property name="text">
+          <string>Cached item life</string>
+         </property>
         </widget>
        </item>
-       <item row="21" column="1">
+       <item row="2" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_25">
          <item>
           <widget class="QSpinBox" name="cache_life">
@@ -579,17 +586,16 @@
          </item>
          <item>
           <widget class="QCheckBox" name="enable_unlimited_cache_life">
-           <property name="text">
-            <string>Unlimited item life</string>
-           </property>
            <property name="toolTip">
             <string>Sets cached items to be unexpirable. Items will only be removed if the cache is full.</string>
+           </property>
+           <property name="text">
+            <string>Unlimited item life</string>
            </property>
           </widget>
          </item>
         </layout>
        </item>
-
       </layout>
      </widget>
      <widget class="QWidget" name="style_tab">
@@ -616,8 +622,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>510</width>
-              <height>767</height>
+              <width>530</width>
+              <height>712</height>
              </rect>
             </property>
             <layout class="QFormLayout" name="style_scroll_layout">
@@ -825,7 +831,6 @@
                </item>
               </layout>
              </item>
-
              <item row="5" column="0">
               <widget class="QLabel" name="label_6">
                <property name="text">
@@ -875,7 +880,6 @@
                </item>
               </layout>
              </item>
-
              <item row="6" column="0">
               <widget class="QLabel" name="label_33">
                <property name="text">
@@ -925,7 +929,6 @@
                </item>
               </layout>
              </item>
-
              <item row="7" column="0">
               <widget class="QLabel" name="label_7">
                <property name="text">
@@ -1060,7 +1063,6 @@
              <item row="13" column="1">
               <widget class="QComboBox" name="auto_theme"/>
              </item>
-
              <item row="14" column="0">
               <widget class="QLabel" name="label_13">
                <property name="text">
@@ -1077,11 +1079,10 @@
                 <number>0</number>
                </property>
                <property name="maximum">
-                <double>350</double>
+                <double>350.000000000000000</double>
                </property>
               </widget>
              </item>
-
              <item row="15" column="0">
               <widget class="QLabel" name="label_32">
                <property name="text">
@@ -1098,11 +1099,10 @@
                 <number>0</number>
                </property>
                <property name="maximum">
-                <double>350</double>
+                <double>350.000000000000000</double>
                </property>
               </widget>
              </item>
-
              <item row="16" column="0">
               <widget class="QLabel" name="label_25">
                <property name="text">
@@ -1114,34 +1114,33 @@
               <layout class="QHBoxLayout" name="horizontalLayout_98">
                <item>
                 <widget class="QCheckBox" name="enable_justify_text">
-                 <property name="text">
-                  <string>Justify text</string>
-                 </property>
                  <property name="toolTip">
                   <string>Justify text on the page, instead of left-aligning it.</string>
+                 </property>
+                 <property name="text">
+                  <string>Justify text</string>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QCheckBox" name="enable_centre_h1">
-                 <property name="text">
-                  <string>Centre first H1 </string>
-                 </property>
                  <property name="toolTip">
                   <string>Whether to centre the first top-level heading in the document.</string>
+                 </property>
+                 <property name="text">
+                  <string>Centre first H1 </string>
                  </property>
                 </widget>
                </item>
               </layout>
              </item>
-
              <item row="17" column="0">
               <widget class="QLabel" name="label_38">
-               <property name="text">
-                <string>Text width limit</string>
-               </property>
                <property name="toolTip">
                 <string>Preferred width of formatted text on the page.</string>
+               </property>
+               <property name="text">
+                <string>Text width limit</string>
                </property>
               </widget>
              </item>
@@ -1149,33 +1148,32 @@
               <layout class="QHBoxLayout" name="horizontalLayout_26">
                <item>
                 <widget class="QSpinBox" name="text_width">
+                 <property name="suffix">
+                  <string> px</string>
+                 </property>
                  <property name="minimum">
                   <number>300</number>
-                 </property>
-                 <property name="value">
-                  <number>900</number>
                  </property>
                  <property name="maximum">
                   <number>2000</number>
                  </property>
-                 <property name="suffix">
-                  <string> px</string>
+                 <property name="value">
+                  <number>300</number>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QCheckBox" name="enable_text_width">
-                 <property name="text">
-                  <string>Enabled</string>
-                 </property>
                  <property name="toolTip">
                   <string>Whether to limit the width of formatted text on the page or not.</string>
+                 </property>
+                 <property name="text">
+                  <string>Enabled</string>
                  </property>
                 </widget>
                </item>
               </layout>
              </item>
-
              <item row="18" column="0">
               <widget class="QLabel" name="label_35">
                <property name="text">
@@ -1192,11 +1190,10 @@
                 <number>0</number>
                </property>
                <property name="maximum">
-                <double>30</double>
+                <double>30.000000000000000</double>
                </property>
               </widget>
              </item>
-
              <item row="19" column="0">
               <widget class="QLabel" name="label_36">
                <property name="text">
@@ -1213,11 +1210,10 @@
                 <number>0</number>
                </property>
                <property name="maximum">
-                <double>30</double>
+                <double>30.000000000000000</double>
                </property>
               </widget>
              </item>
-
              <item row="20" column="0">
               <widget class="QLabel" name="label_37">
                <property name="text">
@@ -1227,7 +1223,6 @@
              </item>
              <item row="20" column="1">
               <layout class="QHBoxLayout" name="indent_container">
-
                <item>
                 <widget class="QLabel" name="label_96">
                  <property name="text">
@@ -1237,18 +1232,17 @@
                </item>
                <item>
                 <widget class="QSpinBox" name="indent_p">
-                 <property name="value">
-                  <number>1</number>
-                 </property>
                  <property name="minimum">
                   <number>0</number>
                  </property>
                  <property name="maximum">
                   <number>7</number>
                  </property>
+                 <property name="value">
+                  <number>1</number>
+                 </property>
                 </widget>
                </item>
-
                <item>
                 <widget class="QLabel" name="label_94">
                  <property name="text">
@@ -1258,18 +1252,17 @@
                </item>
                <item>
                 <widget class="QSpinBox" name="indent_h">
-                 <property name="value">
-                  <number>0</number>
-                 </property>
                  <property name="minimum">
                   <number>0</number>
                  </property>
                  <property name="maximum">
                   <number>7</number>
                  </property>
+                 <property name="value">
+                  <number>0</number>
+                 </property>
                 </widget>
                </item>
-
                <item>
                 <widget class="QLabel" name="label_95">
                  <property name="text">
@@ -1279,18 +1272,17 @@
                </item>
                <item>
                 <widget class="QSpinBox" name="indent_bq">
-                 <property name="value">
-                  <number>2</number>
-                 </property>
                  <property name="minimum">
                   <number>0</number>
                  </property>
                  <property name="maximum">
                   <number>7</number>
                  </property>
+                 <property name="value">
+                  <number>2</number>
+                 </property>
                 </widget>
                </item>
-
                <item>
                 <widget class="QLabel" name="label_93">
                  <property name="text">
@@ -1300,21 +1292,19 @@
                </item>
                <item>
                 <widget class="QSpinBox" name="indent_l">
-                 <property name="value">
-                  <number>2</number>
-                 </property>
                  <property name="minimum">
                   <number>0</number>
                  </property>
                  <property name="maximum">
                   <number>7</number>
                  </property>
+                 <property name="value">
+                  <number>2</number>
+                 </property>
                 </widget>
                </item>
-
               </layout>
              </item>
-
              <item row="21" column="0">
               <widget class="QLabel" name="label_42">
                <property name="text">
@@ -1331,11 +1321,10 @@
                 <number>0</number>
                </property>
                <property name="maximum">
-                <double>100</double>
+                <double>100.000000000000000</double>
                </property>
               </widget>
              </item>
-
              <item row="22" column="0">
               <widget class="QLabel" name="label_41">
                <property name="text">
@@ -1346,7 +1335,6 @@
              <item row="22" column="1">
               <widget class="QComboBox" name="list_symbol"/>
              </item>
-
              <item row="12" column="0">
               <widget class="QLabel" name="label_21">
                <property name="text">
@@ -1406,7 +1394,8 @@
                 <string>...</string>
                </property>
                <property name="icon">
-                <iconset theme="document-new"/>
+                <iconset theme="document-new">
+                 <normaloff>.</normaloff>.</iconset>
                </property>
               </widget>
              </item>
@@ -1419,7 +1408,8 @@
                 <string>...</string>
                </property>
                <property name="icon">
-                <iconset theme="document-save"/>
+                <iconset theme="document-save">
+                 <normaloff>.</normaloff>.</iconset>
                </property>
               </widget>
              </item>
@@ -1449,7 +1439,8 @@
                 <string>...</string>
                </property>
                <property name="icon">
-                <iconset theme="document-import"/>
+                <iconset theme="document-import">
+                 <normaloff>.</normaloff>.</iconset>
                </property>
               </widget>
              </item>
@@ -1462,7 +1453,8 @@
                 <string>...</string>
                </property>
                <property name="icon">
-                <iconset theme="document-export"/>
+                <iconset theme="document-export">
+                 <normaloff>.</normaloff>.</iconset>
                </property>
               </widget>
              </item>
@@ -1494,7 +1486,8 @@
      </widget>
      <widget class="QWidget" name="gem_trust_page">
       <attribute name="icon">
-       <iconset theme="view-certificate"/>
+       <iconset theme="view-certificate">
+        <normaloff>.</normaloff>.</iconset>
       </attribute>
       <attribute name="title">
        <string>Gemini TLS</string>
@@ -1507,7 +1500,8 @@
      </widget>
      <widget class="QWidget" name="https_trust">
       <attribute name="icon">
-       <iconset theme="view-certificate"/>
+       <iconset theme="view-certificate">
+        <normaloff>.</normaloff>.</iconset>
       </attribute>
       <attribute name="title">
        <string>HTTPS TLS</string>
@@ -1541,7 +1535,6 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>tabWidget</tabstop>
   <tabstop>ui_theme</tabstop>
   <tabstop>icon_theme</tabstop>
   <tabstop>ui_density</tabstop>
@@ -1575,10 +1568,6 @@
   <tabstop>enable_newtab_btn</tabstop>
   <tabstop>enable_root_btn</tabstop>
   <tabstop>enable_parent_btn</tabstop>
-  <tabstop>cache_limit</tabstop>
-  <tabstop>cache_threshold</tabstop>
-  <tabstop>cache_life</tabstop>
-  <tabstop>enable_unlimited_cache_life</tabstop>
   <tabstop>bg_change_color</tabstop>
   <tabstop>style_preview</tabstop>
   <tabstop>std_change_font</tabstop>
@@ -1658,12 +1647,12 @@
  </connections>
  <buttongroups>
   <buttongroup name="gophermapBtnGroup"/>
-  <buttongroup name="textHighlightsBtnGroup"/>
-  <buttongroup name="textRenderingBtnGroup"/>
   <buttongroup name="buttonGroup"/>
-  <buttongroup name="hiddenFilesBtnGroup"/>
-  <buttongroup name="urlbarBtnGroup"/>
   <buttongroup name="quotesBtnGroup"/>
+  <buttongroup name="hiddenFilesBtnGroup"/>
+  <buttongroup name="textRenderingBtnGroup"/>
+  <buttongroup name="textHighlightsBtnGroup"/>
+  <buttongroup name="urlbarBtnGroup"/>
   <buttongroup name="emojisBtnGroup"/>
  </buttongroups>
 </ui>

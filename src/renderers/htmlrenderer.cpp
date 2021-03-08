@@ -87,12 +87,6 @@ static char const * getAttribute(GumboElement const & element, char const * attr
     return nullptr;
 }
 
-// Problems:
-// Style/theme elements must use a push/pop
-// use instead of "replacing" styles
-// Otherwise, <h1><a>Foo</a></h1> will be rendered as a link, not as a heading.
-// Should be combined here.
-
 static void renderRecursive(RenderState & state, GumboNode const & node, int nesting = 0)
 {
     auto & stream = state.stream;
