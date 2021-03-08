@@ -77,6 +77,7 @@ struct GenericSettings
     bool fancy_urlbar = true;
     bool fancy_quotes = true;
     bool emojis_enabled = true;
+    bool strip_nav = false;
     AnsiEscRenderMode ansi_escapes = AnsiEscRenderMode::render;
 
     // This is set automatically

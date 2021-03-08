@@ -107,10 +107,6 @@ Kristall offers a vast amount of settings. You can style the documents to your l
 
 This tab contains an unsorted list of settings that allow you to tweak Kristalls behaviour.
 
-[UI Theme] controls whether the Qt interface is displayed in a dark or a light theme. Selecting [Light] or [Dark] will use the provided Qt light/dark themes. [OS Default] will use your system theme.
-
-[Icon Theme] controls the specific icon set that the Qt interface will use. Usually, the default [Auto] option should be good enough, however for those using the [OS Default] UI theme, this option may be useful.
-
 [Start Page] is the URL to the page that will be loaded for new tabs and windows. Default is [about:favourites].
 
 [Search Engine] is the search engine to use when typing non-URLs in the URL bar. A handful of Gemini search engines are provided as a drop-down. If you would like to specify your own, specify it in a format similar to the following:
@@ -125,19 +121,41 @@ Note the "%1" at the end of the URL. This is where search queries will be insert
 gemini://example2.com/search/another/%1
 ```
 
+[Additional Toolbar Items] contains various additional toolbar items which some may find useful.
+
+* [Home] button opens the configured home page in the current tab.
+* [New tab] button appears to the right of the tab bar. This simply adds a new tab to the current window.
+* [Root] button takes you to the root directory of the current site. (See Menus>Navigation section for explanation of what this does).
+* [Parent] button takes you to the parent directory of the current site. (See Menus>Navigation section for explanation of what this does).
+
+[UI Theme] controls whether the Qt interface is displayed in a dark or a light theme. Selecting [Light] or [Dark] will use the provided Qt light/dark themes. [OS Default] will use your system theme.
+
+[Icon Theme] controls the specific icon set that the Qt interface will use. Usually, the default [Auto] option should be good enough, however for those using the [OS Default] UI theme, this option may be useful.
+
+[UI Density] controls the margin of the toolbar buttons.
+
+* [Compact] has a very low margin
+* [Classic] has the original big margin
+
 [Enabled Protocols] allows you to fine-tune which protocols are fetched by Kristall. By default, only Gemini is enabled, all other protocols are disabled. Disabled protocols are either not served, and produce an error message, or are forwarded to your OS handler for that URL scheme.
-
-[Text Rendering] allows one to control whether Kristall parses text input files or not. This is usually set to [Fancy] which renders text/html, text/gemini, text/markdown and text/gophermap to a nice, hyperlinked display. When set to [Always plain text], Kristall will display all text/* files as plaintext files instead. This may be inconvenient, but necessary for misparsed sites.
-
-[Enable text highlights] allows you to enable *bolding* and _underlining_ in text/gemini documents. Bolding **like this** also works.
-
-[Gopher Map] allows you to chose a modern iconized style for gopher maps or, if you are an old schooler, just use a textual description of the item types in the map.
 
 [Unknown Scheme] changes the behaviour how Kristall handles unknown/disabled URL schemes. [Use OS default handler] will invoke your OS default, [Display error message] will just pop up a message box and tell you that Kristall cannot handle this URL.
 
-[Hidden files in file:// directories] determines whether hidden files will display in local directory listings (i.e file:// URLs which do not point to a specific document but rather a directory).
+[Max. Number of Redirections] is a setting that allows you to restrict sites to redirect you only a certain number of times before erroring out. Setting this to 0 will disable redirections completely, displaying an error with the target URL.
+
+[Redirection Handling] allows you to fine-tune the way Kristall allows redirections. Each of the options defines if Kristall should ask you to allow the redirect or do it silently. [Ask for cross-scheme redirection] will pop up a message box if a host tries to redirect you from one URL scheme to another, e.g. when a web server redirects you from HTTP to HTTPS. [Ask for cross-host redirection] will pop up the message box for all redirections through host boundaries, e.g. when example.com redirects you to www.example.com. [Ask for cross-scheme or cross-host redirection] will enable both of the previous behaviours, asking when any cross-boundary redirection happens. [Ask for all redirections] will pop up a message box every time a server tries to redirect you, keeping you in full control over all redirections. [Silently redirect everything] is the exact oppositve of that, accepting all redirections without warning or notice.
+
+[Network Timeout] is the time a server is allowed to *not respond anything* before a error message appears. As long as a server dripples some bytes to Kristall, no timeout will happen, so having a slow or bad connection shouldn't yield timeouts.
+
+### Display
+
+This tabs contains tweaks you can apply to the display behaviour. Change text effects or rendering of documents.
+
+[Render emojis] allows you to toggle whether to render emojis using installed emoji fonts. Disabling this can help prevent text rendering issues due to emojis. Note that emojis are only supported in Kristall builds with Qt 5.13 or later.
 
 [URL bar highlights] sets whether the URL bar should use "fancy" highlights. The highlighting simply makes the domain of the site more prominent/visible, and the text around it slightly dimmed. This is purely a cosmetic feature.
+
+[Text Rendering] allows one to control whether Kristall parses text input files or not. This is usually set to [Fancy] which renders text/html, text/gemini, text/markdown and text/gophermap to a nice, hyperlinked display. When set to [Always plain text], Kristall will display all text/* files as plaintext files instead. This may be inconvenient, but necessary for misparsed sites.
 
 [Use typographer's quotes] sets whether to replace regular quotation marks, that is:
 ```
@@ -149,25 +167,22 @@ with fancy Unicode quotes, which include the following:
 ```
 This is a purely cosmetic feature that may aid in readability.
 
-[Render emojis] allows you to toggle whether to render emojis using installed emoji fonts. Disabling this can help prevent text rendering issues due to emojis. Note that emojis are only supported in Kristall builds with Qt 5.13 or later.
-
 [ANSI Escape Sequences] determines the method of handling ANSI escape codes. This allows a document to alter some of the format (colour, etc) of text.
 * [Ignore] ignores ANSI sequences and leaves them in the text. This option will often create eyesores out of pages that have fancy ANSI art!
 * [Interpret (preformatted text only)] will allow Kristall to interpret ANSI escape sequences in *preformatted* text blocks.
 * [Strip] is a hybrid of the above. It strips ANSI sequences from the text, and displays the text normally, as if the escape sequences were not there.
 
-[Max. Number of Redirections] is a setting that allows you to restrict sites to redirect you only a certain number of times before erroring out. Setting this to 0 will disable redirections completely, displaying an error with the target URL.
+[Enable text highlights] allows you to enable *bolding* and _underlining_ in text/gemini documents. Bolding **like this** also works.
 
-[Redirection Handling] allows you to fine-tune the way Kristall allows redirections. Each of the options defines if Kristall should ask you to allow the redirect or do it silently. [Ask for cross-scheme redirection] will pop up a message box if a host tries to redirect you from one URL scheme to another, e.g. when a web server redirects you from HTTP to HTTPS. [Ask for cross-host redirection] will pop up the message box for all redirections through host boundaries, e.g. when example.com redirects you to www.example.com. [Ask for cross-scheme or cross-host redirection] will enable both of the previous behaviours, asking when any cross-boundary redirection happens. [Ask for all redirections] will pop up a message box every time a server tries to redirect you, keeping you in full control over all redirections. [Silently redirect everything] is the exact oppositve of that, accepting all redirections without warning or notice.
+[Gopher Map] allows you to chose a modern iconized style for gopher maps or, if you are an old schooler, just use a textual description of the item types in the map.
 
-[Network Timeout] is the time a server is allowed to *not respond anything* before a error message appears. As long as a server dripples some bytes to Kristall, no timeout will happen, so having a slow or bad connection shouldn't yield timeouts.
+[Hidden files in file:// directories] determines whether hidden files will display in local directory listings (i.e file:// URLs which do not point to a specific document but rather a directory).
 
-[Additional Toolbar Items] contains various additional toolbar items which some may find useful.
+[Strip <nav> from HTML pages] allows you to remove the <nav> tag from HTML pages. This might make certain pages more readable, others completly unusable.
 
-* [Home] button opens the configured home page in the current tab.
-* [New tab] button appears to the right of the tab bar. This simply adds a new tab to the current window.
-* [Root] button takes you to the root directory of the current site. (See Menus>Navigation section for explanation of what this does).
-* [Parent] button takes you to the parent directory of the current site. (See Menus>Navigation section for explanation of what this does).
+### Cache
+
+Kristall employs a small cache system that makes forward/backward navigation much quicker. This tab provides controls to tweak the caching behaviour.
 
 [Total cache size limit] sets the total amount of memory that can be used by Kristall to cache pages. By default this is set to 500 KiB, but can be set to 0 to completely disable the caching system. The larger this number is, the more memory you are allowing Kristall to use.
 

@@ -741,6 +741,8 @@ void GenericSettings::load(QSettings &settings)
 
     fancy_quotes = settings.value("fancy_quotes", true).toBool();
 
+    strip_nav = settings.value("strip_nav", false).toBool();
+
     emojis_enabled = kristall::EMOJIS_SUPPORTED
         ? settings.value("emojis_enabled", true).toBool()
         : false;
@@ -809,6 +811,7 @@ void GenericSettings::save(QSettings &settings) const
     settings.setValue("show_hidden_files_in_dirs", show_hidden_files_in_dirs);
     settings.setValue("fancy_urlbar", fancy_urlbar);
     settings.setValue("fancy_quotes", fancy_quotes);
+    settings.setValue("strip_nav", strip_nav);
     settings.setValue("max_redirections", max_redirections);
     settings.setValue("redirection_policy", int(redirection_policy));
     settings.setValue("network_timeout", network_timeout);
