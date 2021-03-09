@@ -86,7 +86,7 @@ external-cmark {
 
 external-gumbo-parser {
     CONFIG += link_pkgconfig
-    PKGCONFIG += gumbo-parser
+    PKGCONFIG += gumbo
 } else {
     include($$PWD/../lib/gumbo-parser/gumbo-parser.pri)
 }
