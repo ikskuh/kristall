@@ -36,7 +36,7 @@ kristall: build/kristall
 .PHONY: build/kristall
 build/kristall: src/*
 	mkdir -p build
-	cd build; $(HOMEBREW_PATH) $(QMAKE_COMMAND) CONFIG+=$(QMAKE_CONFIG) ../src/kristall.pro && $(MAKE)
+	cd build; $(HOMEBREW_PATH) $(QMAKE_COMMAND) "CONFIG+=$(QMAKE_CONFIG)" ../src/kristall.pro && $(MAKE)
 	cd doc; ./gen-man.sh
 
 install: kristall
