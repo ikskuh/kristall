@@ -186,7 +186,7 @@
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>&amp;File</string>
     </property>
     <addaction name="actionNew_Tab"/>
     <addaction name="actionNew_window"/>
@@ -202,7 +202,7 @@
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
-     <string>Help</string>
+     <string>&amp;Help</string>
     </property>
     <addaction name="actionHelp"/>
     <addaction name="actionChangelog"/>
@@ -212,14 +212,14 @@
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>View</string>
+     <string>&amp;View</string>
     </property>
     <addaction name="actionShow_document_source"/>
     <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuNavigation">
     <property name="title">
-     <string>Navigation</string>
+     <string>&amp;Navigation</string>
     </property>
     <addaction name="actionGo_to_home"/>
     <addaction name="actionBackward"/>
@@ -242,7 +242,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>About...</string>
+    <string>&amp;About...</string>
    </property>
   </action>
   <action name="actionQuit">
@@ -251,7 +251,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Quit</string>
+    <string>&amp;Quit</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
@@ -259,7 +259,7 @@
   </action>
   <action name="actionNew_Tab">
    <property name="text">
-    <string>New Tab</string>
+    <string>New &amp;Tab</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+T</string>
@@ -271,7 +271,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Close Tab</string>
+    <string>&amp;Close Tab</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+W</string>
@@ -283,7 +283,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Settings</string>
+    <string>&amp;Settings</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+,</string>
@@ -295,7 +295,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Back</string>
+    <string>&amp;Back</string>
    </property>
    <property name="toolTip">
     <string>Back</string>
@@ -310,7 +310,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Forward</string>
+    <string>For&amp;ward</string>
    </property>
    <property name="toolTip">
     <string>Forward</string>
@@ -325,7 +325,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Root</string>
+    <string>R&amp;oot</string>
    </property>
    <property name="toolTip">
     <string>Go to the root directory (/)</string>
@@ -340,7 +340,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Parent</string>
+    <string>&amp;Parent</string>
    </property>
    <property name="toolTip">
     <string>Go to the parent directory</string>
@@ -355,7 +355,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Refresh</string>
+    <string>&amp;Refresh</string>
    </property>
    <property name="shortcut">
     <string>F5</string>
@@ -367,7 +367,7 @@
      <normaloff>:/icons/common/qt.svg</normaloff>:/icons/common/qt.svg</iconset>
    </property>
    <property name="text">
-    <string>About Qt...</string>
+    <string>About &amp;Qt...</string>
    </property>
   </action>
   <action name="actionSave_as">
@@ -376,7 +376,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Save as...</string>
+    <string>&amp;Save as...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
@@ -391,7 +391,7 @@
      <normaloff>:/icons/light/actions/favourite-on.svg</normaloff>:/icons/light/actions/favourite-on.svg</iconset>
    </property>
    <property name="text">
-    <string>Add to favourites</string>
+    <string>Add to &amp;favourites</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+D</string>
@@ -403,7 +403,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Go to home</string>
+    <string>Go to &amp;home</string>
    </property>
    <property name="shortcut">
     <string>Alt+Home</string>
@@ -415,7 +415,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Help</string>
+    <string>&amp;Help</string>
    </property>
    <property name="shortcut">
     <string>F1</string>
@@ -427,7 +427,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Changelog</string>
+    <string>Change&amp;log</string>
    </property>
   </action>
   <action name="actionManage_Certificates">
@@ -436,12 +436,12 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Manage Certificates…</string>
+    <string>&amp;Manage Certificates…</string>
    </property>
   </action>
   <action name="actionShow_document_source">
    <property name="text">
-    <string>View document source</string>
+    <string>View document &amp;source</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+U</string>
@@ -449,7 +449,7 @@
   </action>
   <action name="actionNew_window">
    <property name="text">
-    <string>New Window</string>
+    <string>New &amp;window</string>
    </property>
    <property name="toolTip">
     <string>Opens a new window</string>
@@ -460,7 +460,7 @@
   </action>
   <action name="actionClose_Window">
    <property name="text">
-    <string>Close Window</string>
+    <string>Close Win&amp;dow</string>
    </property>
    <property name="shortcut">
     <string>Alt+F4</string>

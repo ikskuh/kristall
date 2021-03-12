@@ -50,6 +50,15 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
         QAction * act = dock->toggleViewAction();
         act->setShortcut(dock->property("_shortcut").toString());
         // act->setIcon(dock->windowIcon());
+
+        // TODO: make this work in non-English languages somehow
+        if (act->text() == "Document Outline")
+            act->setText("Document &Outline");
+        else if (act->text() == "Favourites")
+            act->setText("&Favourites");
+        else if (act->text() == "History")
+            act->setText("&History");
+
         this->ui->menuView->addAction(act);
     }
 
