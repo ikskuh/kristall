@@ -62,7 +62,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="windowTitle">
-    <string>Document Outline</string>
+    <string>Document &amp;Outline</string>
    </property>
    <property name="_shortcut" stdset="0">
     <string>Ctrl+M</string>
@@ -103,7 +103,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="windowTitle">
-    <string>Favourites</string>
+    <string>&amp;Favourites</string>
    </property>
    <property name="_shortcut" stdset="0">
     <string>Ctrl+B</string>
@@ -147,7 +147,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="windowTitle">
-    <string>History</string>
+    <string>&amp;History</string>
    </property>
    <property name="_shortcut" stdset="0">
     <string>Ctrl+H</string>
