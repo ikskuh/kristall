@@ -29,6 +29,8 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     file_mime(new QLabel(this)),
     load_time(new QLabel(this))
 {
+    this->setAttribute(Qt::WA_DeleteOnClose);
+
     ui->setupUi(this);
 
     this->url_status->setElideMode(Qt::ElideMiddle);
@@ -177,6 +179,11 @@ BrowserTab * MainWindow::tabAt(int index) const
     return qobject_cast<BrowserTab*>(this->ui->browser_tabs->widget(index));
 }
 
+int MainWindow::tabCount() const
+{
+    return this->ui->browser_tabs->count();
+}
+
 void MainWindow::setUrlPreview(const QUrl &url)
 {
     if(url.isValid()) {
@@ -323,8 +330,9 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    kristall::saveWindowState();
-
+    if(kristall::getWindowCount() == 1) {
+        kristall::saveSession();
+    }
     event->accept();
 }
 
@@ -458,6 +466,7 @@ void MainWindow::on_actionNew_Tab_triggered()
 
 void MainWindow::on_actionQuit_triggered()
 {
+    kristall::saveSession();
     QApplication::quit();
 }
 
@@ -774,7 +783,7 @@ void MainWindow::on_actionNew_window_triggered()
 
 void MainWindow::on_actionClose_Window_triggered()
 {
-    this->deleteLater();
+    this->close();
 }
 
 void MainWindow::on_favourites_view_activated(const QModelIndex &index)

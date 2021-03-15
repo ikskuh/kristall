@@ -202,6 +202,12 @@ namespace kristall
     //! Opens a new window with the given list of urls.
     //! If the list is empty, no new tab will spawned.
     MainWindow * openNewWindow(QVector<QUrl> const & urls);
+
+    //! Returns the number of currently open windows
+    int getWindowCount();
+
+    //! Saves the current session including all windows, tabs and positions.
+    void saveSession();
 }
 
 #endif // KRISTALL_HPP

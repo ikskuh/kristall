@@ -34,6 +34,7 @@ public:
     BrowserTab * addNewTab(bool focus_new, QUrl const & url);
     BrowserTab * curTab() const;
     BrowserTab * tabAt(int index) const;
+    int tabCount() const;
 
     void setUrlPreview(QUrl const & url);
 
