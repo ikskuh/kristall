@@ -47,8 +47,8 @@ QString toFingerprintString(QSslCertificate const & certificate)
 char const * const app_window_property = "kristall:app-window";
 
 static QSettings * app_settings_ptr= nullptr;
+static QSettings * session_settings_ptr= nullptr;
 static MainWindow * last_focused_window = nullptr;
-static bool closing_state_saved = false;
 
 #define SSTR(X) STR(X)
 #define STR(X) #X
@@ -505,6 +505,18 @@ int main(int argc, char *argv[])
     };
     app_settings_ptr = &app_settings;
 
+    std::unique_ptr<QSettings> session_store;
+
+    // isolated sessions don't have session management
+    if(not isolated_session)
+    {
+        session_store = std::make_unique<QSettings>(
+            kristall::globals().dirs.config_root.absoluteFilePath("session.ini"),
+            QSettings::IniFormat
+        );
+    }
+    session_settings_ptr = session_store.get();
+
     {
         QSettings deprecated_settings { "xqTechnologies", "Kristall" };
         if(QFile(deprecated_settings.fileName()).exists())
@@ -668,27 +680,70 @@ int main(int argc, char *argv[])
         });
     }
 
-    // Open all URLs in the new window
-    if(urls.size() > 0) {
-        kristall::openNewWindow(urls);
+    // Stores the first window from the restored session (if any)
+    MainWindow * root_window = nullptr;
+    if(session_store != nullptr)
+    {
+        auto & settings = *session_store;
+
+        int window_count = settings.beginReadArray("windows");
+
+
+        for(int index = 0; index < window_count; index += 1)
+        {
+            settings.setArrayIndex(index);
+
+            QVector<QUrl> urls;
+
+            int tab_count = settings.beginReadArray("tabs");
+            for(int i = 0; i < tab_count; i++)
+            {
+                settings.setArrayIndex(i);
+                urls.push_back(settings.value("url").toString());
+            }
+            settings.endArray();
+
+            auto * const window = kristall::openNewWindow(urls);
+
+            if(settings.contains("state")) {
+                window->restoreState(settings.value("state").toByteArray());
+            }
+            if(settings.contains("geometry") != QVariant {}) {
+                window->restoreGeometry(settings.value("geometry").toByteArray());
+            }
+
+            if(root_window == nullptr)
+                root_window = window;
+        }
+
+        settings.endArray();
     }
-    else {
+
+    if(urls.size() > 0) {
+
+        if(root_window == nullptr or open_new_window)
+        {
+            // Open all URLs in a new window
+            // if we either got no previous window
+            // or the user explicitly requested a new one.
+            kristall::openNewWindow(urls);
+        }
+        else
+        {
+            // Otherwise, open all URLs in the first window
+            for(auto const & url : urls) {
+                root_window->addNewTab(true, url);
+            }
+        }
+    }
+    else if(root_window == nullptr) {
+        // If we start kristall in a blank state,
+        // just open a window with the default url
         kristall::openNewWindow(true);
     }
 
-    //app_settings.beginGroup("Window State");
-    //if(app_settings.contains("geometry")) {
-    //    w.restoreGeometry(app_settings.value("geometry").toByteArray());
-    //}
-    //if(app_settings.contains("state")) {
-    //    w.restoreState(app_settings.value("state").toByteArray());
-    //}
-    //app_settings.endGroup();
 
     int exit_code = app.exec();
-
-    if (!closing_state_saved)
-        kristall::saveWindowState();
 
     return exit_code;
 }
@@ -972,14 +1027,48 @@ void kristall::setUiDensity(UIDensity density, bool previewing)
     });
 }
 
-void kristall::saveWindowState()
+int kristall::getWindowCount()
 {
-    closing_state_saved = true;
+    int count = 0;
+    forAllAppWindows([&count](MainWindow *) {
+        count += 1;
+    });
+    return count;
+}
 
-    app_settings_ptr->beginGroup("Window State");
-    //app_settings_ptr->setValue("geometry", main_window->saveGeometry());
-    //app_settings_ptr->setValue("state", main_window->saveState());
-    app_settings_ptr->endGroup();
+void kristall::saveSession()
+{
+    if(session_settings_ptr == nullptr)
+        return;
+    auto & settings = *session_settings_ptr;
 
-    kristall::saveSettings();
+    settings.clear();
+    settings.beginWriteArray("windows");
+
+    int window_index = 0;
+    int tab_count = 0;
+    forAllAppWindows([&settings, &window_index, &tab_count](MainWindow * main_window) {
+        settings.setArrayIndex(window_index);
+
+        settings.setValue("state", main_window->saveState());
+        settings.setValue("geometry", main_window->saveGeometry());
+
+        int count = main_window->tabCount();
+        settings.beginWriteArray("tabs", count);
+        for(int i = 0; i < count; i++)
+        {
+            settings.setArrayIndex(i);
+            settings.setValue("url", main_window->tabAt(i)->current_location.toString(QUrl::FullyEncoded));
+            tab_count += 1;
+        }
+        settings.endArray();
+
+        window_index += 1;
+    });
+
+    settings.endArray();
+
+    qDebug() << "Saved session with" << window_index << "windows and" << tab_count << "tabs in total.";
+
+    settings.sync();
 }
