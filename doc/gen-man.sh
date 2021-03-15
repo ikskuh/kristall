@@ -45,7 +45,7 @@ fi
 cp "$man_head" "$man_output"
 
 # Insert last modified date (use last-modified date of help.gemini)
-last_modified=$(date -r "$gemtext_in" +"%Y-%M-%d")
+last_modified=$(date -r "$gemtext_in" +"%F")
 sed -i "$man_output" -e 's#\$(DATE)#'"$last_modified"'#g'
 
 # Some pre-processing before giving our gemtext to the awk script.
