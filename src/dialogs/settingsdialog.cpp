@@ -54,6 +54,10 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     this->ui->list_symbol->addItem(tr("Circle"), QVariant::fromValue<int>(int(QTextListFormat::Style::ListCircle)));
     this->ui->list_symbol->addItem(tr("Square"), QVariant::fromValue<int>(int(QTextListFormat::Style::ListSquare)));
 
+    this->ui->session_restore_behaviour->clear();
+    this->ui->session_restore_behaviour->addItem(tr("Start Page"), QVariant::fromValue<int>(GenericSettings::NoSessionRestore));
+    this->ui->session_restore_behaviour->addItem(tr("Restore Last Session"), QVariant::fromValue<int>(GenericSettings::RestoreLastSession));
+
     setGeminiStyle(DocumentStyle { });
 
     this->predefined_styles.clear();
@@ -372,6 +376,15 @@ void SettingsDialog::setOptions(const GenericSettings &options)
     this->ui->cache_life->setValue(this->current_options.cache_life);
     this->ui->enable_unlimited_cache_life->setChecked(this->current_options.cache_unlimited_life);
     this->ui->cache_life->setEnabled(!this->current_options.cache_unlimited_life);
+
+    this->ui->session_restore_behaviour->setCurrentIndex(0);
+    for(int i = 0; i < this->ui->session_restore_behaviour->count(); ++i)
+    {
+        if(this->ui->session_restore_behaviour->itemData(i).toInt() == int(options.session_restore_behaviour)) {
+            this->ui->session_restore_behaviour->setCurrentIndex(i);
+            break;
+        }
+    }
 }
 
 GenericSettings SettingsDialog::options() const
@@ -969,4 +982,9 @@ void SettingsDialog::on_strip_nav_on_clicked()
 void SettingsDialog::on_strip_nav_off_clicked()
 {
     this->current_options.strip_nav = false;
+}
+
+void SettingsDialog::on_session_restore_behaviour_currentIndexChanged(int index)
+{
+    this->current_options.session_restore_behaviour = GenericSettings::SessionRestoreBehaviour(this->ui->session_restore_behaviour->itemData(index).toInt());
 }

@@ -176,6 +176,8 @@ private slots:
 
     void on_strip_nav_off_clicked();
 
+    void on_session_restore_behaviour_currentIndexChanged(int index);
+
 private:
     void reloadStylePreview();
 

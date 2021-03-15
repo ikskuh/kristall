@@ -64,6 +64,11 @@ struct GenericSettings
         WarnAlways = -1,
     };
 
+    enum SessionRestoreBehaviour {
+        NoSessionRestore = 0,
+        RestoreLastSession = 1,
+    };
+
     QString start_page = "about:favourites";
     QString search_engine = "gemini://geminispace.info/search?%1";
     Theme theme = Theme::light;
@@ -101,6 +106,8 @@ struct GenericSettings
     int cache_threshold = 125;
     int cache_life = 60;
     bool cache_unlimited_life = true;
+
+    SessionRestoreBehaviour session_restore_behaviour = RestoreLastSession;
 
     void load(QSettings & settings);
     void save(QSettings & settings) const;

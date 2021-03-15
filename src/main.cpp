@@ -682,12 +682,11 @@ int main(int argc, char *argv[])
 
     // Stores the first window from the restored session (if any)
     MainWindow * root_window = nullptr;
-    if(session_store != nullptr)
+    if((session_store != nullptr) and (kristall::globals().options.session_restore_behaviour == GenericSettings::RestoreLastSession))
     {
         auto & settings = *session_store;
 
         int window_count = settings.beginReadArray("windows");
-
 
         for(int index = 0; index < window_count; index += 1)
         {
@@ -822,6 +821,8 @@ void GenericSettings::load(QSettings &settings)
     cache_threshold = settings.value("cache_threshold", 125).toInt();
     cache_life = settings.value("cache_life", 15).toInt();
     cache_unlimited_life = settings.value("cache_unlimited_life", true).toBool();
+
+    session_restore_behaviour = SessionRestoreBehaviour(settings.value("session_restore_behaviour", int(session_restore_behaviour)).toInt());
 }
 
 void GenericSettings::save(QSettings &settings) const
@@ -886,6 +887,8 @@ void GenericSettings::save(QSettings &settings) const
         // with emoji support, they get it out of the box.
         settings.setValue("emojis_enabled", emojis_enabled);
     }
+
+    settings.setValue("session_restore_behaviour", int(session_restore_behaviour));
 }
 
 void kristall::applySettings()
