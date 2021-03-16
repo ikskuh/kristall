@@ -14,7 +14,8 @@
         <location filename="../src/protocols/abouthandler.cpp" line="55"/>
         <source># Cache information
 </source>
-        <translation type="unfinished"></translation>
+        <translation># Сведения о кэше
+</translation>
     </message>
     <message>
         <location filename="../src/protocols/abouthandler.cpp" line="66"/>
@@ -22,7 +23,10 @@
 * %1 used
 * %2 pages in cache
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Использование кэша в памяти:
+* %1 использовано
+* %2 страниц(ы) в кэше
+</translation>
     </message>
 </context>
 <context>
@@ -211,7 +215,10 @@ p, li { white-space: pre-wrap; }
 Please configure one in the settings to allow searching via the URL bar.
 
 See the Help menu for additional information.</source>
-        <translation type="unfinished"></translation>
+        <translation>Поисковой движок не настроен.
+Настройте его в диалоге Настройки, чтобы включить поиск из адресной строки.
+
+Подробности содержатся в справке.</translation>
     </message>
     <message>
         <location filename="../src/browsertab.cpp" line="440"/>
@@ -222,7 +229,8 @@ See the Help menu for additional information.</source>
         <location filename="../src/browsertab.cpp" line="454"/>
         <source>The page requested a authorized client certificate, but none was provided.<byte value="xd"/>
 Original query was: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Страница запросила разрешенный клиентский сертификат, но он не был предоставлен.
+Оригинал запроса: %1</translation>
     </message>
     <message>
         <location filename="../src/browsertab.cpp" line="562"/>
@@ -374,12 +382,12 @@ Host: %1</source>
     <message>
         <location filename="../src/browsertab.cpp" line="1117"/>
         <source>This style has no embedded name. Please enter a name for the preset:</source>
-        <translation type="unfinished"></translation>
+        <translation>У стиля отсутствует название. Введите название настроек:</translation>
     </message>
     <message>
         <location filename="../src/browsertab.cpp" line="1133"/>
         <source>Do you want to add the style %1 to your collection?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы хотите добавить стиль %1 в коллекцию?</translation>
     </message>
     <message>
         <location filename="../src/browsertab.cpp" line="1164"/>
@@ -404,7 +412,8 @@ A trustworthy site does not do this!</source>
         <location filename="../src/browsertab.cpp" line="1207"/>
         <source>The requested url uses a scheme that has been disabled in the settings:<byte value="xd"/>
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Запрошенный адрес использует схему, отключенную в настройках:
+%1</translation>
     </message>
     <message>
         <location filename="../src/browsertab.cpp" line="1211"/>
@@ -417,7 +426,8 @@ A trustworthy site does not do this!</source>
         <location filename="../src/browsertab.cpp" line="1464"/>
         <source>You currently have a transient session active!<byte value="xd"/>
 If you disable the session, you will not be able to restore it. Continue?</source>
-        <translation type="unfinished"></translation>
+        <translation>Активен временный сеанс!
+Если вы запретите данный сеанс, то не сможете использовать его снова. Продолжить?</translation>
     </message>
     <message>
         <location filename="../src/browsertab.cpp" line="1518"/>
@@ -443,7 +453,9 @@ Do you want to keep the certificate enabled?</source>
         <source>An automatic client certificate was detected for this site:<byte value="xd"/>
 %1<byte value="xd"/>
 Do you want to enable that certificate?</source>
-        <translation type="unfinished"></translation>
+        <translation>Для данного сайта обнаружен клиентский сертификат:
+%1
+Вы хотите его задействовать?</translation>
     </message>
     <message>
         <location filename="../src/browsertab.cpp" line="1638"/>
@@ -626,7 +638,7 @@ Do you want to enable that certificate?</source>
     <message>
         <location filename="../src/dialogs/certificatemanagementdialog.ui" line="220"/>
         <source>Host Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Фильтр адресов</translation>
     </message>
     <message>
         <location filename="../src/dialogs/certificatemanagementdialog.ui" line="227"/>
@@ -636,12 +648,12 @@ Do you want to enable that certificate?</source>
     <message>
         <location filename="../src/dialogs/certificatemanagementdialog.ui" line="234"/>
         <source>If this is checked, Kristall will automatically enable this certificate when visiting a URL matching the host filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Должен ли Kristall автоматически использовать этот сертификат при подключении к соответствующему адресу</translation>
     </message>
     <message>
         <location filename="../src/dialogs/certificatemanagementdialog.ui" line="237"/>
         <source>Auto-Enable Certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>Задействовать автоматически</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/dialogs/certificatemanagementdialog.cpp" line="65"/>
@@ -685,7 +697,7 @@ You will not be able to restore the identity after this!</source>
     <message>
         <location filename="../src/dialogs/certificatemanagementdialog.cpp" line="133"/>
         <source>Do you want to delete the group &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить группу «%1»?</translation>
     </message>
     <message>
         <location filename="../src/dialogs/certificatemanagementdialog.cpp" line="139"/>
@@ -703,7 +715,7 @@ You will not be able to restore the identity after this!</source>
     <message>
         <location filename="../src/dialogs/certificatemanagementdialog.cpp" line="178"/>
         <source>The file %1 could not be created found!</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось создать файл %1!</translation>
     </message>
     <message>
         <location filename="../src/dialogs/certificatemanagementdialog.cpp" line="206"/>
@@ -715,7 +727,9 @@ You will not be able to restore the identity after this!</source>
         <source>Imported from:<byte value="xd"/>
 key: %1<byte value="xd"/>
 :cert: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Импортирован из:
+ключа: %1
+серт.: %2</translation>
     </message>
     <message>
         <location filename="../src/dialogs/certificatemanagementdialog.cpp" line="255"/>
@@ -839,13 +853,15 @@ key: %1<byte value="xd"/>
         <location filename="../src/protocols/filehandler.cpp" line="38"/>
         <source># Index of %1
 </source>
-        <translation type="unfinished"></translation>
+        <translation># Содержимое %1
+</translation>
     </message>
     <message>
         <location filename="../src/protocols/filehandler.cpp" line="48"/>
         <source>=&gt; file://%1 %2
 </source>
-        <translation type="unfinished"></translation>
+        <translation>=&gt; file://%1 %2
+</translation>
     </message>
 </context>
 <context>
@@ -944,63 +960,63 @@ key: %1<byte value="xd"/>
     <message>
         <location filename="../src/mainwindow.ui" line="65"/>
         <source>Document &amp;Outline</source>
-        <translation type="unfinished"></translation>
+        <translation>Ст&amp;руктура документа</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="106"/>
         <source>&amp;Favourites</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Избранное</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="150"/>
         <source>&amp;History</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Журнал</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="189"/>
         <source>&amp;File</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Файл</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="205"/>
         <location filename="../src/mainwindow.ui" line="418"/>
         <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Спр&amp;авка</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="215"/>
         <source>&amp;View</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Вид</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="222"/>
         <source>&amp;Navigation</source>
-        <translation type="unfinished"></translation>
+        <translation>Об&amp;зор</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="245"/>
         <source>&amp;About...</source>
-        <translation type="unfinished"></translation>
+        <translation>О прогр&amp;амме...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="254"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>В&amp;ыход</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="262"/>
         <source>New &amp;Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Новая &amp;вкладка</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="274"/>
         <source>&amp;Close Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Закрыть вкладку</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="286"/>
         <source>&amp;Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Настройки</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="289"/>
@@ -1010,7 +1026,7 @@ key: %1<byte value="xd"/>
     <message>
         <location filename="../src/mainwindow.ui" line="298"/>
         <source>&amp;Back</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Назад</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="301"/>
@@ -1025,7 +1041,7 @@ key: %1<byte value="xd"/>
     <message>
         <location filename="../src/mainwindow.ui" line="313"/>
         <source>For&amp;ward</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Вперёд</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="316"/>
@@ -1040,62 +1056,62 @@ key: %1<byte value="xd"/>
     <message>
         <location filename="../src/mainwindow.ui" line="328"/>
         <source>R&amp;oot</source>
-        <translation type="unfinished"></translation>
+        <translation>В &amp;корень</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="343"/>
         <source>&amp;Parent</source>
-        <translation type="unfinished"></translation>
+        <translation>На&amp;верх</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="358"/>
         <source>&amp;Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>О&amp;бновить</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="370"/>
         <source>About &amp;Qt...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;О Qt...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="379"/>
         <source>&amp;Save as...</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить &amp;как...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="394"/>
         <source>Add to &amp;favourites</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить в &amp;Избранное</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="406"/>
         <source>Go to &amp;home</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Домой</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="430"/>
         <source>Change&amp;log</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Журнал изменений</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="439"/>
         <source>&amp;Manage Certificates…</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Управление сертификатами...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="444"/>
         <source>View document &amp;source</source>
-        <translation type="unfinished"></translation>
+        <translation>Прос&amp;мотр источника</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="452"/>
         <source>New &amp;window</source>
-        <translation type="unfinished"></translation>
+        <translation>Новое &amp;окно</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="463"/>
         <source>Close Win&amp;dow</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Закрыть окно</translation>
     </message>
     <message>
         <source>Root</source>
@@ -1228,27 +1244,27 @@ key: %1<byte value="xd"/>
     <message>
         <location filename="../src/mainwindow.cpp" line="202"/>
         <source>Looking up...</source>
-        <translation type="unfinished"></translation>
+        <translation>Поиск...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="207"/>
         <source>Loading webpage...</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузка страницы...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="212"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Соединение...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="217"/>
         <source>Downloading...</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузка...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="246"/>
         <source>%0 - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%0 - %1</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="468"/>
@@ -1336,7 +1352,10 @@ https://github.com/MasterQ32/Kristall</translation>
 All favourites in this group will be lost.
 
 This action cannot be undone!</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы хотите удалить эту группу Избранного?
+Все ее содержимое будет утеряно.
+
+Это действие нельзя отменить!</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="739"/>
@@ -1484,12 +1503,12 @@ This action cannot be undone!</source>
     <message>
         <location filename="../src/protocols/abouthandler.cpp" line="82"/>
         <source>The requested resource does not exist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Указанный ресурс не существует.</translation>
     </message>
     <message>
         <location filename="../src/protocols/filehandler.cpp" line="57"/>
         <source>The requested file does not exist!</source>
-        <translation type="unfinished"></translation>
+        <translation>Указанный файл не найден!</translation>
     </message>
     <message>
         <location filename="../src/protocols/geminiclient.cpp" line="176"/>
@@ -1499,7 +1518,7 @@ This action cannot be undone!</source>
     <message>
         <location filename="../src/protocols/geminiclient.cpp" line="181"/>
         <source>response too large!</source>
-        <translation type="unfinished"></translation>
+        <translation>ответ слишком велик!</translation>
     </message>
     <message>
         <location filename="../src/protocols/geminiclient.cpp" line="187"/>
@@ -1524,12 +1543,12 @@ This action cannot be undone!</source>
     <message>
         <location filename="../src/protocols/geminiclient.cpp" line="250"/>
         <source>Invalid URL for redirection!</source>
-        <translation type="unfinished"></translation>
+        <translation>Неверный адрес перенаправления!</translation>
     </message>
     <message>
         <location filename="../src/protocols/geminiclient.cpp" line="300"/>
         <source>Unspecified status code used!</source>
-        <translation type="unfinished"></translation>
+        <translation>Неуказанный код состояния!</translation>
     </message>
     <message>
         <location filename="../src/protocols/geminiclient.cpp" line="309"/>
@@ -1799,7 +1818,7 @@ This action cannot be undone!</source>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="601"/>
         <source>Cached item life</source>
-        <translation type="unfinished"></translation>
+        <translation>Время жизни</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="598"/>
@@ -1824,7 +1843,7 @@ This action cannot be undone!</source>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="263"/>
         <source>Display</source>
-        <translation type="unfinished"></translation>
+        <translation>Вид</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="269"/>
@@ -1834,17 +1853,17 @@ This action cannot be undone!</source>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="272"/>
         <source>ANSI Escape Sequences</source>
-        <translation type="unfinished"></translation>
+        <translation>Эскейп-коды ANSI</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="514"/>
         <source>Strip &lt;nav&gt; from HTML pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалять &lt;nav&gt; на страницах HTML</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="546"/>
         <source>Cache</source>
-        <translation type="unfinished"></translation>
+        <translation>Кэш</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="640"/>
@@ -1874,7 +1893,7 @@ This action cannot be undone!</source>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="753"/>
         <source>This text will be displayed for preformatted text.</source>
-        <translation type="unfinished"></translation>
+        <translation>Это образец форматированного текста.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="784"/>
@@ -1964,12 +1983,12 @@ This action cannot be undone!</source>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="1069"/>
         <source>This reference is cross-scheme</source>
-        <translation type="unfinished"></translation>
+        <translation>Эта ссылка ведет на другую схему</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="1092"/>
         <source>Auto-Theme Generation</source>
-        <translation type="unfinished"></translation>
+        <translation>Автосоздание темы</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="1102"/>
@@ -2004,7 +2023,7 @@ This action cannot be undone!</source>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="1151"/>
         <source>Justify text on the page, instead of left-aligning it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Выравнивать текст страницы по ширине вместо левого края.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="1164"/>
@@ -2014,7 +2033,7 @@ This action cannot be undone!</source>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="1161"/>
         <source>Whether to centre the first top-level heading in the document.</source>
-        <translation type="unfinished"></translation>
+        <translation>Центрировать первый заголовок 1-го уровня на странице.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="1176"/>
@@ -2034,7 +2053,7 @@ This action cannot be undone!</source>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="1201"/>
         <source>Whether to limit the width of formatted text on the page or not.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ограничивать ширину форматированого текста.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.ui" line="1213"/>
@@ -2191,17 +2210,17 @@ This action cannot be undone!</source>
     <message>
         <location filename="../src/dialogs/settingsdialog.cpp" line="48"/>
         <source>Ignore</source>
-        <translation type="unfinished"></translation>
+        <translation>Игнорировать</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.cpp" line="49"/>
         <source>Interpret (preformatted text only)</source>
-        <translation type="unfinished"></translation>
+        <translation>Обрабатывать (только в текстовых блоках)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.cpp" line="50"/>
         <source>Strip</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалять</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.cpp" line="53"/>
@@ -2273,7 +2292,7 @@ This action cannot be undone!</source>
     <message>
         <location filename="../src/dialogs/settingsdialog.cpp" line="653"/>
         <source>A style with the name &apos;%1&apos; already exists! Replace?</source>
-        <translation type="unfinished"></translation>
+        <translation>Стиль «%1» уже существует! Заменить?</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.cpp" line="673"/>
@@ -2285,7 +2304,8 @@ This action cannot be undone!</source>
         <location filename="../src/dialogs/settingsdialog.cpp" line="687"/>
         <source>Do you want to load the style &apos;%1&apos;?<byte value="xd"/>
 This will discard all currently set up values!</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы хотите загрузить стиль «%1»?
+Все текущие настройки будут утеряны!</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.cpp" line="725"/>
@@ -2341,17 +2361,17 @@ Please enter a name for the preset:</source>
     <message>
         <location filename="../src/widgets/ssltrusteditor.cpp" line="11"/>
         <source>Trust on first encounter</source>
-        <translation type="unfinished"></translation>
+        <translation>Доверять при встрече</translation>
     </message>
     <message>
         <location filename="../src/widgets/ssltrusteditor.cpp" line="12"/>
         <source>Trust everything</source>
-        <translation type="unfinished"></translation>
+        <translation>Доверять всему</translation>
     </message>
     <message>
         <location filename="../src/widgets/ssltrusteditor.cpp" line="13"/>
         <source>Manually verify fingerprints</source>
-        <translation type="unfinished"></translation>
+        <translation>Сличать отпечатки вручную</translation>
     </message>
 </context>
 </TS>
