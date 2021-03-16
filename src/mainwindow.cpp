@@ -199,22 +199,22 @@ void MainWindow::setRequestState(RequestState state)
     {
     case RequestState::Started:
     {
-        this->request_status = "Looking up...";
+        this->request_status = tr("Looking up...");
     } break;
 
     case RequestState::StartedWeb:
     {
-        this->request_status = "Loading webpage...";
+        this->request_status = tr("Loading webpage...");
     } break;
 
     case RequestState::HostFound:
     {
-        this->request_status = "Connecting...";
+        this->request_status = tr("Connecting...");
     } break;
 
     case RequestState::Connected:
     {
-        this->request_status = "Downloading...";
+        this->request_status = tr("Downloading...");
     } break;
 
     default:
@@ -240,10 +240,10 @@ void MainWindow::updateWindowTitle()
     BrowserTab * tab = this->curTab();
     if (tab == nullptr || tab->page_title.isEmpty())
     {
-        this->setWindowTitle("Kristall");
+        this->setWindowTitle(tr("Kristall"));
         return;
     }
-    this->setWindowTitle(QString("%0 - %1").arg(tab->page_title, "Kristall"));
+    this->setWindowTitle(QString(tr("%0 - %1")).arg(tab->page_title, tr("Kristall")));
 }
 
 void MainWindow::setUiDensity(UIDensity density, bool previewing)

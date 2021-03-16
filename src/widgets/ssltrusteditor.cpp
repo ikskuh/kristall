@@ -8,9 +8,9 @@ SslTrustEditor::SslTrustEditor(QWidget *parent) :
     ui->setupUi(this);
 
     this->ui->trust_level->clear();
-    this->ui->trust_level->addItem("Trust on first encounter", QVariant::fromValue<int>(SslTrust::TrustOnFirstUse));
-    this->ui->trust_level->addItem("Trust everything", QVariant::fromValue<int>(SslTrust::TrustEverything));
-    this->ui->trust_level->addItem("Manually verify fingerprints", QVariant::fromValue<int>(SslTrust::TrustNoOne));
+    this->ui->trust_level->addItem(tr("Trust on first encounter"), QVariant::fromValue<int>(SslTrust::TrustOnFirstUse));
+    this->ui->trust_level->addItem(tr("Trust everything"), QVariant::fromValue<int>(SslTrust::TrustEverything));
+    this->ui->trust_level->addItem(tr("Manually verify fingerprints"), QVariant::fromValue<int>(SslTrust::TrustNoOne));
 
     auto sort_model =new QSortFilterProxyModel(this);
     sort_model ->setDynamicSortFilter(true);

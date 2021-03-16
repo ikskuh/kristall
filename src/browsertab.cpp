@@ -196,7 +196,7 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode, RequestFlags fl
     this->timer.start();
 
     if(not this->startRequest(url, ProtocolHandler::Default, flags)) {
-        QMessageBox::critical(this, "Kristall", QString("Failed to execute request to %1").arg(url.toString()));
+        QMessageBox::critical(this, tr("Kristall"), QString(tr("Failed to execute request to %1")).arg(url.toString()));
         return;
     }
 
