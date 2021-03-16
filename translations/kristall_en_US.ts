@@ -9,6 +9,20 @@
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/protocols/abouthandler.cpp" line="55"/>
+        <source># Cache information
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/protocols/abouthandler.cpp" line="66"/>
+        <source>In-memory cache usage:
+* %1 used
+* %2 pages in cache
+</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>BrowserTab</name>
@@ -24,7 +38,7 @@
     </message>
     <message>
         <location filename="../src/browsertab.ui" line="43"/>
-        <location filename="../src/browsertab.cpp" line="1727"/>
+        <location filename="../src/browsertab.cpp" line="1718"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
@@ -35,7 +49,7 @@
     </message>
     <message>
         <location filename="../src/browsertab.ui" line="59"/>
-        <location filename="../src/browsertab.cpp" line="1732"/>
+        <location filename="../src/browsertab.cpp" line="1723"/>
         <source>Forward</source>
         <translation type="unfinished"></translation>
     </message>
@@ -46,7 +60,7 @@
     </message>
     <message>
         <location filename="../src/browsertab.ui" line="75"/>
-        <location filename="../src/browsertab.cpp" line="1738"/>
+        <location filename="../src/browsertab.cpp" line="1729"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
@@ -146,42 +160,48 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="177"/>
-        <location filename="../src/browsertab.cpp" line="183"/>
-        <location filename="../src/browsertab.cpp" line="346"/>
-        <location filename="../src/browsertab.cpp" line="560"/>
-        <location filename="../src/browsertab.cpp" line="888"/>
-        <location filename="../src/browsertab.cpp" line="960"/>
-        <location filename="../src/browsertab.cpp" line="1065"/>
-        <location filename="../src/browsertab.cpp" line="1082"/>
-        <location filename="../src/browsertab.cpp" line="1141"/>
-        <location filename="../src/browsertab.cpp" line="1172"/>
-        <location filename="../src/browsertab.cpp" line="1184"/>
+        <location filename="../src/browsertab.cpp" line="178"/>
+        <location filename="../src/browsertab.cpp" line="184"/>
+        <location filename="../src/browsertab.cpp" line="199"/>
+        <location filename="../src/browsertab.cpp" line="347"/>
+        <location filename="../src/browsertab.cpp" line="561"/>
+        <location filename="../src/browsertab.cpp" line="879"/>
+        <location filename="../src/browsertab.cpp" line="951"/>
+        <location filename="../src/browsertab.cpp" line="1056"/>
+        <location filename="../src/browsertab.cpp" line="1073"/>
+        <location filename="../src/browsertab.cpp" line="1132"/>
+        <location filename="../src/browsertab.cpp" line="1163"/>
+        <location filename="../src/browsertab.cpp" line="1175"/>
         <source>Kristall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="177"/>
+        <location filename="../src/browsertab.cpp" line="178"/>
         <source>URI scheme not supported or disabled: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="183"/>
+        <location filename="../src/browsertab.cpp" line="184"/>
         <source>Failed to cancel running request!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="291"/>
+        <location filename="../src/browsertab.cpp" line="199"/>
+        <source>Failed to execute request to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/browsertab.cpp" line="292"/>
         <source>Source of %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="297"/>
+        <location filename="../src/browsertab.cpp" line="298"/>
         <source>Mime type: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="347"/>
+        <location filename="../src/browsertab.cpp" line="348"/>
         <source>No search engine is configured.
 Please configure one in the settings to allow searching via the URL bar.
 
@@ -189,35 +209,35 @@ See the Help menu for additional information.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="439"/>
+        <location filename="../src/browsertab.cpp" line="440"/>
         <source>The server didn&apos;t respond in time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="453"/>
+        <location filename="../src/browsertab.cpp" line="454"/>
         <source>The page requested a authorized client certificate, but none was provided.<byte value="xd"/>
 Original query was: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="561"/>
+        <location filename="../src/browsertab.cpp" line="562"/>
         <source>Failed to convert input charset %1 to UTF-8. Cannot display the file.<byte value="xd"/>
 Do you want to display unconverted data anyways?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="565"/>
+        <location filename="../src/browsertab.cpp" line="566"/>
         <source>Failed to convert input charset %1 to UTF-8.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="728"/>
+        <location filename="../src/browsertab.cpp" line="719"/>
         <source>Failed to load picture:<byte value="xd"/>
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="757"/>
+        <location filename="../src/browsertab.cpp" line="748"/>
         <source>Unsupported Media Type!
 
 Kristall cannot display the requested document
@@ -230,7 +250,7 @@ Details:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="773"/>
+        <location filename="../src/browsertab.cpp" line="764"/>
         <source># Unsupported Media Type!
 
 Kristall cannot display the requested document.
@@ -246,32 +266,32 @@ Details:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="877"/>
+        <location filename="../src/browsertab.cpp" line="868"/>
         <source>Site requires input:
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="889"/>
+        <location filename="../src/browsertab.cpp" line="880"/>
         <source>Your input message is too long. Your input is %1 bytes, but a maximum of %2 bytes are allowed.<byte value="xd"/>
 Please cancel or shorten your input.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="913"/>
+        <location filename="../src/browsertab.cpp" line="904"/>
         <source>Too many consecutive redirections. The last redirection would have redirected you to:<byte value="xd"/>
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="925"/>
+        <location filename="../src/browsertab.cpp" line="916"/>
         <source>The location you visited wants to redirect you to another location:<byte value="xd"/>
 %1<byte value="xd"/>
 Do you want to allow the redirection?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="933"/>
+        <location filename="../src/browsertab.cpp" line="924"/>
         <source>The location you visited wants to redirect you to another host and switch the protocol.<byte value="xd"/>
 Protocol: %1<byte value="xd"/>
 New Host: %2<byte value="xd"/>
@@ -279,106 +299,106 @@ Do you want to allow the redirection?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="942"/>
+        <location filename="../src/browsertab.cpp" line="933"/>
         <source>The location you visited wants to switch the protocol.<byte value="xd"/>
 Protocol: %1<byte value="xd"/>
 Do you want to allow the redirection?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="950"/>
+        <location filename="../src/browsertab.cpp" line="941"/>
         <source>The location you visited wants to redirect you to another host.<byte value="xd"/>
 New Host: %1<byte value="xd"/>
 Do you want to allow the redirection?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="964"/>
+        <location filename="../src/browsertab.cpp" line="955"/>
         <source>Redirection to %1 cancelled by user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="978"/>
+        <location filename="../src/browsertab.cpp" line="969"/>
         <source>Redirection to %1 failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="987"/>
+        <location filename="../src/browsertab.cpp" line="978"/>
         <source>An error happened:<byte value="xd"/>
 %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1066"/>
+        <location filename="../src/browsertab.cpp" line="1057"/>
         <source>This sites certificate could not be verified! This may be a man-in-the-middle attack on the server to send you malicious content (or the server admin made a configuration mistake).<byte value="xd"/>
 Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1083"/>
+        <location filename="../src/browsertab.cpp" line="1074"/>
         <source>Do you really want to add the server certificate to your list of trusted hosts?<byte value="xd"/>
 Host: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1126"/>
+        <location filename="../src/browsertab.cpp" line="1117"/>
         <source>This style has no embedded name. Please enter a name for the preset:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1142"/>
+        <location filename="../src/browsertab.cpp" line="1133"/>
         <source>Do you want to add the style %1 to your collection?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1173"/>
+        <location filename="../src/browsertab.cpp" line="1164"/>
         <source>The theme %1 was successfully added to your theme collection!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1185"/>
+        <location filename="../src/browsertab.cpp" line="1176"/>
         <source>Malicious site detected! This site tries to use the Kristall control scheme!<byte value="xd"/>
 A trustworthy site does not do this!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1211"/>
-        <location filename="../src/browsertab.cpp" line="1710"/>
+        <location filename="../src/browsertab.cpp" line="1202"/>
+        <location filename="../src/browsertab.cpp" line="1701"/>
         <source>Failed to start system URL handler for<byte value="xd"/>
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1216"/>
+        <location filename="../src/browsertab.cpp" line="1207"/>
         <source>The requested url uses a scheme that has been disabled in the settings:<byte value="xd"/>
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1220"/>
+        <location filename="../src/browsertab.cpp" line="1211"/>
         <source>The requested url cannot be processed by Kristall:<byte value="xd"/>
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1473"/>
+        <location filename="../src/browsertab.cpp" line="1464"/>
         <source>You currently have a transient session active!<byte value="xd"/>
 If you disable the session, you will not be able to restore it. Continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1527"/>
+        <location filename="../src/browsertab.cpp" line="1518"/>
         <source>You requested a %1-URL with a client certificate, but these are not supported for this scheme. Continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1545"/>
+        <location filename="../src/browsertab.cpp" line="1536"/>
         <source>You want to visit a new host, but have a client certificate enabled. This may be a risk to expose your identity to another host.<byte value="xd"/>
 Do you want to keep the certificate enabled?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1558"/>
+        <location filename="../src/browsertab.cpp" line="1549"/>
         <source>Your client certificate has a host filter enabled and this site does not match the host filter.<byte value="xd"/>
 New URL: %1<byte value="xd"/>
 Host Filter: %2<byte value="xd"/>
@@ -386,54 +406,54 @@ Do you want to keep the certificate enabled?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1576"/>
+        <location filename="../src/browsertab.cpp" line="1567"/>
         <source>An automatic client certificate was detected for this site:<byte value="xd"/>
 %1<byte value="xd"/>
 Do you want to enable that certificate?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1647"/>
+        <location filename="../src/browsertab.cpp" line="1638"/>
         <source>Failed to generate temporary crypto-identitiy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1700"/>
+        <location filename="../src/browsertab.cpp" line="1691"/>
         <source>Open in new tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1706"/>
+        <location filename="../src/browsertab.cpp" line="1697"/>
         <source>Open with external web browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1715"/>
+        <location filename="../src/browsertab.cpp" line="1706"/>
         <source>Follow link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1719"/>
+        <location filename="../src/browsertab.cpp" line="1710"/>
         <source>Copy link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1742"/>
+        <location filename="../src/browsertab.cpp" line="1733"/>
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1749"/>
+        <location filename="../src/browsertab.cpp" line="1740"/>
         <source>Copy to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1754"/>
+        <location filename="../src/browsertab.cpp" line="1745"/>
         <source>Select all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/browsertab.cpp" line="1760"/>
+        <location filename="../src/browsertab.cpp" line="1751"/>
         <source>View document source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -751,7 +771,7 @@ key: %1<byte value="xd"/>
 <context>
     <name>FavouriteCollection</name>
     <message>
-        <location filename="../src/favouritecollection.cpp" line="472"/>
+        <location filename="../src/favouritecollection.cpp" line="483"/>
         <source>Unsorted</source>
         <translation type="unfinished"></translation>
     </message>
@@ -780,6 +800,21 @@ key: %1<byte value="xd"/>
     </message>
 </context>
 <context>
+    <name>FileHandler</name>
+    <message>
+        <location filename="../src/protocols/filehandler.cpp" line="38"/>
+        <source># Index of %1
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/protocols/filehandler.cpp" line="48"/>
+        <source>=&gt; file://%1 %2
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>GopherClient</name>
     <message>
         <location filename="../src/protocols/gopherclient.cpp" line="56"/>
@@ -795,18 +830,8 @@ key: %1<byte value="xd"/>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="65"/>
-        <source>Document Outline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/mainwindow.ui" line="68"/>
         <source>Ctrl+M</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="106"/>
-        <source>Favourites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -815,44 +840,8 @@ key: %1<byte value="xd"/>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="150"/>
-        <source>History</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/mainwindow.ui" line="153"/>
         <source>Ctrl+H</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="189"/>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="205"/>
-        <location filename="../src/mainwindow.ui" line="418"/>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="215"/>
-        <source>View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="222"/>
-        <source>Navigation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="245"/>
-        <source>About...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="254"/>
-        <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -861,18 +850,8 @@ key: %1<byte value="xd"/>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="262"/>
-        <source>New Tab</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/mainwindow.ui" line="265"/>
         <source>Ctrl+T</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="274"/>
-        <source>Close Tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -881,8 +860,64 @@ key: %1<byte value="xd"/>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="65"/>
+        <source>Document &amp;Outline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="106"/>
+        <source>&amp;Favourites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="150"/>
+        <source>&amp;History</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="189"/>
+        <source>&amp;File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="205"/>
+        <location filename="../src/mainwindow.ui" line="418"/>
+        <source>&amp;Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="215"/>
+        <source>&amp;View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="222"/>
+        <source>&amp;Navigation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="245"/>
+        <source>&amp;About...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="254"/>
+        <source>&amp;Quit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="262"/>
+        <source>New &amp;Tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="274"/>
+        <source>&amp;Close Tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/mainwindow.ui" line="286"/>
-        <source>Settings</source>
+        <source>&amp;Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -892,6 +927,10 @@ key: %1<byte value="xd"/>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="298"/>
+        <source>&amp;Back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/mainwindow.ui" line="301"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
@@ -903,6 +942,10 @@ key: %1<byte value="xd"/>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="313"/>
+        <source>For&amp;ward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/mainwindow.ui" line="316"/>
         <source>Forward</source>
         <translation type="unfinished"></translation>
@@ -914,7 +957,62 @@ key: %1<byte value="xd"/>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="328"/>
-        <source>Root</source>
+        <source>R&amp;oot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="343"/>
+        <source>&amp;Parent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="358"/>
+        <source>&amp;Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="370"/>
+        <source>About &amp;Qt...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="379"/>
+        <source>&amp;Save as...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="394"/>
+        <source>Add to &amp;favourites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="406"/>
+        <source>Go to &amp;home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="430"/>
+        <source>Change&amp;log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="439"/>
+        <source>&amp;Manage Certificates…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="444"/>
+        <source>View document &amp;source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="452"/>
+        <source>New &amp;window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="463"/>
+        <source>Close Win&amp;dow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -928,11 +1026,6 @@ key: %1<byte value="xd"/>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="343"/>
-        <source>Parent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/mainwindow.ui" line="346"/>
         <source>Go to the parent directory</source>
         <translation type="unfinished"></translation>
@@ -943,23 +1036,8 @@ key: %1<byte value="xd"/>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="358"/>
-        <source>Refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/mainwindow.ui" line="361"/>
         <source>F5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="370"/>
-        <source>About Qt...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="379"/>
-        <source>Save as...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -968,18 +1046,8 @@ key: %1<byte value="xd"/>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="394"/>
-        <source>Add to favourites</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/mainwindow.ui" line="397"/>
         <source>Ctrl+D</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="406"/>
-        <source>Go to home</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -993,28 +1061,8 @@ key: %1<byte value="xd"/>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="430"/>
-        <source>Changelog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="439"/>
-        <source>Manage Certificates…</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="444"/>
-        <source>View document source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/mainwindow.ui" line="447"/>
         <source>Ctrl+U</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="452"/>
-        <source>New Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1028,26 +1076,48 @@ key: %1<byte value="xd"/>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="463"/>
-        <source>Close Window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/mainwindow.ui" line="466"/>
         <source>Alt+F4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="272"/>
+        <location filename="../src/mainwindow.cpp" line="273"/>
         <source>Enter name of the new group:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.cpp" line="243"/>
+        <location filename="../src/mainwindow.cpp" line="246"/>
         <location filename="../src/mainwindow.cpp" line="467"/>
         <location filename="../src/mainwindow.cpp" line="565"/>
         <location filename="../src/mainwindow.cpp" line="714"/>
         <location filename="../src/mainwindow.cpp" line="722"/>
         <source>Kristall</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="202"/>
+        <source>Looking up...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="207"/>
+        <source>Loading webpage...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="212"/>
+        <source>Connecting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="217"/>
+        <source>Downloading...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="246"/>
+        <source>%0 - %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1200,17 +1270,17 @@ This action cannot be undone!</source>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/main.cpp" line="416"/>
+        <location filename="../src/main.cpp" line="403"/>
         <source>Opens the provided links in a new window instead of tabs.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="421"/>
+        <location filename="../src/main.cpp" line="408"/>
         <source>Starts the instance of kristall as a isolated session that cannot communicate with other windows.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="429"/>
+        <location filename="../src/main.cpp" line="416"/>
         <source>The urls that should be opened instead of the start page</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1248,7 +1318,7 @@ This action cannot be undone!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="615"/>
+        <location filename="../src/main.cpp" line="602"/>
         <source>Unsorted</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1277,6 +1347,61 @@ This action cannot be undone!</source>
         <source>Unforseen</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/protocols/abouthandler.cpp" line="82"/>
+        <source>The requested resource does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/protocols/filehandler.cpp" line="57"/>
+        <source>The requested file does not exist!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/protocols/geminiclient.cpp" line="176"/>
+        <source>Line is too short for valid protocol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/protocols/geminiclient.cpp" line="181"/>
+        <source>response too large!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/protocols/geminiclient.cpp" line="187"/>
+        <source>Line does not end with &lt;CR&gt; &lt;LF&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/protocols/geminiclient.cpp" line="193"/>
+        <source>First character is not a digit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/protocols/geminiclient.cpp" line="199"/>
+        <source>Second character is not a digit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/protocols/geminiclient.cpp" line="207"/>
+        <source>Third character is not a space.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/protocols/geminiclient.cpp" line="250"/>
+        <source>Invalid URL for redirection!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/protocols/geminiclient.cpp" line="300"/>
+        <source>Unspecified status code used!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/protocols/geminiclient.cpp" line="309"/>
+        <source>META too large!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SettingsDialog</name>
@@ -1291,567 +1416,594 @@ This action cannot be undone!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="38"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="66"/>
         <source>UI Theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="48"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="76"/>
         <source>Icon Theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="58"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="86"/>
         <source>UI Density</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="69"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="38"/>
         <source>Start Page:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="76"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="45"/>
         <source>about://blank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="83"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="52"/>
         <source>Search engine:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="97"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="96"/>
         <source>Enabled Protocols</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="106"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="105"/>
         <source>Gemini</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="116"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="115"/>
         <source>Gopher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="126"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="125"/>
         <source>Finger</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="133"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="132"/>
         <source>HTTP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="140"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="139"/>
         <source>HTTPS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="149"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="381"/>
         <source>Text Rendering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="158"/>
-        <location filename="../src/dialogs/settingsdialog.ui" line="322"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="359"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="390"/>
         <source>Fancy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="171"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="403"/>
         <source>Always plain text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="183"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="415"/>
         <source>Enable text highlights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="192"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="424"/>
         <source>On (Experimental)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="202"/>
-        <location filename="../src/dialogs/settingsdialog.ui" line="366"/>
-        <location filename="../src/dialogs/settingsdialog.ui" line="400"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="338"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="434"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="502"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="533"/>
         <source>Off</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="217"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="282"/>
         <source>Gopher Map</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="226"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="291"/>
         <source>Use icons</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="239"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="304"/>
         <source>Use text only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="251"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="148"/>
         <source>Unknown Scheme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="260"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="157"/>
         <source>Use OS default handler</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="270"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="167"/>
         <source>Display error message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="282"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="449"/>
         <source>Hidden files in file:// directories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="291"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="458"/>
         <source>Show</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="301"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="468"/>
         <source>Hide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="313"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="350"/>
         <source>URL bar highlights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="332"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="369"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="344"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="483"/>
         <source>Use typographer&apos;s quotes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="347"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="480"/>
         <source>Replace single and double quotes with curly typographer quotes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="356"/>
-        <location filename="../src/dialogs/settingsdialog.ui" line="390"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="328"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="492"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="523"/>
         <source>On</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="378"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="319"/>
         <source>Render emojis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="381"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="316"/>
         <source>Whether to render emojis in a page.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="412"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="179"/>
         <source>Max. Number of Redirections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="426"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="193"/>
         <source>Redirection Handling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="436"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="203"/>
         <source>Network Timeout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="443"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="210"/>
         <source> ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="456"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="223"/>
         <source>Additional toolbar buttons</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="465"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="232"/>
         <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="472"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="239"/>
         <source>New tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="479"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="246"/>
         <source>Root (/)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="486"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="253"/>
         <source>Parent (..)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="495"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="555"/>
         <source>Total cache size limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="498"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="552"/>
         <source>The total amount of memory that can be occupied by cached items. Set to zero to disable in-memory caching.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="505"/>
-        <location filename="../src/dialogs/settingsdialog.ui" line="529"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="562"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="585"/>
         <source> KiB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="519"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="578"/>
         <source>Cached item size threshold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="522"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="575"/>
         <source>Items which are below this threshold are cached in memory. Any above are simply discarded.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="543"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="601"/>
         <source>Cached item life</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="546"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="598"/>
         <source>How long cached items last before they are expired and require a reload.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="555"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="610"/>
         <source> minutes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="568"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="626"/>
         <source>Unlimited item life</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="571"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="623"/>
         <source>Sets cached items to be unexpirable. Items will only be removed if the cache is full.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="586"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="263"/>
+        <source>Display</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="269"/>
+        <source>Determine how to render ANSI escape sequences</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="272"/>
+        <source>ANSI Escape Sequences</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="514"/>
+        <source>Strip &lt;nav&gt; from HTML pages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="546"/>
+        <source>Cache</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="640"/>
         <source>Style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="637"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="691"/>
         <source>Background Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="644"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="698"/>
         <source>Standard Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="656"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="710"/>
         <source>This text will be displayed for normal text.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="687"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="741"/>
         <source>Preformatted Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="699"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="753"/>
         <source>This text will be displayed for preformatted text.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="730"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="784"/>
         <source>H1 Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="742"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="796"/>
         <source>This text will be displayed for a level 1 heading.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="773"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="827"/>
         <source>H2 Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="785"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="839"/>
         <source>This text will be displayed for a level 2 heading.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="817"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="870"/>
         <source>H3 Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="832"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="885"/>
         <source>This text will be displayed for a level 3 heading.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="867"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="919"/>
         <source>Blockquote font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="882"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="934"/>
         <source>This font will be used in blockquotes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="917"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="968"/>
         <source>Local Link Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="924"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="975"/>
         <source>Foreign Link Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="931"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="982"/>
         <source>Cross-Scheme-Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="938"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="989"/>
         <source>Local Link Prefix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="945"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="996"/>
         <source>Extern Link Prefix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="952"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1003"/>
         <source>⇒ </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="959"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1010"/>
         <source>→ </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="968"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1019"/>
         <source>This is a local reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="993"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1044"/>
         <source>This is a foreign reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1018"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1069"/>
         <source>This reference is cross-scheme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1041"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1092"/>
         <source>Auto-Theme Generation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1052"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1102"/>
         <source>Left/right Page Margin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1059"/>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1080"/>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1147"/>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1174"/>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1195"/>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1313"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1109"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1129"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1185"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1220"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1240"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1351"/>
         <source> px</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1073"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1122"/>
         <source>Top/bottom Page Margin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1094"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1142"/>
         <source>Other options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1103"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1154"/>
         <source>Justify text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1106"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1151"/>
         <source>Justify text on the page, instead of left-aligning it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1113"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1164"/>
         <source>Centre first H1 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1116"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1161"/>
         <source>Whether to centre the first top-level heading in the document.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1126"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1176"/>
         <source>Text width limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1129"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1173"/>
         <source>Preferred width of formatted text on the page.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1154"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1204"/>
         <source>Enabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1157"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1201"/>
         <source>Whether to limit the width of formatted text on the page or not.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1167"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1213"/>
         <source>Line height (paragraph)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1188"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1233"/>
         <source>Line height (header)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1209"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1253"/>
         <source>Indentation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1219"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1262"/>
         <source>Par:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1240"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1282"/>
         <source>Hea:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1261"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1302"/>
         <source>Quo:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1282"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1322"/>
         <source>Lst:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1306"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1344"/>
         <source>Indent size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1327"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1364"/>
         <source>List item marker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1338"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1374"/>
         <source>Block Quote Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1354"/>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1391"/>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1404"/>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1417"/>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1434"/>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1447"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1390"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1427"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1441"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1455"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1472"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1486"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1376"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1412"/>
         <source>Presets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1388"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1424"/>
         <source>Save as new preset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1401"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1438"/>
         <source>Override current preset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1414"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1452"/>
         <source>Load preset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1428"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1466"/>
         <source>Imports preset…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1444"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1483"/>
         <source>Export preset…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1472"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1512"/>
         <source>host.name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1485"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1526"/>
         <source>Gemini TLS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.ui" line="1498"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1540"/>
         <source>HTTPS TLS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1904,96 +2056,111 @@ This action cannot be undone!</source>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.cpp" line="48"/>
-        <source>Filled circle</source>
+        <source>Ignore</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.cpp" line="49"/>
-        <source>Circle</source>
+        <source>Interpret (preformatted text only)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.cpp" line="50"/>
+        <source>Strip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="53"/>
+        <source>Filled circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="54"/>
+        <source>Circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="55"/>
         <source>Square</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="83"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="88"/>
         <source>Ask for cross-scheme or cross-host redirection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="84"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="89"/>
         <source>Ask for cross-scheme redirection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="85"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="90"/>
         <source>Ask for cross-host redirection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="86"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="91"/>
         <source>Ask for all redirection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="87"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="92"/>
         <source>Silently redirect everything</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="263"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="279"/>
         <source>URL with &apos;%1&apos; in place of query</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="320"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="342"/>
         <source> (not supported in this build)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="618"/>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="718"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="642"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="742"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="619"/>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="719"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="643"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="743"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="620"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="644"/>
         <source>Enter the name of your new preset:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="629"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="653"/>
         <source>A style with the name &apos;%1&apos; already exists! Replace?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="649"/>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="729"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="673"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="753"/>
         <source>Do you want to override the style &apos;%1&apos;?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="663"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="687"/>
         <source>Do you want to load the style &apos;%1&apos;?<byte value="xd"/>
 This will discard all currently set up values!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="701"/>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="754"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="725"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="778"/>
         <source>Kristall Theme (*.kthm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/settingsdialog.cpp" line="720"/>
+        <location filename="../src/dialogs/settingsdialog.cpp" line="744"/>
         <source>Imported preset has no name.<byte value="xd"/>
 Please enter a name for the preset:</source>
         <translation type="unfinished"></translation>
@@ -2034,6 +2201,21 @@ Please enter a name for the preset:</source>
     <message>
         <location filename="../src/widgets/ssltrusteditor.ui" line="79"/>
         <source>Revoke trust</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/ssltrusteditor.cpp" line="11"/>
+        <source>Trust on first encounter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/ssltrusteditor.cpp" line="12"/>
+        <source>Trust everything</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/ssltrusteditor.cpp" line="13"/>
+        <source>Manually verify fingerprints</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
