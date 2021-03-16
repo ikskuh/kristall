@@ -52,7 +52,7 @@ bool AboutHandler::startRequest(const QUrl &url, ProtocolHandler::RequestOptions
     else if (url.path() == "cache")
     {
         QByteArray document;
-        document.append("# Cache information\n");
+        document.append(tr("# Cache information\n"));
 
         auto& cache = kristall::globals().cache.getPages();
         long unsigned cache_usage = 0;
@@ -63,9 +63,9 @@ bool AboutHandler::startRequest(const QUrl &url, ProtocolHandler::RequestOptions
         }
 
         document.append(QString(
-            "In-memory cache usage:\n"
+            tr("In-memory cache usage:\n"
             "* %1 used\n"
-            "* %2 pages in cache\n")
+            "* %2 pages in cache\n"))
             .arg(IoUtil::size_human(cache_usage), QString::number(cached_count)).toUtf8());
 
         emit this->requestComplete(document, "text/gemini");
@@ -79,7 +79,7 @@ bool AboutHandler::startRequest(const QUrl &url, ProtocolHandler::RequestOptions
         }
         else
         {
-            emit this->networkError(ResourceNotFound, "The requested resource does not exist.");
+            emit this->networkError(ResourceNotFound, QObject::tr("The requested resource does not exist."));
         }
     }
     return true;

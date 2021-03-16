@@ -173,30 +173,30 @@ void GeminiClient::socketReadyRead()
                 if(buffer.size() < 4) { // we allow an empty <META>
                     socket.close();
                     qDebug() << buffer;
-                    emit networkError(ProtocolViolation, "Line is too short for valid protocol");
+                    emit networkError(ProtocolViolation, QObject::tr("Line is too short for valid protocol"));
                     return;
                 }
                 if(buffer.size() >= 1200)
                 {
-                    emit networkError(ProtocolViolation, "response too large!");
+                    emit networkError(ProtocolViolation, QObject::tr("response too large!"));
                     socket.close();
                 }
                 if(buffer[buffer.size() - 1] != '\r') {
                     socket.close();
                     qDebug() << buffer;
-                    emit networkError(ProtocolViolation, "Line does not end with <CR> <LF>");
+                    emit networkError(ProtocolViolation, QObject::tr("Line does not end with <CR> <LF>"));
                     return;
                 }
                 if(not isdigit(buffer[0])) {
                     socket.close();
                     qDebug() << buffer;
-                    emit networkError(ProtocolViolation, "First character is not a digit.");
+                    emit networkError(ProtocolViolation, QObject::tr("First character is not a digit."));
                     return;
                 }
                 if(not isdigit(buffer[1])) {
                     socket.close();
                     qDebug() << buffer;
-                    emit networkError(ProtocolViolation, "Second character is not a digit.");
+                    emit networkError(ProtocolViolation, QObject::tr("Second character is not a digit."));
                     return;
                 }
                 // TODO: Implement stricter version
@@ -204,7 +204,7 @@ void GeminiClient::socketReadyRead()
                 if(not isspace(buffer[2])) {
                     socket.close();
                     qDebug() << buffer;
-                    emit networkError(ProtocolViolation, "Third character is not a space.");
+                    emit networkError(ProtocolViolation, QObject::tr("Third character is not a space."));
                     return;
                 }
 
@@ -247,7 +247,7 @@ void GeminiClient::socketReadyRead()
                         emit redirected(new_url, (secondary_code == 1));
                     }
                     else {
-                        emit networkError(ProtocolViolation, "Invalid URL for redirection!");
+                        emit networkError(ProtocolViolation, QObject::tr("Invalid URL for redirection!"));
                     }
                     return;
                 }
@@ -297,7 +297,7 @@ void GeminiClient::socketReadyRead()
                     return;
 
                 default:
-                    emit networkError(ProtocolViolation, "Unspecified status code used!");
+                    emit networkError(ProtocolViolation, QObject::tr("Unspecified status code used!"));
                     return;
                 }
 
@@ -306,7 +306,7 @@ void GeminiClient::socketReadyRead()
         }
         if((buffer.size() + response.size()) >= 1200)
         {
-            emit networkError(ProtocolViolation, "META too large!");
+            emit networkError(ProtocolViolation, QObject::tr("META too large!"));
             socket.close();
         }
         buffer.append(response);
