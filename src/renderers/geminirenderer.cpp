@@ -65,6 +65,8 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
     QList<QByteArray> lines = input.split('\n');
     for (auto &line : lines)
     {
+        line.replace("\r", "");
+
         if (verbatim)
         {
             if (line.startsWith("```"))
