@@ -387,6 +387,7 @@ void MainWindow::on_browser_tabs_currentChanged(int index)
             if (tab->lazy_loading)
             {
                 tab->reloadPage();
+                tab->lazy_loading = false;
             }
 
             this->setRequestState(tab->request_state);
