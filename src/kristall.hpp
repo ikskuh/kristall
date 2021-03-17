@@ -5,6 +5,8 @@
 #include <QSettings>
 #include <QClipboard>
 #include <QSslCertificate>
+#include <QTranslator>
+#include <QLocale>
 
 #include "identitycollection.hpp"
 #include "ssltrust.hpp"
@@ -164,9 +166,15 @@ namespace kristall
         QDir styles;
     };
 
+    struct Localization
+    {
+        QLocale locale;
+        QTranslator qt;
+        QTranslator kristall;
+    };
+
     struct Globals
     {
-
         ProtocolSetup protocols;
 
         QSettings * settings;
@@ -182,6 +190,8 @@ namespace kristall
         Trust trust;
 
         Dirs dirs;
+
+        Localization localization;
     };
 
     //! returns the instance of the globals structure
@@ -222,6 +232,12 @@ namespace kristall
 
     //! Saves the current session including all windows, tabs and positions.
     void saveSession();
+
+    //! Changes the currently used locale
+    void setLocale(QLocale const & locale);
+
+    //! Saves the currently used locale
+    void saveLocale();
 }
 
 #endif // KRISTALL_HPP

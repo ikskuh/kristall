@@ -376,6 +376,24 @@ MainWindow * kristall::openNewWindow(QVector<NamedUrl> const & urls)
 }
 
 
+//! Changes the currently used locale
+void kristall::setLocale(QLocale const & locale)
+{
+    auto & i18n = kristall::globals().localization;
+    i18n.locale = locale;
+    i18n.qt.load(i18n.locale, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    i18n.kristall.load(i18n.locale, "kristall", "_", ":/i18n");
+}
+
+//! Saves the currently used locale
+void kristall::saveLocale()
+{
+    if(app_settings_ptr == nullptr)
+        return;
+    app_settings_ptr->setValue("language", kristall::globals().localization.locale.bcp47Name());
+    app_settings_ptr->sync();
+}
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
@@ -385,6 +403,28 @@ int main(int argc, char *argv[])
 
     // this is relevant to delete kristall::Globals before the application itself.
     EnsureGlobalsReset ensure_globals_reset;
+
+    // Initialize kristall directories
+    {
+        QString cache_root = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+        QString config_root = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+
+        kristall::globals().dirs.config_root = QDir { config_root };
+        kristall::globals().dirs.cache_root  = QDir { cache_root };
+
+        kristall::globals().dirs.offline_pages = derive_dir(kristall::globals().dirs.cache_root, "offline-pages");
+        kristall::globals().dirs.themes = derive_dir(kristall::globals().dirs.config_root, "themes");
+
+        kristall::globals().dirs.styles = derive_dir(kristall::globals().dirs.config_root, "styles");
+        kristall::globals().dirs.styles.setNameFilters(QStringList { "*.kthm" });
+        kristall::globals().dirs.styles.setFilter(QDir::Files);
+    }
+
+    QSettings app_settings {
+        kristall::globals().dirs.config_root.absoluteFilePath("config.ini"),
+        QSettings::IniFormat
+    };
+    app_settings_ptr = &app_settings;
 
     QObject::connect(&app, &QApplication::focusChanged, [](QWidget *old, QWidget *now) {
         // Determine the window for both, we're only interested in window focus changes.
@@ -408,11 +448,23 @@ int main(int argc, char *argv[])
         }
     });
 
-    QTranslator trans, qttrans;
-    qttrans.load(QLocale(), QLatin1String("qt"), "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    trans.load(QLocale(), QLatin1String("kristall"), QLatin1String("_"), QLatin1String(":/i18n"));
-    app.installTranslator(&qttrans);
-    app.installTranslator(&trans);
+    // Initialize localization
+    {
+
+        // Load the currently selected locale
+        auto const lang_id = app_settings.value("language", QString()).toString();
+        if(not lang_id.isEmpty()) {
+            kristall::setLocale( QLocale(lang_id) );
+        }
+        else {
+            kristall::setLocale ( QLocale() );
+        }
+
+        auto & i18n = kristall::globals().localization;
+        app.installTranslator(&i18n.qt);
+        app.installTranslator(&i18n.kristall);
+        qDebug() << "current locale" << i18n.locale.nativeLanguageName();
+    }
 
     addEmojiSubstitutions();
 
@@ -505,25 +557,6 @@ int main(int argc, char *argv[])
             }
         }
     }
-
-    QString cache_root = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-    QString config_root = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
-
-    kristall::globals().dirs.config_root = QDir { config_root };
-    kristall::globals().dirs.cache_root  = QDir { cache_root };
-
-    kristall::globals().dirs.offline_pages = derive_dir(kristall::globals().dirs.cache_root, "offline-pages");
-    kristall::globals().dirs.themes = derive_dir(kristall::globals().dirs.config_root, "themes");
-
-    kristall::globals().dirs.styles = derive_dir(kristall::globals().dirs.config_root, "styles");
-    kristall::globals().dirs.styles.setNameFilters(QStringList { "*.kthm" });
-    kristall::globals().dirs.styles.setFilter(QDir::Files);
-
-    QSettings app_settings {
-        kristall::globals().dirs.config_root.absoluteFilePath("config.ini"),
-        QSettings::IniFormat
-    };
-    app_settings_ptr = &app_settings;
 
     std::unique_ptr<QSettings> session_store;
 
