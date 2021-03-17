@@ -50,6 +50,12 @@ enum class AnsiEscRenderMode : int
     strip = 2
 };
 
+struct PageMetadata
+{
+    QUrl location;
+    QString title;
+};
+
 struct GenericSettings
 {
     enum TextDisplay {
@@ -209,6 +215,7 @@ namespace kristall
     //! Opens a new window with the given list of urls.
     //! If the list is empty, no new tab will spawned.
     MainWindow * openNewWindow(QVector<QUrl> const & urls);
+    MainWindow * openNewWindow(QVector<PageMetadata> const & urls);
 
     //! Returns the number of currently open windows
     int getWindowCount();

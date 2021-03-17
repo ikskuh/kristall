@@ -31,7 +31,7 @@ public:
     ~MainWindow();
 
     BrowserTab * addEmptyTab(bool focus_new, bool load_default);
-    BrowserTab * addNewTab(bool focus_new, QUrl const & url);
+    BrowserTab * addNewTab(bool focus_new, QUrl const & url, QString defaultTitle="");
     BrowserTab * curTab() const;
     BrowserTab * tabAt(int index) const;
     int tabCount() const;
