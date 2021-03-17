@@ -339,19 +339,33 @@ MainWindow * kristall::openNewWindow(QUrl const & url)
     return openNewWindow(QVector<QUrl>{url});
 }
 
-//! Opens a new window with the given list of urls.
-//! If the list is empty, no new tab will spawned.
+//! Opens a new window with the given urls.
+//! Almost identical to below overload.
 MainWindow * kristall::openNewWindow(QVector<QUrl> const & urls)
 {
     MainWindow * const window = new MainWindow(qApp);
 
     for(int i = 0; i < urls.length(); i++)
     {
-        window->addNewTab((i == 0), urls.at(i));
+        window->addNewTab((i == 0), urls.at(i), "");
     }
 
     window->show();
+    return window;
+}
 
+//! Opens a new window with the given list of urls.
+//! If the list is empty, no new tab will spawned.
+MainWindow * kristall::openNewWindow(QVector<PageMetadata> const & urls)
+{
+    MainWindow * const window = new MainWindow(qApp);
+
+    for(int i = 0; i < urls.length(); i++)
+    {
+        window->addNewTab((i == 0), urls.at(i).location, urls.at(i).title);
+    }
+
+    window->show();
     return window;
 }
 
@@ -692,13 +706,16 @@ int main(int argc, char *argv[])
         {
             settings.setArrayIndex(index);
 
-            QVector<QUrl> urls;
+            QVector<PageMetadata> urls;
 
             int tab_count = settings.beginReadArray("tabs");
             for(int i = 0; i < tab_count; i++)
             {
                 settings.setArrayIndex(i);
-                urls.push_back(settings.value("url").toString());
+                urls.push_back({
+                    settings.value("url").toString(),
+                    settings.value("title").toString()
+                });
             }
             settings.endArray();
 
@@ -1065,6 +1082,7 @@ void kristall::saveSession()
         {
             settings.setArrayIndex(i);
             settings.setValue("url", main_window->tabAt(i)->current_location.toString(QUrl::FullyEncoded));
+            settings.setValue("title", main_window->tabAt(i)->page_title);
             tab_count += 1;
         }
         settings.endArray();

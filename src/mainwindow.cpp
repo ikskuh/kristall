@@ -160,10 +160,16 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new, bool load_default)
     return tab;
 }
 
-BrowserTab * MainWindow::addNewTab(bool focus_new, QUrl const & url)
+BrowserTab * MainWindow::addNewTab(bool focus_new, QUrl const & url, QString defaultTitle)
 {
     auto tab = addEmptyTab(focus_new, false);
     tab->navigateTo(url, BrowserTab::PushImmediate);
+
+    if (!defaultTitle.isEmpty())
+    {
+        emit tab->titleChanged(defaultTitle);
+    }
+
     return tab;
 }
 
