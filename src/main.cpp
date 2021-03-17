@@ -696,49 +696,70 @@ int main(int argc, char *argv[])
 
     // Stores the first window from the restored session (if any)
     MainWindow * root_window = nullptr;
-    if((session_store != nullptr) and (kristall::globals().options.session_restore_behaviour == GenericSettings::RestoreLastSession))
+    if(session_store != nullptr)
     {
         auto & settings = *session_store;
-
         int window_count = settings.beginReadArray("windows");
-
-        for(int index = 0; index < window_count; index += 1)
+        if(kristall::globals().options.session_restore_behaviour == GenericSettings::RestoreLastSession)
         {
-            settings.setArrayIndex(index);
-
-            QVector<NamedUrl> urls;
-
-            int tab_count = settings.beginReadArray("tabs");
-            for(int i = 0; i < tab_count; i++)
+            for(int index = 0; index < window_count; index += 1)
             {
-                settings.setArrayIndex(i);
-                urls.push_back({
-                    settings.value("url").toString(),
-                    settings.value("title").toString()
-                });
-            }
-            settings.endArray();
+                settings.setArrayIndex(index);
 
-            auto * const window = kristall::openNewWindow(urls);
+                QVector<NamedUrl> urls;
 
-            if (window->tabCount() > 0)
-            {
-                int tab_index = settings.value("tab_index").toInt();
-                window->setCurrentTabIndex(tab_index);
-                window->curTab()->reloadPage();
+                int tab_count = settings.beginReadArray("tabs");
+                for(int i = 0; i < tab_count; i++)
+                {
+                    settings.setArrayIndex(i);
+                    urls.push_back({
+                        settings.value("url").toString(),
+                        settings.value("title").toString()
+                    });
+                }
+                settings.endArray();
+
+                auto * const window = kristall::openNewWindow(urls);
+
+                if (window->tabCount() > 0)
+                {
+                    int tab_index = settings.value("tab_index").toInt();
+                    window->setCurrentTabIndex(tab_index);
+                    window->curTab()->reloadPage();
+                }
+
+                if(settings.contains("state")) {
+                    window->restoreState(settings.value("state").toByteArray());
+                }
+                if(settings.contains("geometry") != QVariant {}) {
+                    window->restoreGeometry(settings.value("geometry").toByteArray());
+                }
+
+                if(root_window == nullptr)
+                    root_window = window;
             }
+
+        }
+        else if(window_count > 0)
+        {
+            // Restore only the main window geometry
+            settings.setArrayIndex(0);
+
+            root_window = kristall::openNewWindow(QVector<QUrl>{});
 
             if(settings.contains("state")) {
-                window->restoreState(settings.value("state").toByteArray());
+                root_window->restoreState(settings.value("state").toByteArray());
             }
             if(settings.contains("geometry") != QVariant {}) {
-                window->restoreGeometry(settings.value("geometry").toByteArray());
+                root_window->restoreGeometry(settings.value("geometry").toByteArray());
             }
 
-            if(root_window == nullptr)
-                root_window = window;
+            // If no URLs are to be loaded, we need to manually
+            // add the empty tab here.
+            if(urls.size() == 0) {
+                root_window->addEmptyTab(true, true);
+            }
         }
-
         settings.endArray();
     }
 
