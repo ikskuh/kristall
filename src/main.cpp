@@ -704,6 +704,9 @@ int main(int argc, char *argv[])
 
             auto * const window = kristall::openNewWindow(urls);
 
+            int tab_index = settings.value("tab_index").toInt();
+            window->setCurrentTabIndex(tab_index);
+
             if(settings.contains("state")) {
                 window->restoreState(settings.value("state").toByteArray());
             }
@@ -1065,6 +1068,8 @@ void kristall::saveSession()
             tab_count += 1;
         }
         settings.endArray();
+
+        settings.setValue("tab_index", main_window->currentTabIndex());
 
         window_index += 1;
     });
