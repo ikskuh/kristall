@@ -1,5 +1,6 @@
 #include "certificateiodialog.hpp"
 #include "ui_certificateiodialog.h"
+#include "kristall.hpp"
 
 #include <QFileDialog>
 #include <QPushButton>
@@ -10,6 +11,12 @@ CertificateIoDialog::CertificateIoDialog(QWidget *parent) :
     ui(new Ui::CertificateIoDialog)
 {
     ui->setupUi(this);
+
+    connect( // connect with "this" as context, so the connection will die when the window is destroyed
+        kristall::globals().localization.get(), &Localization::translationChanged,
+        this, [this]() { this->ui->retranslateUi(this); },
+        Qt::DirectConnection
+    );
 
     this->ui->key_type->clear();
     this->ui->key_type->addItem("RSA", QVariant::fromValue<int>(QSsl::Rsa));

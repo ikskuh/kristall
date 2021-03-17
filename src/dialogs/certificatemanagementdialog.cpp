@@ -17,6 +17,12 @@ CertificateManagementDialog::CertificateManagementDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    connect( // connect with "this" as context, so the connection will die when the window is destroyed
+        kristall::globals().localization.get(), &Localization::translationChanged,
+        this, [this]() { this->ui->retranslateUi(this); },
+        Qt::DirectConnection
+    );
+
     this->ui->certificates->setModel(&identity_set);
     this->ui->certificates->expandAll();
 

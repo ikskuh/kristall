@@ -64,6 +64,12 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
 {
     ui->setupUi(this);
 
+    connect( // connect with "this" as context, so the connection will die when the window is destroyed
+        kristall::globals().localization.get(), &Localization::translationChanged,
+        this, [this]() { this->ui->retranslateUi(this); },
+        Qt::DirectConnection
+    );
+
     this->setUiDensity(kristall::globals().options.ui_density);
 
     addProtocolHandler<GeminiClient>();

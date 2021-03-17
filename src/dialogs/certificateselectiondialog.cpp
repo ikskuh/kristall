@@ -14,6 +14,13 @@ CertificateSelectionDialog::CertificateSelectionDialog(QWidget *parent) :
     ui(new Ui::CertificateSelectionDialog)
 {
     ui->setupUi(this);
+
+    connect( // connect with "this" as context, so the connection will die when the window is destroyed
+        kristall::globals().localization.get(), &Localization::translationChanged,
+        this, [this]() { this->ui->retranslateUi(this); },
+        Qt::DirectConnection
+    );
+
     this->ui->server_request->setVisible(false);
 
     this->ui->certificates->setModel(&kristall::globals().identities);

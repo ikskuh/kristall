@@ -5,8 +5,6 @@
 #include <QSettings>
 #include <QClipboard>
 #include <QSslCertificate>
-#include <QTranslator>
-#include <QLocale>
 
 #include "identitycollection.hpp"
 #include "ssltrust.hpp"
@@ -14,6 +12,7 @@
 #include "protocolsetup.hpp"
 #include "documentstyle.hpp"
 #include "cachehandler.hpp"
+#include "localization.hpp"
 
 enum class Theme : int
 {
@@ -166,13 +165,6 @@ namespace kristall
         QDir styles;
     };
 
-    struct Localization
-    {
-        QLocale locale;
-        QTranslator qt;
-        QTranslator kristall;
-    };
-
     struct Globals
     {
         ProtocolSetup protocols;
@@ -191,7 +183,7 @@ namespace kristall
 
         Dirs dirs;
 
-        Localization localization;
+        std::unique_ptr<Localization> localization;
     };
 
     //! returns the instance of the globals structure
@@ -232,9 +224,6 @@ namespace kristall
 
     //! Saves the current session including all windows, tabs and positions.
     void saveSession();
-
-    //! Changes the currently used locale
-    void setLocale(QLocale const & locale);
 
     //! Saves the currently used locale
     void saveLocale();

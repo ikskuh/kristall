@@ -109,6 +109,7 @@ SOURCES += \
     favouritecollection.cpp \
     identitycollection.cpp \
     ioutil.cpp \
+    localization.cpp \
     main.cpp \
     mainwindow.cpp \
     renderers/htmlrenderer.cpp \
@@ -159,6 +160,7 @@ HEADERS += \
     identitycollection.hpp \
     ioutil.hpp \
     kristall.hpp \
+    localization.hpp \
     mainwindow.hpp \
     renderers/htmlrenderer.hpp \
     renderers/markdownrenderer.hpp \

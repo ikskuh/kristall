@@ -1,11 +1,19 @@
 #include "ssltrusteditor.hpp"
 #include "ui_ssltrusteditor.h"
 
+#include "kristall.hpp"
+
 SslTrustEditor::SslTrustEditor(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SslTrustEditor)
 {
     ui->setupUi(this);
+
+    connect( // connect with "this" as context, so the connection will die when the window is destroyed
+        kristall::globals().localization.get(), &Localization::translationChanged,
+        this, [this]() { this->ui->retranslateUi(this); },
+        Qt::DirectConnection
+    );
 
     this->ui->trust_level->clear();
     this->ui->trust_level->addItem("Trust on first encounter", QVariant::fromValue<int>(SslTrust::TrustOnFirstUse));

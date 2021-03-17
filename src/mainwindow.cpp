@@ -33,6 +33,12 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
 
     ui->setupUi(this);
 
+    connect( // connect with "this" as context, so the connection will die when the window is destroyed
+        kristall::globals().localization.get(), &Localization::translationChanged,
+        this, [this]() { this->ui->retranslateUi(this); },
+        Qt::DirectConnection
+    );
+
     this->url_status->setElideMode(Qt::ElideMiddle);
 
     this->statusBar()->addWidget(this->url_status);
@@ -472,12 +478,16 @@ void MainWindow::on_actionSettings_triggered()
     dialog.setOptions(kristall::globals().options);
     dialog.setGeminiSslTrust(kristall::globals().trust.gemini);
     dialog.setHttpsSslTrust(kristall::globals().trust.https);
+    dialog.setLocale(kristall::globals().localization->locale);
 
     if(dialog.exec() != QDialog::Accepted) {
         kristall::setTheme(kristall::globals().options.theme);
+        kristall::globals().localization->setLocale(kristall::globals().localization->locale);
         this->setUiDensity(kristall::globals().options.ui_density, false);
         return;
     }
+
+    kristall::globals().localization->setLocale(dialog.locale());
 
     kristall::globals().trust.gemini = dialog.geminiSslTrust();
     kristall::globals().trust.https = dialog.httpsSslTrust();
@@ -486,6 +496,7 @@ void MainWindow::on_actionSettings_triggered()
     kristall::globals().protocols = dialog.protocols();
     kristall::globals().document_style = dialog.geminiStyle();
 
+    kristall::saveLocale();
     kristall::applySettings();
 
     kristall::saveSettings();
