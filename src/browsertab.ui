@@ -43,7 +43,8 @@
         <string>Back</string>
        </property>
        <property name="icon">
-        <iconset theme="go-previous"/>
+        <iconset theme="go-previous">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -59,7 +60,8 @@
         <string>Forward</string>
        </property>
        <property name="icon">
-        <iconset theme="go-next"/>
+        <iconset theme="go-next">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -75,7 +77,8 @@
         <string>Stop</string>
        </property>
        <property name="icon">
-        <iconset theme="process-stop"/>
+        <iconset theme="process-stop">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -91,7 +94,8 @@
         <string>Reload</string>
        </property>
        <property name="icon">
-        <iconset theme="view-refresh"/>
+        <iconset theme="view-refresh">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -107,7 +111,8 @@
         <string>Home</string>
        </property>
        <property name="icon">
-        <iconset theme="go-home"/>
+        <iconset theme="go-home">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -123,7 +128,8 @@
         <string>/</string>
        </property>
        <property name="icon">
-        <iconset theme="go-top"/>
+        <iconset theme="go-top">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -139,7 +145,8 @@
         <string>P</string>
        </property>
        <property name="icon">
-        <iconset theme="go-up"/>
+        <iconset theme="go-up">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -211,11 +218,11 @@
         <bool>true</bool>
        </property>
        <property name="html">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <string notr="true" extracomment="Must not be translated, otherwise the content will be replaced when switching languages">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Start surfin!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="openLinks">
         <bool>false</bool>
@@ -267,7 +274,8 @@ p, li { white-space: pre-wrap; }
          <string>Previous</string>
         </property>
         <property name="icon">
-         <iconset theme="go-up-search"/>
+         <iconset theme="go-up-search">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -280,7 +288,8 @@ p, li { white-space: pre-wrap; }
          <string>Next</string>
         </property>
         <property name="icon">
-         <iconset theme="go-down-search"/>
+         <iconset theme="go-down-search">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -293,7 +302,8 @@ p, li { white-space: pre-wrap; }
          <string>Hide</string>
         </property>
         <property name="icon">
-         <iconset theme="window-close"/>
+         <iconset theme="window-close">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>

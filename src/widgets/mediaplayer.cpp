@@ -1,6 +1,8 @@
 #include "mediaplayer.hpp"
 #include "ui_mediaplayer.h"
 
+#include "kristall.hpp"
+
 #include <QMediaContent>
 #include <QToolButton>
 #include <QTime>
@@ -13,6 +15,12 @@ MediaPlayer::MediaPlayer(QWidget *parent) :
     player()
 {
     ui->setupUi(this);
+
+    connect( // connect with "this" as context, so the connection will die when the window is destroyed
+        kristall::globals().localization.get(), &Localization::translationChanged,
+        this, [this]() { this->ui->retranslateUi(this); },
+        Qt::DirectConnection
+    );
 
     this->player.setVideoOutput(this->ui->video_out);
 

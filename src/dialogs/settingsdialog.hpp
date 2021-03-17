@@ -2,6 +2,7 @@
 #define SETTINGSDIALOG_HPP
 
 #include <QDialog>
+#include <optional>
 
 #include "renderers/geminirenderer.hpp"
 #include "protocolsetup.hpp"
@@ -38,6 +39,9 @@ public:
 
     GenericSettings options() const;
     void setOptions(GenericSettings const & options);
+
+    std::optional<QLocale> locale() const;
+    void setLocale(std::optional<QLocale> locale);
 
 private slots:
     void on_std_change_font_clicked();
@@ -177,6 +181,8 @@ private slots:
     void on_strip_nav_off_clicked();
 
     void on_session_restore_behaviour_currentIndexChanged(int index);
+
+    void on_selected_language_currentIndexChanged(int index);
 
 private:
     void reloadStylePreview();

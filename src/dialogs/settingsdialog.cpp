@@ -21,6 +21,12 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    connect( // connect with "this" as context, so the connection will die when the window is destroyed
+        kristall::globals().localization.get(), &Localization::translationChanged,
+        this, [this]() { this->ui->retranslateUi(this); },
+        Qt::DirectConnection
+    );
+
     static_assert(DocumentStyle::Fixed == 0);
     static_assert(DocumentStyle::AutoDarkTheme == 1);
     static_assert(DocumentStyle::AutoLightTheme == 2);
@@ -103,6 +109,11 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
             this->ui->style_scroll_layout->minimumSize().width()
             + this->ui->style_scroll_area->verticalScrollBar()->sizeHint().width());
     });
+
+    this->ui->selected_language->clear();
+    this->ui->selected_language->addItem(QIcon(), tr("System language"), QString(""));
+    this->ui->selected_language->addItem(QIcon(":/icons/languages/en.svg"), QLocale("en").nativeLanguageName(), QString("en"));
+    this->ui->selected_language->addItem(QIcon(":/icons/languages/ru.svg"), QLocale("ru").nativeLanguageName(), QString("ru"));
 }
 
 SettingsDialog::~SettingsDialog()
@@ -383,6 +394,32 @@ void SettingsDialog::setOptions(const GenericSettings &options)
         if(this->ui->session_restore_behaviour->itemData(i).toInt() == int(options.session_restore_behaviour)) {
             this->ui->session_restore_behaviour->setCurrentIndex(i);
             break;
+        }
+    }
+}
+
+std::optional<QLocale> SettingsDialog::locale() const
+{
+    QString locale_str = this->ui->selected_language->currentData().toString();
+    if(locale_str.isEmpty())
+        return std::nullopt;
+    else
+        return QLocale(locale_str);
+}
+
+void SettingsDialog::setLocale(std::optional<QLocale> locale)
+{
+    if(locale == std::nullopt)
+    {
+        this->ui->selected_language->setCurrentIndex(0);
+    }
+    else
+    {
+        switch(locale->language())
+        {
+        default:               this->ui->selected_language->setCurrentIndex(0); break;
+        case QLocale::English: this->ui->selected_language->setCurrentIndex(1); break;
+        case QLocale::Russian: this->ui->selected_language->setCurrentIndex(2); break;
         }
     }
 }
@@ -987,4 +1024,11 @@ void SettingsDialog::on_strip_nav_off_clicked()
 void SettingsDialog::on_session_restore_behaviour_currentIndexChanged(int index)
 {
     this->current_options.session_restore_behaviour = GenericSettings::SessionRestoreBehaviour(this->ui->session_restore_behaviour->itemData(index).toInt());
+}
+
+void SettingsDialog::on_selected_language_currentIndexChanged(int index)
+{
+    auto const language_id = this->ui->selected_language->itemData(index, Qt::UserRole).toString();
+
+    kristall::globals().localization->translate(QLocale(language_id));
 }

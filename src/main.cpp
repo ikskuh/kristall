@@ -375,22 +375,15 @@ MainWindow * kristall::openNewWindow(QVector<NamedUrl> const & urls)
     return window;
 }
 
-
-//! Changes the currently used locale
-void kristall::setLocale(QLocale const & locale)
-{
-    auto & i18n = kristall::globals().localization;
-    i18n.locale = locale;
-    i18n.qt.load(i18n.locale, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    i18n.kristall.load(i18n.locale, "kristall", "_", ":/i18n");
-}
-
 //! Saves the currently used locale
 void kristall::saveLocale()
 {
     if(app_settings_ptr == nullptr)
         return;
-    app_settings_ptr->setValue("language", kristall::globals().localization.locale.bcp47Name());
+    if(auto const locale = kristall::globals().localization->locale; locale != std::nullopt)
+        app_settings_ptr->setValue("language", locale->bcp47Name());
+    else
+        app_settings_ptr->setValue("language", QString(""));
     app_settings_ptr->sync();
 }
 
@@ -450,20 +443,19 @@ int main(int argc, char *argv[])
 
     // Initialize localization
     {
-
-        // Load the currently selected locale
-        auto const lang_id = app_settings.value("language", QString()).toString();
-        if(not lang_id.isEmpty()) {
-            kristall::setLocale( QLocale(lang_id) );
-        }
-        else {
-            kristall::setLocale ( QLocale() );
-        }
-
         auto & i18n = kristall::globals().localization;
-        app.installTranslator(&i18n.qt);
-        app.installTranslator(&i18n.kristall);
-        qDebug() << "current locale" << i18n.locale.nativeLanguageName();
+
+        i18n = std::make_unique<Localization>();
+
+        auto const locale_id = app_settings.value("language", QString("")).toString();
+
+        if(not locale_id.isEmpty())
+            i18n->setLocale(QLocale(locale_id));
+        else
+            i18n->setLocale(std::nullopt);
+
+        qApp->installTranslator(&i18n->qt);
+        qApp->installTranslator(&i18n->kristall);
     }
 
     addEmojiSubstitutions();
