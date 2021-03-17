@@ -356,7 +356,7 @@ MainWindow * kristall::openNewWindow(QVector<QUrl> const & urls)
 
 //! Opens a new window with the given list of urls.
 //! If the list is empty, no new tab will spawned.
-MainWindow * kristall::openNewWindow(QVector<PageMetadata> const & urls)
+MainWindow * kristall::openNewWindow(QVector<NamedUrl> const & urls)
 {
     MainWindow * const window = new MainWindow(qApp);
 
@@ -706,7 +706,7 @@ int main(int argc, char *argv[])
         {
             settings.setArrayIndex(index);
 
-            QVector<PageMetadata> urls;
+            QVector<NamedUrl> urls;
 
             int tab_count = settings.beginReadArray("tabs");
             for(int i = 0; i < tab_count; i++)
