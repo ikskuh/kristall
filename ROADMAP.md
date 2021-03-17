@@ -10,14 +10,14 @@ This document contains TODO items for planned Kristall releases as well as some 
   - [x] Provide text search function
   - [ ] auto-highlighting/following outline
   - [ ] Implement support for snail-case anchors
-  - [ ] Add maximum text width option
-  - [ ] Remember scroll position for navigating back
+  - [x] Add maximum text width option
+  - [x] Remember scroll position for navigating back
   - [x] Ctrl-Leftclick for "open in new tab"
   - [x] Selecting theme in settings dialog is now instant-change
 - [x] Replace Qt markdown with standalone markdown renderer
   - [x] Enable basic markdown theming
   - [ ] Extent theming to support H4…H6, emph/bold text
-  - [ ] Improve block quote / code block rendering
+  - [x] Improve block quote / code block rendering
 - [ ] Improve Styles
   - [x] Add text/kristall-theme mime
     - [x] Will use a preview document instead of displaying the content
@@ -50,9 +50,8 @@ This document contains TODO items for planned Kristall releases as well as some 
   - [x] Migrate settings-based color schemes to folder
   - [x] Define human-readable color scheme file format
   - [ ] Add per-site scheming
-- [ ] Setup sane default fonts
-  - [ ] `Segoe UI`, `Consolas` for Windows
-  - [ ]
+- [x] Setup sane default fonts
+  - [x] `Segoe UI`, `Consolas` for Windows
 - [ ] Add support for "Downloads" folder/list
   - [ ] Download unknown mime types to `Downloads`
   - [ ] Redirect large files to `Dowloads`
