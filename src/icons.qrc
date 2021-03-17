@@ -103,5 +103,7 @@
         <file>icons/dark/actions/go-up-search.svg</file>
         <file>icons/light/actions/go-down-search.svg</file>
         <file>icons/light/actions/go-up-search.svg</file>
+        <file>icons/languages/en.svg</file>
+        <file>icons/languages/ru.svg</file>
     </qresource>
 </RCC>
