@@ -81,44 +81,43 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     {
         std::string prefix = "Alt+";
         for (char tab = '0'; tab <= '9'; ++tab) {
-	  std::string shortcut = prefix + tab;
-          QShortcut * sc = new QShortcut(QKeySequence(shortcut.c_str()), this);
-          connect(sc, &QShortcut::activated, this,
-	  	[this, tab](){
-		  // 1-9 goes from the first to the n-th tab, 0 goes to the last one
-		  this->ui->browser_tabs->
-		    setCurrentIndex((tab == '0' ?
-				     this->ui->browser_tabs->count()
-				    : tab-'0') - 1);
-		});
-      }
+            std::string shortcut = prefix + tab;
+            QShortcut * sc = new QShortcut(QKeySequence(shortcut.c_str()), this);
+            connect(sc, &QShortcut::activated, this, [this, tab]()
+            {
+                // 1-9 goes from the first to the n-th tab, 0 goes to the last one
+                setCurrentTabIndex((tab == '0'
+                    ? this->ui->browser_tabs->count()
+                    : tab-'0') - 1);
+            });
+        }
     }
 
     {
         QShortcut * sc = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageDown), this);
         connect(sc, &QShortcut::activated, this, [this](){
-           int i = this->ui->browser_tabs->currentIndex();
+           int i = this->currentTabIndex();
 
            if (i + 1 >= this->ui->browser_tabs->count())
                i = 0;
            else
                i++;
 
-           this->ui->browser_tabs->setCurrentIndex(i);
+           this->setCurrentTabIndex(i);
         });
     }
 
     {
         QShortcut * sc = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageUp), this);
         connect(sc, &QShortcut::activated, this, [this](){
-           int i = this->ui->browser_tabs->currentIndex();
+           int i = this->currentTabIndex();
 
            if (!i)
                i = this->ui->browser_tabs->count() - 1;
            else
                i--;
 
-           this->ui->browser_tabs->setCurrentIndex(i);
+           this->setCurrentTabIndex(i);
         });
     }
 
@@ -148,7 +147,7 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new, bool load_default)
     int index = this->ui->browser_tabs->addTab(tab, "Page");
 
     if(focus_new) {
-        this->ui->browser_tabs->setCurrentIndex(index);
+        this->setCurrentTabIndex(index);
     }
 
     if(load_default) {
@@ -307,6 +306,17 @@ void MainWindow::applySettings()
     // Update new-tab button visibility.
     this->ui->browser_tabs->tab_bar->new_tab_btn->setVisible(kristall::globals().options.enable_newtab_btn);
 }
+
+int MainWindow::currentTabIndex()
+{
+    return this->ui->browser_tabs->currentIndex();
+}
+
+void MainWindow::setCurrentTabIndex(int index)
+{
+    this->ui->browser_tabs->setCurrentIndex(index);
+}
+
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
@@ -598,7 +608,7 @@ void MainWindow::on_tab_fileLoaded(DocumentStats const & stats)
     if(tab != nullptr) {
         int index = this->ui->browser_tabs->indexOf(tab);
         assert(index >= 0);
-        if(index == this->ui->browser_tabs->currentIndex()) {
+        if(index == this->currentTabIndex()) {
             setFileStatus(stats);
             this->ui->outline_view->expandAll();
         }
@@ -611,7 +621,7 @@ void MainWindow::on_tab_requestStateChanged(RequestState state)
     if(tab != nullptr) {
         int index = this->ui->browser_tabs->indexOf(tab);
         assert(index >= 0);
-        if(index == this->ui->browser_tabs->currentIndex()) {
+        if(index == this->currentTabIndex()) {
             setRequestState(state);
         }
     }

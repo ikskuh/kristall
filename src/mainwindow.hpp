@@ -49,6 +49,10 @@ public:
     //! Applies setting changes to the window.
     void applySettings();
 
+    //! Gets/sets the current tab of this window
+    int currentTabIndex();
+    void setCurrentTabIndex(int);
+
     void mousePressEvent(QMouseEvent *event) override;
 
     void closeEvent(QCloseEvent *event) override;
