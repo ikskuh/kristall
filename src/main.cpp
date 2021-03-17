@@ -347,7 +347,7 @@ MainWindow * kristall::openNewWindow(QVector<QUrl> const & urls)
 
     for(int i = 0; i < urls.length(); i++)
     {
-        window->addNewTab((i == 0), urls.at(i), "");
+        window->addNewTab((i == 0), urls.at(i), true, "");
     }
 
     window->show();
@@ -362,7 +362,7 @@ MainWindow * kristall::openNewWindow(QVector<PageMetadata> const & urls)
 
     for(int i = 0; i < urls.length(); i++)
     {
-        window->addNewTab((i == 0), urls.at(i).location, urls.at(i).title);
+        window->addNewTab((i == 0), urls.at(i).location, true, urls.at(i).title);
     }
 
     window->show();
@@ -721,8 +721,12 @@ int main(int argc, char *argv[])
 
             auto * const window = kristall::openNewWindow(urls);
 
-            int tab_index = settings.value("tab_index").toInt();
-            window->setCurrentTabIndex(tab_index);
+            if (window->tabCount() > 0)
+            {
+                int tab_index = settings.value("tab_index").toInt();
+                window->setCurrentTabIndex(tab_index);
+                window->curTab()->reloadPage();
+            }
 
             if(settings.contains("state")) {
                 window->restoreState(settings.value("state").toByteArray());

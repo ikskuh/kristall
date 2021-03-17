@@ -160,13 +160,23 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new, bool load_default)
     return tab;
 }
 
-BrowserTab * MainWindow::addNewTab(bool focus_new, QUrl const & url, QString defaultTitle)
+BrowserTab * MainWindow::addNewTab(bool focus_new, QUrl const & url, bool lazyload, QString defaultTitle)
 {
     auto tab = addEmptyTab(focus_new, false);
-    tab->navigateTo(url, BrowserTab::PushImmediate);
+
+    if (lazyload)
+    {
+        tab->current_location = url;
+        tab->lazy_loading = true;
+    }
+    else
+    {
+        tab->navigateTo(url, BrowserTab::PushImmediate);
+    }
 
     if (!defaultTitle.isEmpty())
     {
+        tab->page_title = defaultTitle;
         emit tab->titleChanged(defaultTitle);
     }
 
@@ -372,6 +382,11 @@ void MainWindow::on_browser_tabs_currentChanged(int index)
             else
             {
                 tab->refreshFavButton();
+            }
+
+            if (tab->lazy_loading)
+            {
+                tab->reloadPage();
             }
 
             this->setRequestState(tab->request_state);
