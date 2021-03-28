@@ -897,6 +897,7 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
     {
         uri.setScheme(current_location.scheme());
         uri.setHost(current_location.host());
+        uri.setPort(current_location.port());
     }
 
     if (redirection_count >= kristall::globals().options.max_redirections)
