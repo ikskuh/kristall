@@ -685,11 +685,10 @@
                <item>
                 <widget class="QToolButton" name="bg_change_color">
                  <property name="text">
-                  <string/>
+                  <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic">
-                   <normaloff>.</normaloff>.</iconset>
+                  <iconset theme="color-select-symbolic"/>
                  </property>
                 </widget>
                </item>
@@ -724,22 +723,20 @@
                <item>
                 <widget class="QToolButton" name="std_change_font">
                  <property name="text">
-                  <string/>
+                  <string>Set font...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="font-select-symbolic">
-                   <normaloff>.</normaloff>.</iconset>
+                  <iconset theme="font-select-symbolic"/>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QToolButton" name="std_change_color">
                  <property name="text">
-                  <string/>
+                  <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic">
-                   <normaloff>.</normaloff>.</iconset>
+                  <iconset theme="color-select-symbolic"/>
                  </property>
                 </widget>
                </item>
@@ -767,22 +764,20 @@
                <item>
                 <widget class="QToolButton" name="pre_change_font">
                  <property name="text">
-                  <string/>
+                  <string>Set font...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="font-select-symbolic">
-                   <normaloff>.</normaloff>.</iconset>
+                  <iconset theme="font-select-symbolic"/>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QToolButton" name="pre_change_color">
                  <property name="text">
-                  <string/>
+                  <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic">
-                   <normaloff>.</normaloff>.</iconset>
+                  <iconset theme="color-select-symbolic"/>
                  </property>
                 </widget>
                </item>
@@ -810,22 +805,20 @@
                <item>
                 <widget class="QToolButton" name="h1_change_font">
                  <property name="text">
-                  <string/>
+                  <string>Set font...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="font-select-symbolic">
-                   <normaloff>.</normaloff>.</iconset>
+                  <iconset theme="font-select-symbolic"/>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QToolButton" name="h1_change_color">
                  <property name="text">
-                  <string/>
+                  <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic">
-                   <normaloff>.</normaloff>.</iconset>
+                  <iconset theme="color-select-symbolic"/>
                  </property>
                 </widget>
                </item>
@@ -853,22 +846,20 @@
                <item>
                 <widget class="QToolButton" name="h2_change_font">
                  <property name="text">
-                  <string/>
+                  <string>Set font...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="font-select-symbolic">
-                   <normaloff>.</normaloff>.</iconset>
+                  <iconset theme="font-select-symbolic"/>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QToolButton" name="h2_change_color">
                  <property name="text">
-                  <string/>
+                  <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic">
-                   <normaloff>.</normaloff>.</iconset>
+                  <iconset theme="color-select-symbolic"/>
                  </property>
                 </widget>
                </item>
@@ -902,22 +893,20 @@
                <item>
                 <widget class="QToolButton" name="h3_change_font">
                  <property name="text">
-                  <string/>
+                  <string>Set font...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="font-select-symbolic">
-                   <normaloff>.</normaloff>.</iconset>
+                  <iconset theme="font-select-symbolic"/>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QToolButton" name="h3_change_color">
                  <property name="text">
-                  <string/>
+                  <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic">
-                   <normaloff>.</normaloff>.</iconset>
+                  <iconset theme="color-select-symbolic"/>
                  </property>
                 </widget>
                </item>
@@ -951,22 +940,20 @@
                <item>
                 <widget class="QToolButton" name="bq_change_font">
                  <property name="text">
-                  <string/>
+                  <string>Set font...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="font-select-symbolic">
-                   <normaloff>.</normaloff>.</iconset>
+                  <iconset theme="font-select-symbolic"/>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QToolButton" name="bq_change_color">
                  <property name="text">
-                  <string/>
+                  <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic">
-                   <normaloff>.</normaloff>.</iconset>
+                  <iconset theme="color-select-symbolic"/>
                  </property>
                 </widget>
                </item>
@@ -1036,11 +1023,10 @@
                <item>
                 <widget class="QToolButton" name="link_local_change_color">
                  <property name="text">
-                  <string/>
+                  <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic">
-                   <normaloff>.</normaloff>.</iconset>
+                  <iconset theme="color-select-symbolic"/>
                  </property>
                 </widget>
                </item>
@@ -1061,11 +1047,10 @@
                <item>
                 <widget class="QToolButton" name="link_foreign_change_color">
                  <property name="text">
-                  <string/>
+                  <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic">
-                   <normaloff>.</normaloff>.</iconset>
+                  <iconset theme="color-select-symbolic"/>
                  </property>
                 </widget>
                </item>
@@ -1086,11 +1071,10 @@
                <item>
                 <widget class="QToolButton" name="link_cross_change_color">
                  <property name="text">
-                  <string/>
+                  <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic">
-                   <normaloff>.</normaloff>.</iconset>
+                  <iconset theme="color-select-symbolic"/>
                  </property>
                 </widget>
                </item>
@@ -1397,11 +1381,10 @@
                <item>
                 <widget class="QToolButton" name="quote_change_color">
                  <property name="text">
-                  <string>...</string>
+                  <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic">
-                   <normaloff>.</normaloff>.</iconset>
+                  <iconset theme="color-select-symbolic"/>
                  </property>
                 </widget>
                </item>
@@ -1434,11 +1417,10 @@
                 <string>Save as new preset</string>
                </property>
                <property name="text">
-                <string>...</string>
+                <string>New</string>
                </property>
                <property name="icon">
-                <iconset theme="document-new">
-                 <normaloff>.</normaloff>.</iconset>
+                <iconset theme="document-new"/>
                </property>
               </widget>
              </item>
@@ -1448,11 +1430,10 @@
                 <string>Override current preset</string>
                </property>
                <property name="text">
-                <string>...</string>
+                <string>Save</string>
                </property>
                <property name="icon">
-                <iconset theme="document-save">
-                 <normaloff>.</normaloff>.</iconset>
+                <iconset theme="document-save"/>
                </property>
               </widget>
              </item>
@@ -1462,11 +1443,10 @@
                 <string>Load preset</string>
                </property>
                <property name="text">
-                <string>...</string>
+                <string>Load</string>
                </property>
                <property name="icon">
-                <iconset theme="folder">
-                 <normaloff>.</normaloff>.</iconset>
+                <iconset theme="folder"/>
                </property>
               </widget>
              </item>
@@ -1479,11 +1459,10 @@
                 <number>-1</number>
                </property>
                <property name="text">
-                <string>...</string>
+                <string>Import</string>
                </property>
                <property name="icon">
-                <iconset theme="document-import">
-                 <normaloff>.</normaloff>.</iconset>
+                <iconset theme="document-import"/>
                </property>
               </widget>
              </item>
@@ -1493,11 +1472,10 @@
                 <string>Export preset…</string>
                </property>
                <property name="text">
-                <string>...</string>
+                <string>Export</string>
                </property>
                <property name="icon">
-                <iconset theme="document-export">
-                 <normaloff>.</normaloff>.</iconset>
+                <iconset theme="document-export"/>
                </property>
               </widget>
              </item>
