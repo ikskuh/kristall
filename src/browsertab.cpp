@@ -1763,9 +1763,7 @@ void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint pos)
 
     QAction * viewsrc = menu.addAction(tr("View document source"));
     viewsrc->setShortcut(QKeySequence("Ctrl+U"));
-    connect(viewsrc, &QAction::triggered, [this]() {
-        mainWindow->viewPageSource();
-    });
+    connect(viewsrc, &QAction::triggered, this, &BrowserTab::openSourceView);
 
     menu.exec(ui->text_browser->mapToGlobal(pos));
 }
