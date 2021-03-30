@@ -288,7 +288,7 @@ void BrowserTab::openSourceView()
     QFont monospace_font("monospace");
     monospace_font.setStyleHint(QFont::Monospace);
 
-    auto dialog = std::make_unique<QDialog>(this);
+    auto dialog = std::make_unique<QDialog>(this, Qt::WindowTitleHint | Qt::WindowSystemMenuHint);
     dialog->setWindowTitle(QString(tr("Source of %0")).arg(this->current_location.toString()));
 
     auto layout = new QVBoxLayout(dialog.get());
