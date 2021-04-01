@@ -30,7 +30,7 @@ static QByteArray trim_whitespace(const QByteArray &items)
 
 static void insertText(QTextCursor&, const QByteArray&, const QTextCharFormat&);
 
-std::unique_ptr<GeminiDocument> GeminiRenderer::render(
+std::unique_ptr<QTextDocument> GeminiRenderer::render(
         const QByteArray &input,
         QUrl const &root_url,
         DocumentStyle const & themed_style,
@@ -39,7 +39,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
 {
     TextStyleInstance text_style { themed_style };
 
-    std::unique_ptr<GeminiDocument> result = std::make_unique<GeminiDocument>();
+    std::unique_ptr<QTextDocument> result = std::make_unique<QTextDocument>();
     renderhelpers::setPageMargins(result.get(), themed_style.margin_h, themed_style.margin_v);
     result->setIndentWidth(themed_style.indent_size);
 
@@ -303,14 +303,6 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
 
     outline.endBuild();
     return result;
-}
-
-GeminiDocument::GeminiDocument(QObject *parent) : QTextDocument(parent)
-{
-}
-
-GeminiDocument::~GeminiDocument()
-{
 }
 
 /*
