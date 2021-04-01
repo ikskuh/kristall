@@ -3,21 +3,10 @@
 
 #include <memory>
 #include <QTextDocument>
-#include <QColor>
-#include <QSettings>
 
 #include "documentoutlinemodel.hpp"
 
 #include "documentstyle.hpp"
-
-class GeminiDocument :
-        public QTextDocument
-{
-    Q_OBJECT
-public:
-    explicit GeminiDocument(QObject * parent = nullptr);
-    ~GeminiDocument() override;
-};
 
 struct GeminiRenderer
 {
@@ -29,7 +18,7 @@ struct GeminiRenderer
     //! @param style    The style which is used to render the document
     //! @param outline  The extracted outline from the document
     //! @param page_title The extracted page title
-    static std::unique_ptr<GeminiDocument> render(
+    static std::unique_ptr<QTextDocument> render(
         QByteArray const & input,
         QUrl const & root_url,
         DocumentStyle const & style,
