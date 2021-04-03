@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 mkdir AppIcon.iconset
 rsvg-convert kristall.svg -h 1024 > AppIcon.iconset/icon_512x512@2.png
