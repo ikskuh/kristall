@@ -78,11 +78,14 @@ This is because Fedora has a different naming scheme for the qmake executable.
 - set env variable `QT_SELECT=5`
 
 #### Notes on alpine linux
-- Requires packages
-  - qt5-qtbase-dev
-  - qtchooser
-  - qt5-qtsvg-dev
-  - qt5-qtmultimedia-dev
+- Required packages for 0.3
+  - `qt5-qtbase-dev`
+  - `qtchooser`
+  - `qt5-qtsvg-dev`
+  - `qt5-qtmultimedia-dev`
+- Additionally for current state (38b353e)
+  - `qt5-qttools-dev`
+  - `bash`
 
 #### Windows (MinGW)
 Install Qt via the Qt installer. Install the following components:
