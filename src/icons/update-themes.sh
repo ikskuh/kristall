@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 rm -rf dark/actions/*
 rm -rf dark/objects/*

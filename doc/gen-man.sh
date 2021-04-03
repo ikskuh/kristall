@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # gen-man
 #
@@ -20,25 +20,25 @@ gemtext_in="../src/about/help.gemini"
 gemtext_converter="./gem-to-man.awk"
 
 # Make sure we have all the stuff we need
-if [[ ! -f "$man_head" ]]; then
+if [ ! -f "$man_head" ]; then
     echo "man page head does not exist."
-    exit -1
+    exit 1
 fi
-if [[ ! -f "$man_tail" ]]; then
+if [ ! -f "$man_tail" ]; then
     echo "man page tail does not exist"
-    exit -1
+    exit 1
 fi
-if [[ -z "$man_output" ]]; then
+if [ -z "$man_output" ]; then
     echo "No output file"
-    exit -1
+    exit 1
 fi
-if [[ ! -f "$gemtext_in" ]]; then
+if [ ! -f "$gemtext_in" ]; then
     echo "Input gemtext file does not exist"
-    exit -1
+    exit 1
 fi
-if [[ ! -f "$gemtext_converter" ]]; then
+if [ ! -f "$gemtext_converter" ]; then
     echo "Gemtext converter script does not exist"
-    exit -1
+    exit 1
 fi
 
 # Write the head to the output file.
