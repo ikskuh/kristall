@@ -80,9 +80,9 @@ struct RenderState
     }
 };
 
-static void renderNode(RenderState &state, cmark_node &node, const QTextCharFormat &current_format, int listIndent = 1);
+static void renderNode(RenderState &state, cmark_node &node, const QTextCharFormat &current_format, int listIndent = 0);
 
-static void renderChildren(RenderState &state, cmark_node & node, const QTextCharFormat &current_format, int listIndent = 1)
+static void renderChildren(RenderState &state, cmark_node & node, const QTextCharFormat &current_format, int listIndent = 0)
 {
     for (auto child = cmark_node_first_child(&node); child != nullptr; child = cmark_node_next(child))
     {
@@ -142,8 +142,9 @@ static void renderNode(RenderState &state, cmark_node & node, const QTextCharFor
     case CMARK_NODE_LIST:
     {
         auto fmt = cursor.blockFormat();
-        QTextListFormat listFormat;
-        listFormat.setIndent(listIndent++);
+        QTextListFormat listFormat = state.text_style.list_format;
+        listFormat.setIndent(listFormat.indent() + listIndent);
+        listIndent++;
 
         if(cmark_node_get_list_type(&node) == CMARK_BULLET_LIST) {
             listFormat.setStyle(QTextListFormat::ListDisc);
