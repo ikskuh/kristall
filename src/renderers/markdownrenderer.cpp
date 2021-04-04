@@ -69,6 +69,7 @@ struct RenderState
 
     QString &page_title;
 
+    bool centre_first_h1;
     bool suppress_next_block = false;
 
     void emitNewBlock() {
@@ -215,6 +216,14 @@ static void renderNode(RenderState &state, cmark_node & node, const QTextCharFor
             if (state.page_title.isEmpty())
                 state.page_title = text;
 
+            if (state.centre_first_h1)
+            {
+                auto f = state.text_style.heading_format;
+                f.setAlignment(Qt::AlignCenter);
+                cursor.setBlockFormat(f);
+                state.centre_first_h1 = false;
+            }
+
             break;
         case 2: state.outline->appendH2(text, QString { }); break;
         case 3: state.outline->appendH3(text, QString { }); break;
@@ -335,7 +344,8 @@ std::unique_ptr<QTextDocument> MarkdownRenderer::render(
         &style,
         &outline,
         TextStyleInstance { style },
-        page_title
+        page_title,
+        style.centre_h1
     };
 
     renderNode(state, *md_root, state.text_style.standard);
