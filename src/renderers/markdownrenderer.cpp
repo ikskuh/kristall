@@ -146,9 +146,7 @@ static void renderNode(RenderState &state, cmark_node & node, const QTextCharFor
         listFormat.setIndent(listFormat.indent() + listIndent);
         listIndent++;
 
-        if(cmark_node_get_list_type(&node) == CMARK_BULLET_LIST) {
-            listFormat.setStyle(QTextListFormat::ListDisc);
-        } else {
+        if (cmark_node_get_list_type(&node) == CMARK_ORDERED_LIST) {
             listFormat.setStyle(QTextListFormat::ListDecimal);
         }
         cursor.insertList(listFormat);
