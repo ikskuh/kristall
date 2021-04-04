@@ -9,6 +9,7 @@
 
 #include <QDebug>
 #include <QTextCursor>
+#include <QTextTableCell>
 
 //static char const *nodeToStr(cmark_node_type type)
 //{
@@ -133,9 +134,14 @@ static void renderNode(RenderState &state, cmark_node & node, const QTextCharFor
         state.emitNewBlock();
         state.suppress_next_block = true;
 
+        QTextTable *table = cursor.insertTable(1, 1, state.text_style.blockquote_tableformat);
         cursor.setBlockFormat(state.text_style.blockquote_format);
+        QTextTableCell cell = table->cellAt(0, 0);
+        cell.setFormat(state.text_style.blockquote);
+
         renderChildren(state, node, current_format);
 
+        cursor.movePosition(QTextCursor::NextBlock);
         resetFormatting(state);
         break;
     }
