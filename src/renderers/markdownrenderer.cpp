@@ -106,6 +106,13 @@ static QString extractNodeText(cmark_node &node)
     return QString::fromUtf8(data, strlen(data));
 }
 
+static void resetFormatting(RenderState &state)
+{
+    state.emitNewBlock();
+    state.suppress_next_block = true;
+    state.cursor.setBlockFormat(state.text_style.standard_format);
+}
+
 static void renderNode(RenderState &state, cmark_node & node, const QTextCharFormat &current_format, int listIndent)
 {
     auto & cursor = state.cursor;
@@ -126,10 +133,7 @@ static void renderNode(RenderState &state, cmark_node & node, const QTextCharFor
         cursor.setBlockFormat(state.text_style.blockquote_format);
         renderChildren(state, node, current_format);
 
-        state.emitNewBlock();
-        state.suppress_next_block = true;
-        cursor.setBlockFormat(state.text_style.standard_format);
-
+        resetFormatting(state);
         break;
     }
     case CMARK_NODE_LIST:
@@ -166,10 +170,7 @@ static void renderNode(RenderState &state, cmark_node & node, const QTextCharFor
         QString code = extractNodeText(node);
         cursor.insertText(code, state.text_style.preformatted);
 
-        state.emitNewBlock();
-        state.suppress_next_block = true;
-        cursor.setBlockFormat(state.text_style.standard_format);
-
+        resetFormatting(state);
         break;
     }
     case CMARK_NODE_HTML_BLOCK:
