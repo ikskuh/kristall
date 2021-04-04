@@ -193,6 +193,8 @@ static void renderNode(RenderState &state, cmark_node & node, const QTextCharFor
     {
         QTextCharFormat fmt = current_format;
         state.emitNewBlock();
+        cursor.setBlockFormat(state.text_style.heading_format);
+
         switch(cmark_node_get_heading_level(&node)) {
         case 1: fmt = state.text_style.standard_h1; break;
         case 2: fmt = state.text_style.standard_h2; break;
@@ -219,6 +221,7 @@ static void renderNode(RenderState &state, cmark_node & node, const QTextCharFor
         }
 
         renderChildren(state, node, fmt);
+        resetFormatting(state);
         break;
     }
     case CMARK_NODE_THEMATIC_BREAK:
