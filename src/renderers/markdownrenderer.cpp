@@ -105,7 +105,8 @@ static void renderChildren(RenderState &state, cmark_node & node, const QTextCha
 static QString extractNodeText(cmark_node &node)
 {
     const char *data = cmark_node_get_literal(&node);
-    return QString::fromUtf8(data, strlen(data));
+    QByteArray array(data);
+    return renderhelpers::replace_quotes(array);
 }
 
 static void resetFormatting(RenderState &state, QTextBlockFormat defaultFormat = QTextBlockFormat())
