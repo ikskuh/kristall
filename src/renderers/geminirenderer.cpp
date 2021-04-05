@@ -28,7 +28,6 @@ static QByteArray trim_whitespace(const QByteArray &items)
     return items.mid(start, end - start + 1);
 }
 
-static QByteArray replace_quotes(QByteArray&);
 static void insertText(QTextCursor&, const QByteArray&, const QTextCharFormat&);
 
 std::unique_ptr<GeminiDocument> GeminiRenderer::render(
@@ -107,7 +106,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 cursor.insertBlock();
             }
 
-            replace_quotes(line);
+            renderhelpers::replace_quotes(line);
             insertText(cursor, trim_whitespace(line.mid(1)), text_style.standard);
             continue;
         }
@@ -133,7 +132,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 blockquote = true;
             }
 
-            replace_quotes(line);
+            renderhelpers::replace_quotes(line);
             insertText(cursor, trim_whitespace(line.mid(1)), text_style.blockquote);
             cursor.insertText("\n", text_style.standard);
             continue;
@@ -161,7 +160,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
             outline.appendH3(heading, id);
 
             cursor.setBlockFormat(text_style.heading_format);
-            insertText(cursor, replace_quotes(heading), fmt);
+            insertText(cursor, renderhelpers::replace_quotes(heading), fmt);
             cursor.insertText("\n", text_style.standard);
         }
         else if (line.startsWith("##"))
@@ -176,7 +175,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
             outline.appendH2(heading, id);
 
             cursor.setBlockFormat(text_style.heading_format);
-            insertText(cursor, replace_quotes(heading), fmt);
+            insertText(cursor, renderhelpers::replace_quotes(heading), fmt);
             cursor.insertText("\n", text_style.standard);
         }
         else if (line.startsWith("#"))
@@ -210,7 +209,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 cursor.setBlockFormat(text_style.heading_format);
             }
 
-            insertText(cursor, replace_quotes(heading), fmt);
+            insertText(cursor, renderhelpers::replace_quotes(heading), fmt);
             cursor.insertText("\n", text_style.standard);
         }
         else if (line.startsWith("=>"))
@@ -239,7 +238,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
                 link = trim_whitespace(part);
                 title = trim_whitespace(part);
             }
-            replace_quotes(title);
+            renderhelpers::replace_quotes(title);
 
             auto local_url = QUrl(link);
 
@@ -296,7 +295,7 @@ std::unique_ptr<GeminiDocument> GeminiRenderer::render(
         {
             cursor.setBlockFormat(text_style.standard_format);
 
-            replace_quotes(line);
+            renderhelpers::replace_quotes(line);
             insertText(cursor, line, text_style.standard);
             cursor.insertText("\n", text_style.standard);
         }
@@ -312,79 +311,6 @@ GeminiDocument::GeminiDocument(QObject *parent) : QTextDocument(parent)
 
 GeminiDocument::~GeminiDocument()
 {
-}
-
-/*
- * This replaces single and double quotes (', ") with
- * one of the four typographer's quotes, a.k.a curly quotes,
- * e.g: ‘this’ and “this”
- */
-static QByteArray replace_quotes(QByteArray &line)
-{
-    if (!kristall::globals().options.fancy_quotes)
-        return line;
-
-    int last_d = -1,
-        last_s = -1;
-
-    for (int i = 0; i < line.length(); ++i)
-    {
-        // Double quotes
-        if (line[i] == '"')
-        {
-            if (last_d == -1)
-            {
-                last_d = i;
-            }
-            else
-            {
-                // Replace quote at first position:
-                QByteArray first = QString("“").toUtf8();
-                line.replace(last_d, 1, first);
-
-                // Replace quote at second position:
-                line.replace(i + first.size() - 1, 1, QString("”").toUtf8());
-
-                last_d = -1;
-            }
-        }
-        else if (line[i] == '\'')
-        {
-            if (last_s == -1)
-            {
-                // Skip if it looks like a contraction rather
-                // than a quote.
-                if (i > 0 && line[i - 1] != ' ')
-                {
-                    line.replace(i, 1, QString("’").toUtf8());
-                    continue;
-                }
-
-                // For shortenings like 'till
-                int len = line.length();
-                if ((i + 1) < len && line[i + 1] != ' ')
-                {
-                    line.replace(i, 1, QString("‘").toUtf8());
-                    continue;
-                }
-
-                last_s = i;
-            }
-            else
-            {
-                // Replace quote at first position:
-                QByteArray first = QString("‘").toUtf8();
-                line.replace(last_s, 1, first);
-
-                // Replace quote at second position:
-                line.replace(i + first.size() - 1, 1, QString("’").toUtf8());
-
-                last_s = -1;
-            }
-        }
-    }
-
-    return line;
 }
 
 /*
