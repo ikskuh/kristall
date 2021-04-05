@@ -378,6 +378,74 @@ void renderhelpers::renderEscapeCodes(const QByteArray &input,
     }
 }
 
+QByteArray renderhelpers::replace_quotes(QByteArray &line)
+{
+    if (!kristall::globals().options.fancy_quotes)
+        return line;
+
+    int last_d = -1,
+        last_s = -1;
+
+    for (int i = 0; i < line.length(); ++i)
+    {
+        // Double quotes
+        if (line[i] == '"')
+        {
+            if (last_d == -1)
+            {
+                last_d = i;
+            }
+            else
+            {
+                // Replace quote at first position:
+                QByteArray first = QString("“").toUtf8();
+                line.replace(last_d, 1, first);
+
+                // Replace quote at second position:
+                line.replace(i + first.size() - 1, 1, QString("”").toUtf8());
+
+                last_d = -1;
+            }
+        }
+        else if (line[i] == '\'')
+        {
+            if (last_s == -1)
+            {
+                // Skip if it looks like a contraction rather
+                // than a quote.
+                if (i > 0 && line[i - 1] != ' ')
+                {
+                    line.replace(i, 1, QString("’").toUtf8());
+                    continue;
+                }
+
+                // For shortenings like 'till
+                int len = line.length();
+                if ((i + 1) < len && line[i + 1] != ' ')
+                {
+                    line.replace(i, 1, QString("‘").toUtf8());
+                    continue;
+                }
+
+                last_s = i;
+            }
+            else
+            {
+                // Replace quote at first position:
+                QByteArray first = QString("‘").toUtf8();
+                line.replace(last_s, 1, first);
+
+                // Replace quote at second position:
+                line.replace(i + first.size() - 1, 1, QString("’").toUtf8());
+
+                last_s = -1;
+            }
+        }
+    }
+
+    return line;
+}
+
 void renderhelpers::setPageMargins(QTextDocument *doc, int mh, int mv)
 {
     QTextFrame *root = doc->rootFrame();
