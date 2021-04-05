@@ -71,7 +71,7 @@ struct RenderState
     QString &page_title;
 
     bool centre_first_h1;
-    bool suppress_next_block = false;
+    bool suppress_next_block = true;
 
     void emitNewBlock() {
         if(not suppress_next_block) {
