@@ -506,11 +506,12 @@ void MainWindow::on_actionAbout_triggered()
 {
     QMessageBox::about(this,
                        tr("Kristall"),
-tr(R"about(Kristall, an OpenSource Gemini browser.
+tr(R"about(Kristall %1
+An OpenSource Gemini browser.
 Made by Felix "xq" Queißner
 
 This is free software. You can get the source code at
-https://github.com/MasterQ32/Kristall)about")
+https://github.com/MasterQ32/Kristall)about").arg(QApplication::applicationVersion())
     );
 }
 
