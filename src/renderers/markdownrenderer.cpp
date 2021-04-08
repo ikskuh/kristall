@@ -143,7 +143,6 @@ static void renderNode(RenderState &state, cmark_node & node, const QTextCharFor
         renderChildren(state, node, current_format);
 
         cursor.movePosition(QTextCursor::NextBlock);
-        resetFormatting(state);
         break;
     }
     case CMARK_NODE_LIST:
