@@ -7,8 +7,8 @@
 InteractiveView::InteractiveView(QWidget * parent) :
     QGraphicsView(parent)
 {
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     setMaxSize();
     centerOn(0, 0);
