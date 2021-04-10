@@ -750,13 +750,9 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
 
         will_cache = false;
     }
-    else if (plaintext_only)
+    else
     {
-        document = std::make_unique<QTextDocument>();
-        document->setDefaultFont(doc_style.standard_font);
-        document->setDefaultStyleSheet(doc_style.toStyleSheet());
-
-        QString plain_data = QString(
+        QString page_data = QString(
             tr("Unsupported Media Type!\n"
             "\n"
             "Kristall cannot display the requested document\n"
@@ -766,32 +762,15 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
             "- Size: %3\n")
         ).arg(mime.type, mime.subtype, IoUtil::size_human(data.size()));
 
-        document->setPlainText(plain_data);
-
-        will_cache = false;
-    }
-    else
-    {
-        QString page_data = QString(
-            tr("# Unsupported Media Type!\n"
-            "\n"
-            "Kristall cannot display the requested document.\n"
-            "\n"
-            "> To view this media, use the File menu to save it to your local drive, then open the saved file in another program that can display the document for you.\n"
-            "\n"
-            "```\n"
-            "Details:\n"
-            "- MIME type: %1/%2\n"
-            "- Size: %3\n"
-            "```\n")
-        ).arg(mime.type, mime.subtype, IoUtil::size_human(data.size()));
-
-        document = GeminiRenderer::render(
-            page_data.toUtf8(),
-            this->current_location,
-            doc_style,
-            this->outline,
-            this->page_title);
+        if (plaintext_only)
+            document = PlainTextRenderer::render(page_data.toUtf8(), doc_style);
+        else
+            document = GeminiRenderer::render(
+                page_data.toUtf8(),
+                this->current_location,
+                doc_style,
+                this->outline,
+                this->page_title);
 
         will_cache = false;
     }
