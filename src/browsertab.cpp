@@ -707,10 +707,9 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
         reader.setAutoTransform(true);
         reader.setAutoDetectImageFormat(true);
 
-        QImage img;
-        if (reader.read(&img))
+        auto pixmap = QPixmap::fromImageReader(&reader);
+        if (!pixmap.isNull())
         {
-            auto pixmap = QPixmap::fromImage(img);
             this->graphics_scene.addPixmap(pixmap);
             this->graphics_scene.setSceneRect(pixmap.rect());
         }
@@ -721,13 +720,9 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
 
         this->ui->graphics_browser->setScene(&graphics_scene);
 
-        auto *invoker = new QObject();
-        connect(invoker, &QObject::destroyed, [this]() {
+        connect(&graphics_scene, &QGraphicsScene::changed, this, [this]() {
             this->ui->graphics_browser->fitInView(graphics_scene.sceneRect(), Qt::KeepAspectRatio);
         });
-        invoker->deleteLater();
-
-        this->ui->graphics_browser->fitInView(graphics_scene.sceneRect(), Qt::KeepAspectRatio);
 
         will_cache = false;
     }
