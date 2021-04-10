@@ -752,15 +752,13 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
     }
     else
     {
-        QString page_data = QString(
-            tr("Unsupported Media Type!\n"
+        QString page_data = tr("Unsupported Media Type!\n"
             "\n"
             "Kristall cannot display the requested document\n"
             "To view this media, use the File menu to save it to your local drive, then open the saved file in another program that can display the document for you.\n\n"
             "Details:\n"
             "- MIME type: %1/%2\n"
-            "- Size: %3\n")
-        ).arg(mime.type, mime.subtype, IoUtil::size_human(data.size()));
+            "- Size: %3\n").arg(mime.type, mime.subtype, IoUtil::size_human(data.size()));
 
         if (plaintext_only)
             document = PlainTextRenderer::render(page_data.toUtf8(), doc_style);
