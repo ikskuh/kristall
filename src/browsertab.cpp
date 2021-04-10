@@ -708,27 +708,38 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
         reader.setAutoDetectImageFormat(true);
 
         auto pixmap = QPixmap::fromImageReader(&reader);
-        if (!pixmap.isNull())
+        if (pixmap.isNull())
         {
-            this->graphics_scene.addPixmap(pixmap);
-            this->graphics_scene.setSceneRect(pixmap.rect());
+            doc_type = Text;
+            QString error_data = tr("Failed to load picture: %1").arg(reader.errorString());
+
+            if (plaintext_only)
+                document = PlainTextRenderer::render(error_data.toUtf8(), doc_style);
+            else
+                document = GeminiRenderer::render(
+                    error_data.toUtf8(),
+                    this->current_location,
+                    doc_style,
+                    this->outline,
+                    this->page_title);
         }
         else
         {
-            this->graphics_scene.addText(QString(tr("Failed to load picture:\r\n%1")).arg(reader.errorString()));
+            this->graphics_scene.addPixmap(pixmap);
+            this->graphics_scene.setSceneRect(pixmap.rect());
+
+            this->ui->graphics_browser->setScene(&graphics_scene);
+
+            connect(&graphics_scene, &QGraphicsScene::changed, this, [=]() {
+                QSize imageSize = pixmap.size();
+                QSize browserSize = this->ui->graphics_browser->sizeHint();
+
+                if (imageSize.width() > browserSize.width() || imageSize.height() > browserSize.height())
+                    this->ui->graphics_browser->fitInView(graphics_scene.sceneRect(), Qt::KeepAspectRatio);
+
+                this->ui->graphics_browser->setSceneRect(graphics_scene.sceneRect());
+            });
         }
-
-        this->ui->graphics_browser->setScene(&graphics_scene);
-
-        connect(&graphics_scene, &QGraphicsScene::changed, this, [=]() {
-            QSize imageSize = pixmap.size();
-            QSize browserSize = this->ui->graphics_browser->sizeHint();
-
-            if (imageSize.width() > browserSize.width() || imageSize.height() > browserSize.height())
-                this->ui->graphics_browser->fitInView(graphics_scene.sceneRect(), Qt::KeepAspectRatio);
-
-            this->ui->graphics_browser->setSceneRect(graphics_scene.sceneRect());
-        });
 
         will_cache = false;
     }
