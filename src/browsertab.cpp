@@ -720,8 +720,12 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
 
         this->ui->graphics_browser->setScene(&graphics_scene);
 
-        connect(&graphics_scene, &QGraphicsScene::changed, this, [this]() {
-            this->ui->graphics_browser->fitInView(graphics_scene.sceneRect(), Qt::KeepAspectRatio);
+        connect(&graphics_scene, &QGraphicsScene::changed, this, [=]() {
+            QSize imageSize = pixmap.size();
+            QSize browserSize = this->ui->graphics_browser->sizeHint();
+
+            if (imageSize.width() > browserSize.width() || imageSize.height() > browserSize.height())
+                this->ui->graphics_browser->fitInView(graphics_scene.sceneRect(), Qt::KeepAspectRatio);
         });
 
         will_cache = false;
