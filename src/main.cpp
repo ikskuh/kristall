@@ -1121,5 +1121,5 @@ void kristall::saveSession()
 
     qDebug() << "Saved session with" << window_index << "windows and" << tab_count << "tabs in total.";
 
-    settings.sync();
+    kristall::saveSettings();
 }
