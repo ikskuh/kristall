@@ -1,0 +1,3 @@
+lib/**/* linguist-vendored
+doc/*.sh -linguist-documentation
+doc/*.awk -linguist-documentation
