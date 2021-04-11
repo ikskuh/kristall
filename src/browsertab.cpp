@@ -736,6 +736,8 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
 
                 if (imageSize.width() > browserSize.width() || imageSize.height() > browserSize.height())
                     this->ui->graphics_browser->fitInView(graphics_scene.sceneRect(), Qt::KeepAspectRatio);
+                else
+                    this->ui->graphics_browser->resetTransform();
 
                 this->ui->graphics_browser->setSceneRect(graphics_scene.sceneRect());
             });
