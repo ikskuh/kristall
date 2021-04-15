@@ -148,7 +148,13 @@ MainWindow * getFocusedAppWindow()
 // the same machine.
 namespace ipc
 {
-    static char const * socket_name = "net.random-projects.kristall";
+    static const QString socket_name =
+#ifdef Q_OS_UNIX
+        QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation) + "/"
+#elif defined Q_OS_WIN32
+        qEnvironmentVariable("USERNAME") + "-"
+#endif
+        "net.random-projects.kristall";
 
     struct Message
     {
