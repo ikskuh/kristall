@@ -35,7 +35,7 @@ bool FileHandler::startRequest(const QUrl &url, RequestOptions options)
         // URL points to directory - we create Gemtext
         // page which lists contents of directory.
         QString page;
-        page += QString(tr("# Index of %1\n")).arg(url.path());
+        page += tr("# Index of %1\n").arg(url.path());
 
         auto filters = QDir::Dirs | QDir::Files | QDir::NoDot;
         if (kristall::globals().options.show_hidden_files_in_dirs) filters |= QDir::Hidden;
@@ -45,7 +45,7 @@ bool FileHandler::startRequest(const QUrl &url, RequestOptions options)
         for (unsigned i = 0; i < dir.count(); ++i)
         {
             // Add link to page.
-            page += QString(tr("=> file://%1 %2\n"))
+            page += tr("=> file://%1 %2\n")
                 .arg(QUrl(dir.filePath(dir[i])).toString(QUrl::FullyEncoded),
                 dir[i]);
         }

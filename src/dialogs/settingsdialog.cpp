@@ -663,7 +663,7 @@ void SettingsDialog::on_preset_new_clicked()
     bool override = false;
     if(this->predefined_styles.contains(name))
     {
-        auto response = QMessageBox::question(this, "Kristall", QString(tr("A style with the name '%1' already exists! Replace?")).arg(name));
+        auto response = QMessageBox::question(this, "Kristall", tr("A style with the name '%1' already exists! Replace?").arg(name));
         if(response != QMessageBox::Yes)
             return;
         override = true;
@@ -683,7 +683,7 @@ void SettingsDialog::on_preset_save_clicked()
     if(name.isEmpty())
         return;
 
-    auto response = QMessageBox::question(this, "Kristall", QString(tr("Do you want to override the style '%1'?")).arg(name));
+    auto response = QMessageBox::question(this, "Kristall", tr("Do you want to override the style '%1'?").arg(name));
     if(response != QMessageBox::Yes)
         return;
 
@@ -697,7 +697,7 @@ void SettingsDialog::on_preset_load_clicked()
     if(name.isEmpty())
         return;
 
-    auto response = QMessageBox::question(this, "Kristall", QString(tr("Do you want to load the style '%1'?\r\nThis will discard all currently set up values!")).arg(name));
+    auto response = QMessageBox::question(this, "Kristall", tr("Do you want to load the style '%1'?\r\nThis will discard all currently set up values!").arg(name));
     if(response != QMessageBox::Yes)
         return;
 
@@ -763,7 +763,7 @@ void SettingsDialog::on_preset_import_clicked()
     bool override = false;
     if(this->predefined_styles.contains(name))
     {
-        auto response = QMessageBox::question(this, "Kristall", QString(tr("Do you want to override the style '%1'?")).arg(name));
+        auto response = QMessageBox::question(this, "Kristall", tr("Do you want to override the style '%1'?").arg(name));
         if(response != QMessageBox::Yes)
             return;
         override = true;

@@ -62,7 +62,7 @@ void CertificateManagementDialog::on_certificates_selected(QModelIndex const& in
         this->ui->cert_common_name->setText(cert.certificate.subjectInfo(QSslCertificate::CommonName).join(", "));
         this->ui->cert_expiration_date->setDateTime(cert.certificate.expiryDate());
         auto days = QDateTime::currentDateTime().daysTo(cert.certificate.expiryDate());
-        this->ui->cert_livetime->setText(QString(tr("%1 day","%1 days",days)).arg(days));
+        this->ui->cert_livetime->setText(tr("%1 day","%1 days", days).arg(days));
         this->ui->cert_fingerprint->setPlainText(toFingerprintString(cert.certificate));
         this->ui->cert_notes->setPlainText(cert.user_notes);
 
@@ -130,7 +130,7 @@ void CertificateManagementDialog::on_delete_cert_button_clicked()
         auto answer = QMessageBox::question(
             this,
             tr("Kristall"),
-            QString(tr("Do you want to delete the group '%1'")).arg(group_name)
+            tr("Do you want to delete the group '%1'").arg(group_name)
         );
         if(answer != QMessageBox::Yes)
             return;
