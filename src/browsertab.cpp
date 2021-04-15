@@ -196,7 +196,7 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode, RequestFlags fl
     this->timer.start();
 
     if(not this->startRequest(url, ProtocolHandler::Default, flags)) {
-        QMessageBox::critical(this, tr("Kristall"), QString(tr("Failed to execute request to %1")).arg(url.toString()));
+        QMessageBox::critical(this, tr("Kristall"), tr("Failed to execute request to %1").arg(url.toString()));
         return;
     }
 
@@ -289,13 +289,13 @@ void BrowserTab::openSourceView()
     monospace_font.setStyleHint(QFont::Monospace);
 
     auto dialog = std::make_unique<QDialog>(this, Qt::WindowTitleHint | Qt::WindowSystemMenuHint);
-    dialog->setWindowTitle(QString(tr("Source of %0")).arg(this->current_location.toString()));
+    dialog->setWindowTitle(tr("Source of %0").arg(this->current_location.toString()));
 
     auto layout = new QVBoxLayout(dialog.get());
     dialog->setLayout(layout);
 
     auto hint = new QLabel(dialog.get());
-    hint->setText(QString(tr("Mime type: %0")).arg(current_mime.toString()));
+    hint->setText(tr("Mime type: %0").arg(current_mime.toString()));
     layout->addWidget(hint);
 
     auto text = new QPlainTextEdit(dialog.get());
@@ -451,7 +451,7 @@ void BrowserTab::on_certificateRequired(const QString &reason)
 
     if (not trySetClientCertificate(reason))
     {
-        setErrorMessage(QString(tr("The page requested a authorized client certificate, but none was provided.\r\nOriginal query was: %1")).arg(reason));
+        setErrorMessage(tr("The page requested a authorized client certificate, but none was provided.\r\nOriginal query was: %1").arg(reason));
     }
     else
     {
@@ -559,11 +559,11 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const MimeType &
             auto response = QMessageBox::question(
                 this,
                 tr("Kristall"),
-                QString(tr("Failed to convert input charset %1 to UTF-8. Cannot display the file.\r\nDo you want to display unconverted data anyways?")).arg(charset)
+                tr("Failed to convert input charset %1 to UTF-8. Cannot display the file.\r\nDo you want to display unconverted data anyways?").arg(charset)
             );
 
             if(response != QMessageBox::Yes) {
-                setErrorMessage(QString(tr("Failed to convert input charset %1 to UTF-8.")).arg(charset));
+                setErrorMessage(tr("Failed to convert input charset %1 to UTF-8.").arg(charset));
                 return;
             }
         }
@@ -856,7 +856,7 @@ void BrowserTab::on_inputRequired(const QString &query, const bool is_sensitive)
     {
         if (dialog.exec() != QDialog::Accepted)
         {
-            setErrorMessage(QString(tr("Site requires input:\n%1")).arg(query));
+            setErrorMessage(tr("Site requires input:\n%1").arg(query));
             return;
         }
 
@@ -893,7 +893,7 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
 
     if (redirection_count >= kristall::globals().options.max_redirections)
     {
-        setErrorMessage(QString(tr("Too many consecutive redirections. The last redirection would have redirected you to:\r\n%1")).arg(uri.toString(QUrl::FullyEncoded)));
+        setErrorMessage(tr("Too many consecutive redirections. The last redirection would have redirected you to:\r\n%1").arg(uri.toString(QUrl::FullyEncoded)));
         return;
     }
     else
@@ -944,7 +944,7 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
                 question
             );
             if(answer != QMessageBox::Yes) {
-                setErrorMessage(QString(tr("Redirection to %1 cancelled by user")).arg(uri.toString()));
+                setErrorMessage(tr("Redirection to %1 cancelled by user").arg(uri.toString()));
                 return;
             }
         }
@@ -958,7 +958,7 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
         }
         else
         {
-            setErrorMessage(QString(tr("Redirection to %1 failed")).arg(uri.toString()));
+            setErrorMessage(tr("Redirection to %1 failed").arg(uri.toString()));
         }
     }
 }
@@ -967,7 +967,7 @@ void BrowserTab::setErrorMessage(const QString &msg)
 {
     this->is_internal_location = true;
     this->on_requestComplete(
-        QString(tr("An error happened:\r\n%0")).arg(msg).toUtf8(),
+        tr("An error happened:\r\n%0").arg(msg).toUtf8(),
         "text/plain charset=utf-8");
 
     this->updateUI();
@@ -1191,16 +1191,16 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new
         {
             if (not QDesktopServices::openUrl(url))
             {
-                QMessageBox::warning(this, "Kristall", QString(tr("Failed to start system URL handler for\r\n%1")).arg(real_url.toString()));
+                QMessageBox::warning(this, "Kristall", tr("Failed to start system URL handler for\r\n%1").arg(real_url.toString()));
             }
         }
         else if (support == ProtocolSetup::Disabled)
         {
-            QMessageBox::warning(this, "Kristall", QString(tr("The requested url uses a scheme that has been disabled in the settings:\r\n%1")).arg(real_url.toString()));
+            QMessageBox::warning(this, "Kristall", tr("The requested url uses a scheme that has been disabled in the settings:\r\n%1").arg(real_url.toString()));
         }
         else
         {
-            QMessageBox::warning(this, "Kristall", QString(tr("The requested url cannot be processed by Kristall:\r\n%1")).arg(real_url.toString()));
+            QMessageBox::warning(this, "Kristall", tr("The requested url cannot be processed by Kristall:\r\n%1").arg(real_url.toString()));
         }
     }
 }
@@ -1690,7 +1690,7 @@ void BrowserTab::on_text_browser_customContextMenuRequested(const QPoint pos)
                 if (!QDesktopServices::openUrl(real_url))
                 {
                     QMessageBox::warning(this, "Kristall",
-                        QString(tr("Failed to start system URL handler for\r\n%1")).arg(real_url.toString()));
+                        tr("Failed to start system URL handler for\r\n%1").arg(real_url.toString()));
                 }
             });
         }

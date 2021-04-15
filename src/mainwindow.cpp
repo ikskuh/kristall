@@ -265,7 +265,7 @@ void MainWindow::updateWindowTitle()
         this->setWindowTitle(tr("Kristall"));
         return;
     }
-    this->setWindowTitle(QString(tr("%0 - %1")).arg(tab->page_title, tr("Kristall")));
+    this->setWindowTitle(tr("%0 - %1").arg(tab->page_title, tr("Kristall")));
 }
 
 void MainWindow::setUiDensity(UIDensity density, bool previewing)
@@ -574,7 +574,7 @@ void MainWindow::setFileStatus(const DocumentStats &stats)
         this->file_size->setText(IoUtil::size_human(stats.file_size));
         this->file_cached->setText(stats.loaded_from_cache ? tr("(cached)") : "");
         this->file_mime->setText(stats.mime_type.toString(false));
-        this->load_time->setText(QString(tr("%1 ms")).arg(stats.loading_time));
+        this->load_time->setText(tr("%1 ms").arg(stats.loading_time));
     } else {
         this->file_size->setText("");
         this->file_cached->setText("");
