@@ -169,10 +169,8 @@ BrowserTab * MainWindow::addNewTab(bool focus_new, QUrl const & url, bool lazylo
         tab->current_location = url;
         tab->lazy_loading = true;
     }
-    else
-    {
-        tab->navigateTo(url, BrowserTab::PushImmediate);
-    }
+
+    tab->navigateTo(url, BrowserTab::PushImmediate);
 
     if (!defaultTitle.isEmpty())
     {
@@ -387,7 +385,6 @@ void MainWindow::on_browser_tabs_currentChanged(int index)
             if (tab->lazy_loading)
             {
                 tab->reloadPage();
-                tab->lazy_loading = false;
             }
 
             this->setRequestState(tab->request_state);
