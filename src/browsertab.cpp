@@ -195,7 +195,7 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode, RequestFlags fl
     this->successfully_loaded = false;
     this->timer.start();
 
-    if(not this->startRequest(url, ProtocolHandler::Default, flags)) {
+    if(!this->lazy_loading && not this->startRequest(url, ProtocolHandler::Default, flags)) {
         QMessageBox::critical(this, tr("Kristall"), tr("Failed to execute request to %1").arg(url.toString()));
         return;
     }
@@ -263,6 +263,7 @@ void BrowserTab::scrollToAnchor(QString const &anchor)
 
 void BrowserTab::reloadPage()
 {
+    lazy_loading = false;
     if (current_location.isValid())
         this->navigateTo(this->current_location, DontPush, RequestFlags::DontReadFromCache);
 }
