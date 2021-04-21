@@ -21,6 +21,10 @@ InteractiveView::InteractiveView(QWidget * parent) :
 
     panButton = Qt::MiddleButton;
     zoomKey = Qt::Key_Z;
+
+    /* QGraphicsView turns it on for some reason,
+     * switching it back off to let BrowserTab handle it -krkk */
+    setAcceptDrops(false);
 }
 
 qreal InteractiveView::getScale() const
