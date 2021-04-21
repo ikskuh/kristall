@@ -204,6 +204,8 @@ private:
     bool searchBoxFind(QString text, bool backward=false);
 
 protected:
+    void dragEnterEvent(QDragEnterEvent * event);
+    void dropEvent(QDropEvent * event);
     void resizeEvent(QResizeEvent * event);
 
 public:

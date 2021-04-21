@@ -164,6 +164,7 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
 
     refreshOptionalToolbarItems();
     refreshToolbarIcons();
+    setAcceptDrops(true);
 }
 
 BrowserTab::~BrowserTab()
@@ -1796,6 +1797,18 @@ void BrowserTab::on_search_previous_clicked()
 void BrowserTab::on_close_search_clicked()
 {
     this->ui->search_bar->setVisible(false);
+}
+
+void BrowserTab::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasUrls())
+        event->acceptProposedAction();
+}
+
+void BrowserTab::dropEvent(QDropEvent *event)
+{
+    for (const auto &url : event->mimeData()->urls())
+        mainWindow->addNewTab(true, url);
 }
 
 void BrowserTab::resizeEvent(QResizeEvent *event)
