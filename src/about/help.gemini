@@ -427,6 +427,7 @@ If you would like to disable page caching, set the [Total cache size limit] to 0
 * text/plain
 * text/gemini
 * text/html
+* application/xhtml+xml
 * text/markdown
 * text/gophermap
 * image/*

@@ -649,7 +649,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
             this->current_location,
             doc_style);
     }
-    else if (not plaintext_only and mime.is("text","html"))
+    else if (not plaintext_only and mime.is("text","html") or mime.is("application","xhtml+xml"))
     {
         document = HtmlRenderer::render(
             data,
