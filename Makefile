@@ -1,5 +1,5 @@
-# Install to /usr/local unless otherwise specified, such as `make PREFIX=/app`
-PREFIX?=/usr/local
+# Install to ~/.local unless otherwise specified, such as `make PREFIX=/app`
+PREFIX?=~/.local
 
 # Man pages by default instaled to /usr/local/share/man, like above this can
 # be specified on command line.
