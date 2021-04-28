@@ -1,5 +1,5 @@
 # Install to ~/.local unless otherwise specified, such as `make PREFIX=/app`
-PREFIX?=~/.local
+PREFIX?=/usr/local
 
 # Man pages by default instaled to /usr/local/share/man, like above this can
 # be specified on command line.
@@ -65,6 +65,8 @@ install: kristall
 uninstall:
 	# Remove the .desktop
 	rm -f $(sharedir)/applications/Kristall.desktop
+	# Remove the mime entry
+	rm -f $(sharedir)/mime/packages/kristall.xml
 	# Remove the icons
 	rm -f $(sharedir)/icons/hicolor/scalable/apps/net.random-projects.kristall.png
 	rm -f $(sharedir)/icons/hicolor/*x*/apps/net.random-projects.kristall.png
