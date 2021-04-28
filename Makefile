@@ -3,7 +3,7 @@ PREFIX?=/usr/local
 
 # Man pages by default instaled to /usr/local/share/man, like above this can
 # be specified on command line.
-MANPATH?=$(PREFIX)/share/man
+MANPATH2?=$(PREFIX)/share/man
 
 # What to run to install various files
 INSTALL?=install
@@ -15,7 +15,7 @@ INSTALL_DATA=$(INSTALL) -m 644
 # Directories into which to install the various files
 bindir=$(DESTDIR)$(PREFIX)/bin
 sharedir=$(DESTDIR)$(PREFIX)/share
-mandir=$(DESTDIR)$(MANPATH)/man1
+mandir=$(DESTDIR)$(MANPATH2)/man1
 MAKEDIR=mkdir -p
 
 # Default Qmake Command For Ubuntu (and probably other Debian) distributions
