@@ -66,6 +66,9 @@
        <property name="cornerButtonEnabled">
         <bool>true</bool>
        </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::SingleSelection</enum>
+       </property>
       </widget>
      </item>
      <item>

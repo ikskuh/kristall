@@ -56,7 +56,10 @@ void SslTrustEditor::setTrust(const SslTrust &trust)
 
 void SslTrustEditor::on_trust_revoke_selected_clicked()
 {
-    this->current_trust.trusted_hosts.remove(this->ui->trusted_hosts->currentIndex());
+    const QModelIndex &idx =
+        static_cast<QSortFilterProxyModel*>(this->ui->trusted_hosts->model())
+        ->mapToSource(this->ui->trusted_hosts->currentIndex());
+    this->current_trust.trusted_hosts.remove(idx);
 }
 
 void SslTrustEditor::on_trust_enable_ca_clicked()
