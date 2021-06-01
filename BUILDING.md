@@ -140,7 +140,7 @@ Use QtCreator to build `./src/kristall.pro` with default settings.
     - `qt5_tools`
     - `libiconv_devel`
     - `openssl_devel` (should be preinstalled)
-2. Use `make` to build th executable
+2. Use `make` to build the executable
 
 ## Manual Installation
 

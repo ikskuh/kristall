@@ -61,7 +61,7 @@ See [BUILDING.md](BUILDING.md)
 ## Credits
 
 - Thanks to [James Tomasino](https://tomasino.org) for helping out with understanding gopher
-- Thanks to [Vane Vander](https://mayvaneday.art/) for providin the Haiku build instructions
+- Thanks to [Vane Vander](https://mayvaneday.art/) for providing the Haiku build instructions
 - Thanks to James Tomasino, styan and tiwesdaeg for improving the `Makefile`
 - Thanks to [Alex Naskos](https://github.com/alexnask) for providing windows build instructions
 - Thanks to tiwesdaeg for improving the application icon
