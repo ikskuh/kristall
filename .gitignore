@@ -8,6 +8,7 @@ doc/kristall.1
 *~
 *.autosave
 *.a
+*.bak
 *.core
 *.moc
 *.o
