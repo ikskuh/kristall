@@ -55,11 +55,19 @@ win32-g++ {
 
 macx {
     # Homebrew include paths
-    INCLUDEPATH += /usr/local/opt/qt/include
-    LIBS += -L/usr/local/opt/qt/lib
+    contains(QMAKE_HOST.arch, arm.*):{
+        INCLUDEPATH += /opt/homebrew/opt/qt/include
+        LIBS += -L/opt/homebrew/opt/qt/lib
+    
+        INCLUDEPATH += /opt/homebrew/opt/openssl/include
+        LIBS += -L/opt/homebrew/opt/openssl/lib
+    } else {
+        INCLUDEPATH += /usr/local/opt/qt/include
+        LIBS += -L/usr/local/opt/qt/lib
 
-    INCLUDEPATH += /usr/local/opt/openssl/include
-    LIBS += -L/usr/local/opt/openssl/lib
+        INCLUDEPATH += /usr/local/opt/openssl/include
+        LIBS += -L/usr/local/opt/openssl/lib
+    }
 
     ICON = icons/AppIcon.icns
 }

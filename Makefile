@@ -25,9 +25,14 @@ QMAKE_COMMAND := qmake
 # QMAKE_COMMAND := /usr/bin/qmake-qt5
 
 UNAME := $(shell uname)
+UNAME_M := $(shell uname -m)
 # Homebrew on macOS does not link Qt5 into the system path.
 ifeq ($(UNAME),Darwin)
-	HOMEBREW_PATH=export PATH="$(PATH):/usr/local/opt/qt/bin";
+	ifeq ($(UNAME_M),arm64)
+		HOMEBREW_PATH=export PATH="$(PATH):/opt/homebrew/opt/qt/bin";
+	else
+		HOMEBREW_PATH=export PATH="$(PATH):/usr/local/opt/qt/bin";
+	endif
 endif
 
 kristall: build/kristall
