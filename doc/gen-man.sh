@@ -54,8 +54,7 @@ gem_in=$(
     cat "$gemtext_in" |
 
     # Strip a few lines from beginning/end of file.
-    tail -n +9 |
-    head -n -9 |
+    nl | awk 'FNR > 9' | sort -nr | awk 'FNR > 9' | sort -n | cut -f 2- |
 
     # First expression replaces all [Text like this] with bold text.
     # Second expression replaces text like *This* or _this_ with italic text.
