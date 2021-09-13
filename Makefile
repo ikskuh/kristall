@@ -29,7 +29,7 @@ UNAME_M := $(shell uname -m)
 # Homebrew on macOS does not link Qt5 into the system path.
 ifeq ($(UNAME),Darwin)
 	ifeq ($(UNAME_M),arm64)
-		HOMEBREW_PATH=export PATH="$(PATH):/opt/homebrew/opt/qt/bin";
+		HOMEBREW_PATH=export PATH="$(PATH):/opt/homebrew/opt/qt5/bin";
 	else
 		HOMEBREW_PATH=export PATH="$(PATH):/usr/local/opt/qt/bin";
 	endif
