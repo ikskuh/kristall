@@ -34,6 +34,9 @@ QMAKE_CXXFLAGS += -Wno-unused-parameter -Werror=return-type
 QMAKE_CXXFLAGS += -std=c++17
 CONFIG += c++17
 
+# avoid x86 OOM errors
+CONFIG += resources_big
+
 win32-msvc {
     # message("Use windows/msvc build")
     QMAKE_CFLAGS -= -Wno-unused-parameter
