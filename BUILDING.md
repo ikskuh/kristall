@@ -142,6 +142,17 @@ Use QtCreator to build `./src/kristall.pro` with default settings.
     - `openssl_devel` (should be preinstalled)
 2. Use `make` to build the executable
 
+#### Haiku x86
+
+1. Install the following packages with `pkgman`:
+    - `qt5_x86`
+    - `qt5_x86_devel`
+    - `qt5_x86_tools`
+    - `libiconv_x86_devel`
+    - `openssl_x86_devel` (should be preinstalled)
+2. run `setarch x86`
+3. Use `make` to build the executable
+
 ## Manual Installation
 
 ### Unix / XDG
