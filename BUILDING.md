@@ -130,7 +130,8 @@ Use QtCreator to build `./src/kristall.pro` with default settings.
 #### macOS
 
 1. Run `brew install qt@5 openssl` to install the `qt` and `openssl` packages with [Homebrew](https://brew.sh/).
-2. Run `make build/kristall` to build `kristall.app` in the `build` directory.
+2. Run `brew link qt5` to enable the use of `qmake`
+3. Run `make build/kristall` to build `kristall.app` in the `build` directory.
 
 #### Haiku
 
