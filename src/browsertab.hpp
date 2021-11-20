@@ -257,6 +257,9 @@ public:
     RequestState request_state;
 
     DocumentStyle current_style;
+
+    //! If set, `on_requestComplete` will navigate to the fragment of the url.
+    bool navigate_to_fragment = false;
 };
 
 #endif // BROWSERTAB_HPP

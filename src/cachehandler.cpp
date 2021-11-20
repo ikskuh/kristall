@@ -4,6 +4,11 @@
 
 #include <QDebug>
 
+QString CacheHandler::cleanUrl(QUrl const & url)
+{
+    return url.toString(QUrl::FullyEncoded | QUrl::RemoveFragment);
+}
+
 void CacheHandler::push(const QUrl &url, const QByteArray &body, const MimeType &mime)
 {
     // Skip if this item is above the cached item size threshold
@@ -20,48 +25,40 @@ void CacheHandler::push(const QUrl &url, const QByteArray &body, const MimeType 
         this->popOldest();
     }
 
-    QString urlstr = url.toString(QUrl::FullyEncoded | QUrl::RemoveFragment);
+    QString urlstr = cleanUrl(url);
 
-    if (this->page_cache.find(urlstr) != this->page_cache.end())
+    auto it = this->page_cache.find(urlstr);
+    if (it != this->page_cache.end())
     {
-        qDebug() << "cache: updating page";
-        auto pg = this->page_cache[urlstr];
+        qDebug() << "cache: updating page" << urlstr;
+        auto pg = it->second;
         pg->body = body;
         pg->mime = mime;
         pg->time_cached = QDateTime::currentDateTime();
-        return;
     }
-
-    this->page_cache[urlstr] = std::make_shared<CachedPage>(
-        url, body, mime, QDateTime::currentDateTime());
-
-    qDebug() << "cache: pushing url " << url;
-
-    return;
+    else
+    {
+        this->page_cache.emplace(urlstr, std::make_shared<CachedPage>(url, body, mime, QDateTime::currentDateTime()));
+        qDebug() << "cache: pushing url " << urlstr;
+    }
 }
 
-std::shared_ptr<CachedPage> CacheHandler::find(const QString &url)
+
+std::shared_ptr<CachedPage> CacheHandler::find(const QUrl &url)
 {
-    if (this->page_cache.find(url) != this->page_cache.end())
+    QString urltext = cleanUrl(url);
+
+    auto it = this->page_cache.find(urltext);
+    if(it != this->page_cache.end())
     {
-        return this->page_cache[url];
+        return it->second;
     }
     return nullptr;
 }
 
-std::shared_ptr<CachedPage> CacheHandler::find(const QUrl &url)
-{
-    return this->find(url.toString(QUrl::FullyEncoded | QUrl::RemoveFragment));
-}
-
-bool CacheHandler::contains(const QString &url)
-{
-    return this->page_cache.find(url) != this->page_cache.end();
-}
-
 bool CacheHandler::contains(const QUrl &url)
 {
-    return this->contains(url.toString(QUrl::FullyEncoded | QUrl::RemoveFragment));
+    return this->page_cache.find(cleanUrl(url)) != this->page_cache.end();
 }
 
 int CacheHandler::size()

@@ -109,6 +109,10 @@ static void renderRecursive(RenderState & state, GumboNode const & node, int nes
         bool process_header = false;
         QString header_text;
 
+        // Fetch the original `id` attribute if any
+        char const * const header_id = getAttribute(element, "id");
+        QString const anchor = (header_id != nullptr) ? QString(header_id) : QString("header-%1").arg(state.header_count);
+
         switch(element.tag) {
 
         // Stripped tags
@@ -173,7 +177,7 @@ static void renderRecursive(RenderState & state, GumboNode const & node, int nes
                 process_header = true;
                 state.header_text = &header_text;
             }
-            stream += "<" + QString::fromUtf8(gumbo_normalized_tagname(element.tag)) + QString(" id=\"header-%1\">").arg(state.header_count);
+            stream += "<" + QString::fromUtf8(gumbo_normalized_tagname(element.tag)) + " id=\"" + anchor + "\">";
             break;
 
         default:
@@ -192,7 +196,6 @@ static void renderRecursive(RenderState & state, GumboNode const & node, int nes
             QRegularExpression regex { "\\s+", QRegularExpression::DotMatchesEverythingOption };
 
             QString const header = header_text.replace(regex, " ");
-            QString const anchor = QString("header-%1").arg(state.header_count);
 
             switch(element.tag) {
             case GUMBO_TAG_H1:

@@ -586,6 +586,15 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const MimeType &
 
     renderPage(data, mime);
 
+    if(this->navigate_to_fragment)
+    {
+        // Implement navigation semantics:
+        QString fragment = this->current_location.fragment();
+        if(not fragment.isEmpty()) {
+            this->scrollToAnchor(fragment);
+        }
+    }
+
     this->updatePageTitle();
 
     this->updateUrlBarStyle();
@@ -1585,6 +1594,18 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
 
     QString urlstr = url.toString(QUrl::FullyEncoded);
 
+    {
+        QUrl old_url_cleaned = this->current_location;
+        QUrl new_url_cleaned = url;
+
+        old_url_cleaned.setFragment("");
+        new_url_cleaned.setFragment("");
+
+        // Only jump to (potential) fragment when we either change the base url
+        // or reload the current page with a new fragment.
+        this->navigate_to_fragment = ((old_url_cleaned != new_url_cleaned) or (this->current_location.fragment() != url.fragment()));
+    }
+
     this->is_internal_location = (url.scheme() == "about" || url.scheme() == "file");
     this->current_location = url;
     this->setUrlBarText(urlstr);
@@ -1596,8 +1617,7 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
         return this->current_handler->startRequest(url.adjusted(QUrl::RemoveFragment), options);
     };
 
-    if ((flags & RequestFlags::DontReadFromCache) ||
-        this->current_identity.isValid())
+    if ((flags & RequestFlags::DontReadFromCache) || this->current_identity.isValid())
     {
         return req();
     }
@@ -1610,10 +1630,10 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
         this->was_read_from_cache = true;
         this->on_requestComplete(pg->body, pg->mime);
 
-        // Move scrollbar to cached position
-        if ((flags & RequestFlags::NavigatedBackOrForward) &&
-            pg->scroll_pos != -1)
+        // Move scrollbar to cached position, but only if url or the fragment has changed
+        if ((flags & RequestFlags::NavigatedBackOrForward) && pg->scroll_pos != -1) {
             this->ui->text_browser->verticalScrollBar()->setValue(pg->scroll_pos);
+        }
 
         return true;
     }

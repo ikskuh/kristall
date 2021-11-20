@@ -45,7 +45,9 @@ struct CachedPage
     CachedPage(const QUrl &url, const QByteArray &body,
         const MimeType &mime, const QDateTime &cached)
         : url(url), body(body), mime(mime), scroll_pos(-1), time_cached(cached)
-    {}
+    {
+        this->url.setFragment("");
+    }
 };
 
 // Maybe unordered_map isn't the best type for this?
@@ -67,11 +69,9 @@ public:
     CacheMap const& getPages() const;
 
 private:
-    std::shared_ptr<CachedPage> find(QString const &url);
-
-    bool contains(QString const & url);
-
     void popOldest();
+
+    static QString cleanUrl(QUrl const & str);
 
 private:
     // In-memory cache storage.
