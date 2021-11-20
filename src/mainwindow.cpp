@@ -146,6 +146,7 @@ BrowserTab * MainWindow::addEmptyTab(bool focus_new, bool load_default)
 {
     BrowserTab * tab = new BrowserTab(this);
 
+    connect(tab, &BrowserTab::destroyed, this, &MainWindow::on_tab_closed);
     connect(tab, &BrowserTab::titleChanged, this, &MainWindow::on_tab_titleChanged);
     connect(tab, &BrowserTab::fileLoaded, this, &MainWindow::on_tab_fileLoaded);
     connect(tab, &BrowserTab::requestStateChanged, this, &MainWindow::on_tab_requestStateChanged);
@@ -364,6 +365,16 @@ void MainWindow::closeEvent(QCloseEvent *event)
         kristall::saveSession();
     }
     event->accept();
+}
+
+void MainWindow::on_tab_closed()
+{
+    // If the user wants, we close the window together with the last tab.
+    // tabCount() might be 1 here, as the tab is still counted as "open"
+    if(kristall::globals().options.close_window_with_last_tab and (this->tabCount() <= 1))
+    {
+        this->close();
+    }
 }
 
 void MainWindow::on_browser_tabs_currentChanged(int index)

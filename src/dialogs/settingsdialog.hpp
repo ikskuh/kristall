@@ -184,6 +184,10 @@ private slots:
 
     void on_selected_language_currentIndexChanged(int index);
 
+    void on_tab_keep_window_clicked();
+
+    void on_tab_close_window_clicked();
+
 private:
     void reloadStylePreview();
 

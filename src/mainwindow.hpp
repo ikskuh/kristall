@@ -61,6 +61,8 @@ public:
     void closeEvent(QCloseEvent *event) override;
 
 private slots:
+    void on_tab_closed();
+
     void on_browser_tabs_currentChanged(int index);
 
     void on_browser_tabs_tabCloseRequested(int index);

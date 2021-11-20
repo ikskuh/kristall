@@ -276,6 +276,37 @@
        <item row="0" column="1">
         <widget class="QComboBox" name="selected_language"/>
        </item>
+       <item row="13" column="0">
+        <widget class="QLabel" name="label_45">
+         <property name="text">
+          <string>Tab close behaviour</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_12">
+         <item>
+          <widget class="QRadioButton" name="tab_keep_window">
+           <property name="text">
+            <string>Keep window open</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_10</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="tab_close_window">
+           <property name="text">
+            <string>Close window</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_10</string>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="display_tab">
@@ -698,7 +729,8 @@
                   <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic"/>
+                  <iconset theme="color-select-symbolic">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -736,7 +768,8 @@
                   <string>Set font...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="font-select-symbolic"/>
+                  <iconset theme="font-select-symbolic">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -746,7 +779,8 @@
                   <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic"/>
+                  <iconset theme="color-select-symbolic">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -777,7 +811,8 @@
                   <string>Set font...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="font-select-symbolic"/>
+                  <iconset theme="font-select-symbolic">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -787,7 +822,8 @@
                   <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic"/>
+                  <iconset theme="color-select-symbolic">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -818,7 +854,8 @@
                   <string>Set font...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="font-select-symbolic"/>
+                  <iconset theme="font-select-symbolic">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -828,7 +865,8 @@
                   <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic"/>
+                  <iconset theme="color-select-symbolic">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -859,7 +897,8 @@
                   <string>Set font...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="font-select-symbolic"/>
+                  <iconset theme="font-select-symbolic">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -869,7 +908,8 @@
                   <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic"/>
+                  <iconset theme="color-select-symbolic">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -906,7 +946,8 @@
                   <string>Set font...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="font-select-symbolic"/>
+                  <iconset theme="font-select-symbolic">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -916,7 +957,8 @@
                   <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic"/>
+                  <iconset theme="color-select-symbolic">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -953,7 +995,8 @@
                   <string>Set font...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="font-select-symbolic"/>
+                  <iconset theme="font-select-symbolic">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -963,7 +1006,8 @@
                   <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic"/>
+                  <iconset theme="color-select-symbolic">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -1036,7 +1080,8 @@
                   <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic"/>
+                  <iconset theme="color-select-symbolic">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -1060,7 +1105,8 @@
                   <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic"/>
+                  <iconset theme="color-select-symbolic">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -1084,7 +1130,8 @@
                   <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic"/>
+                  <iconset theme="color-select-symbolic">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -1394,7 +1441,8 @@
                   <string>Set color...</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="color-select-symbolic"/>
+                  <iconset theme="color-select-symbolic">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -1430,7 +1478,8 @@
                 <string>New</string>
                </property>
                <property name="icon">
-                <iconset theme="document-new"/>
+                <iconset theme="document-new">
+                 <normaloff>.</normaloff>.</iconset>
                </property>
               </widget>
              </item>
@@ -1443,7 +1492,8 @@
                 <string>Save</string>
                </property>
                <property name="icon">
-                <iconset theme="document-save"/>
+                <iconset theme="document-save">
+                 <normaloff>.</normaloff>.</iconset>
                </property>
               </widget>
              </item>
@@ -1456,7 +1506,8 @@
                 <string>Load</string>
                </property>
                <property name="icon">
-                <iconset theme="folder"/>
+                <iconset theme="folder">
+                 <normaloff>.</normaloff>.</iconset>
                </property>
               </widget>
              </item>
@@ -1472,7 +1523,8 @@
                 <string>Import</string>
                </property>
                <property name="icon">
-                <iconset theme="document-import"/>
+                <iconset theme="document-import">
+                 <normaloff>.</normaloff>.</iconset>
                </property>
               </widget>
              </item>
@@ -1485,7 +1537,8 @@
                 <string>Export</string>
                </property>
                <property name="icon">
-                <iconset theme="document-export"/>
+                <iconset theme="document-export">
+                 <normaloff>.</normaloff>.</iconset>
                </property>
               </widget>
              </item>
@@ -1661,14 +1714,15 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroup_3"/>
-  <buttongroup name="buttonGroup"/>
-  <buttongroup name="buttonGroup_5"/>
-  <buttongroup name="buttonGroup_4"/>
-  <buttongroup name="buttonGroup_7"/>
-  <buttongroup name="buttonGroup_6"/>
   <buttongroup name="buttonGroup_2"/>
+  <buttongroup name="buttonGroup_5"/>
+  <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_6"/>
   <buttongroup name="buttonGroup_8"/>
+  <buttongroup name="buttonGroup_3"/>
+  <buttongroup name="buttonGroup_7"/>
+  <buttongroup name="buttonGroup_4"/>
   <buttongroup name="buttonGroup_9"/>
+  <buttongroup name="buttonGroup_10"/>
  </buttongroups>
 </ui>

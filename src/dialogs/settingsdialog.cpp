@@ -396,6 +396,9 @@ void SettingsDialog::setOptions(const GenericSettings &options)
             break;
         }
     }
+
+    this->ui->tab_keep_window->setChecked(!this->current_options.close_window_with_last_tab);
+    this->ui->tab_close_window->setChecked(this->current_options.close_window_with_last_tab);
 }
 
 std::optional<QLocale> SettingsDialog::locale() const
@@ -1032,3 +1035,15 @@ void SettingsDialog::on_selected_language_currentIndexChanged(int index)
 
     kristall::globals().localization->translate(QLocale(language_id));
 }
+
+void SettingsDialog::on_tab_keep_window_clicked()
+{
+    this->current_options.close_window_with_last_tab = false;
+}
+
+
+void SettingsDialog::on_tab_close_window_clicked()
+{
+    this->current_options.close_window_with_last_tab = true;
+}
+

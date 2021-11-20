@@ -90,6 +90,7 @@ struct GenericSettings
     bool fancy_quotes = true;
     bool emojis_enabled = true;
     bool strip_nav = false;
+    bool close_window_with_last_tab = false;
     AnsiEscRenderMode ansi_escapes = AnsiEscRenderMode::render;
 
     // This is set automatically

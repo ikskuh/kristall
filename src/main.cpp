@@ -899,6 +899,8 @@ void GenericSettings::load(QSettings &settings)
     cache_unlimited_life = settings.value("cache_unlimited_life", true).toBool();
 
     session_restore_behaviour = SessionRestoreBehaviour(settings.value("session_restore_behaviour", int(session_restore_behaviour)).toInt());
+
+    close_window_with_last_tab = settings.value("close_window_with_last_tab", false).toBool();
 }
 
 void GenericSettings::save(QSettings &settings) const
@@ -965,6 +967,8 @@ void GenericSettings::save(QSettings &settings) const
     }
 
     settings.setValue("session_restore_behaviour", int(session_restore_behaviour));
+
+    settings.setValue("close_window_with_last_tab", close_window_with_last_tab);
 }
 
 void kristall::applySettings()
