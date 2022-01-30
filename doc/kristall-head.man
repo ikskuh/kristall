@@ -2,7 +2,7 @@
 .\" Kristall man page
 .\"
 .
-.TH KRISTALL 1 $(DATE) Unix "User manuals"
+.TH KRISTALL 1 Unix "User manuals"
 .SH NAME
 .PP
 .B kristall
