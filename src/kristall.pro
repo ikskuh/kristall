@@ -24,11 +24,14 @@ DEFINES += KRISTALL_VERSION="\"$(shell cd $$PWD; git describe --tags)\""
 # Initialize build flags from environment variables.
 QMAKE_CFLAGS   *= $$(CFLAGS)
 QMAKE_CXXFLAGS *= $$(CXXFLAGS)
-QMAKE_CPPFLAGS *= $$(CPPFLAGS)
 QMAKE_LFLAGS   *= $$(LDFLAGS)
 
 QMAKE_CFLAGS += -Wno-unused-parameter -Werror=return-type
 QMAKE_CXXFLAGS += -Wno-unused-parameter -Werror=return-type
+
+# qmake does not use QMAKE_CPPFLAGS, this is a hack to include it
+QMAKE_CXXFLAGS += $$(CPPFLAGS)
+QMAKE_CFLAGS   += $$(CPPFLAGS)
 
 # Enable C++17
 QMAKE_CXXFLAGS += -std=c++17
