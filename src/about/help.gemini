@@ -178,7 +178,7 @@ This is a purely cosmetic feature that may aid in readability.
 
 [Hidden files in file:// directories] determines whether hidden files will display in local directory listings (i.e file:// URLs which do not point to a specific document but rather a directory).
 
-[Strip <nav> from HTML pages] allows you to remove the <nav> tag from HTML pages. This might make certain pages more readable, others completly unusable.
+[Strip <nav> from HTML pages] allows you to remove the <nav> tag from HTML pages. This might make certain pages more readable, others completely unusable.
 
 ### Cache
 
