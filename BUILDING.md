@@ -33,9 +33,14 @@ make
   - `git` - optional, for cloning from CLI
  - Additionally, the following must be exported for qmake: `export QMAKESPEC=freebsd-clang`
 
-#### Notes for Ubuntu
-Supported Versions: 18.04, 20.04
-Unsupported Versions: 16.04
+#### Notes for Ubuntu and Debian
+Supported Versions:
+  - Ubuntu: 18.04, 20.04
+  - Debian: 10, 11, 12 (TBA)
+
+Unsupported Versions
+  - Ubuntu: 16.04
+  - Debian: 9
 
 - Required packages
   - `qt5-default`
@@ -47,7 +52,9 @@ Unsupported Versions: 16.04
   - `make`
   - `g++`
 
-These notes are probably also correct for Debian (someone please verify)
+- Additional packages (to use dynamic libraries)
+  - `libcmark-dev`
+  - `libgumbo-dev`
 
 #### Notes for Fedora 32 (and probably other recent versions)
 In the small `Makefile` mentioned above, comment out the line:
