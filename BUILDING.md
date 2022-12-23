@@ -83,6 +83,7 @@ This is because Fedora has a different naming scheme for the qmake executable.
   - `qt5-multimedia`
   - `qt5-svg`
   - `openssl` or `libressl`
+  - `qt5-tools`
 
 #### Notes on void linux
 - set env variable `QT_SELECT=5`
