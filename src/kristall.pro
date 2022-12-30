@@ -9,7 +9,13 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets network multimedia multimediawid
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 
-DEFINES += KRISTALL_VERSION="\"$(shell cd $$PWD; git describe --tags)\""
+KRISTALL_VERSION = $$(KRISTALL_VERSION)
+
+isEmpty(KRISTALL_VERSION) {
+    KRISTALL_VERSION = $(shell cd $$PWD; git describe --tags)
+}
+
+DEFINES += KRISTALL_VERSION="\"$$KRISTALL_VERSION\""
 
 # You can also make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
