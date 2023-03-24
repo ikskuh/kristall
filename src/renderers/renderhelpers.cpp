@@ -16,6 +16,7 @@
 #include <QTextCursor>
 #include <QTextFrame>
 #include <QTextFrameFormat>
+#include <QtGlobal>
 
 #include <string>
 #include <iostream>
@@ -358,7 +359,11 @@ void renderhelpers::renderEscapeCodes(const QByteArray &input,
         {
             it++;
             const auto escSequence = *it;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
             if (escSequence == "[")
+#else
+            if (escSequence == QChar::fromLatin1('['))
+#endif
             {
                 it++;
                 parseCSI(input, it, format, defaultFormat, cursor);

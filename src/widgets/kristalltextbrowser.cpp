@@ -2,9 +2,14 @@
 
 #include "kristall.hpp"
 
+#include <QtGlobal>
 #include <QMouseEvent>
 #include <QScroller>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QTouchDevice>
+#else
+#include <QInputDevice>
+#endif
 #include <QRegularExpression>
 #include <QLineEdit>
 #include <QApplication>
@@ -17,6 +22,7 @@ KristallTextBrowser::KristallTextBrowser(QWidget *parent) :
     connect(this, &QTextBrowser::anchorClicked, this, &KristallTextBrowser::on_anchorClicked);
 
     // Enable touch scrolling on touchscreen devices
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     for (int i = 0; i < QTouchDevice::devices().length(); ++i)
     {
         if (QTouchDevice::devices()[i]->type() == QTouchDevice::TouchScreen)
@@ -26,6 +32,17 @@ KristallTextBrowser::KristallTextBrowser(QWidget *parent) :
             break;
         }
     }
+#else
+    for (auto &device: QInputDevice::devices())
+    {
+        if (device->type() == QInputDevice::DeviceType::TouchScreen)
+        {
+            this->viewport()->setAttribute(Qt::WA_AcceptTouchEvents);
+            QScroller::grabGesture(this, QScroller::LeftMouseButtonGesture);
+            break;
+        }
+    }
+#endif
 }
 
 void KristallTextBrowser::mouseReleaseEvent(QMouseEvent *event)
