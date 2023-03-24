@@ -1,6 +1,7 @@
 #ifndef MEDIAPLAYER_HPP
 #define MEDIAPLAYER_HPP
 
+#include <QtGlobal>
 #include <QWidget>
 #include <QBuffer>
 #include <QVideoWidget>
@@ -30,7 +31,11 @@ private slots:
 private: // slots
     void on_media_positionChanged(qint64 pos);
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     void on_media_playbackChanged(QMediaPlayer::State);
+#else
+    void on_media_playbackChanged(QMediaPlayer::PlaybackState);
+#endif
 
 private:
     Ui::MediaPlayer *ui;

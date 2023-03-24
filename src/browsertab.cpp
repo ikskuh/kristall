@@ -28,6 +28,7 @@
 
 #include <cassert>
 #include <QTabWidget>
+#include <QtGlobal>
 #include <QMenu>
 #include <QMessageBox>
 #include <QInputDialog>
@@ -1124,7 +1125,11 @@ void BrowserTab::on_text_browser_anchorClicked(const QUrl &url, bool open_in_new
                         QInputDialog input { this };
                         input.setInputMode(QInputDialog::TextInput);
                         input.setLabelText(tr("This style has no embedded name. Please enter a name for the preset:"));
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
                         input.setTextValue(this->current_location.fileName().split(".", QString::SkipEmptyParts).first());
+#else
+                        input.setTextValue(this->current_location.fileName().split(".", Qt::SkipEmptyParts).first());
+#endif
 
                         if(input.exec() != QDialog::Accepted)
                             return;

@@ -3,10 +3,15 @@
 
 #include "kristall.hpp"
 
-#include <QMediaContent>
+#include <QtGlobal>
 #include <QToolButton>
 #include <QTime>
 #include <QIcon>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#include <QMediaContent>
+#else
+#include <QUrl>
+#endif
 
 MediaPlayer::MediaPlayer(QWidget *parent) :
     QWidget(parent),
@@ -27,10 +32,18 @@ MediaPlayer::MediaPlayer(QWidget *parent) :
     connect(&this->player, &QMediaPlayer::durationChanged, this->ui->media_progress, &QSlider::setMaximum);
     connect(&this->player, &QMediaPlayer::positionChanged, this->ui->media_progress, &QSlider::setValue);
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     connect(&this->player, &QMediaPlayer::audioAvailableChanged, this->ui->mute_button, &QToolButton::setEnabled);
+#else
+    connect(&this->player, &QMediaPlayer::hasAudioChanged, this->ui->mute_button, &QToolButton::setEnabled);
+#endif
     // connect(&this->player, &QMediaPlayer::videoAvailableChanged, this->ui->video_out, &QVideoWidget::setVisible);
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     connect(&this->player, &QMediaPlayer::stateChanged, this, &MediaPlayer::on_media_playbackChanged);
+#else
+    connect(&this->player, &QMediaPlayer::playbackStateChanged, this, &MediaPlayer::on_media_playbackChanged);
+#endif
     connect(&this->player, &QMediaPlayer::mediaStatusChanged, [](QMediaPlayer::MediaStatus status) {
         qDebug() << "media status changed" << status;
     });
@@ -55,9 +68,12 @@ void MediaPlayer::setMedia(QByteArray const & data, QUrl const & ref_url, QStrin
     this->media_stream.setData(data); // = QBuffer { &this->backing_buffer };
     this->media_stream.open(QIODevice::ReadOnly);
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QMediaContent content { ref_url };
-
     this->player.setMedia(content, &this->media_stream);
+#else
+    this->player.setSource(ref_url);
+#endif
 }
 
 void MediaPlayer::stopPlaying()
@@ -67,16 +83,24 @@ void MediaPlayer::stopPlaying()
 
 void MediaPlayer::on_playpause_button_clicked()
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     if(this->player.state() != QMediaPlayer::PlayingState) {
         this->player.play();
     } else {
         this->player.pause();
     }
+#else
+    // aa13q
+#endif
 }
 
 void MediaPlayer::on_mute_button_clicked(bool checked)
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     this->player.setMuted(checked);
+#else
+    // aa13q
+#endif
 }
 
 void MediaPlayer::on_media_positionChanged(qint64 pos)
@@ -86,6 +110,7 @@ void MediaPlayer::on_media_positionChanged(qint64 pos)
     this->ui->media_position->setText(time.toString());
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 void MediaPlayer::on_media_playbackChanged(QMediaPlayer::State status)
 {
     this->ui->playpause_button->setIcon((status == QMediaPlayer::PlayingState)
@@ -93,3 +118,12 @@ void MediaPlayer::on_media_playbackChanged(QMediaPlayer::State status)
         : QIcon::fromTheme("media-playback-start")
     );
 }
+#else
+void MediaPlayer::on_media_playbackChanged(QMediaPlayer::PlaybackState status)
+{
+    this->ui->playpause_button->setIcon((status == QMediaPlayer::PlayingState)
+        ? QIcon::fromTheme("media-playback-pause")
+        : QIcon::fromTheme("media-playback-start")
+    );
+}
+#endif
