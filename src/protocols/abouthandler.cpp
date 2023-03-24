@@ -52,7 +52,7 @@ bool AboutHandler::startRequest(const QUrl &url, ProtocolHandler::RequestOptions
     else if (url.path() == "cache")
     {
         QByteArray document;
-        document.append(tr("# Cache information\n"));
+        document.append(QString(tr("# Cache information\n")).toUtf8());
 
         auto& cache = kristall::globals().cache.getPages();
         long unsigned cache_usage = 0;
