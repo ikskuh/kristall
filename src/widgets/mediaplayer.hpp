@@ -28,6 +28,10 @@ private slots:
 
     void on_mute_button_clicked(bool checked);
 
+    void on_seekChanged(qint64 pos);
+    void on_seekPressed();
+    void on_seekReleased();
+
 private: // slots
     void on_media_positionChanged(qint64 pos);
 
@@ -42,6 +46,7 @@ private:
     QBuffer media_stream;
     QString mime;
     QMediaPlayer player;
+    bool manual_seek;
 };
 
 #endif // MEDIAPLAYER_HPP

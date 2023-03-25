@@ -18,7 +18,8 @@ MediaPlayer::MediaPlayer(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MediaPlayer),
     media_stream(),
-    player()
+    player(),
+    manual_seek(false)
 {
     ui->setupUi(this);
 
@@ -51,7 +52,9 @@ MediaPlayer::MediaPlayer(QWidget *parent) :
 
     connect(&this->player, &QMediaPlayer::positionChanged, this, &MediaPlayer::on_media_positionChanged);
 
-    connect(this->ui->media_progress, &QSlider::valueChanged, &this->player, &QMediaPlayer::setPosition);
+    connect(this->ui->media_progress, &QSlider::valueChanged, this, &MediaPlayer::on_seekChanged);
+    connect(this->ui->media_progress, &QSlider::sliderPressed, this, &MediaPlayer::on_seekPressed);
+    connect(this->ui->media_progress, &QSlider::sliderReleased, this, &MediaPlayer::on_seekReleased);
 }
 
 MediaPlayer::~MediaPlayer()
@@ -132,3 +135,20 @@ void MediaPlayer::on_media_playbackChanged(QMediaPlayer::PlaybackState status)
     );
 }
 #endif
+
+void MediaPlayer::on_seekChanged(qint64 pos)
+{
+    if (this->manual_seek) {
+        player.setPosition(pos);
+    }
+}
+
+void MediaPlayer::on_seekPressed()
+{
+    this->manual_seek = true;
+}
+
+void MediaPlayer::on_seekReleased()
+{
+    this->manual_seek = false;
+}
