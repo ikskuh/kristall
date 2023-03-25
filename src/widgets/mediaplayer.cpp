@@ -10,6 +10,7 @@
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QMediaContent>
 #else
+#include <QAudioOutput>
 #include <QUrl>
 #endif
 
@@ -90,7 +91,11 @@ void MediaPlayer::on_playpause_button_clicked()
         this->player.pause();
     }
 #else
-    // aa13q
+    if(this->player.playbackState() != QMediaPlayer::PlayingState) {
+        this->player.play();
+    } else {
+        this->player.pause();
+    }
 #endif
 }
 
@@ -99,7 +104,7 @@ void MediaPlayer::on_mute_button_clicked(bool checked)
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     this->player.setMuted(checked);
 #else
-    // aa13q
+    this->player.audioOutput()->setMuted(checked);
 #endif
 }
 
