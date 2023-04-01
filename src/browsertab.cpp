@@ -176,6 +176,7 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
 
 BrowserTab::~BrowserTab()
 {
+    this->current_handler->cancelRequest();
     delete ui;
 }
 
