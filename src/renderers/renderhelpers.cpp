@@ -159,10 +159,10 @@ static void parseSGR(
                 format.setFontStrikeOut(false);
                 break;
             case SetForeground:
-                if (args.size() > 2)
+                if (args.size() > 2 && std::next(it) != args.cend())
                 {
                     const auto colMode = *++it;
-                    if (colMode == 5)
+                    if (colMode == 5 && std::next(it) != args.cend())
                     {
                         const auto colNum = *++it;
                         setColor(format, colNum);
@@ -170,7 +170,7 @@ static void parseSGR(
                     else if (colMode == 2)
                     {
                         ++it;
-                        if (args.size() >= 4)
+                        if (std::next(it, 3) <= args.cend())
                         {
                             const auto red = *it;
                             const auto green = *++it;
@@ -184,10 +184,10 @@ static void parseSGR(
                 format.setForeground(defaultFormat.foreground());
                 break;
             case SetBackground:
-                if (args.size() > 2)
+                if (args.size() > 2 && std::next(it) != args.cend())
                 {
                     const auto colMode = *++it;
-                    if (colMode == 5)
+                    if (colMode == 5 && std::next(it) != args.cend())
                     {
                         const auto colNum = *++it;
                         setColor(format, colNum, true);
@@ -195,7 +195,7 @@ static void parseSGR(
                     else if (colMode == 2)
                     {
                         ++it;
-                        if (args.size() >= 4)
+                        if (std::next(it, 3) <= args.cend())
                         {
                             const auto red = *it;
                             const auto green = *++it;
