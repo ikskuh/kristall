@@ -48,6 +48,9 @@ KristallTextBrowser::KristallTextBrowser(QWidget *parent) :
 void KristallTextBrowser::mouseReleaseEvent(QMouseEvent *event)
 {
     if(event->button() == Qt::MiddleButton) {
+        // Deselect any selection. Otherwise the click won't register.
+        setTextCursor(cursorForPosition(event->pos()));
+
         // Fake a middle-click event here
         QMouseEvent fake_event {
             event->type(),
