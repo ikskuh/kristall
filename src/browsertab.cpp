@@ -214,6 +214,8 @@ void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode, RequestFlags fl
     }
 
     this->updateUI();
+
+    this->ui->text_browser->setFocus();
 }
 
 void BrowserTab::navigateBack(const QModelIndex &history_index)
