@@ -19,18 +19,6 @@ jobs:
       - name: make
         run: make
 
-  build_ubuntu_18:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-
-      - uses: jurplel/install-qt-action@v2
-        with:
-          version: "5.9.5"
-
-      - name: make
-        run: make
-
   build-macos:
     runs-on: macos-latest
     steps:
