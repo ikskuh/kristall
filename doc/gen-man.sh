@@ -55,12 +55,12 @@ gem_in=$(
     # First expression replaces all [Text like this] with bold text.
     # Second expression replaces text like *This* or _this_ with italic text.
     sed -E \
-      -e 's#\[([^]]*)\]#\\\\fB\1\\\\fR#g' \
-      -e 's#(^|[.,!? ]+)[*_]([^*_ ]+[^*_]+[^*_ ]+)[*_]($|[.,!? ])#\1\\\\fI\2\\\\fR\3#g'
+      -e 's#\[([^]]*)\]#\\fB\1\\fR#g' \
+      -e 's#(^|[.,!? ]+)[*_]([^*_ ]+[^*_]+[^*_ ]+)[*_]($|[.,!? ])#\1\\fI\2\\fR\3#g'
 )
 
 # Convert gemtext to man format
-echo "$gem_in" | "$gemtext_converter" >> "$man_output"
+printf "%s" "$gem_in" | "$gemtext_converter" >> "$man_output"
 
 # Write the tail to the output file.
 cat "$man_tail" >> "$man_output"
