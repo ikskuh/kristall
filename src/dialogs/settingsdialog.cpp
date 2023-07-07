@@ -294,6 +294,7 @@ void SettingsDialog::setOptions(const GenericSettings &options)
     this->ui->search_engine->lineEdit()->setPlaceholderText(tr("URL with '%1' in place of query"));
     this->ui->search_engine->addItem("gemini://kennedy.gemi.dev/search?%1");
     this->ui->search_engine->addItem("gemini://tlgs.one/search?%1");
+    this->ui->search_engine->addItem("gemini://geminispace.info/search?%1");
     this->ui->search_engine->addItem("gopher://gopher.floodgap.com:70/7/v2/vs?%1");
     this->ui->search_engine->setCurrentText(search);
 
