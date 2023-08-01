@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1100</width>
-    <height>737</height>
+    <width>496</width>
+    <height>404</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,280 +32,302 @@
        <string>Generic</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout">
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_14">
-         <property name="text">
-          <string>Start Page:</string>
+       <item row="0" column="0" colspan="2">
+        <widget class="QScrollArea" name="scrollArea">
+         <property name="verticalScrollBarPolicy">
+          <enum>Qt::ScrollBarAlwaysOn</enum>
          </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="start_page">
-         <property name="placeholderText">
-          <string>about://blank</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_40">
-         <property name="text">
-          <string>Search engine:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QComboBox" name="search_engine">
-         <property name="editable">
+         <property name="widgetResizable">
           <bool>true</bool>
          </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_2">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>585</width>
+            <height>490</height>
+           </rect>
+          </property>
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_44">
+             <property name="text">
+              <string>Language</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QComboBox" name="selected_language"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_14">
+             <property name="text">
+              <string>Start Page:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="start_page">
+             <property name="placeholderText">
+              <string>about://blank</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_40">
+             <property name="text">
+              <string>Search engine:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QComboBox" name="search_engine">
+             <property name="editable">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_29">
+             <property name="text">
+              <string>Additional toolbar buttons</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout_99">
+             <item>
+              <widget class="QCheckBox" name="enable_home_btn">
+               <property name="text">
+                <string>Home</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="enable_newtab_btn">
+               <property name="text">
+                <string>New tab</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="enable_root_btn">
+               <property name="text">
+                <string>Root (/)</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="enable_parent_btn">
+               <property name="text">
+                <string>Parent (..)</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_19">
+             <property name="text">
+              <string>Startup Behaviour</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QComboBox" name="session_restore_behaviour"/>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_15">
+             <property name="text">
+              <string>UI Theme</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QComboBox" name="ui_theme"/>
+           </item>
+           <item row="6" column="0">
+            <widget class="QLabel" name="label_34">
+             <property name="text">
+              <string>Icon Theme</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1">
+            <widget class="QComboBox" name="icon_theme"/>
+           </item>
+           <item row="7" column="0">
+            <widget class="QLabel" name="label_1">
+             <property name="text">
+              <string>UI Density</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1">
+            <widget class="QComboBox" name="ui_density"/>
+           </item>
+           <item row="8" column="0">
+            <widget class="QLabel" name="label_16">
+             <property name="text">
+              <string>Enabled Protocols</string>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QCheckBox" name="enable_gemini">
+               <property name="text">
+                <string>Gemini</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="enable_gopher">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="text">
+                <string>Gopher</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="enable_finger">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="text">
+                <string>Finger</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="enable_http">
+               <property name="text">
+                <string>HTTP</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="enable_https">
+               <property name="text">
+                <string>HTTPS</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="9" column="0">
+            <widget class="QLabel" name="label_22">
+             <property name="text">
+              <string>Unknown Scheme</string>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
+             <item>
+              <widget class="QRadioButton" name="scheme_os_default">
+               <property name="text">
+                <string>Use OS default handler</string>
+               </property>
+               <attribute name="buttonGroup">
+                <string notr="true">buttonGroup</string>
+               </attribute>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="scheme_error">
+               <property name="text">
+                <string>Display error message</string>
+               </property>
+               <attribute name="buttonGroup">
+                <string notr="true">buttonGroup</string>
+               </attribute>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="10" column="0">
+            <widget class="QLabel" name="label_26">
+             <property name="text">
+              <string>Max. Number of Redirections</string>
+             </property>
+            </widget>
+           </item>
+           <item row="10" column="1">
+            <widget class="QSpinBox" name="max_redirects">
+             <property name="value">
+              <number>5</number>
+             </property>
+            </widget>
+           </item>
+           <item row="11" column="0">
+            <widget class="QLabel" name="label_27">
+             <property name="text">
+              <string>Redirection Handling</string>
+             </property>
+            </widget>
+           </item>
+           <item row="11" column="1">
+            <widget class="QComboBox" name="redirection_mode"/>
+           </item>
+           <item row="12" column="0">
+            <widget class="QLabel" name="label_28">
+             <property name="text">
+              <string>Network Timeout</string>
+             </property>
+            </widget>
+           </item>
+           <item row="12" column="1">
+            <widget class="QSpinBox" name="network_timeout">
+             <property name="suffix">
+              <string> ms</string>
+             </property>
+             <property name="minimum">
+              <number>100</number>
+             </property>
+             <property name="maximum">
+              <number>90000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="13" column="0">
+            <widget class="QLabel" name="label_45">
+             <property name="text">
+              <string>Tab close behaviour</string>
+             </property>
+            </widget>
+           </item>
+           <item row="13" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout_12">
+             <item>
+              <widget class="QRadioButton" name="tab_keep_window">
+               <property name="text">
+                <string>Keep window open</string>
+               </property>
+               <attribute name="buttonGroup">
+                <string notr="true">buttonGroup_10</string>
+               </attribute>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="tab_close_window">
+               <property name="text">
+                <string>Close window</string>
+               </property>
+               <attribute name="buttonGroup">
+                <string notr="true">buttonGroup_10</string>
+               </attribute>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
         </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_29">
-         <property name="text">
-          <string>Additional toolbar buttons</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_99">
-         <item>
-          <widget class="QCheckBox" name="enable_home_btn">
-           <property name="text">
-            <string>Home</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="enable_newtab_btn">
-           <property name="text">
-            <string>New tab</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="enable_root_btn">
-           <property name="text">
-            <string>Root (/)</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="enable_parent_btn">
-           <property name="text">
-            <string>Parent (..)</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="label_19">
-         <property name="text">
-          <string>Startup Behaviour</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QComboBox" name="session_restore_behaviour"/>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="label_15">
-         <property name="text">
-          <string>UI Theme</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QComboBox" name="ui_theme"/>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="label_34">
-         <property name="text">
-          <string>Icon Theme</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QComboBox" name="icon_theme"/>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="label_1">
-         <property name="text">
-          <string>UI Density</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <widget class="QComboBox" name="ui_density"/>
-       </item>
-       <item row="8" column="0">
-        <widget class="QLabel" name="label_16">
-         <property name="text">
-          <string>Enabled Protocols</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QCheckBox" name="enable_gemini">
-           <property name="text">
-            <string>Gemini</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="enable_gopher">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
-           <property name="text">
-            <string>Gopher</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="enable_finger">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
-           <property name="text">
-            <string>Finger</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="enable_http">
-           <property name="text">
-            <string>HTTP</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="enable_https">
-           <property name="text">
-            <string>HTTPS</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="9" column="0">
-        <widget class="QLabel" name="label_22">
-         <property name="text">
-          <string>Unknown Scheme</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_7">
-         <item>
-          <widget class="QRadioButton" name="scheme_os_default">
-           <property name="text">
-            <string>Use OS default handler</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">buttonGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="scheme_error">
-           <property name="text">
-            <string>Display error message</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">buttonGroup</string>
-           </attribute>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="10" column="0">
-        <widget class="QLabel" name="label_26">
-         <property name="text">
-          <string>Max. Number of Redirections</string>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="1">
-        <widget class="QSpinBox" name="max_redirects">
-         <property name="value">
-          <number>5</number>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="0">
-        <widget class="QLabel" name="label_27">
-         <property name="text">
-          <string>Redirection Handling</string>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="1">
-        <widget class="QComboBox" name="redirection_mode"/>
-       </item>
-       <item row="12" column="0">
-        <widget class="QLabel" name="label_28">
-         <property name="text">
-          <string>Network Timeout</string>
-         </property>
-        </widget>
-       </item>
-       <item row="12" column="1">
-        <widget class="QSpinBox" name="network_timeout">
-         <property name="suffix">
-          <string> ms</string>
-         </property>
-         <property name="minimum">
-          <number>100</number>
-         </property>
-         <property name="maximum">
-          <number>90000</number>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_44">
-         <property name="text">
-          <string>Language</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="selected_language"/>
-       </item>
-       <item row="13" column="0">
-        <widget class="QLabel" name="label_45">
-         <property name="text">
-          <string>Tab close behaviour</string>
-         </property>
-        </widget>
-       </item>
-       <item row="13" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_12">
-         <item>
-          <widget class="QRadioButton" name="tab_keep_window">
-           <property name="text">
-            <string>Keep window open</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">buttonGroup_10</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="tab_close_window">
-           <property name="text">
-            <string>Close window</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">buttonGroup_10</string>
-           </attribute>
-          </widget>
-         </item>
-        </layout>
        </item>
       </layout>
      </widget>
@@ -705,9 +727,9 @@
             <property name="geometry">
              <rect>
               <x>0</x>
-              <y>0</y>
-              <width>530</width>
-              <height>712</height>
+              <y>-351</y>
+              <width>570</width>
+              <height>783</height>
              </rect>
             </property>
             <layout class="QFormLayout" name="style_scroll_layout">
@@ -1619,9 +1641,6 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>ui_theme</tabstop>
-  <tabstop>icon_theme</tabstop>
-  <tabstop>ui_density</tabstop>
   <tabstop>enable_gemini</tabstop>
   <tabstop>enable_gopher</tabstop>
   <tabstop>enable_finger</tabstop>
@@ -1629,9 +1648,6 @@
   <tabstop>enable_https</tabstop>
   <tabstop>scheme_os_default</tabstop>
   <tabstop>scheme_error</tabstop>
-  <tabstop>max_redirects</tabstop>
-  <tabstop>redirection_mode</tabstop>
-  <tabstop>network_timeout</tabstop>
   <tabstop>enable_home_btn</tabstop>
   <tabstop>enable_newtab_btn</tabstop>
   <tabstop>enable_root_btn</tabstop>
@@ -1714,15 +1730,15 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroup_2"/>
+  <buttongroup name="buttonGroup_7"/>
   <buttongroup name="buttonGroup_5"/>
   <buttongroup name="buttonGroup"/>
-  <buttongroup name="buttonGroup_6"/>
-  <buttongroup name="buttonGroup_8"/>
   <buttongroup name="buttonGroup_3"/>
-  <buttongroup name="buttonGroup_7"/>
   <buttongroup name="buttonGroup_4"/>
-  <buttongroup name="buttonGroup_9"/>
   <buttongroup name="buttonGroup_10"/>
+  <buttongroup name="buttonGroup_8"/>
+  <buttongroup name="buttonGroup_2"/>
+  <buttongroup name="buttonGroup_6"/>
+  <buttongroup name="buttonGroup_9"/>
  </buttongroups>
 </ui>
