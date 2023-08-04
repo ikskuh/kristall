@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.13)
+project(luis-l-gist CXX)
+add_library(${PROJECT_NAME} interactiveview.cpp)
+target_include_directories(${PROJECT_NAME} PUBLIC .)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+target_link_libraries(${PROJECT_NAME} PUBLIC Qt${QT_VERSION_MAJOR}::Widgets)
