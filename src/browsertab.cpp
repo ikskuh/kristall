@@ -870,6 +870,7 @@ void BrowserTab::on_inputRequired(const QString &query, const bool is_sensitive)
     QInputDialog dialog{this};
 
     dialog.setInputMode(QInputDialog::TextInput);
+    dialog.setOption(QInputDialog::UsePlainTextEditForTextInput);
     dialog.setLabelText(query);
     if (is_sensitive) dialog.setTextEchoMode(QLineEdit::Password);
 
