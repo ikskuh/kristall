@@ -156,21 +156,32 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
         else
         {
             QString dst_url;
-            switch (items.size())
+
+            // If a resource’s link starts with “URL:”, it is a direct link (to HTTP or another protocol), rather than a file or directory on this server.
+            if (items.size() >= 2 && items.at(1).left(4) == "URL:")
             {
-            case 0:
-                assert(false);
-            case 1:
-                assert(false);
-            case 2:
-                dst_url = root_url.resolved(QUrl(items.at(1))).toString();
-                break;
-            case 3:
-                dst_url = scheme + "://" + items.at(2) + "/" + QString(type) + items.at(1);
-                break;
-            default:
-                dst_url = scheme + "://" + items.at(2) + ":" + items.at(3) + "/" + QString(type) + items.at(1);
-                break;
+                auto item1 = QString(items.at(1));
+                item1.remove(0, 4);
+                dst_url = item1;
+            }
+            else
+            {
+                switch (items.size())
+                {
+                case 0:
+                    assert(false);
+                case 1:
+                    assert(false);
+                case 2:
+                    dst_url = root_url.resolved(QUrl(items.at(1))).toString();
+                    break;
+                case 3:
+                    dst_url = scheme + "://" + items.at(2) + "/" + QString(type) + items.at(1);
+                    break;
+                default:
+                    dst_url = scheme + "://" + items.at(2) + ":" + items.at(3) + "/" + QString(type) + items.at(1);
+                    break;
+                }
             }
 
             if (not QUrl(dst_url).isValid())
