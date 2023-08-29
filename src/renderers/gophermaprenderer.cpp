@@ -157,8 +157,8 @@ std::unique_ptr<QTextDocument> GophermapRenderer::render(const QByteArray &input
         {
             QString dst_url;
 
-            // If a resource’s link starts with “URL:”, it is a direct link (to HTTP or another protocol), rather than a file or directory on this server.
-            if (items.size() >= 2 && items.at(1).left(4) == "URL:")
+            // If a resource’s path starts with “URL:”, it is a direct link (to HTTP or another protocol), rather than a file or directory on this server.
+            if (items.size() >= 2 && items.at(1).startsWith("URL:"))
             {
                 auto item1 = QString(items.at(1));
                 item1.remove(0, 4);
