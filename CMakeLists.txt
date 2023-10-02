@@ -7,11 +7,19 @@ if(NOT KRISTALL_VERSION)
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
 
+    if(NOT KRISTALL_CMAKE_VERSION)
+        set(KRISTALL_CMAKE_VERSION "0.0.0")
+    endif()
+
     execute_process(COMMAND git describe --tags
         WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
         OUTPUT_VARIABLE KRISTALL_VERSION
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
+
+    if(NOT KRISTALL_VERSION)
+        set(KRISTALL_VERSION "development")
+    endif()
 endif()
 
 # CMake requires the following format for versions:
@@ -170,7 +178,7 @@ if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(${PROJECT_NAME})
 endif()
 
-find_package(OpenSSL 3.0 REQUIRED)
+find_package(OpenSSL 1.1 REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE OpenSSL::SSL)
 
 if(NOT UNIX)

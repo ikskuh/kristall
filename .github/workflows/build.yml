@@ -33,7 +33,27 @@ jobs:
 
       - name: make
         run: make build/kristall
-        
+
+  build_cmake:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: jurplel/install-qt-action@v2
+        with:
+          version: "5.12.8"
+
+      - name: Install OpenSSL
+        run: sudo apt install -y libssl-dev
+
+      - name: Configure the project
+        uses: threeal/cmake-action@v1.3.0
+        with:
+          build-dir: build
+
+      - name: Build the project
+        run: cmake --build build
+
 # Disabled until both aqinstall and install-qt-action support the fixes…
 #  build_windows:
 #    runs-on: windows-latest
