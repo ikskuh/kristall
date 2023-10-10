@@ -25,6 +25,7 @@
 #include "kristall.hpp"
 #include "widgets/favouritepopup.hpp"
 #include "widgets/searchbox.hpp"
+#include "widgets/querydialog.hpp"
 
 #include <cassert>
 #include <QTabWidget>
@@ -867,10 +868,8 @@ void BrowserTab::on_inputRequired(const QString &query, const bool is_sensitive)
 {
     this->network_timeout_timer.stop();
 
-    QInputDialog dialog{this};
+    QueryDialog dialog(this);
 
-    dialog.setInputMode(QInputDialog::TextInput);
-    dialog.setOption(QInputDialog::UsePlainTextEditForTextInput);
     dialog.setLabelText(query);
     if (is_sensitive) dialog.setTextEchoMode(QLineEdit::Password);
 
