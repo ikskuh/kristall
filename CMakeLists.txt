@@ -89,6 +89,8 @@ set(PROJECT_SOURCES
     src/widgets/ssltrusteditor.cpp
     src/widgets/favouritepopup.cpp
     src/widgets/favouritebutton.cpp
+    src/widgets/querydialog.ui
+    src/widgets/querydialog.cpp
     src/cachehandler.cpp
     src/widgets/searchbox.cpp
     src/browsertab.ui

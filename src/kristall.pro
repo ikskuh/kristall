@@ -158,7 +158,8 @@ SOURCES += \
     widgets/favouritepopup.cpp \
     widgets/favouritebutton.cpp \
     cachehandler.cpp \
-    widgets/searchbox.cpp
+    widgets/searchbox.cpp \
+    widgets/querydialog.cpp
 
 HEADERS += \
     ../lib/luis-l-gist/interactiveview.hpp \
@@ -206,6 +207,7 @@ HEADERS += \
     widgets/ssltrusteditor.hpp \
     widgets/favouritepopup.hpp \
     widgets/favouritebutton.hpp \
+    widgets/querydialog.hpp \
     cachehandler.hpp \
     widgets/searchbox.hpp
 
@@ -218,7 +220,8 @@ FORMS += \
   dialogs/settingsdialog.ui \
   mainwindow.ui \
   widgets/mediaplayer.ui \
-  widgets/ssltrusteditor.ui
+  widgets/ssltrusteditor.ui \
+  widgets/querydialog.ui
 
 CONFIG += lrelease embed_translations
 
