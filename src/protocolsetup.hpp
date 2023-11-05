@@ -7,6 +7,7 @@
     MAC(http) \
     MAC(https) \
     MAC(gopher) \
+    MAC(guppy) \
     MAC(gemini) \
     MAC(finger)
 

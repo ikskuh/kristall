@@ -17,6 +17,7 @@
 #include "protocols/geminiclient.hpp"
 #include "protocols/webclient.hpp"
 #include "protocols/gopherclient.hpp"
+#include "protocols/guppyclient.hpp"
 #include "protocols/fingerclient.hpp"
 #include "protocols/abouthandler.hpp"
 #include "protocols/filehandler.hpp"
@@ -77,6 +78,7 @@ BrowserTab::BrowserTab(MainWindow *mainWindow) : QWidget(nullptr),
     addProtocolHandler<GeminiClient>();
     addProtocolHandler<FingerClient>();
     addProtocolHandler<GopherClient>();
+    addProtocolHandler<GuppyClient>();
     addProtocolHandler<WebClient>();
     addProtocolHandler<AboutHandler>();
     addProtocolHandler<FileHandler>();

@@ -194,6 +194,16 @@
               </widget>
              </item>
              <item>
+              <widget class="QCheckBox" name="enable_guppy">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="text">
+                <string>Guppy</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QCheckBox" name="enable_finger">
                <property name="enabled">
                 <bool>true</bool>
@@ -1643,6 +1653,7 @@
  <tabstops>
   <tabstop>enable_gemini</tabstop>
   <tabstop>enable_gopher</tabstop>
+  <tabstop>enable_guppy</tabstop>
   <tabstop>enable_finger</tabstop>
   <tabstop>enable_http</tabstop>
   <tabstop>enable_https</tabstop>
