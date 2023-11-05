@@ -143,6 +143,7 @@ SOURCES += \
     protocols/fingerclient.cpp \
     protocols/geminiclient.cpp \
     protocols/gopherclient.cpp \
+    protocols/guppyclient.cpp \
     protocols/webclient.cpp \
     protocolsetup.cpp \
     renderers/geminirenderer.cpp \
@@ -193,6 +194,7 @@ HEADERS += \
     protocols/fingerclient.hpp \
     protocols/geminiclient.hpp \
     protocols/gopherclient.hpp \
+    protocols/guppyclient.hpp \
     protocols/webclient.hpp \
     protocolsetup.hpp \
     renderers/geminirenderer.hpp \
