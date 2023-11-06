@@ -75,6 +75,7 @@ set(PROJECT_SOURCES
     src/protocols/fingerclient.cpp
     src/protocols/geminiclient.cpp
     src/protocols/gopherclient.cpp
+    src/protocols/guppyclient.cpp
     src/protocols/webclient.cpp
     src/protocolsetup.cpp
     src/renderers/geminirenderer.cpp
