@@ -168,7 +168,7 @@ void GuppyClient::on_readRead()
             break;
         }
         body.append(next.constData(), next.size());
-        this->prev_seq = next_seq;
+        this->prev_seq = next_seq++;
     }
 
     if(not this->was_cancelled) {
@@ -176,7 +176,7 @@ void GuppyClient::on_readRead()
     }
 
     // we're done when the last appended chunk is the one before the eof chunk
-    if(next_seq == this->last_seq) {
+    if(this->last_seq && next_seq == this->last_seq) {
         if(not this->was_cancelled) {
             emit this->requestComplete(this->body, this->mime);
             this->was_cancelled = true;
