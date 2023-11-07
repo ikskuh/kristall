@@ -38,7 +38,9 @@ bool GuppyClient::startRequest(const QUrl &url, RequestOptions options)
 
     this->requested_url = url;
     this->was_cancelled = false;
-    this->prev_seq = this->first_seq = this->last_seq = 0;
+    this->prev_seq = 0;
+    this->first_seq = 0;
+    this->last_seq = 0;
     this->socket.connectToHost(url.host(), url.port(6775));
 
     return true;
