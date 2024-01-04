@@ -66,6 +66,22 @@ See [BUILDING.md](BUILDING.md)
 - Thanks to [Alex Naskos](https://github.com/alexnask) for providing windows build instructions
 - Thanks to tiwesdaeg for improving the application icon
 
+### Bundled Dependencies
+
+- Thanks to [Alexander Huszagh](https://github.com/Alexhuszagh) and
+  [BreezeStyleSheets contributors](https://github.com/Alexhuszagh/BreezeStyleSheets/graphs/contributors) for
+  the dependency [BreezeStyleSheets](https://github.com/bkmgit/kristall/tree/master/lib/BreezeStyleSheets)
+  available under an MIT license
+- Thanks to [John MacFarlane](https://github.com/jgm) and
+  [Cmark contributors](https://github.com/commonmark/cmark/graphs/contributors) for the dependency
+  [cmark](https://github.com/MasterQ32/kristall/tree/master/lib/cmark) which is available under BSD-2-Clause
+  and MIT licenses
+- Thanks to Jonathan Tang and [gumbo parser contributors](https://github.com/google/gumbo-parser/graphs/contributors)
+  for the dependency [gumbo parser](https://github.com/MasterQ32/kristall/tree/master/lib/gumbo-parser)
+  available under an Apache-2.0 license
+- Thanks to [Luis Lpz](https://gist.github.com/luis-l) for the dependency
+  [luis-l-gist](https://github.com/MasterQ32/kristall/tree/master/lib/luis-l-gist)
+  
 ## Changelog
 
 See [src/about/updates.gemini](src/about/updates.gemini)
