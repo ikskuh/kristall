@@ -53,6 +53,7 @@ install: kristall
 	$(MAKEDIR) $(sharedir)/icons/hicolor/128x128/apps/
 	$(MAKEDIR) $(sharedir)/applications/
 	$(MAKEDIR) $(sharedir)/mime/packages/
+	$(MAKEDIR) $(sharedir)/metainfo/
 	$(MAKEDIR) $(mandir)
 	$(MAKEDIR) $(bindir)
 
@@ -64,12 +65,15 @@ install: kristall
 	$(INSTALL_DATA) src/icons/kristall-128.png $(sharedir)/icons/hicolor/128x128/apps/net.random-projects.kristall.png
 	$(INSTALL_DATA) Kristall.desktop $(sharedir)/applications/Kristall.desktop
 	$(INSTALL_DATA) kristall-mime-info.xml $(sharedir)/mime/packages/kristall.xml
+	$(INSTALL_DATA) Kristall.metainfo.xml $(sharedir)/metainfo/Kristall.metainfo.xml
 	$(INSTALL_DATA) doc/kristall.1 $(mandir)/kristall.1
 	$(INSTALL_PROGRAM) kristall $(bindir)/kristall
 
 uninstall:
 	# Remove the .desktop
 	rm -f $(sharedir)/applications/Kristall.desktop
+	# Remove appdata file
+	rm -f $(sharedir)/metainfo/Kristall.metainfo.xml
 	# Remove the mime entry
 	rm -f $(sharedir)/mime/packages/kristall.xml
 	# Remove the icons
