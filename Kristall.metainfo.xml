@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>Kristall.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0</project_license>
+  <name>Kristall</name>
+  <summary>A high-quality visual cross-platform gemini browser</summary>
+  <description>
+    <p>
+      Graphical small-internet client for windows, linux, MacOS X and BSDs.
+      Supports gemini, http, https, gopher, finger.
+    </p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://mq32.de/public/336ac416892fd9064593631e7be9f7d8e266196b.png</image>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">https://kristall.random-projects.net/</url>
+  <url type="bugtracker">https://github.com/MasterQ32/kristall/issues</url>
+  <update_contact>kristall_at_mq32.de</update_contact>
+</component>
