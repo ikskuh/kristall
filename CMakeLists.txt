@@ -187,3 +187,65 @@ target_link_libraries(${PROJECT_NAME} PRIVATE OpenSSL::SSL)
 if(NOT UNIX)
     target_link_libraries(${PROJECT_NAME} PRIVATE iconv)
 endif()
+
+## Generate documentation
+add_custom_target(
+	BuildDoc ALL
+	DEPENDS kristall.man.1
+)
+
+add_custom_command( OUTPUT kristall.man.1
+	COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/doc/gen-man.sh 
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/doc/
+)
+
+## Installation
+include(GNUInstallDirs)
+
+install(TARGETS kristall
+	RUNTIME
+	DESTINATION ${CMAKE_INSTALL_FULL_BINDIR}
+  )
+
+install(FILES doc/kristall.1
+	DESTINATION ${CMAKE_INSTALL_FULL_MANDIR}
+)
+
+install(FILES src/icons/kristall.svg
+	DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/scalable/apps/
+	RENAME net.random-projects.kristall.svg
+)
+
+install(FILES src/icons/kristall-16.png
+	DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/16x16/apps/
+	RENAME net.random-projects.kristall.png
+)
+
+install(FILES src/icons/kristall-32.png
+	DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/32x32/apps/
+	RENAME net.random-projects.kristall.png
+)
+
+install(FILES src/icons/kristall-64.png
+	DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/64x64/apps/
+	RENAME net.random-projects.kristall.png
+)
+
+install(FILES src/icons/kristall-128.png
+	DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/128x128/apps/
+	RENAME net.random-projects.kristall.png
+)
+
+install(FILES Kristall.desktop
+	DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/applications
+)
+
+install(FILES kristall-mime-info.xml
+	DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/mime/packages
+	RENAME kristall.xml
+)
+
+install(FILES Kristall.metainfo.xml
+	DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/metainfo/
+)
+
