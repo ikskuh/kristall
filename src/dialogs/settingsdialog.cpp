@@ -114,6 +114,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     this->ui->selected_language->addItem(QIcon(), tr("System language"), QString(""));
     this->ui->selected_language->addItem(QIcon(":/icons/languages/en.svg"), QLocale("en").nativeLanguageName(), QString("en"));
     this->ui->selected_language->addItem(QIcon(":/icons/languages/ru.svg"), QLocale("ru").nativeLanguageName(), QString("ru"));
+    this->ui->selected_language->addItem(QIcon(":/icons/languages/cs.svg"), QLocale("cs").nativeLanguageName(), QString("cs"));
 }
 
 SettingsDialog::~SettingsDialog()
@@ -423,6 +424,7 @@ void SettingsDialog::setLocale(std::optional<QLocale> locale)
         default:               this->ui->selected_language->setCurrentIndex(0); break;
         case QLocale::English: this->ui->selected_language->setCurrentIndex(1); break;
         case QLocale::Russian: this->ui->selected_language->setCurrentIndex(2); break;
+        case QLocale::Czech: this->ui->selected_language->setCurrentIndex(3); break;
         }
     }
 }

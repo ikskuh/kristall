@@ -1,0 +1,10 @@
+<svg id="czech_flag" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <g id="flag">
+    <polygon fill="#d7141a" points="4.5 57 36 36 67.5 36 67.5 57 4.5 57"/>
+    <polygon fill="#11457e" points="4.5 15 36 36 4.5 57 4.5 15"/>
+    <polygon fill="#ffffff" points="4.5 15 36 36 67.5 36 67.5 15 4.5 15"/>
+  </g>
+  <g id="border">
+    <rect x="4.5" y="15" width="63" height="42" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  </g>
+</svg>

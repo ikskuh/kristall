@@ -105,5 +105,6 @@
         <file>icons/light/actions/go-up-search.svg</file>
         <file>icons/languages/en.svg</file>
         <file>icons/languages/ru.svg</file>
+        <file>icons/languages/cs.svg</file>
     </qresource>
 </RCC>
