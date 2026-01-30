@@ -2,6 +2,19 @@
 #include <cassert>
 #include <QModelIndex>
 
+void DocumentOutlineModel::appendNode(DocumentOutlineModel::Node & parent, DocumentOutlineModel::Node new_child)
+{
+   parent.children.append(new_child);
+   for(auto & child : parent.children)
+    {
+        for(auto & grantchild : child.children)
+        {
+            // List might have been relocated
+            grantchild.parent = &child;
+        }
+    }
+}
+
 DocumentOutlineModel::DocumentOutlineModel() :
     QAbstractItemModel(),
     root()
@@ -29,7 +42,7 @@ void DocumentOutlineModel::beginBuild()
 
 void DocumentOutlineModel::appendH1(const QString &title, QString const & anchor)
 {
-    root.children.append(Node {
+    appendNode(root, Node {
         &root,
         title, anchor,
         1, 0,
@@ -40,7 +53,7 @@ void DocumentOutlineModel::appendH1(const QString &title, QString const & anchor
 void DocumentOutlineModel::appendH2(const QString &title, QString const & anchor)
 {
     auto & parent = ensureLevel1();
-    parent.children.append(Node {
+    appendNode(parent, Node {
         &parent,
         title, anchor,
         2, parent.children.size() - 1,
@@ -51,7 +64,7 @@ void DocumentOutlineModel::appendH2(const QString &title, QString const & anchor
 void DocumentOutlineModel::appendH3(const QString &title, QString const & anchor)
 {
     auto & parent = ensureLevel2();
-    parent.children.append(Node {
+    appendNode(parent, Node {
         &parent,
         title, anchor,
         3, parent.children.size() - 1,
@@ -187,7 +200,7 @@ QVariant DocumentOutlineModel::data(const QModelIndex &index, int role) const
 DocumentOutlineModel::Node & DocumentOutlineModel::ensureLevel1()
 {
     if(root.children.size() == 0) {
-        root.children.append(Node {
+        appendNode(root, Node {
             &root,
             "<missing layer>", "",
             1, 0,
@@ -202,7 +215,7 @@ DocumentOutlineModel::Node & DocumentOutlineModel::ensureLevel2()
     auto & parent = ensureLevel1();
 
     if(parent.children.size() == 0) {
-        parent.children.append(Node {
+        appendNode(parent, Node {
             &parent,
             "<missing layer>", "",
             2, 0,
