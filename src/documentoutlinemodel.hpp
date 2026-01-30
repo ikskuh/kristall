@@ -52,6 +52,8 @@ private:
 
     Node & ensureLevel1();
     Node & ensureLevel2();
+
+    void appendNode(Node &, Node);
 };
 
 #endif // DOCUMENTOUTLINEMODEL_HPP
