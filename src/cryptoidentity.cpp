@@ -1,8 +1,19 @@
 #include "cryptoidentity.hpp"
 
 #include <QUrl>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <cassert>
+
+static QRegularExpression fromWildcardCaseInsensitive(QStringView pattern)
+{
+    // Note: QRegularExpression converted from wildcard is anchored by default.
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    return QRegularExpression::fromWildcard(pattern, Qt::CaseInsensitive);
+#else
+    QString strPattern = QRegularExpression::wildcardToRegularExpression(pattern);
+    return QRegularExpression(strPattern, QRegularExpression::CaseInsensitiveOption);
+#endif
+}
 
 bool CryptoIdentity::isHostFiltered(const QUrl &url) const
 {
@@ -11,9 +22,9 @@ bool CryptoIdentity::isHostFiltered(const QUrl &url) const
 
     QString url_text = url.toString(QUrl::FullyEncoded);
 
-    QRegExp pattern { this->host_filter, Qt::CaseInsensitive, QRegExp::Wildcard };
+    QRegularExpression pattern = fromWildcardCaseInsensitive(this->host_filter);
 
-    return not pattern.exactMatch(url_text);
+    return not pattern.match(url_text).hasMatch();
 }
 
 bool CryptoIdentity::isAutomaticallyEnabledOn(const QUrl &url) const
@@ -25,7 +36,7 @@ bool CryptoIdentity::isAutomaticallyEnabledOn(const QUrl &url) const
 
     QString url_text = url.toString(QUrl::FullyEncoded);
 
-    QRegExp pattern { this->host_filter, Qt::CaseInsensitive, QRegExp::Wildcard };
+    QRegularExpression pattern = fromWildcardCaseInsensitive(this->host_filter);
 
-    return pattern.exactMatch(url_text);
+    return pattern.match(url_text).hasMatch();
 }
