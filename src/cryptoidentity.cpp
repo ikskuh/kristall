@@ -10,7 +10,11 @@ static QRegularExpression fromWildcardCaseInsensitive(QStringView pattern)
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     return QRegularExpression::fromWildcard(pattern, Qt::CaseInsensitive);
 #else
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
     QString strPattern = QRegularExpression::wildcardToRegularExpression(pattern);
+#else
+    QString strPattern = QRegularExpression::wildcardToRegularExpression(pattern.toString());
+#endif
     return QRegularExpression(strPattern, QRegularExpression::CaseInsensitiveOption);
 #endif
 }
