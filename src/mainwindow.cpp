@@ -48,9 +48,11 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
     this->statusBar()->addPermanentWidget(this->load_time);
 
     ui->favourites_view->setModel(&kristall::globals().favourites);
+    ui->session_history_view->setModel(&kristall::globals().history);
 
     this->ui->outline_window->setVisible(false);
     this->ui->history_window->setVisible(false);
+    this->ui->session_history_window->setVisible(false);
     this->ui->bookmarks_window->setVisible(false);
 
     for(QDockWidget * dock : findChildren<QDockWidget *>())
@@ -129,6 +131,7 @@ MainWindow::MainWindow(QApplication * app, QWidget *parent) :
 
     this->ui->favourites_view->setContextMenuPolicy(Qt::CustomContextMenu);
     this->ui->history_view->setContextMenuPolicy(Qt::CustomContextMenu);
+    this->ui->session_history_view->setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(this->ui->browser_tabs->tab_bar, &BrowserTabBar::on_newTabClicked, this, [this]() {
         this->addEmptyTab(true, true);
@@ -705,6 +708,33 @@ void MainWindow::on_history_view_customContextMenuRequested(const QPoint pos)
     }
 }
 
+void MainWindow::on_session_history_view_customContextMenuRequested(const QPoint pos)
+{
+    QMenu menu;
+
+    auto idx = this->ui->session_history_view->indexAt(pos);
+    if(QUrl url = kristall::globals().history.get(idx); url.isValid()) {
+        connect(menu.addAction(tr("Open here")), &QAction::triggered, [this, url]() {
+            BrowserTab * tab = this->curTab();
+            if(tab != nullptr) {
+                tab->navigateTo(url, BrowserTab::PushImmediate);
+            }
+        });
+
+        connect(menu.addAction(tr("Open in new tab")), &QAction::triggered, [this, url]() {
+            addNewTab(true, url);
+        });
+
+        menu.addSeparator();
+    }
+
+    connect(menu.addAction(tr("Clear history")), &QAction::triggered, []() {
+        kristall::globals().history.clear();
+    });
+
+    menu.exec(this->ui->session_history_view->mapToGlobal(pos));
+}
+
 void MainWindow::on_favourites_view_customContextMenuRequested(const QPoint pos)
 {
     if(auto idx = this->ui->favourites_view->indexAt(pos); idx.isValid()) {
@@ -850,6 +880,16 @@ void MainWindow::on_history_view_activated(const QModelIndex &index)
     BrowserTab * tab = this->curTab();
     if(tab != nullptr) {
         tab->navigateBack(index);
+    }
+}
+
+void MainWindow::on_session_history_view_activated(const QModelIndex &index)
+{
+    if(QUrl url = kristall::globals().history.get(index); url.isValid()) {
+        BrowserTab * tab = this->curTab();
+        if(tab != nullptr) {
+            tab->navigateTo(url, BrowserTab::PushImmediate);
+        }
     }
 }
 

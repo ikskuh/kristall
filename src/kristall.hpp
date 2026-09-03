@@ -9,6 +9,7 @@
 #include "identitycollection.hpp"
 #include "ssltrust.hpp"
 #include "favouritecollection.hpp"
+#include "globalhistory.hpp"
 #include "protocolsetup.hpp"
 #include "documentstyle.hpp"
 #include "cachehandler.hpp"
@@ -174,6 +175,7 @@ namespace kristall
         IdentityCollection identities;
         QClipboard * clipboard;
         FavouriteCollection favourites;
+        GlobalHistory history;
         GenericSettings options;
 
         DocumentStyle document_style;

@@ -101,6 +101,8 @@ private slots:
 
     void on_history_view_customContextMenuRequested(const QPoint pos);
 
+    void on_session_history_view_customContextMenuRequested(const QPoint pos);
+
     void on_favourites_view_customContextMenuRequested(const QPoint pos);
 
     void on_actionChangelog_triggered();
@@ -116,6 +118,8 @@ private slots:
     void on_favourites_view_activated(const QModelIndex &index);
 
     void on_history_view_activated(const QModelIndex &index);
+
+    void on_session_history_view_activated(const QModelIndex &index);
 
     void on_outline_view_activated(const QModelIndex &index);
 
