@@ -862,6 +862,8 @@ void BrowserTab::updatePageTitle()
     page_title.replace(NL_REGEX, "");
     page_title = page_title.trimmed();
 
+    kristall::globals().history.setTitleForUrl(this->current_location, this->page_title);
+
     emit this->titleChanged(this->page_title);
 }
 
@@ -978,6 +980,7 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
             this->current_location = uri;
             this->setUrlBarText(uri.toString(QUrl::FullyEncoded));
             this->history.replaceUrl(this->current_history_index.row(), uri);
+            kristall::globals().history.addVisit(uri);
         }
         else
         {
@@ -999,6 +1002,7 @@ void BrowserTab::setErrorMessage(const QString &msg)
 void BrowserTab::pushToHistory(const QUrl &url)
 {
     this->current_history_index = this->history.pushUrl(this->current_history_index, url);
+    kristall::globals().history.addVisit(url);
     this->updateUI();
 }
 

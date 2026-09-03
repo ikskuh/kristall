@@ -55,6 +55,7 @@ set(PROJECT_SOURCES
     src/documentoutlinemodel.cpp
     src/documentstyle.cpp
     src/favouritecollection.cpp
+    src/globalhistory.cpp
     src/identitycollection.cpp
     src/ioutil.cpp
     src/localization.cpp

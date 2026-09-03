@@ -147,7 +147,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="windowTitle">
-    <string>&amp;History</string>
+    <string>&amp;Tab History</string>
    </property>
    <property name="_shortcut" stdset="0">
     <string>Ctrl+H</string>
@@ -171,6 +171,40 @@
      </property>
      <item>
       <widget class="QListView" name="history_view"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="session_history_window">
+   <property name="windowIcon">
+    <iconset theme="history">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="windowTitle">
+    <string>&amp;Session History</string>
+   </property>
+   <property name="_shortcut" stdset="0">
+    <string>Ctrl+Shift+H</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_4">
+    <layout class="QVBoxLayout" name="verticalLayout_5">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QListView" name="session_history_view"/>
      </item>
     </layout>
    </widget>

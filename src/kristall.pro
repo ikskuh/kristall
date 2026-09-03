@@ -123,6 +123,7 @@ SOURCES += \
     documentoutlinemodel.cpp \
     documentstyle.cpp \
     favouritecollection.cpp \
+    globalhistory.cpp \
     identitycollection.cpp \
     ioutil.cpp \
     localization.cpp \
@@ -175,6 +176,7 @@ HEADERS += \
     documentoutlinemodel.hpp \
     documentstyle.hpp \
     favouritecollection.hpp \
+    globalhistory.hpp \
     identitycollection.hpp \
     ioutil.hpp \
     kristall.hpp \
