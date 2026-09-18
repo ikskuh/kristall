@@ -7,6 +7,7 @@ ProtocolSetup::ProtocolSetup()
 #undef MAC
 
     this->gemini = true;
+    this->titan = true;
 }
 
 void ProtocolSetup::save(QSettings &settings) const

@@ -184,6 +184,13 @@
               </widget>
              </item>
              <item>
+              <widget class="QCheckBox" name="enable_titan">
+               <property name="text">
+                <string>Titan</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QCheckBox" name="enable_gopher">
                <property name="enabled">
                 <bool>true</bool>
@@ -1652,6 +1659,7 @@
  </customwidgets>
  <tabstops>
   <tabstop>enable_gemini</tabstop>
+  <tabstop>enable_titan</tabstop>
   <tabstop>enable_gopher</tabstop>
   <tabstop>enable_guppy</tabstop>
   <tabstop>enable_finger</tabstop>
