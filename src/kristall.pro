@@ -232,7 +232,8 @@ CONFIG += lrelease embed_translations
 TRANSLATIONS += \
     ../translations/kristall_en_US.ts \
     ../translations/kristall_ru.ts \
-    ../translations/kristall_cs.ts
+    ../translations/kristall_cs.ts \
+    ../translations/kristall_it.ts
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

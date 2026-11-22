@@ -106,5 +106,6 @@
         <file>icons/languages/en.svg</file>
         <file>icons/languages/ru.svg</file>
         <file>icons/languages/cs.svg</file>
+		<file>icons/languages/it.svg</file>
     </qresource>
 </RCC>

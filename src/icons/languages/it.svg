@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="emoji"
+   viewBox="0 0 72 72"
+   version="1.1"
+   sodipodi:docname="it.svg"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="namedview4"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:current-layer="emoji" />
+  <rect
+     style="fill:#008e44;fill-opacity:1;stroke:none;stroke-width:64.4444;stroke-miterlimit:0"
+     id="rect5"
+     width="21.33"
+     height="38"
+     x="5"
+     y="17" />
+  <rect
+     style="fill:#ce2b37;stroke:none;stroke-width:64.4444;stroke-miterlimit:0;fill-opacity:1"
+     id="rect5-6"
+     width="21.33"
+     height="38"
+     x="45.669998"
+     y="17" />
+  <rect
+     style="fill:#f9f9f9;stroke:none;stroke-width:64.4444;stroke-miterlimit:0;fill-opacity:1"
+     id="rect5-6-5"
+     width="21.33"
+     height="38"
+     x="26.33"
+     y="17" />
+  <g
+     id="line">
+    <rect
+       x="5"
+       y="17"
+       width="62"
+       height="38"
+       fill="none"
+       stroke="#000"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       stroke-width="2"
+       id="rect4" />
+  </g>
+</svg>
