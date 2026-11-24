@@ -32,101 +32,126 @@
 <context>
     <name>BrowserTab</name>
     <message>
+        <location filename="../src/browsertab.ui" line="14"/>
         <source>Form</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="40"/>
         <source>Navigate back</source>
         <translation>Torna indietro</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="43"/>
         <location filename="../src/browsertab.cpp" line="1752"/>
         <source>Back</source>
         <translation>Indietro</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="57"/>
         <source>Navigate forward</source>
         <translation>Vai avanti</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="60"/>
         <location filename="../src/browsertab.cpp" line="1757"/>
         <source>Forward</source>
         <translation>Avanti</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="74"/>
         <source>Stop loading</source>
         <translation>Ferma caricamento</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="77"/>
         <location filename="../src/browsertab.cpp" line="1763"/>
         <source>Stop</source>
         <translation>Ferma</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="91"/>
         <source>Refresh current location</source>
         <translation>Ricarica la posizione corrente</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="94"/>
         <source>Reload</source>
         <translation>Ricarica</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="108"/>
         <source>Kristall Home Page</source>
         <translation>Home page di Kristall</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="111"/>
         <source>Home</source>
         <translation>Pagina iniziale</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="125"/>
         <source>Go the root path of current location</source>
         <translation>Vai alla radice della posizione corrente</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="128"/>
         <source>/</source>
         <translation>/</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="142"/>
         <source>Go the parent path of current location</source>
-        <translation>Vai livello superiore della posizione corrente</translation>
+        <translation>Vai al livello superiore della posizione corrente</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="145"/>
         <source>P</source>
         <translation>P</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="156"/>
         <source>gemini://</source>
         <translation>gemini://</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="166"/>
         <source>Add/remove from favourites</source>
         <translation>Aggiungi/rimuovi dai preferiti</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="169"/>
         <source>Favourite</source>
         <translation>Preferiti</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="187"/>
         <source>Enable/disable client certificate for this tab</source>
         <translation>Attiva/disattiva il certificato client per questa scheda</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="190"/>
         <source>Client Certificate</source>
         <translation>Certificato client</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="274"/>
         <source>Previous</source>
         <translation>Precedente</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="285"/>
+        <location filename="../src/browsertab.ui" line="288"/>
         <source>Next</source>
         <translation>Prossimo</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="299"/>
         <source>Hide search</source>
         <translation>Nascondi ricerca</translation>
     </message>
     <message>
+        <location filename="../src/browsertab.ui" line="302"/>
         <source>Hide</source>
         <translation>Nascondi</translation>
     </message>
@@ -243,7 +268,7 @@ Dettagli:
         <location filename="../src/browsertab.cpp" line="896"/>
         <source>Your input message is too long. Your input is %1 bytes, but a maximum of %2 bytes are allowed.<byte value="xd"/>
 Please cancel or shorten your input.</source>
-        <translation>Il tuo messaggio in ingresso è troppo lungo, è lungo %1 byte, ma sono permessi massimo %2 byte.
+        <translation>Il messaggio inserito è troppo lungo, è lungo %1 byte, ma sono permessi massimo %2 byte.
 Cancella o accorcia il tuo messaggio.</translation>
     </message>
     <message>
@@ -382,7 +407,7 @@ Se viene disattivata, non potrà essere più ripristinata. Confermi?</translatio
         <location filename="../src/browsertab.cpp" line="1559"/>
         <source>You want to visit a new host, but have a client certificate enabled. This may be a risk to expose your identity to another host.<byte value="xd"/>
 Do you want to keep the certificate enabled?</source>
-        <translation>Stai per visitare un nuovo host, ma un certificato client è attivo. Questo potrebbe esporre la tua identità ad all&apos;altro host.
+        <translation>Stai per visitare un nuovo host, ma un certificato client è attivo. Questo potrebbe esporre la tua identità all&apos;altro host.
 Vuoi mantenere il certificato client attivo?</translation>
     </message>
     <message>
@@ -391,7 +416,7 @@ Vuoi mantenere il certificato client attivo?</translation>
 New URL: %1<byte value="xd"/>
 Host Filter: %2<byte value="xd"/>
 Do you want to keep the certificate enabled?</source>
-        <translation>Questo certificato client ha un filtro host attivo ed il sito corrente non è nella lista.
+        <translation>Questo certificato client ha un filtro host attivo ed il sito corrente non corrisponde al filtro host.
 Nuovo URL: %1
 Filtro host: %2
 Vuoi mantenere il certificato client attivo?</translation>
@@ -454,22 +479,28 @@ Vuoi abilitarlo?</translation>
 <context>
     <name>CertificateIoDialog</name>
     <message>
+        <location filename="../src/dialogs/certificateiodialog.ui" line="14"/>
         <source>Dialog</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificateiodialog.ui" line="22"/>
         <source>Key Type</source>
         <translation>Tipo di chiave</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificateiodialog.ui" line="39"/>
         <source>Key File</source>
         <translation>File della chiave</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificateiodialog.ui" line="51"/>
+        <location filename="../src/dialogs/certificateiodialog.ui" line="72"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificateiodialog.ui" line="60"/>
         <source>Certificate File</source>
         <translation>File del certificato</translation>
     </message>
@@ -493,86 +524,107 @@ Vuoi abilitarlo?</translation>
 <context>
     <name>CertificateManagementDialog</name>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="14"/>
         <source>Certificate Manager</source>
         <translation>Gestore certificati</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="52"/>
         <source>Create new certificate</source>
         <translation>Crea nuovo certificato</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="55"/>
         <source>Create...</source>
         <translation>Crea…</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="65"/>
         <source>Import certificate</source>
         <translation>Importa certificato</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="68"/>
         <source>Import...</source>
         <translation>Importa…</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="94"/>
         <source>Export certificate</source>
         <translation>Esporta certificato</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="97"/>
         <source>Export...</source>
         <translation>Esporta…</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="110"/>
         <source>Delete certificate</source>
         <translation>Elimina certificato</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="113"/>
         <source>Delete</source>
         <translation>Elimina</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="130"/>
         <source>Certificate</source>
         <translation>Certificato</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="138"/>
         <source>Display Name</source>
         <translation>Nome visualizzato</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="148"/>
         <source>Common Name</source>
         <translation>Nome comune</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="162"/>
         <source>Expiration Date</source>
         <translation>Data di scadenza</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="179"/>
         <source>Expires in</source>
         <translation>Scade fra</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="189"/>
         <source>??? days</source>
         <translation>??? giorni</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="196"/>
         <source>Fingerprint</source>
         <translation>Impronta digitale</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="203"/>
         <source>Notes</source>
         <translation>Note</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="220"/>
         <source>Host Filter</source>
         <translation>Filtro host</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="227"/>
         <source>gemini://*</source>
         <translation>gemini://*</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="234"/>
         <source>If this is checked, Kristall will automatically enable this certificate when visiting a URL matching the host filter</source>
-        <translation>Se questa casella è contrassegnata, Kristall abiliterà questo certificato se si visita un URL presente nel filtro host</translation>
+        <translation>Se questa casella è contrassegnata, Kristall abiliterà questo certificato se si visita un URL corrispondente nel filtro host</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificatemanagementdialog.ui" line="237"/>
         <source>Auto-Enable Certificate</source>
         <translation>Attiva automaticamente certificato</translation>
     </message>
@@ -582,7 +634,7 @@ Vuoi abilitarlo?</translation>
         <comment>%1 days</comment>
         <translation>
             <numerusform>%1 giorno</numerusform>
-            <numerusform>%n%Ln%1 giorni</numerusform>
+            <numerusform>%1 giorni</numerusform>
         </translation>
     </message>
     <message>
@@ -667,7 +719,7 @@ Certificato: %2</translation>
     <message>
         <location filename="../src/dialogs/certificatemanagementdialog.cpp" line="279"/>
         <source>The certificate file %1 could not be loaded. Please verify your certificate.</source>
-        <translation>Impossibile aprire file certificato %1. Verifica il file certificato.</translation>
+        <translation>Impossibile aprire il file del certificato %1. Verifica il file del certificato.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/certificatemanagementdialog.cpp" line="284"/>
@@ -683,46 +735,57 @@ Certificato: %2</translation>
 <context>
     <name>CertificateSelectionDialog</name>
     <message>
+        <location filename="../src/dialogs/certificateselectiondialog.ui" line="14"/>
         <source>Select client certificate</source>
         <translation>Selezione certificato client</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificateselectiondialog.ui" line="23"/>
         <source>Select existing certificate:</source>
         <translation>Seleziona certificato esistente:</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificateselectiondialog.ui" line="36"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificateselectiondialog.ui" line="55"/>
         <source>Create new identity</source>
         <translation>Crea nuova identità</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificateselectiondialog.ui" line="82"/>
         <source>Use</source>
         <translation>Usa</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificateselectiondialog.ui" line="98"/>
         <source>Create transient session certificate:</source>
         <translation>Crea certificato temporaneo:</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificateselectiondialog.ui" line="107"/>
         <source>30 Minutes</source>
         <translation>30 minuti</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificateselectiondialog.ui" line="114"/>
         <source>1 Hour</source>
         <translation>1 ora</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificateselectiondialog.ui" line="121"/>
         <source>12 Hours</source>
         <translation>12 ore</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificateselectiondialog.ui" line="128"/>
         <source>24 Hours</source>
         <translation>24 ore</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/certificateselectiondialog.ui" line="135"/>
         <source>48 Hours</source>
         <translation>48 ore</translation>
     </message>
@@ -786,214 +849,268 @@ Certificato: %2</translation>
 <context>
     <name>MainWindow</name>
     <message>
+        <location filename="../src/mainwindow.ui" line="14"/>
         <source>Kristall Browser</source>
         <translation>Browser Kristall</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="65"/>
         <source>Document &amp;Outline</source>
         <translation>Struttura &amp;Documento</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="106"/>
         <source>&amp;Favourites</source>
         <translation>&amp;Preferiti</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="223"/>
         <source>&amp;File</source>
         <translation>&amp;File</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="239"/>
+        <location filename="../src/mainwindow.ui" line="452"/>
         <source>&amp;Help</source>
         <translation>&amp;Guida</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="249"/>
         <source>&amp;View</source>
         <translation>&amp;Visualizza</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="256"/>
         <source>&amp;Navigation</source>
         <translation>&amp;Navigazione</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="279"/>
         <source>&amp;About...</source>
         <translation>&amp;Informazioni su Kristall…</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="288"/>
         <source>&amp;Quit</source>
         <translation>&amp;Esci</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="291"/>
         <source>Ctrl+Q</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="296"/>
         <source>New &amp;Tab</source>
         <translation>Nuova &amp;scheda</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="299"/>
         <source>Ctrl+T</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="308"/>
         <source>&amp;Close Tab</source>
         <translation>&amp;Chiudi scheda</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="311"/>
         <source>Ctrl+W</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="320"/>
         <source>&amp;Settings</source>
         <translation>&amp;Impostazioni</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="323"/>
         <source>Ctrl+,</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="332"/>
         <source>&amp;Back</source>
         <translation>&amp;Indietro</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="335"/>
         <source>Back</source>
         <translation>Indietro</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="338"/>
         <source>Alt+Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="347"/>
         <source>For&amp;ward</source>
         <translation>&amp;Avanti</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="350"/>
         <source>Forward</source>
         <translation>Avanti</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="353"/>
         <source>Alt+Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="362"/>
         <source>R&amp;oot</source>
         <translation>&amp;Radice</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="368"/>
         <source>Alt+/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="377"/>
         <source>&amp;Parent</source>
         <translation>&amp;Livello superiore</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="383"/>
         <source>Alt+Up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="392"/>
         <source>&amp;Refresh</source>
         <translation>R&amp;icarica</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="395"/>
         <source>F5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="404"/>
         <source>About &amp;Qt...</source>
         <translation>Informazioni su &amp;Qt...</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="413"/>
         <source>&amp;Save as...</source>
         <translation>&amp;Salva come...</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="416"/>
         <source>Ctrl+S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="428"/>
         <source>Add to &amp;favourites</source>
         <translation>Aggiungi ai &amp;preferiti</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="431"/>
         <source>Ctrl+D</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="440"/>
         <source>Go to &amp;home</source>
         <translation>Vai alla pagina &amp;iniziale</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="443"/>
         <source>Alt+Home</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="455"/>
         <source>F1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="464"/>
         <source>Change&amp;log</source>
         <translation>Change&amp;log</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="473"/>
         <source>&amp;Manage Certificates…</source>
         <translation>&amp;Gestione certificati...</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="478"/>
         <source>View document &amp;source</source>
         <translation>Mostra &amp;sorgente pagina</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="481"/>
         <source>Ctrl+U</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="486"/>
         <source>New &amp;window</source>
         <translation>Nuova &amp;finestra</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="492"/>
         <source>Ctrl+N</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="497"/>
         <source>Close Win&amp;dow</source>
         <translation>Chiudi &amp;finestra</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="500"/>
         <source>Alt+F4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="365"/>
         <source>Go to the root directory (/)</source>
         <translation>Vai alla directory radice (/)</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="68"/>
         <source>Ctrl+M</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="109"/>
         <source>Ctrl+B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="150"/>
         <source>&amp;Tab History</source>
         <translation>&amp;Cronologia della scheda</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="153"/>
         <source>Ctrl+H</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="184"/>
         <source>&amp;Session History</source>
         <translation>C&amp;ronologia della sessione</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="187"/>
         <source>Ctrl+Shift+H</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="380"/>
         <source>Go to the parent directory</source>
         <translation>Vai al livello superiore</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="489"/>
         <source>Opens a new window</source>
         <translation>Apre una nuova finestra</translation>
     </message>
@@ -1146,22 +1263,28 @@ Non è possibile annullare quest&apos;azione!</translation>
 <context>
     <name>MediaPlayer</name>
     <message>
+        <location filename="../src/widgets/mediaplayer.ui" line="14"/>
         <source>Form</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/widgets/mediaplayer.ui" line="25"/>
         <source>Click to play/pause</source>
         <translation>Clicca per riprodurre o mettere in pausa</translation>
     </message>
     <message>
+        <location filename="../src/widgets/mediaplayer.ui" line="28"/>
+        <location filename="../src/widgets/mediaplayer.ui" line="58"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
+        <location filename="../src/widgets/mediaplayer.ui" line="45"/>
         <source>00:00:00</source>
         <translation>00:00:00</translation>
     </message>
     <message>
+        <location filename="../src/widgets/mediaplayer.ui" line="55"/>
         <source>Mute/unmute audio</source>
         <translation>Silenzia/riattiva audio</translation>
     </message>
@@ -1169,22 +1292,27 @@ Non è possibile annullare quest&apos;azione!</translation>
 <context>
     <name>NewIdentitiyDialog</name>
     <message>
+        <location filename="../src/dialogs/newidentitiydialog.ui" line="14"/>
         <source>Create new certificate</source>
         <translation>Crea nuovo certificato</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/newidentitiydialog.ui" line="25"/>
         <source>Display Name</source>
         <translation>Nome visualizzato</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/newidentitiydialog.ui" line="32"/>
         <source>Expiration Date</source>
         <translation>Data di scadenza</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/newidentitiydialog.ui" line="48"/>
         <source>Common Name</source>
         <translation>Nome comune</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/newidentitiydialog.ui" line="55"/>
         <source>Group</source>
         <translation>Gruppo</translation>
     </message>
@@ -1199,7 +1327,7 @@ Non è possibile annullare quest&apos;azione!</translation>
     <message>
         <location filename="../src/main.cpp" line="472"/>
         <source>Starts the instance of kristall as a isolated session that cannot communicate with other windows.</source>
-        <translation>Avvia l&apos;instanza di Kristall in una sessione isolata che non può comunicare con le altre finestre.</translation>
+        <translation>Avvia l&apos;istanza di Kristall in una sessione isolata che non può comunicare con le altre finestre.</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="480"/>
@@ -1257,7 +1385,7 @@ Non è possibile annullare quest&apos;azione!</translation>
     <message>
         <location filename="../src/protocols/geminiclient.cpp" line="181"/>
         <source>response too large!</source>
-        <translation>Risposta troppo grante!</translation>
+        <translation>Risposta troppo grande!</translation>
     </message>
     <message>
         <location filename="../src/protocols/geminiclient.cpp" line="187"/>
@@ -1333,6 +1461,7 @@ Non è possibile annullare quest&apos;azione!</translation>
 <context>
     <name>QueryDialog</name>
     <message>
+        <location filename="../src/widgets/querydialog.ui" line="20"/>
         <source>Dialog</source>
         <translation></translation>
     </message>
@@ -1340,515 +1469,670 @@ Non è possibile annullare quest&apos;azione!</translation>
 <context>
     <name>SettingsDialog</name>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="7"/>
         <source>Settings</source>
         <translation>Impostazioni</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="25"/>
         <source>Generic</source>
         <translatorcomment>Tema dell&apos;interfaccia</translatorcomment>
         <translation>Generali</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="136"/>
         <source>UI Theme</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="146"/>
         <source>Icon Theme</source>
         <translation>Tema delle icone</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="156"/>
         <source>UI Density</source>
         <translation>Densità dell&apos;interfaccia</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="59"/>
         <source>Start Page:</source>
         <translation>Pagina iniziale:</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="66"/>
         <source>about://blank</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="73"/>
         <source>Search engine:</source>
         <translation>Motore di ricerca:</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="166"/>
         <source>Enabled Protocols</source>
         <translation>Protocolli abilitati</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="175"/>
         <source>Gemini</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="185"/>
         <source>Gopher</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="205"/>
         <source>Finger</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="212"/>
         <source>HTTP</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="219"/>
         <source>HTTPS</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="457"/>
         <source>Text Rendering</source>
         <translation>Rendering del testo</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="466"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="435"/>
         <source>Fancy</source>
         <translation>Gradevole</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="479"/>
         <source>Always plain text</source>
         <translation>Solo testo semplice</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="491"/>
         <source>Enable text highlights</source>
         <translation>Evidenziazione del testo</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="500"/>
         <source>On (Experimental)</source>
         <translation>Sì (sperimentale)</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="414"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="510"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="578"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="609"/>
         <source>Off</source>
         <translation>No</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="358"/>
         <source>Gopher Map</source>
         <translation>Mappa Gopher</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="367"/>
         <source>Use icons</source>
         <translation>Usa icone</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="380"/>
         <source>Use text only</source>
         <translation>Usa solo testo</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="228"/>
         <source>Unknown Scheme</source>
         <translation>Schema sconosciuto</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="237"/>
         <source>Use OS default handler</source>
         <translation>Usa il gestore del sistema operativo</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="247"/>
         <source>Display error message</source>
         <translation>Mostra un messaggio d&apos;errore</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="525"/>
         <source>Hidden files in file:// directories</source>
         <translation>File nascosti nelle directory file://</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="534"/>
         <source>Show</source>
         <translation>Mostra</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="544"/>
         <source>Hide</source>
         <translation>Nascondi</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="426"/>
         <source>URL bar highlights</source>
         <translation>Evidenziazione nella barra degli URL</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="445"/>
         <source>None</source>
-        <translation>Nessuno</translation>
+        <translation>Nessuna</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="559"/>
         <source>Use typographer&apos;s quotes</source>
         <translation>Usa virgolette tipografiche</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="556"/>
         <source>Replace single and double quotes with curly typographer quotes.</source>
         <translation>Sostituisce gli apici singoli e doppi con le virgolette tipografiche.</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="404"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="568"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="599"/>
         <source>On</source>
         <translation>Sì</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="395"/>
         <source>Render emojis</source>
         <translation>Renderizza emoji</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="392"/>
         <source>Whether to render emojis in a page.</source>
         <translation>Abilita il rendering delle emoji nelle pagine.</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="259"/>
         <source>Max. Number of Redirections</source>
-        <translation>Numero massino di reindirizzamenti</translation>
+        <translation>Numero massimo di reindirizzamenti</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="273"/>
         <source>Redirection Handling</source>
         <translation>Gestione dei reindirizzamenti</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="283"/>
         <source>Network Timeout</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="290"/>
         <source> ms</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="87"/>
         <source>Additional toolbar buttons</source>
         <translation>Pulsanti della barra degli strumenti</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="96"/>
         <source>Home</source>
         <translation>Pagina iniziale</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="103"/>
         <source>New tab</source>
         <translation>Nuova scheda</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="110"/>
         <source>Root (/)</source>
         <translation>Radice (/)</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="117"/>
         <source>Parent (..)</source>
         <translation>Livello superiore (..)</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="631"/>
         <source>Total cache size limit</source>
         <translation>Dimensione massima cache</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="628"/>
         <source>The total amount of memory that can be occupied by cached items. Set to zero to disable in-memory caching.</source>
         <translation>Quantitativo di memoria usato per salvare gli elementi in cache. Impostare a zero per disattivare questa funzione.</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="638"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="661"/>
         <source> KiB</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="654"/>
         <source>Cached item size threshold</source>
         <translation>Soglia della dimensione degli elementi</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="651"/>
         <source>Items which are below this threshold are cached in memory. Any above are simply discarded.</source>
-        <translation>Solo gli elementi al di sotto sotto di questa soglia verranno salvati nella cache in memoria.</translation>
+        <translation>Solo gli elementi al di sotto di questa soglia verranno salvati nella cache in memoria.</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="677"/>
         <source>Cached item life</source>
         <translation>Tempo massimo per gli elementi in cache</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="674"/>
         <source>How long cached items last before they are expired and require a reload.</source>
         <translation>Mantieni gli elementi in cache per questo periodo di tempo, dopiché viene nuovamente richiesto dalla rete.</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="686"/>
         <source> minutes</source>
         <translation> minuti</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="702"/>
         <source>Unlimited item life</source>
         <translation>Senza limiti di tempo</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="699"/>
         <source>Sets cached items to be unexpirable. Items will only be removed if the cache is full.</source>
         <translation>Gli elementi in cache non scadono, ma verranno comunque rimossi se la cache è piena.</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="49"/>
         <source>Language</source>
         <translation>Lingua</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="126"/>
         <source>Startup Behaviour</source>
         <translation>All&apos;avvio</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="195"/>
         <source>Guppy</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="303"/>
         <source>Tab close behaviour</source>
         <translation>Alla chiusura dell&apos;ultima scheda</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="312"/>
         <source>Keep window open</source>
         <translation>Lascia la finestra aperta</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="322"/>
         <source>Close window</source>
         <translation>Chiudi la finestra</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="339"/>
         <source>Display</source>
         <translation>Visualizzazione</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="345"/>
         <source>Determine how to render ANSI escape sequences</source>
         <translation>Determina come renderizzare le sequenze di escape ANSI</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="348"/>
         <source>ANSI Escape Sequences</source>
         <translation>Sequenze di escape ANSI</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="590"/>
         <source>Strip &lt;nav&gt; from HTML pages</source>
         <translation>Rimuovi &lt;nav&gt; dalle pagine HTML</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="622"/>
         <source>Cache</source>
         <translation>Cache</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="716"/>
         <source>Style</source>
         <translation>Stile</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="754"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="804"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="847"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="890"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="933"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="982"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1031"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1105"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1130"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1155"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1466"/>
         <source>Set color...</source>
         <translation>Imposta colore...</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="767"/>
         <source>Background Color</source>
         <translation>Colore di sfondo</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="774"/>
         <source>Standard Font</source>
         <translation>Carattere del testo normale</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="786"/>
         <source>This text will be displayed for normal text.</source>
         <translation>Testo normale.</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="793"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="836"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="879"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="922"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="971"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1020"/>
         <source>Set font...</source>
         <translation>Imposta carattere...</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="817"/>
         <source>Preformatted Font</source>
         <translation>Carattere del testo preformattato</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="829"/>
         <source>This text will be displayed for preformatted text.</source>
         <translation>Testo preformattato.</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="860"/>
         <source>H1 Font</source>
         <translation>Carattere H1</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="872"/>
         <source>This text will be displayed for a level 1 heading.</source>
         <translation>Intestazione livello 1.</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="903"/>
         <source>H2 Font</source>
         <translation>Carattere H2</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="915"/>
         <source>This text will be displayed for a level 2 heading.</source>
         <translation>Intestazione livello 2.</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="946"/>
         <source>H3 Font</source>
         <translation>Carattere H3</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="961"/>
         <source>This text will be displayed for a level 3 heading.</source>
         <translation>Intestazione livello 3.</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="995"/>
         <source>Blockquote font</source>
         <translation>Carattere delle citazioni</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1010"/>
         <source>This font will be used in blockquotes.</source>
         <translation>Citazioni.</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1044"/>
         <source>Local Link Color</source>
         <translation>Colore collegamento locale</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1051"/>
         <source>Foreign Link Color</source>
         <translation>Colore collegamento remoto</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1058"/>
         <source>Cross-Scheme-Color</source>
         <translation>Colore collegamento cross-schema</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1065"/>
         <source>Local Link Prefix</source>
         <translation>Prefisso locale</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1072"/>
         <source>Extern Link Prefix</source>
         <translation>Prefisso remoto</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1079"/>
         <source>⇒ </source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1086"/>
         <source>→ </source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1095"/>
         <source>This is a local reference</source>
         <translation>Collegamento locale</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1120"/>
         <source>This is a foreign reference</source>
         <translation>Collegamento remoto</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1145"/>
         <source>This reference is cross-scheme</source>
         <translation>Collegamento cross-schema</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1168"/>
         <source>Auto-Theme Generation</source>
         <translation>Genera tema automaticamente</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1178"/>
         <source>Left/right Page Margin</source>
         <translation>Margine di pagina orizzontale</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1185"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1205"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1261"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1296"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1316"/>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1427"/>
         <source> px</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1198"/>
         <source>Top/bottom Page Margin</source>
         <translation>Margine di pagina verticale</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1218"/>
         <source>Other options</source>
         <translation>Altre opzioni</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1230"/>
         <source>Justify text</source>
         <translation>Giustifica testo</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1227"/>
         <source>Justify text on the page, instead of left-aligning it.</source>
         <translation>Il testo verrà giustificato invece di essere allineato a sinistra.</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1240"/>
         <source>Centre first H1 </source>
         <translation>Centra il primo H1 </translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1237"/>
         <source>Whether to centre the first top-level heading in the document.</source>
-        <translation>Centra la prima intestazione di primo livellonel documento.</translation>
+        <translation>Centra la prima intestazione di primo livello nel documento.</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1252"/>
         <source>Text width limit</source>
         <translation>Larghezza massima del testo</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1249"/>
         <source>Preferred width of formatted text on the page.</source>
         <translation>Larghezza massima in pixel delle righe di testo all&apos;interno di una pagina.</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1280"/>
         <source>Enabled</source>
         <translation>Abilita</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1277"/>
         <source>Whether to limit the width of formatted text on the page or not.</source>
         <translation>Selezionare per limitare la larghezza delle righe di testo in una pagina.</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1289"/>
         <source>Line height (paragraph)</source>
         <translation>Altezza riga (paragrafo)</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1309"/>
         <source>Line height (header)</source>
         <translation>Altezza riga (intestazione)</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1329"/>
         <source>Indentation</source>
         <translation>Indentazione</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1338"/>
         <source>Par:</source>
         <translation>Par:</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1358"/>
         <source>Hea:</source>
         <translation>Int:</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1378"/>
         <source>Quo:</source>
         <translation>Cit:</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1398"/>
         <source>Lst:</source>
         <translation>Lst:</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1420"/>
         <source>Indent size</source>
         <translation>Dimensione indentazione</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1440"/>
         <source>List item marker</source>
         <translation>Tipo elenco puntato</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1450"/>
         <source>Block Quote Background</source>
         <translation>Colore di sfondo citazione</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1488"/>
         <source>Presets</source>
         <translation>Preimpostazioni</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1500"/>
         <source>Save as new preset</source>
         <translation>Salva come nuova preimpostazione</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1503"/>
         <source>New</source>
         <translation>Nuovo</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1514"/>
         <source>Override current preset</source>
         <translation>Sovrascrivi preimpostazione corrente</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1528"/>
         <source>Load preset</source>
         <translation>Carica preimpostazione</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1531"/>
         <source>Load</source>
         <translation>Apri</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1542"/>
         <source>Imports preset…</source>
         <translation>Importa preimpostazione...</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1548"/>
         <source>Import</source>
         <translation>Importa</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1559"/>
         <source>Export preset…</source>
         <translation>Esporta preimpostazione...</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1562"/>
         <source>Export</source>
         <translation>Esporta</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1588"/>
         <source>host.name</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1602"/>
         <source>Gemini TLS</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1616"/>
         <source>HTTPS TLS</source>
         <translation></translation>
     </message>
@@ -1860,12 +2144,12 @@ Non è possibile annullare quest&apos;azione!</translation>
     <message>
         <location filename="../src/dialogs/settingsdialog.cpp" line="36"/>
         <source>Dark Theme</source>
-        <translation>Temi scuri</translation>
+        <translation>Tema scuro</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.cpp" line="37"/>
         <source>Light Theme</source>
-        <translation>Temi chiari</translation>
+        <translation>Tema chiaro</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.cpp" line="40"/>
@@ -1957,7 +2241,7 @@ Non è possibile annullare quest&apos;azione!</translation>
     <message>
         <location filename="../src/dialogs/settingsdialog.cpp" line="101"/>
         <source>Ask for all redirection</source>
-        <translation>Chiedi per qualsiasi reindirizzamenti</translation>
+        <translation>Chiedi per qualsiasi reindirizzamento</translation>
     </message>
     <message>
         <location filename="../src/dialogs/settingsdialog.cpp" line="102"/>
@@ -1980,6 +2264,7 @@ Non è possibile annullare quest&apos;azione!</translation>
         <translation> (non supportato in questa build)</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/settingsdialog.ui" line="1517"/>
         <location filename="../src/dialogs/settingsdialog.cpp" line="699"/>
         <location filename="../src/dialogs/settingsdialog.cpp" line="799"/>
         <source>Save</source>
@@ -2031,30 +2316,37 @@ Inserire un nome:</translation>
 <context>
     <name>SslTrustEditor</name>
     <message>
+        <location filename="../src/widgets/ssltrusteditor.ui" line="14"/>
         <source>Form</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/widgets/ssltrusteditor.ui" line="20"/>
         <source>Trust Level</source>
         <translation>Livello di Fiducia</translation>
     </message>
     <message>
+        <location filename="../src/widgets/ssltrusteditor.ui" line="30"/>
         <source>Certificate Authorities</source>
         <translation>Autorità certificatrici</translation>
     </message>
     <message>
+        <location filename="../src/widgets/ssltrusteditor.ui" line="39"/>
         <source>Use local certificate authorities</source>
         <translation>Usa autorità certificatrici locali</translation>
     </message>
     <message>
+        <location filename="../src/widgets/ssltrusteditor.ui" line="46"/>
         <source>Don&apos;t use local certificate authorities</source>
         <translation>Non usare autorità certificatrici locali</translation>
     </message>
     <message>
+        <location filename="../src/widgets/ssltrusteditor.ui" line="55"/>
         <source>Trusted Hosts</source>
         <translation>Host affidabili</translation>
     </message>
     <message>
+        <location filename="../src/widgets/ssltrusteditor.ui" line="82"/>
         <source>Revoke trust</source>
         <translation>Revoca fiducia</translation>
     </message>
