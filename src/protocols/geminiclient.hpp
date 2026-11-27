@@ -21,6 +21,16 @@ public:
 
     bool startRequest(QUrl const & url, RequestOptions options) override;
 
+    bool startUpload(QUrl const & url, QByteArray const & data,
+                     QString const & mime, QString const & token,
+                     RequestOptions options) override;
+
+    bool isUploadScheme(QString const & scheme) const override;
+
+    bool isEditUrl(QUrl const & url) const override;
+
+    QUrl viewUrl(QUrl const & url) const override;
+
     bool isInProgress() const override;
 
     bool cancelRequest() override;
@@ -33,11 +43,18 @@ private slots:
 
     void socketReadyRead();
 
+    void socketBytesWritten(qint64 bytes);
+
     void socketDisconnected();
 
     void sslErrors(const QList<QSslError> &errors);
 
     void socketError(QAbstractSocket::SocketError socketError);
+
+private:
+    static QUrl stripTitanParameters(QUrl url);
+
+    bool openConnection(QUrl const & url, RequestOptions options);
 
 private:
     bool is_receiving_body;
@@ -48,6 +65,8 @@ private:
     QSslSocket socket;
     QByteArray buffer;
     QByteArray body;
+    QByteArray upload_data;
+    qint64 bytes_sent;
     QString mime_type;
     RequestOptions options;
 };

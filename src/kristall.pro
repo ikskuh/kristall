@@ -120,6 +120,7 @@ SOURCES += \
     dialogs/certificateselectiondialog.cpp \
     dialogs/newidentitiydialog.cpp \
     dialogs/settingsdialog.cpp \
+    dialogs/uploaddialog.cpp \
     documentoutlinemodel.cpp \
     documentstyle.cpp \
     favouritecollection.cpp \
@@ -173,6 +174,7 @@ HEADERS += \
     dialogs/certificateselectiondialog.hpp \
     dialogs/newidentitiydialog.hpp \
     dialogs/settingsdialog.hpp \
+    dialogs/uploaddialog.hpp \
     documentoutlinemodel.hpp \
     documentstyle.hpp \
     favouritecollection.hpp \
@@ -222,6 +224,7 @@ FORMS += \
   dialogs/certificateselectiondialog.ui \
   dialogs/newidentitiydialog.ui \
   dialogs/settingsdialog.ui \
+  dialogs/uploaddialog.ui \
   mainwindow.ui \
   widgets/mediaplayer.ui \
   widgets/ssltrusteditor.ui \

@@ -52,6 +52,7 @@ set(PROJECT_SOURCES
     src/dialogs/certificateselectiondialog.cpp
     src/dialogs/newidentitiydialog.cpp
     src/dialogs/settingsdialog.cpp
+    src/dialogs/uploaddialog.cpp
     src/documentoutlinemodel.cpp
     src/documentstyle.cpp
     src/favouritecollection.cpp

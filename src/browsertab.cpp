@@ -13,6 +13,7 @@
 
 #include "dialogs/settingsdialog.hpp"
 #include "dialogs/certificateselectiondialog.hpp"
+#include "dialogs/uploaddialog.hpp"
 
 #include "protocols/geminiclient.hpp"
 #include "protocols/webclient.hpp"
@@ -183,12 +184,24 @@ BrowserTab::~BrowserTab()
     delete ui;
 }
 
-void BrowserTab::navigateTo(const QUrl &url, PushToHistory mode, RequestFlags flags)
+void BrowserTab::navigateTo(QUrl url, PushToHistory mode, RequestFlags flags)
 {
     if (kristall::globals().protocols.isSchemeSupported(url.scheme()) != ProtocolSetup::Enabled)
     {
         QMessageBox::warning(this, tr("Kristall"), tr("URI scheme not supported or disabled: ") + url.scheme());
         return;
+    }
+
+    this->upload_requested = false;
+    if (auto * handler = this->handlerFor(url.scheme()); handler and handler->isUploadScheme(url.scheme()))
+    {
+        if (not handler->isEditUrl(url))
+        {
+            this->showUploadDialog(url);
+            return;
+        }
+        this->upload_requested = true;
+        url = handler->viewUrl(url);
     }
 
     if ((this->current_handler != nullptr) and not this->current_handler->cancelRequest())
@@ -439,6 +452,7 @@ void BrowserTab::on_networkError(ProtocolHandler::NetworkError error_code, const
     auto contents = QString::fromUtf8(file_src.readAll()).arg(reason).toUtf8();
 
     this->is_internal_location = true;
+    this->upload_requested = false;
 
     this->on_requestComplete(
         contents,
@@ -616,6 +630,11 @@ void BrowserTab::on_requestComplete(const QByteArray &ref_data, const MimeType &
 
     emit this->requestStateChanged(RequestState::None);
     this->request_state = RequestState::None;
+
+    if(this->upload_requested) {
+        this->upload_requested = false;
+        QTimer::singleShot(0, this, [this]() { this->showUploadDialog(this->current_location); });
+    }
 }
 
 void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
@@ -823,6 +842,7 @@ void BrowserTab::renderPage(const QByteArray &data, const MimeType &mime)
     // We also do not cache if user has a client certificate enabled.
     if (will_cache &&
         !this->is_internal_location &&
+        !this->is_upload &&
         !this->was_read_from_cache &&
         !this->current_identity.isValid())
     {
@@ -871,6 +891,7 @@ void BrowserTab::updatePageTitle()
 void BrowserTab::on_inputRequired(const QString &query, const bool is_sensitive)
 {
     this->network_timeout_timer.stop();
+    this->upload_requested = false;
 
     QueryDialog dialog(this);
 
@@ -915,6 +936,9 @@ void BrowserTab::on_redirected(QUrl uri, bool is_permanent)
         uri.setHost(current_location.host());
         uri.setPort(current_location.port());
     }
+
+    if (auto * handler = this->handlerFor(uri.scheme()); handler and handler->isUploadScheme(uri.scheme()))
+        uri = handler->viewUrl(uri);
 
     if (redirection_count >= kristall::globals().options.max_redirections)
     {
@@ -1513,7 +1537,17 @@ void BrowserTab::addProtocolHandler(std::unique_ptr<ProtocolHandler> &&handler)
     this->protocol_handlers.emplace_back(std::move(handler));
 }
 
-bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions options, RequestFlags flags)
+ProtocolHandler * BrowserTab::handlerFor(const QString &scheme) const
+{
+    for(auto & ptr : this->protocol_handlers)
+    {
+        if(ptr->supportsScheme(scheme))
+            return ptr.get();
+    }
+    return nullptr;
+}
+
+bool BrowserTab::prepareRequest(const QUrl &url)
 {
     this->updateMouseCursor(true);
 
@@ -1521,14 +1555,7 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
 
     this->was_read_from_cache = false;
 
-    this->current_handler = nullptr;
-    for(auto & ptr : this->protocol_handlers)
-    {
-        if(ptr->supportsScheme(url.scheme())) {
-            this->current_handler = ptr.get();
-            break;
-        }
-    }
+    this->current_handler = this->handlerFor(url.scheme());
 
     assert((this->current_handler != nullptr) and "If this error happens, someone forgot to add a new protocol handler class in the constructor. Shame on the programmer!");
 
@@ -1606,6 +1633,14 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
     if(not try_enable_certificate())
         return false;
 
+    return true;
+}
+
+bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions options, RequestFlags flags)
+{
+    if(not this->prepareRequest(url))
+        return false;
+
     QString urlstr = url.toString(QUrl::FullyEncoded);
 
     {
@@ -1621,6 +1656,7 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
     }
 
     this->is_internal_location = (url.scheme() == "about" || url.scheme() == "file");
+    this->is_upload = false;
     this->current_location = url;
     this->setUrlBarText(urlstr);
 
@@ -1654,6 +1690,44 @@ bool BrowserTab::startRequest(const QUrl &url, ProtocolHandler::RequestOptions o
     else
     {
         return req();
+    }
+}
+
+bool BrowserTab::uploadTo(const QUrl &url, const QByteArray &data,
+                          const QString &mime, const QString &token)
+{
+    if ((this->current_handler != nullptr) and not this->current_handler->cancelRequest())
+        return false;
+
+    if(not this->prepareRequest(url))
+        return false;
+
+    this->redirection_count = 0;
+    this->successfully_loaded = false;
+    this->navigate_to_fragment = false;
+    this->is_internal_location = false;
+    this->is_upload = true;
+    this->current_location = this->current_handler->viewUrl(url);
+    this->setUrlBarText(this->current_location.toString(QUrl::FullyEncoded));
+    this->timer.start();
+
+    this->network_timeout_timer.start(kristall::globals().options.network_timeout);
+
+    return this->current_handler->startUpload(url, data, mime, token, ProtocolHandler::Default);
+}
+
+void BrowserTab::showUploadDialog(const QUrl &url)
+{
+    UploadDialog dialog { this };
+
+    if(this->successfully_loaded and not this->is_internal_location)
+        dialog.setCurrentPage(this->current_buffer, this->current_mime.toString(false));
+
+    if(dialog.exec() != QDialog::Accepted)
+        return;
+
+    if(not this->uploadTo(url, dialog.data(), dialog.mimeType(), dialog.token())) {
+        QMessageBox::critical(this, tr("Kristall"), tr("Failed to upload to %1").arg(url.toString()));
     }
 }
 

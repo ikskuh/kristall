@@ -4,6 +4,35 @@ ProtocolHandler::ProtocolHandler(QObject *parent) : QObject(parent)
 {
 }
 
+bool ProtocolHandler::startUpload(const QUrl &url, const QByteArray &data,
+                                  const QString &mime, const QString &token,
+                                  RequestOptions options)
+{
+    Q_UNUSED(url);
+    Q_UNUSED(data);
+    Q_UNUSED(mime);
+    Q_UNUSED(token);
+    Q_UNUSED(options);
+    return false;
+}
+
+bool ProtocolHandler::isUploadScheme(const QString &scheme) const
+{
+    Q_UNUSED(scheme);
+    return false;
+}
+
+bool ProtocolHandler::isEditUrl(const QUrl &url) const
+{
+    Q_UNUSED(url);
+    return false;
+}
+
+QUrl ProtocolHandler::viewUrl(const QUrl &url) const
+{
+    return url;
+}
+
 bool ProtocolHandler::enableClientCertificate(const CryptoIdentity &ident)
 {
     Q_UNUSED(ident);

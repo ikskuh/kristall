@@ -67,7 +67,10 @@ public:
     explicit BrowserTab(MainWindow * mainWindow);
     ~BrowserTab();
 
-    void navigateTo(QUrl const & url, PushToHistory mode, RequestFlags flags = RequestFlags::None);
+    void navigateTo(QUrl url, PushToHistory mode, RequestFlags flags = RequestFlags::None);
+
+    bool uploadTo(QUrl const & url, QByteArray const & data,
+                  QString const & mime, QString const & token);
 
     void navigateBack(const QModelIndex &history_index);
 
@@ -194,6 +197,12 @@ private:
         this->addProtocolHandler(std::make_unique<T>());
     }
 
+    void showUploadDialog(QUrl const & url);
+
+    ProtocolHandler * handlerFor(QString const & scheme) const;
+
+    bool prepareRequest(QUrl const & url);
+
     bool startRequest(QUrl const & url, ProtocolHandler::RequestOptions options, RequestFlags flags = RequestFlags::None);
 
     void updateMouseCursor(bool waiting);
@@ -251,6 +260,10 @@ public:
     bool no_url_style = false;
 
     bool was_read_from_cache = false;
+
+    bool is_upload = false;
+
+    bool upload_requested = false;
 
     bool lazy_loading = false;
 

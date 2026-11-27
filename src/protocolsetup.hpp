@@ -9,6 +9,7 @@
     MAC(gopher) \
     MAC(guppy) \
     MAC(gemini) \
+    MAC(titan) \
     MAC(finger)
 
 struct ProtocolSetup
